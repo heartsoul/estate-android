@@ -11,7 +11,7 @@ import com.glodon.bim.basic.log.BimUncaughtExceptionHandler;
  * 邮箱：zhourf@glodon.com
  */
 
-public class BimApplication extends Application {
+public class AppApplication extends Application {
     private static Application instance;
 
 

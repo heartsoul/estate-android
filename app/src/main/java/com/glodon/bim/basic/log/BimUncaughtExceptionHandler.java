@@ -6,7 +6,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.telephony.TelephonyManager;
 
-import com.glodon.bim.main.BimApplication;
+import com.glodon.bim.main.AppApplication;
 import com.glodon.bim.basic.config.AppConfig;
 
 import org.json.JSONException;
@@ -109,7 +109,7 @@ public class BimUncaughtExceptionHandler implements Thread.UncaughtExceptionHand
             fos.close();
 
             //扫描文件  否则生成后无法在手机内显示
-            MediaScannerConnection.scanFile(BimApplication.getInstance(), new String[]{path}, new String[]{"application/octet-stream"}, new MediaScannerConnection.OnScanCompletedListener() {
+            MediaScannerConnection.scanFile(AppApplication.getInstance(), new String[]{path}, new String[]{"application/octet-stream"}, new MediaScannerConnection.OnScanCompletedListener() {
                 @Override
                 public void onScanCompleted(final String path, final Uri uri) {
                     //your file has been scanned!
