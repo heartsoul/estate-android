@@ -20,19 +20,34 @@
         android:theme="@style/AppTheme">
 
         <!-- 主界面 -->
-        <activity android:name=".main.MainActivity">
+        <activity
+            android:name=".main.MainActivity"
+            android:screenOrientation="portrait">
+
+        </activity>
+
+        <!-- 登录界面 -->
+        <activity
+            android:name=".business.login.view.LoginActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:host="192.168.81.41"
+                    android:scheme="http" />
+            </intent-filter>
         </activity>
-
-        <!-- 登录界面 -->
-        <activity android:name=".business.login.view.LoginActivity" />
-
         <!-- 启动界面 -->
-        <activity android:name=".business.welcome.view.WelcomeActivity" />
+        <activity
+            android:name=".business.welcome.view.WelcomeActivity"
+            android:screenOrientation="portrait" />
 
         <!-- Activity基类 -->
         <activity android:name=".main.BaseActivity"></activity>

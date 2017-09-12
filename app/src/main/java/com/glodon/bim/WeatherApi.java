@@ -27,8 +27,6 @@ public interface WeatherApi {
     @GET("onebox/weather/query?")
     Call<ResponseBody> getWeather(@QueryMap Map<String ,String> params);
 
-    @POST("onebox/weather/query")
-    Call<ResponseBody> getWeather(@Body User user);
 
     @POST("onebox/weather/query")
     Call<ResponseBody> getWeather(@Field("id") int id,@Field("key") String key);
