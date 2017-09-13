@@ -24,20 +24,22 @@ import java.text.SimpleDateFormat;
  * 邮箱：zhourf@glodon.com
  */
 
-public class BimUncaughtExceptionHandler implements Thread.UncaughtExceptionHandler{
+public class BimUncaughtExceptionHandler implements Thread.UncaughtExceptionHandler {
 
-    private static BimUncaughtExceptionHandler inst ;
+    private static BimUncaughtExceptionHandler inst;
     private static final String TAG = BimUncaughtExceptionHandler.class.getName();
 
     public static BimUncaughtExceptionHandler getInstance() {
-        if(inst==null)inst = new BimUncaughtExceptionHandler();
+        if (inst == null) inst = new BimUncaughtExceptionHandler();
         return inst;
     }
 
     private Context mContext;
     private Thread.UncaughtExceptionHandler mExceptionHandler;
     private JSONObject jsonObject;
-    private BimUncaughtExceptionHandler() {}
+
+    private BimUncaughtExceptionHandler() {
+    }
 
     public void init(Context context) {
         mContext = context;
@@ -48,14 +50,14 @@ public class BimUncaughtExceptionHandler implements Thread.UncaughtExceptionHand
     @Override
     public void uncaughtException(Thread thread, Throwable throwable) {
         handleUncaughtException(throwable);
-        if (throwable != null) LogUtil.w(TAG,throwable);
+        if (throwable != null) LogUtil.w(TAG, throwable);
         mExceptionHandler.uncaughtException(thread, throwable);
     }
 
     private void handleUncaughtException(Throwable ex) {
         if (ex == null) return;
         try {
-            if(jsonObject ==null)jsonObject = new JSONObject();
+            if (jsonObject == null) jsonObject = new JSONObject();
             saveDeviceInfo();
             saveForceCloseInfo2File(ex);
             // 把异常信息发送到服务器
@@ -99,10 +101,10 @@ public class BimUncaughtExceptionHandler implements Thread.UncaughtExceptionHand
             String date = sDateFormat.format(new java.util.Date());
             String dir = AppConfig.BIM_LOG_DIRECTORY;
             File dirs = new File(dir);
-            if(!dirs.exists()){
+            if (!dirs.exists()) {
                 dirs.mkdirs();
             }
-            String path = dir+"/bimError"+date+".txt";
+            String path = dir + "/bimError" + date + ".txt";
             File file = new File(path);
             FileOutputStream fos = new FileOutputStream(file, true);
             fos.write(jsonObject.toString().getBytes());

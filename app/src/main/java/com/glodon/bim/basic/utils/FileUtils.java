@@ -29,7 +29,7 @@ public class FileUtils {
 
     /**
      * 保存图片
-     * 
+     *
      * @param context 持有的context
      * @param url 图片地址
      * @param ext 图片后缀
@@ -60,7 +60,7 @@ public class FileUtils {
 
     /**
      * 保存图片
-     * 
+     *
      * @param mContext 持有 context
      * @param bitmap 图片的bitmap
      */
@@ -123,7 +123,7 @@ public class FileUtils {
         if (!file.exists()) {
             return 0;
         }
-        return (int)file.length();
+        return (int) file.length();
     }
 
     /**
@@ -138,7 +138,7 @@ public class FileUtils {
             return null;
         }
         if (length == -1) {
-            length = (int)file.length();
+            length = (int) file.length();
         }
 
         try {
@@ -155,12 +155,11 @@ public class FileUtils {
     }
 
 
-
     /**
      * @return 检查sdcard 空间大于500kb true
      */
     public static Boolean checkSDCard() {
-        if (!isSDExist()){
+        if (!isSDExist()) {
             return false;
         }
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
@@ -184,7 +183,7 @@ public class FileUtils {
         long availaBlock = statfs.getAvailableBlocks();
         long total = totalBlocks * blocSize;
         long availale = availaBlock * blocSize;
-        int arrMemorySD = (int)((total - availale) / 1024); // kb
+        int arrMemorySD = (int) ((total - availale) / 1024); // kb
         return arrMemorySD > 500; // 500 kb
     }
 

@@ -20,7 +20,7 @@ import rx.subscriptions.Subscriptions;
  * 邮箱：zhourf@glodon.com
  */
 
-public class LoginPresenter implements LoginContract.Presenter{
+public class LoginPresenter implements LoginContract.Presenter {
     private LoginContract.View mView;
     private LoginContract.Model mModel;
     private CompositeSubscription mSubscriptions;
@@ -39,31 +39,6 @@ public class LoginPresenter implements LoginContract.Presenter{
     @Override
     public void clickLoginBtn(String username, String password) {
         mModel.login(username, password);
-//        mSubscriptions.add(mModel.login(username,password)
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(new Subscriber<ResponseBody>() {
-//                    @Override
-//                    public void onCompleted() {
-//
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//                        System.out.println("---"+e.getMessage());
-//                    }
-//
-//                    @Override
-//                    public void onNext(ResponseBody s) {
-//                        System.out.println("------------------------");
-//                        try {
-//                            System.out.println(new String(s.bytes()));
-//                        } catch (IOException e) {
-//                            e.printStackTrace();
-//                        }
-//                        System.out.println("------------------------");
-//                    }
-//                }));
     }
 
     @Override
@@ -73,7 +48,7 @@ public class LoginPresenter implements LoginContract.Presenter{
 
     @Override
     public void onDestroy() {
-        if(mSubscriptions!=null){
+        if (mSubscriptions != null) {
             mSubscriptions.unsubscribe();
             mSubscriptions = null;
         }

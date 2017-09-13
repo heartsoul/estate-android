@@ -18,24 +18,27 @@ public class NetRequest {
     //单例模式
     private static NetRequest instance = new NetRequest();
 
-    private NetRequest(){}
+    private NetRequest() {
+    }
 
     /**
      * 获取对象
+     *
      * @return 当前对象
      */
-    public static NetRequest getInstance(){
+    public static NetRequest getInstance() {
         return instance;
     }
 
     /**
      * 获取接口实例
-     * @param baseUrl  域名
+     *
+     * @param baseUrl 域名
      * @param tClass  定义的接口
-     * @param <T>  返回值类的泛型
+     * @param <T>     返回值类的泛型
      * @return 接口实例
      */
-    public <T> T getCall(String baseUrl,Class<T> tClass){
+    public <T> T getCall(String baseUrl, Class<T> tClass) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -47,20 +50,21 @@ public class NetRequest {
 
     /**
      * 获取网络请求结果  非rx方式
-     * @param call 请求
+     *
+     * @param call     请求
      * @param callback 回调
-     * @param <T> 结果泛型
+     * @param <T>      结果泛型
      */
-    public <T> void getResponse(Call<T> call, final NetRequestCallback<T> callback){
+    public <T> void getResponse(Call<T> call, final NetRequestCallback<T> callback) {
         call.enqueue(new Callback<T>() {
             @Override
             public void onResponse(Call<T> call, Response<T> response) {
-                callback.onResponse(call,response);
+                callback.onResponse(call, response);
             }
 
             @Override
             public void onFailure(Call<T> call, Throwable t) {
-                callback.onFailure(call,t);
+                callback.onFailure(call, t);
             }
         });
     }

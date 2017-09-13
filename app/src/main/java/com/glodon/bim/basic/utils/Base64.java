@@ -18,17 +18,17 @@ public final class Base64 {
 
     private static final String TAG = Base64.class.getSimpleName();
 
-    static private final int     BASELENGTH           = 128;
-    static private final int     LOOKUPLENGTH         = 64;
-    static private final int     TWENTYFOURBITGROUP   = 24;
-    static private final int     EIGHTBIT             = 8;
-    static private final int     SIXTEENBIT           = 16;
-    static private final int     FOURBYTE             = 4;
-    static private final int     SIGN                 = -128;
-    static private final char    PAD                  = '=';
-    static private final boolean fDebug               = false;
-    static final private byte[]  base64Alphabet       = new byte[BASELENGTH];
-    static final private char[]  lookUpBase64Alphabet = new char[LOOKUPLENGTH];
+    static private final int BASELENGTH = 128;
+    static private final int LOOKUPLENGTH = 64;
+    static private final int TWENTYFOURBITGROUP = 24;
+    static private final int EIGHTBIT = 8;
+    static private final int SIXTEENBIT = 16;
+    static private final int FOURBYTE = 4;
+    static private final int SIGN = -128;
+    static private final char PAD = '=';
+    static private final boolean fDebug = false;
+    static final private byte[] base64Alphabet = new byte[BASELENGTH];
+    static final private char[] lookUpBase64Alphabet = new char[LOOKUPLENGTH];
 
     static {
         for (int i = 0; i < BASELENGTH; ++i) {
@@ -105,7 +105,7 @@ public final class Base64 {
         int encodedIndex = 0;
         int dataIndex = 0;
         if (fDebug) {
-            LogUtil.i(TAG,"number of triplets = " + numberTriplets);
+            LogUtil.i(TAG, "number of triplets = " + numberTriplets);
         }
 
         for (int i = 0; i < numberTriplets; i++) {
@@ -114,7 +114,7 @@ public final class Base64 {
             b3 = binaryData[dataIndex++];
 
             if (fDebug) {
-                LogUtil.i(TAG,"b1= " + b1 + ", b2= " + b2 + ", b3= " + b3);
+                LogUtil.i(TAG, "b1= " + b1 + ", b2= " + b2 + ", b3= " + b3);
             }
 
             l = (byte) (b2 & 0x0f);
@@ -125,9 +125,9 @@ public final class Base64 {
             byte val3 = ((b3 & SIGN) == 0) ? (byte) (b3 >> 6) : (byte) ((b3) >> 6 ^ 0xfc);
 
             if (fDebug) {
-                LogUtil.i(TAG,"val2 = " + val2);
-                LogUtil.i(TAG,"k4   = " + (k << 4));
-                LogUtil.i(TAG,"vak  = " + (val2 | (k << 4)));
+                LogUtil.i(TAG, "val2 = " + val2);
+                LogUtil.i(TAG, "k4   = " + (k << 4));
+                LogUtil.i(TAG, "vak  = " + (val2 | (k << 4)));
             }
 
             encodedData[encodedIndex++] = lookUpBase64Alphabet[val1];
@@ -141,8 +141,8 @@ public final class Base64 {
             b1 = binaryData[dataIndex];
             k = (byte) (b1 & 0x03);
             if (fDebug) {
-                LogUtil.i(TAG,"b1=" + b1);
-                LogUtil.i(TAG,"b1<<2 = " + (b1 >> 2));
+                LogUtil.i(TAG, "b1=" + b1);
+                LogUtil.i(TAG, "b1<<2 = " + (b1 >> 2));
             }
             byte val1 = ((b1 & SIGN) == 0) ? (byte) (b1 >> 2) : (byte) ((b1) >> 2 ^ 0xc0);
             encodedData[encodedIndex++] = lookUpBase64Alphabet[val1];
@@ -205,8 +205,8 @@ public final class Base64 {
         for (; i < numberQuadruple - 1; i++) {
 
             if (!isData((d1 = base64Data[dataIndex++])) || !isData((d2 = base64Data[dataIndex++]))
-                || !isData((d3 = base64Data[dataIndex++]))
-                || !isData((d4 = base64Data[dataIndex++]))) {
+                    || !isData((d3 = base64Data[dataIndex++]))
+                    || !isData((d4 = base64Data[dataIndex++]))) {
                 return null;
             }//if found "no data" just return null
 
@@ -268,8 +268,8 @@ public final class Base64 {
     /**
      * remove WhiteSpace from MIME containing encoded Base64 data.
      *
-     * @param data  the byte array of base64 data (with WS)
-     * @return      the new length
+     * @param data the byte array of base64 data (with WS)
+     * @return the new length
      */
     private static int removeWhiteSpace(char[] data) {
         if (data == null) {

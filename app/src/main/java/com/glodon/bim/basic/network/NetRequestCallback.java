@@ -12,15 +12,17 @@ import retrofit2.Response;
 public interface NetRequestCallback<T> {
     /**
      * 成功的回调
-     * @param call 请求
+     *
+     * @param call     请求
      * @param response 返回数据
      */
-     void onResponse(Call<T> call, Response<T> response);
+    void onResponse(Call<T> call, Response<T> response);
 
     /**
      * 失败的回调
+     *
      * @param call 请求
-     * @param t 异常信息
+     * @param t    异常信息
      */
-     void onFailure(Call<T> call, Throwable t);
+    void onFailure(Call<T> call, Throwable t);
 }

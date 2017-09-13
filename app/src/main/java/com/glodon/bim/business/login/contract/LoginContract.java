@@ -14,26 +14,27 @@ import rx.Observable;
 
 public interface LoginContract {
 
-    interface Presenter extends IBasePresenter{
+    interface Presenter extends IBasePresenter {
 
         /**
          * 点击登录按钮
+         *
          * @param username 用户名
          * @param password 密码
          */
         void clickLoginBtn(String username, String password);
     }
 
-    interface View extends IBaseView{
+    interface View extends IBaseView {
 
     }
 
-    interface Model{
+    interface Model {
         /**
          * 登录
+         *
          * @param username 用户名
          * @param password 密码
-         * @return
          */
         void login(String username, String password);
     }
