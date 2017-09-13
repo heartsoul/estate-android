@@ -1,15 +1,9 @@
 package com.glodon.bim.business.login.model;
 
-import android.net.Uri;
-
 import com.glodon.bim.basic.network.NetRequest;
-import com.glodon.bim.business.login.bean.OAuthParams;
-import com.glodon.bim.business.login.bean.User;
 import com.glodon.bim.business.login.contract.LoginContract;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.HashMap;
 
 import okhttp3.ResponseBody;
@@ -26,6 +20,7 @@ import retrofit2.Response;
 public class LoginModel implements LoginContract.Model {
 
     private String baseUrl = "http://192.168.81.41/";
+//    private String baseUrl = "http://192.168.93.39/";
 
     @Override
     public void login(final String username, final String password) {
@@ -56,7 +51,7 @@ public class LoginModel implements LoginContract.Model {
                         String location = response.headers().get("Location");
 //                        String path = location.substring(ServiceGenerator.API_BASE_URL.length());
                         String path = location.substring(location.indexOf("?")+1);
-                        String cookie3 = response.headers().get("Set-Cookie");
+                        final String cookie3 = response.headers().get("Set-Cookie");
                         System.out.println("path="+path);
                         System.out.println("cookie = "+cookie2);
                         System.out.println("cookie = "+cookie3);
@@ -78,10 +73,11 @@ public class LoginModel implements LoginContract.Model {
 
 
                                 LoginApi loginService4 = ServiceGenerator.createService2(LoginApi.class, username, password);
+//                                LoginApi loginService4 = NetRequest.getInstance().getCall(baseUrl,LoginApi.class);
                                 String location = response.headers().get("Location");
 //                                String path = location.substring(baseUrl.length());
 //                                System.out.println("path="+path);
-                                Call<ResponseBody> call4 = loginService4.request4(location);
+                                Call<ResponseBody> call4 = loginService4.request4(getCookie(cookie2)+";"+getCookie(cookie3),location);
                                 call4.enqueue(new Callback<ResponseBody>() {
                                     @Override
                                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -115,6 +111,8 @@ public class LoginModel implements LoginContract.Model {
                                                 .enqueue(new Callback<ResponseBody>() {
                                                     @Override
                                                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                                                        System.out.println("5-------request header");
+                                                        System.out.println(call.request().headers().toString());
                                                         System.out.println("5----------response header--------");
                                                         System.out.println(response.headers().toString());
                                                         System.out.println("5---------response body---------");

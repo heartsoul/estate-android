@@ -42,7 +42,7 @@ public interface LoginApi {
     Call<ResponseBody> request3(@Header("cookie") String cookie, @Query("client_id") String client_id, @Query("redirect_uri") String redirect_uri, @Query("response_type") String response_type, @Query("state") String state);
 
     @GET
-    Call<ResponseBody> request4(@Url String pathname);
+    Call<ResponseBody> request4(@Header("cookie") String cookie,@Url String pathname);
 
     @GET("uaa/user")
     Call<ResponseBody> getUserInfo(@Header("cookie") String cookie);
