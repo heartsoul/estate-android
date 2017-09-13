@@ -1,5 +1,7 @@
 package com.glodon.bim.business.login.contract;
 
+import com.glodon.bim.business.login.listener.OnLoginListener;
+import com.glodon.bim.common.login.User;
 import com.glodon.bim.main.IBasePresenter;
 import com.glodon.bim.main.IBaseView;
 
@@ -36,6 +38,12 @@ public interface LoginContract {
          * @param username 用户名
          * @param password 密码
          */
-        void login(String username, String password);
+        void login(String username, String password,OnLoginListener listener);
+
+        /**
+         * 获取用户信息
+         * @param cookie token
+         */
+        Observable<User> getUserInfo(String cookie);
     }
 }

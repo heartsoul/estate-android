@@ -27,7 +27,7 @@ public class OAuth2Request {
                     .baseUrl(API_BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create());
 
-    public static <S> S createService2(Class<S> serviceClass, String username, String password) {
+    public static <S> S createOAuthRequest(Class<S> serviceClass, String username, String password) {
         if (username != null && password != null) {
             String credentials = username + ":" + password;
             final String basic =

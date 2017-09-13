@@ -12,6 +12,12 @@ import com.glodon.bim.basic.config.AppConfig;
 
 public class LogUtil {
 
+    private static String TAG = LogUtil.class.getName();
+    public static void d(String msg){
+        if(isShowLog()){
+            Log.d(TAG,msg);
+        }
+    }
     public static void d(String tag, String msg) {
         if (isShowLog()) {
             Log.d(tag, msg);

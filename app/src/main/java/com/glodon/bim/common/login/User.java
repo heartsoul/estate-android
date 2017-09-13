@@ -27,4 +27,16 @@ public class User {
      */
     public UserTenant curUserInfo;
     public long curTenantId;
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "username='" + username + '\'' +
+                ", gldAccountId='" + gldAccountId + '\'' +
+                ", authorities=" + authorities +
+                ", accountInfo=" + accountInfo +
+                ", curUserInfo=" + curUserInfo +
+                ", curTenantId=" + curTenantId +
+                '}';
+    }
 }
