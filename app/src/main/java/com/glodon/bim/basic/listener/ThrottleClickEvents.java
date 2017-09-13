@@ -23,12 +23,7 @@ public class ThrottleClickEvents {
      * @param listener 点击事件
      */
     public static void throttleClick(final View view, final View.OnClickListener listener) {
-        RxView.clicks(view).throttleFirst(3, TimeUnit.SECONDS).subscribe(new Action1<Void>() {
-            @Override
-            public void call(Void aVoid) {
-                listener.onClick(view);
-            }
-        });
+        throttleClick(view, listener, 3, TimeUnit.SECONDS);
     }
 
     /**

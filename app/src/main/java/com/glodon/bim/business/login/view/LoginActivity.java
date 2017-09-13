@@ -11,6 +11,7 @@ import com.glodon.bim.R;
 import com.glodon.bim.basic.listener.ThrottleClickEvents;
 import com.glodon.bim.business.login.contract.LoginContract;
 import com.glodon.bim.business.login.presenter.LoginPresenter;
+import com.glodon.bim.customview.LoadingDialog;
 import com.glodon.bim.main.BaseActivity;
 
 /**
@@ -66,12 +67,12 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
 
     @Override
     public void showLoadingDialog() {
-
+        showLoadDialog(true);
     }
 
     @Override
     public void dismissLoadingDialog() {
-
+        dismissLoadDialog();
     }
 
     @Override

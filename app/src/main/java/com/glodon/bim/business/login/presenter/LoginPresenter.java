@@ -42,6 +42,7 @@ public class LoginPresenter implements LoginContract.Presenter {
 
     @Override
     public void clickLoginBtn(String username, String password) {
+        mView.showLoadingDialog();
         mModel.login(username, password, new OnLoginListener() {
             @Override
             public void onLoginSuccess(String cookie) {
@@ -57,20 +58,26 @@ public class LoginPresenter implements LoginContract.Presenter {
 
                             @Override
                             public void onError(Throwable e) {
-
+                                if(mView!=null){
+                                    mView.dismissLoadingDialog();
+                                }
                             }
 
                             @Override
                             public void onNext(User user) {
                                 LogUtil.d(user.toString());
-
+                                if(mView!=null){
+                                    mView.dismissLoadingDialog();
+                                }
                             }
                         }));
             }
 
             @Override
             public void onLoginFailed(Call<ResponseBody> call, Throwable t) {
-
+                if(mView!=null){
+                    mView.dismissLoadingDialog();
+                }
             }
         });
     }
