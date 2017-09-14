@@ -6,11 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
 import com.glodon.bim.R;
-import com.glodon.bim.basic.image.ImageLoader;
 import com.glodon.bim.basic.listener.ThrottleClickEvents;
 import com.glodon.bim.business.login.contract.LoginContract;
 import com.glodon.bim.business.login.presenter.LoginPresenter;
@@ -26,8 +23,6 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     private LoginContract.Presenter mPresenter;
     private EditText mUsernameEt, mPasswordEt;
     private Button mLoginBtn;
-    private ImageView iv;
-    private String url = "http://imgsrc.baidu.com/baike/pic/item/adee30dd61e7dde38d1029c3.jpg";
 
     @Override
     protected View onCreateView() {
@@ -35,7 +30,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         mUsernameEt = view.findViewById(R.id.login_username);
         mPasswordEt = view.findViewById(R.id.login_password);
         mLoginBtn = view.findViewById(R.id.login_button);
-        iv = view.findViewById(R.id.iv);
+
         return view;
     }
 
@@ -49,12 +44,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         ThrottleClickEvents.throttleClick(mLoginBtn, new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //mPresenter.clickLoginBtn(mUsernameEt.getText().toString(), mPasswordEt.getText().toString());
-
-//                ImageLoader.showImage(LoginActivity.this,url,iv);
-                Glide.with(LoginActivity.this)
-                        .load(url)
-                        .into(iv);
+                mPresenter.clickLoginBtn(mUsernameEt.getText().toString(), mPasswordEt.getText().toString());
             }
         });
     }

@@ -7,8 +7,7 @@ import com.glodon.bim.business.login.contract.LoginContract;
 import com.glodon.bim.business.login.listener.OnLoginListener;
 import com.glodon.bim.business.login.model.LoginModel;
 import com.glodon.bim.common.login.User;
-
-import java.io.IOException;
+import com.glodon.bim.main.MainActivity;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -16,7 +15,6 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
-import rx.subscriptions.Subscriptions;
 
 /**
  * 描述：登录 逻辑控制
@@ -69,6 +67,8 @@ public class LoginPresenter implements LoginContract.Presenter {
                                 if(mView!=null){
                                     mView.dismissLoadingDialog();
                                 }
+                                Intent intent = new Intent(mView.getActivity(),MainActivity.class);
+                                mView.getActivity().startActivity(intent);
                             }
                         }));
             }

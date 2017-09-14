@@ -6,18 +6,64 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.Transformation;
-import com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool;
-import com.glodon.bim.R;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.glodon.bim.basic.config.AppConfig;
 
-import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
+import jp.wasabeef.glide.transformations.CropCircleTransformation;
+import jp.wasabeef.glide.transformations.CropSquareTransformation;
 
 /**
- * 描述：
+ * 描述：图片加载
  * 作者：zhourf on 2017/9/13
  * 邮箱：zhourf@glodon.com
  */
 
 public class ImageLoader {
+
+    /**
+     * 展示一般图片
+     */
+    public static void showImage(Context context, String url, ImageView view) {
+        Glide.with(context)
+                .load(url)
+                .placeholder(AppConfig.LOADING_DRAWABLE)
+                .error(AppConfig.LOADING_DRAWABLE_ERROR)
+                .crossFade(200)
+                .centerCrop()
+                .bitmapTransform(new CropSquareTransformation(context))
+//                .override(20,20)
+                .into(view);
+    }
+
+    /**
+     * 展示头像 圆形
+     */
+    public static void showHeadIcon(Context context, String url, ImageView view) {
+        Glide.with(context)
+                .load(url)
+                .bitmapTransform(new CropCircleTransformation(context))
+                .into(view);
+    }
+
+    /**
+     * 根据url获取bitmap
+     */
+    public static void loadUrl(Context context, String url, final OnImageLoadListener listener) {
+        SimpleTarget<Bitmap> target = new SimpleTarget<Bitmap>() {
+            @Override
+            public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                if(listener!=null){
+                    listener.onLoadBitmap(resource);
+                }
+            }
+        };
+        Glide.with(context)
+                .load(url)
+                .asBitmap()
+                .into(target);
+    }
+
 
     /*
      .with() 图片加载的环境：1,Context对象。2,Activity对象。3,FragmentActivity对象。4,Fragment对象
@@ -72,13 +118,14 @@ public class ImageLoader {
 
     /**
      * 显示图片
-     * @param context 上下文
-     * @param url 图片网络地址
-     * @param view 显示图片的控件
-     * @param placeImageId 图片占位符，在图片没有加载出来或加载失败时显示的图片
-     * @param errorImageId 错误时显示的图片
+     *
+     * @param context           上下文
+     * @param url               图片网络地址
+     * @param view              显示图片的控件
+     * @param placeImageId      图片占位符，在图片没有加载出来或加载失败时显示的图片
+     * @param errorImageId      错误时显示的图片
      * @param crossFadeDuration 动画时间
-     * @param transformation 图片形状
+     * @param transformation    图片形状
      */
     public static void showImage(Context context, String url, ImageView view, int placeImageId, int errorImageId, int crossFadeDuration, Transformation<Bitmap> transformation) {
         Glide.with(context)
@@ -88,12 +135,9 @@ public class ImageLoader {
                 .crossFade(crossFadeDuration)
                 .centerCrop()
                 .bitmapTransform(transformation)
-                .thumbnail(0.1f)
+//                .thumbnail(0.1f)
                 .into(view);
     }
 
-    public static void showImage(Context context, String url, ImageView view){
-        LruBitmapPool pool = new LruBitmapPool((int) (Runtime.getRuntime().maxMemory()) / 8);
-        showImage(context, url, view, R.drawable.ic_launcher,R.drawable.ic_launcher,200,new RoundedCornersTransformation(pool,5,5));
-    }
+
 }

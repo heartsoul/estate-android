@@ -1,5 +1,7 @@
 package com.glodon.bim.basic.config;
 
+import com.glodon.bim.R;
+
 /**
  * 描述：app配置信息
  * 作者：zhourf on 2017/9/8
@@ -22,4 +24,13 @@ public class AppConfig {
      * log的存放目录
      */
     public static String BIM_LOG_DIRECTORY = "/sdcard/bimLog";
+
+    /**
+     * 头像加载时，加载过程中显示的图片
+     */
+    public static int LOADING_DRAWABLE = R.drawable.ic_launcher;
+    /**
+     * 头像加载时，加载失败显示的图片
+     */
+    public static int LOADING_DRAWABLE_ERROR = R.drawable.ic_launcher;
 }

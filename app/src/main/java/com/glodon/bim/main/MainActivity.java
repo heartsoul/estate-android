@@ -1,158 +1,52 @@
 package com.glodon.bim.main;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.pm.PackageManager;
-import android.os.Bundle;
+import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
+import android.widget.ImageView;
 
 import com.glodon.bim.R;
-import com.glodon.bim.WeatherApi;
-import com.glodon.bim.basic.network.NetRequest;
-import com.glodon.bim.basic.network.NetRequestCallback;
-import com.jakewharton.rxbinding.view.RxView;
+import com.glodon.bim.basic.image.ImageLoader;
+import com.glodon.bim.basic.image.OnImageLoadListener;
+import com.glodon.bim.basic.listener.ThrottleClickEvents;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
-
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.schedulers.Schedulers;
-
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     private Button btn;
-    private TextView tv;
+    private ImageView iv;
+    private String url = "http://imgsrc.baidu.com/baike/pic/item/adee30dd61e7dde38d1029c3.jpg";
+    private Activity context;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        btn = (Button) findViewById(R.id.btn);
-        tv = (TextView) findViewById(R.id.tv);
-
-        RxView.clicks(btn).throttleFirst(2,TimeUnit.SECONDS).subscribe(new Action1<Void>() {
-            @Override
-            public void call(Void aVoid) {
-//                test5();
-                int i = 1;
-                int y = 0;
-                int z = i/y;
-            }
-        });
-
-        requestPermissions();
+    protected View onCreateView() {
+        context = this;
+        View view = LayoutInflater.from(this).inflate(R.layout.activity_main,null);
+        btn = view.findViewById(R.id.btn);
+        iv = view.findViewById(R.id.iv);
+        return view;
     }
 
-    private void test5(){
-        Map<String,String> params = new HashMap<>();
-        params.put("cityname","上海");
-        params.put("key","4ea58de8a7573377cec0046f5e2469d5");
-        NetRequest.getInstance().getCall("http://op.juhe.cn/", WeatherApi.class)
-                .getRxWeather(params)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<ResponseBody>() {
+    @Override
+    protected void initDataForActivity() {
+        super.initDataForActivity();
+        requestPermissions();
+        ThrottleClickEvents.throttleClick(btn, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                ImageLoader.showHeadIcon(context,url,iv);
+//                ImageLoader.showImage(context,url,iv);
+                ImageLoader.loadUrl(context, url, new OnImageLoadListener() {
                     @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(ResponseBody responseBody) {
-                        try {
-                            Log.d("ccc",responseBody.string());
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                    public void onLoadBitmap(Bitmap bitmap) {
+                        iv.setImageBitmap(bitmap);
                     }
                 });
-    }
-
-    private void test4(){
-        Map<String,String> params = new HashMap<>();
-        params.put("cityname","上海");
-        params.put("key","4ea58de8a7573377cec0046f5e2469d5");
-        NetRequest request  = NetRequest.getInstance();
-        request.getResponse(request.getCall("http://op.juhe.cn/", WeatherApi.class)
-                .getWeather(params), new NetRequestCallback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    Log.d("aaa",response.body().string());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-
-            }
-        });
-    }
-
-    private void test3(){
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://op.juhe.cn/")
-                .build();
-        WeatherApi wa = retrofit.create(WeatherApi.class);
-        Map<String,String> params = new HashMap<>();
-        params.put("cityname","上海");
-        params.put("key","4ea58de8a7573377cec0046f5e2469d5");
-        Call<ResponseBody> call = wa.getWeather(params);
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    Log.d("aaa",response.body().string());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-
-            }
-        });
-    }
-
-    private void test2(){
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://op.juhe.cn/")
-                .build();
-        WeatherApi wa = retrofit.create(WeatherApi.class);
-        Call<ResponseBody> call = wa.getWeather("北京","4ea58de8a7573377cec0046f5e2469d5");
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    Log.d("aaa",response.body().string());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-
             }
         });
     }
