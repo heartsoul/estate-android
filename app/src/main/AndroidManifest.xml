@@ -35,14 +35,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data
-                    android:host="192.168.81.41"
-                    android:scheme="http" />
-            </intent-filter>
         </activity>
         <!-- 启动界面 -->
         <activity
@@ -50,7 +42,17 @@
             android:screenOrientation="portrait" />
 
         <!-- Activity基类 -->
-        <activity android:name=".main.BaseActivity"></activity>
+        <activity android:name="com.glodon.bim.main.BaseActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar"></activity>
+
+        <meta-data
+            android:name="com.glodon.bim.basic.image.GlideConfig"
+            android:value="GlideModule"/>
+
+        <!--<meta-data-->
+            <!--android:name="com.bumptech.glide.integration.okhttp.OkHttpGlideModule"-->
+            <!--android:value="GlideModule" />-->
     </application>
 
 </manifest>

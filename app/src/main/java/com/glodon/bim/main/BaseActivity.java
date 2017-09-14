@@ -1,9 +1,11 @@
 package com.glodon.bim.main;
 
+import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.RelativeLayout;
 
 import com.glodon.bim.R;
@@ -15,7 +17,7 @@ import com.glodon.bim.customview.LoadingDialog;
  * 邮箱：zhourf@glodon.com
  */
 
-public abstract class BaseActivity extends AppCompatActivity {
+public class BaseActivity extends Activity {
 
     private LoadingDialog mLoadingDialog;//加载进度条
     private boolean mCancelAble;//是否可点击外面关闭进度条
@@ -24,7 +26,6 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        getWindow().addFlags(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base);
         mRootView = (RelativeLayout) findViewById(R.id.base_rootview);
