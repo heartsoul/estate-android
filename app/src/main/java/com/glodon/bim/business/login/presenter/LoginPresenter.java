@@ -44,7 +44,9 @@ public class LoginPresenter implements LoginContract.Presenter {
         mModel.login(username, password, new OnLoginListener() {
             @Override
             public void onLoginSuccess(String cookie) {
-
+                //更新数据库
+                mModel.updateCookieDb(cookie);
+                //拿用户信息
                 mSubscriptions.add(mModel.getUserInfo(cookie)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
@@ -67,6 +69,7 @@ public class LoginPresenter implements LoginContract.Presenter {
                                 if(mView!=null){
                                     mView.dismissLoadingDialog();
                                 }
+
                                 Intent intent = new Intent(mView.getActivity(),MainActivity.class);
                                 mView.getActivity().startActivity(intent);
                             }

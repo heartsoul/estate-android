@@ -15,6 +15,8 @@ import com.glodon.bim.R;
 import com.glodon.bim.basic.image.ImageLoader;
 import com.glodon.bim.basic.image.OnImageLoadListener;
 import com.glodon.bim.basic.listener.ThrottleClickEvents;
+import com.glodon.bim.basic.log.LogUtil;
+import com.glodon.bim.business.greendao.provider.DaoProvider;
 
 public class MainActivity extends BaseActivity {
 
@@ -27,8 +29,8 @@ public class MainActivity extends BaseActivity {
     protected View onCreateView() {
         context = this;
         View view = LayoutInflater.from(this).inflate(R.layout.activity_main,null);
-        btn = $(R.id.btn);
-        iv = $(R.id.iv);
+        btn = view.findViewById(R.id.btn);
+        iv = view.findViewById(R.id.iv);
         return view;
     }
 
@@ -49,6 +51,8 @@ public class MainActivity extends BaseActivity {
                 });
             }
         });
+
+        LogUtil.d("====",new DaoProvider().getCookie());
     }
 
     private int REQUEST_EXTERNAL_STORAGE = 1;

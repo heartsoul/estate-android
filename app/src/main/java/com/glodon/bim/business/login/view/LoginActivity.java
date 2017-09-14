@@ -9,8 +9,10 @@ import android.widget.EditText;
 
 import com.glodon.bim.R;
 import com.glodon.bim.basic.listener.ThrottleClickEvents;
+import com.glodon.bim.business.greendao.GreenDaoHelper;
 import com.glodon.bim.business.login.contract.LoginContract;
 import com.glodon.bim.business.login.presenter.LoginPresenter;
+import com.glodon.bim.main.AppApplication;
 import com.glodon.bim.main.BaseActivity;
 
 /**
@@ -27,15 +29,17 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     @Override
     protected View onCreateView() {
         View view = LayoutInflater.from(this).inflate(R.layout.activity_login,null);
-        mUsernameEt = $(R.id.login_username);
-        mPasswordEt = $(R.id.login_password);
-        mLoginBtn = $(R.id.login_button);
+        mUsernameEt = view.findViewById(R.id.login_username);
+        mPasswordEt = view.findViewById(R.id.login_password);
+        mLoginBtn = view.findViewById(R.id.login_button);
 
         return view;
     }
 
     @Override
     protected void initDataForActivity() {
+        //GreenDao初始化
+        GreenDaoHelper.initDatabase(AppApplication.getInstance());
         initData();
     }
 

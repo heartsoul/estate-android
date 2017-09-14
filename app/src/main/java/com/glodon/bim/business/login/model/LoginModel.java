@@ -4,6 +4,7 @@ import com.glodon.bim.basic.network.NetRequest;
 import com.glodon.bim.basic.network.OAuth2Request;
 import com.glodon.bim.business.login.contract.LoginContract;
 import com.glodon.bim.business.login.listener.OnLoginListener;
+import com.glodon.bim.business.login.provider.LoginProviderInput;
 import com.glodon.bim.common.login.User;
 
 import okhttp3.ResponseBody;
@@ -120,6 +121,11 @@ public class LoginModel implements LoginContract.Model {
     @Override
     public Observable<User> getUserInfo(String cookie) {
         return NetRequest.getInstance().getCall(baseUrl, LoginApi.class).getUserInfo(cookie);
+    }
+
+    @Override
+    public void updateCookieDb(String cookie) {
+        new LoginProviderInput().updateCookieDb(cookie);
     }
 
 

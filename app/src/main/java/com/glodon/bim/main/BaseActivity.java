@@ -71,10 +71,10 @@ public class BaseActivity extends Activity {
         }
     }
 
-    /**
-     * 代替findviewbyid
-     */
-    public <T extends View> T $(int id) {
-        return (T) findViewById(id);
-    }
+//    /**
+//     * 代替findviewbyid
+//     */
+//    public <T extends View> T $(int id) {
+//        return (T) findViewById(id);
+//    }
 }

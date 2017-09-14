@@ -45,5 +45,10 @@ public interface LoginContract {
          * @param cookie token
          */
         Observable<User> getUserInfo(String cookie);
+
+        /**
+         * 更新数据库cookie
+         */
+        void updateCookieDb(String cookie);
     }
 }
