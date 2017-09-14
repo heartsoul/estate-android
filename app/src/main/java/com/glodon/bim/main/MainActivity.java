@@ -27,8 +27,8 @@ public class MainActivity extends BaseActivity {
     protected View onCreateView() {
         context = this;
         View view = LayoutInflater.from(this).inflate(R.layout.activity_main,null);
-        btn = view.findViewById(R.id.btn);
-        iv = view.findViewById(R.id.iv);
+        btn = $(R.id.btn);
+        iv = $(R.id.iv);
         return view;
     }
 

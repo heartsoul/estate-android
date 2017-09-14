@@ -1,11 +1,8 @@
 package com.glodon.bim.main;
 
 import android.app.Activity;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.RelativeLayout;
 
 import com.glodon.bim.R;
@@ -28,7 +25,7 @@ public class BaseActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base);
-        mRootView = (RelativeLayout) findViewById(R.id.base_rootview);
+        mRootView = findViewById(R.id.base_rootview);
         mChildView = onCreateView();
         if (mChildView != null) {
             mRootView.addView(onCreateView(), new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
@@ -72,5 +69,12 @@ public class BaseActivity extends Activity {
         if (mLoadingDialog != null && mLoadingDialog.isShowing()) {
             mLoadingDialog.dismiss();
         }
+    }
+
+    /**
+     * 代替findviewbyid
+     */
+    public <T extends View> T $(int id) {
+        return (T) findViewById(id);
     }
 }
