@@ -36,6 +36,9 @@ public class LoginModel implements LoginContract.Model {
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        System.out.println("1--");
+                        System.out.println(response.headers().toString());
+                        System.out.println("1--");
                         request2(response, username, password, listener);
                     }
 
@@ -58,6 +61,9 @@ public class LoginModel implements LoginContract.Model {
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        System.out.println("2--");
+                        System.out.println(response.headers().toString());
+                        System.out.println("2--");
                         request3(response, username, password, cookie2, listener);
                     }
 
@@ -75,11 +81,15 @@ public class LoginModel implements LoginContract.Model {
      */
     private void request3(Response<ResponseBody> response, final String username, final String password, final String cookie2, final OnLoginListener listener) {
         final String cookie3 = response.headers().get(SET_COOKIE);
+
         OAuth2Request.createOAuthRequest(LoginApi.class, username, password)
                 .request3(getCookie(cookie2) + ";" + getCookie(cookie3), response.headers().get(LOCATION))
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        System.out.println("3--");
+                        System.out.println(response.headers().toString());
+                        System.out.println("3--");
                         request4(response, username, password, cookie2, cookie3, listener);
                     }
 
@@ -101,6 +111,9 @@ public class LoginModel implements LoginContract.Model {
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        System.out.println("4--");
+                        System.out.println(response.headers().toString());
+                        System.out.println("4--");
                         if (listener != null) {
                             listener.onLoginSuccess(getCookie(response.headers().get(SET_COOKIE)));
                         }

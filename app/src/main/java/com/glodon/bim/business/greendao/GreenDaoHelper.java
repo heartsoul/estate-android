@@ -5,7 +5,6 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.glodon.bim.gen.DaoMaster;
 import com.glodon.bim.gen.DaoSession;
-import com.glodon.bim.main.AppApplication;
 
 /**
  * 描述：
@@ -19,6 +18,7 @@ public class GreenDaoHelper {
     private static SQLiteDatabase db;
     private static DaoMaster mDaoMaster;
     private static DaoSession mDaoSession;
+
 
     /**
      * 初始化greenDao，这个操作建议在Application初始化的时候添加；
@@ -34,6 +34,16 @@ public class GreenDaoHelper {
         mDaoMaster = new DaoMaster(db);
         mDaoSession = mDaoMaster.newSession();
     }
+
+//    private void initGreenDao() {
+//
+//        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "user.db", null);
+//
+//        //Database dataBase1 = helper.getWritableDb();
+//        Database database = helper.getEncryptedWritableDb("123");
+//
+//        daoSession=new DaoMaster(database).newSession();
+//    }
     public static DaoSession getDaoSession() {
         return mDaoSession;
     }

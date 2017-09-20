@@ -1,7 +1,10 @@
 package com.glodon.bim.main;
 
 import android.app.Activity;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.view.View;
 import android.widget.RelativeLayout;
 
@@ -71,10 +74,21 @@ public class BaseActivity extends Activity {
         }
     }
 
-//    /**
-//     * 代替findviewbyid
-//     */
-//    public <T extends View> T $(int id) {
-//        return (T) findViewById(id);
-//    }
+    public void requestPermission(String[] permissions,int requestCode){
+
+        int permission = ActivityCompat.checkSelfPermission(this, permissions[0]);
+
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            // We don't have permission so prompt the user
+            ActivityCompat.requestPermissions(
+                    this,
+                    permissions,
+                    requestCode
+            );
+        }
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
 }

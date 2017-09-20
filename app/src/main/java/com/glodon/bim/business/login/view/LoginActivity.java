@@ -9,10 +9,8 @@ import android.widget.EditText;
 
 import com.glodon.bim.R;
 import com.glodon.bim.basic.listener.ThrottleClickEvents;
-import com.glodon.bim.business.greendao.GreenDaoHelper;
 import com.glodon.bim.business.login.contract.LoginContract;
 import com.glodon.bim.business.login.presenter.LoginPresenter;
-import com.glodon.bim.main.AppApplication;
 import com.glodon.bim.main.BaseActivity;
 
 /**
@@ -38,8 +36,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
 
     @Override
     protected void initDataForActivity() {
-        //GreenDao初始化
-        GreenDaoHelper.initDatabase(AppApplication.getInstance());
+
         initData();
     }
 

@@ -12,7 +12,7 @@ import com.glodon.bim.business.greendao.GreenDaoHelper;
  * 邮箱：zhourf@glodon.com
  */
 
-public class AppApplication extends Application {
+public class BaseApplication extends Application {
     private static Application instance;
 
 
@@ -34,7 +34,7 @@ public class AppApplication extends Application {
             BimUncaughtExceptionHandler.getInstance().init(instance);
         }
         //GreenDao初始化
-//        GreenDaoHelper.initDatabase(this);
+        GreenDaoHelper.initDatabase(this);
     }
 
     @Override

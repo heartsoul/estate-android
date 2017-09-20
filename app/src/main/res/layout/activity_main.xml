@@ -5,26 +5,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <Button
-        android:id="@+id/btn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="get"
-        android:layout_marginTop="40dp"/>
 
-    <!--<ImageView-->
-        <!--android:id="@+id/iv"-->
-        <!--android:layout_width="@dimen/dimen44"-->
-        <!--android:layout_height="@dimen/dimen44"-->
-        <!--android:layout_gravity="center_horizontal"-->
-        <!--android:layout_marginTop="@dimen/dimen20"-->
-        <!--/>-->
-    <ImageView
-        android:id="@+id/iv"
-        android:layout_width="200dp"
-        android:layout_height="300dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/dimen20"
-        />
 
 </LinearLayout>

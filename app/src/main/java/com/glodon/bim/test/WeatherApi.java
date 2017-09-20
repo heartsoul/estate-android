@@ -1,4 +1,4 @@
-package com.glodon.bim;
+package com.glodon.bim.test;
 
 import java.util.Map;
 
