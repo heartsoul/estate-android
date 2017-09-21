@@ -14,4 +14,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="RecyclerView"/>
+    <Button
+        android:id="@+id/btn_zxing"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="二维码"/>
 </LinearLayout>
