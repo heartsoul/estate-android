@@ -20,7 +20,7 @@ import com.glodon.bim.basic.zxing.activity.CaptureActivity;
 
 public class TestActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private Button btn_testImage,btn_testRecyclerView,btn_zxing;
+    private Button btn_testImage,btn_testRecyclerView,btn_zxing,btn_zxing_create;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +28,7 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
         btn_testImage = (Button) findViewById(R.id.btn_testimage);
         btn_testRecyclerView = (Button) findViewById(R.id.btn_recyclerView);
         btn_zxing = (Button) findViewById(R.id.btn_zxing);
+        btn_zxing_create = (Button) findViewById(R.id.btn_zxing_create);
 
         setListener();
     }
@@ -42,6 +43,7 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
         btn_testImage.setOnClickListener(this);
         btn_testRecyclerView.setOnClickListener(this);
         btn_zxing.setOnClickListener(this);
+        btn_zxing_create.setOnClickListener(this);
     }
 
     @Override
@@ -60,6 +62,10 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.btn_zxing:
                 intent.setClass(this,CaptureActivity.class);
                 startActivityForResult(intent,0);
+                break;
+            case R.id.btn_zxing_create:
+                intent.setClass(this,TestZxingActivity.class);
+                startActivity(intent);
                 break;
         }
 

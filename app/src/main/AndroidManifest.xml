@@ -9,7 +9,6 @@
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.FLASHLIGHT" />
 
@@ -48,7 +47,7 @@
             android:name=".business.welcome.view.WelcomeActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.glodon.bim.basic.zxing.activity.CaptureActivity"
+            android:name=".basic.zxing.activity.CaptureActivity"
             android:screenOrientation="portrait" />
 
         <!-- Activity基类 -->
@@ -70,6 +69,7 @@
         <activity
             android:name=".test.TestImageActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".test.TestZxingActivity"></activity>
     </application>
 
 </manifest>

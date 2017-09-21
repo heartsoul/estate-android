@@ -17,7 +17,7 @@ import java.io.RandomAccessFile;
  * 作者：zhourf on 2017/9/8
  * 邮箱：zhourf@glodon.com
  */
-public class FileUtils {
+public class FileUtil {
     /**
      * 判断SD卡是否存在
      *
@@ -44,8 +44,8 @@ public class FileUtils {
 //        if (!dir.exists())
 //            dir.mkdirs();
 //        long timeMillis = System.currentTimeMillis();
-//        int result = FileUtils.copyFile(dir.getAbsolutePath(), "save" + timeMillis, ext,
-//                FileUtils.readFlieToByte(filePath, 0, FileUtils.decodeFileLength(filePath)));
+//        int result = FileUtil.copyFile(dir.getAbsolutePath(), "save" + timeMillis, ext,
+//                FileUtil.readFlieToByte(filePath, 0, FileUtil.decodeFileLength(filePath)));
 //        if (result == 0) {
 //            CameraUtils.refreshingMediaScanner(AppContextUtils.getAppContext(),
 //                    dir.getAbsolutePath() + "/save" + timeMillis + ext);
@@ -65,7 +65,7 @@ public class FileUtils {
      * @param bitmap 图片的bitmap
      */
 //    public static boolean saveImage(Context mContext, Bitmap bitmap) {
-//        if (!FileUtils.checkSDCard()) {
+//        if (!FileUtil.checkSDCard()) {
 //            ToastUtil.showTextViewPrompt(AppContextUtils.getAppContext(),
 //                    AppContextUtils.getAppContext().getString(R.string.sdcard_not_exist));
 //            return false;

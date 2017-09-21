@@ -6,7 +6,7 @@ android {
     buildToolsVersion "26.0.1"
     defaultConfig {
         applicationId "com.glodon.bim"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
@@ -38,6 +38,8 @@ dependencies {
     //greendao
     //greendao加密
     //    compile 'net.zetetic:android-database-sqlcipher:3.5.7@aar'
+    //    compile 'com.google.zxing:core:3.3.0'
+    compile files('libs/zxing.jar')
     compile 'com.android.support:appcompat-v7:26.+'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.android.support:design:26.+'
@@ -52,7 +54,5 @@ dependencies {
     compile 'com.android.support:support-v4:26'
     compile 'jp.wasabeef:glide-transformations:2.0.1'
     compile 'org.greenrobot:greendao:3.2.0'
-    //    compile 'com.google.zxing:core:3.3.0'
     testCompile 'junit:junit:4.12'
-    compile files('libs/zxing.jar')
 }
