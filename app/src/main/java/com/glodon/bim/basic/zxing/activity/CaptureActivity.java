@@ -48,12 +48,6 @@ import com.google.zxing.common.HybridBinarizer;
 import com.google.zxing.qrcode.QRCodeReader;
 
 
-/**
- * Initial the camera
- * 
- * @author zhangguoyu
- * 
- */
 public class CaptureActivity extends Activity implements Callback {
 
 	private Button btnLight;

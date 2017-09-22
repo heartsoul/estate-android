@@ -1,10 +1,15 @@
 package com.glodon.bim.main;
 
 import android.app.Application;
+import android.content.Context;
+import android.support.multidex.MultiDex;
+import android.support.multidex.MultiDexApplication;
 
 import com.glodon.bim.basic.config.AppConfig;
 import com.glodon.bim.basic.log.BimUncaughtExceptionHandler;
 import com.glodon.bim.business.greendao.GreenDaoHelper;
+import com.umeng.socialize.PlatformConfig;
+import com.umeng.socialize.UMShareAPI;
 
 /**
  * 描述：自定义application
@@ -12,10 +17,15 @@ import com.glodon.bim.business.greendao.GreenDaoHelper;
  * 邮箱：zhourf@glodon.com
  */
 
-public class BaseApplication extends Application {
+public class BaseApplication extends MultiDexApplication {
+
+    {
+        PlatformConfig.setWeixin("","");
+        PlatformConfig.setQQZone("1106433844","S7DqyVuUth0nN9hY");
+        PlatformConfig.setSinaWeibo("605411022","147ff00345905bae8e734833586e4b06","http://www.glodon.com");
+    }
+
     private static Application instance;
-
-
     public static Application getInstance() {
         return instance;
     }
@@ -23,6 +33,7 @@ public class BaseApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        UMShareAPI.get(this);
         init();
     }
 
@@ -37,6 +48,13 @@ public class BaseApplication extends Application {
         GreenDaoHelper.initDatabase(this);
     }
 
+    //分包
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
+    }
+    
     @Override
     public void onTerminate() {
         super.onTerminate();

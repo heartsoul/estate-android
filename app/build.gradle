@@ -11,6 +11,8 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -18,6 +20,17 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    signingConfigs {
+        debug {
+            storeFile file('keystoretest.jks')
+            storePassword "11111111a#"
+            keyAlias "keystoretest"
+            keyPassword "11111111a#"
+        }
+    }
+
+
 }
 
 greendao {
@@ -26,20 +39,43 @@ greendao {
     targetGenDir 'src/main/java'
 }
 
+
+
 dependencies {
+
     compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     //retrofit
+
     //rxjava
+
     //rxbinding
+
     //glide
+
     //greendao
+
     //greendao加密
+
     //    compile 'net.zetetic:android-database-sqlcipher:3.5.7@aar'
+
     //    compile 'com.google.zxing:core:3.3.0'
     compile files('libs/zxing.jar')
+    compile files('libs/open_sdk_r5788_lite.jar')
+    compile files('libs/SocialSDK_email.jar')
+    compile files('libs/SocialSDK_QQ_Full.jar')
+    compile files('libs/SocialSDK_Sina_Full.jar')
+    compile files('libs/SocialSDK_sms.jar')
+    compile files('libs/SocialSDK_WeiXin_Full.jar')
+    compile files('libs/umeng_shareboard_widget.jar')
+    compile files('libs/umeng_social_api.jar')
+    compile files('libs/umeng_social_net.jar')
+    compile files('libs/umeng_social_shareboard.jar')
+    compile files('libs/umeng_social_tool.jar')
+    compile files('libs/wechat-sdk-android-with-mta-1.1.6.jar')
+    compile files('libs/weiboSDKCore.jar')
     compile 'com.android.support:appcompat-v7:26.+'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.android.support:design:26.+'
@@ -55,4 +91,5 @@ dependencies {
     compile 'jp.wasabeef:glide-transformations:2.0.1'
     compile 'org.greenrobot:greendao:3.2.0'
     testCompile 'junit:junit:4.12'
+    compile 'com.android.support:multidex:1.0.0'
 }
