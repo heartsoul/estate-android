@@ -1,13 +1,10 @@
 package com.glodon.bim.business.welcome.view;
 
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Point;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -90,6 +87,7 @@ public class WelcomeActivity extends BaseActivity implements View.OnClickListene
             }
         });
 
+        //滑动到最后一页时  再次滑动则进入主页
         mViewPager.setOnTouchListener(new View.OnTouchListener() {
             float startX;
             float startY;//没有用到
@@ -106,13 +104,7 @@ public class WelcomeActivity extends BaseActivity implements View.OnClickListene
                     case MotionEvent.ACTION_UP:
                         endX = event.getX();
                         endY = event.getY();
-                        WindowManager windowManager = (WindowManager) getApplicationContext().getSystemService(Context.WINDOW_SERVICE);
-
-                        //获取屏幕的宽度
-                        Point size = new Point();
-                        windowManager.getDefaultDisplay().getSize(size);
-                        int width = size.x;
-
+                        int width = ScreenUtil.getScreenInfo()[0];
                         //首先要确定的是，是否到了最后一页，然后判断是否向左滑动，并且滑动距离是否符合，我这里的判断距离是屏幕宽度的4分之一（这里可以适当控制）
                         if (mCurrentItemPosition == (mDataList.size() - 1) && startX - endX >= (width / 6)) {
                             toLogin();
@@ -127,8 +119,6 @@ public class WelcomeActivity extends BaseActivity implements View.OnClickListene
 
     /**
      * 获取点的viewlist
-     *
-     * @param size 数量
      */
     protected ImageView[] getDotsView(int size) {
         int dotSize = ScreenUtil.dp2px(10);//点的大小
@@ -171,8 +161,8 @@ public class WelcomeActivity extends BaseActivity implements View.OnClickListene
     }
 
     private void toLogin() {
-        Intent intent = new Intent(this, LoginActivity.class);
+        Intent intent = new Intent(WelcomeActivity.this, LoginActivity.class);
         startActivity(intent);
-        this.finish();
+        WelcomeActivity.this.finish();
     }
 }
