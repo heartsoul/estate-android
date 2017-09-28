@@ -26,7 +26,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
 
     @Override
     protected View onCreateView() {
-        View view = LayoutInflater.from(this).inflate(R.layout.activity_login,null);
+        View view = LayoutInflater.from(this).inflate(R.layout.login_main_activity,null);
         mUsernameEt = view.findViewById(R.id.login_username);
         mPasswordEt = view.findViewById(R.id.login_password);
         mLoginBtn = view.findViewById(R.id.login_button);

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.view.View;
+import android.view.Window;
 import android.widget.RelativeLayout;
 
 import com.glodon.bim.R;
@@ -27,12 +28,14 @@ public class BaseActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_base);
         mRootView = findViewById(R.id.base_rootview);
         mChildView = onCreateView();
         if (mChildView != null) {
             mRootView.addView(onCreateView(), new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         }
+        setListener();
         initDataForActivity();
     }
 
@@ -43,6 +46,16 @@ public class BaseActivity extends Activity {
         return null;
     }
 
+    /**
+     * 设置监听
+     */
+    protected void setListener(){
+
+    }
+
+    /**
+     * 初始化数据
+     */
     protected void initDataForActivity() {
 
     }

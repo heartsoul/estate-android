@@ -21,9 +21,20 @@ import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMVideo;
 import com.umeng.socialize.media.UMWeb;
 import com.umeng.socialize.media.UMusic;
+import com.umeng.socialize.shareboard.SnsPlatform;
+import com.umeng.socialize.utils.ShareBoardlistener;
 
 import java.util.Map;
-
+/*
+支持分享的类型
+QQ	  	    图片 链接 视频 音乐
+Qzone	    文字（说说） 图片（说说） 链接 视频 音乐
+微信	    文本 图片 链接 视频 音乐
+微信朋友圈	文本 图片 链接（Description不会显示） 视频 音乐
+新浪微博	文本 图片 图文 链接（需要linkcard权限，否则不显示图片） 视频 音乐
+短信	 	文本 图文 图片
+邮件	 	文本 图文 图片
+ */
 public class TestShareActivity extends Activity implements View.OnClickListener {
 
     private Activity activity;
@@ -88,7 +99,7 @@ public class TestShareActivity extends Activity implements View.OnClickListener 
         int id = view.getId();
         switch (id){
             case R.id.btn_showpanael:
-                showSharePannel();
+                showSharePannelCustom();
                 break;
 
         }
@@ -100,9 +111,6 @@ public class TestShareActivity extends Activity implements View.OnClickListener 
                 .setPlatform(SHARE_MEDIA.SINA)
                 .setCallback(listener).share();
     }
-
-
-
 
     //分享图文
     private void ShareImage(String image, String thumb) {
@@ -176,19 +184,26 @@ public class TestShareActivity extends Activity implements View.OnClickListener 
     }
 
 
-    private void showSharePannel(){
-//        new ShareAction(activity)
-//                .withText("hello")
-//                .setDisplayList(SHARE_MEDIA.WEIXIN,SHARE_MEDIA.WEIXIN_CIRCLE,SHARE_MEDIA.QQ,SHARE_MEDIA.QZONE,SHARE_MEDIA.SINA,SHARE_MEDIA.SMS,SHARE_MEDIA.EMAIL)
-//                .setCallback(listener)
-//                .open();
-        isHasClient(SHARE_MEDIA.WEIXIN);
-        isHasClient(SHARE_MEDIA.WEIXIN_CIRCLE);
-        isHasClient(SHARE_MEDIA.QQ);
-        isHasClient(SHARE_MEDIA.QZONE);
-        isHasClient(SHARE_MEDIA.SINA);
-        isHasClient(SHARE_MEDIA.SMS);
-        isHasClient(SHARE_MEDIA.EMAIL);
+    private void showSharePannelDefault(){
+        new ShareAction(activity)
+                .withText("hello")
+                .setDisplayList(SHARE_MEDIA.WEIXIN,SHARE_MEDIA.WEIXIN_CIRCLE,SHARE_MEDIA.QQ,SHARE_MEDIA.QZONE,SHARE_MEDIA.SINA,SHARE_MEDIA.SMS,SHARE_MEDIA.EMAIL)
+                .setCallback(listener)
+                .open();
+    }
+
+    private void showSharePannelCustom(){
+        new ShareAction(activity)
+                .setDisplayList(SHARE_MEDIA.WEIXIN,SHARE_MEDIA.WEIXIN_CIRCLE,SHARE_MEDIA.QQ,SHARE_MEDIA.QZONE,SHARE_MEDIA.SINA,SHARE_MEDIA.SMS,SHARE_MEDIA.EMAIL)
+                // 自定义按钮
+                .setShareboardclickCallback(new ShareBoardlistener() {
+                    @Override
+                    public void onclick(SnsPlatform snsPlatform, SHARE_MEDIA share_media) {
+                        System.out.println("click="+share_media.toString());
+                    }
+                })
+                //面板点击监听器
+                .open();
     }
 
     @Override

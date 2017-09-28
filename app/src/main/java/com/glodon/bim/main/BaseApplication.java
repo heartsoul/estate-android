@@ -7,7 +7,9 @@ import android.support.multidex.MultiDexApplication;
 
 import com.glodon.bim.basic.config.AppConfig;
 import com.glodon.bim.basic.log.BimUncaughtExceptionHandler;
+import com.glodon.bim.basic.utils.ScreenUtil;
 import com.glodon.bim.business.greendao.GreenDaoHelper;
+import com.umeng.socialize.Config;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
 
@@ -34,6 +36,7 @@ public class BaseApplication extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         UMShareAPI.get(this);
+        Config.DEBUG = true;
         init();
     }
 
@@ -46,6 +49,8 @@ public class BaseApplication extends MultiDexApplication {
         }
         //GreenDao初始化
         GreenDaoHelper.initDatabase(this);
+
+        ScreenUtil.init(this);
     }
 
     //分包
@@ -54,7 +59,7 @@ public class BaseApplication extends MultiDexApplication {
         super.attachBaseContext(base);
         MultiDex.install(this);
     }
-    
+
     @Override
     public void onTerminate() {
         super.onTerminate();

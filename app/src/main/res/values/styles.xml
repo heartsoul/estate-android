@@ -8,4 +8,9 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <!--启动页 控制全屏+去除黑白屏-->
+    <style
+        name="Appwelcome"
+        parent="android:Theme.Translucent.NoTitleBar.Fullscreen">
+    </style>
 </resources>
