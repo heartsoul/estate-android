@@ -2,10 +2,9 @@ package com.glodon.bim.business.login.contract;
 
 import com.glodon.bim.business.login.listener.OnLoginListener;
 import com.glodon.bim.common.login.User;
-import com.glodon.bim.main.IBasePresenter;
-import com.glodon.bim.main.IBaseView;
+import com.glodon.bim.base.IBasePresenter;
+import com.glodon.bim.base.IBaseView;
 
-import okhttp3.ResponseBody;
 import rx.Observable;
 
 /**

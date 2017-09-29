@@ -1,6 +1,8 @@
-package com.glodon.bim.main;
+package com.glodon.bim.base;
 
 import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
 
 import com.glodon.bim.customview.LoadingDialog;
 
@@ -14,8 +16,6 @@ public class BaseFragment extends Fragment {
 
     private LoadingDialog mLoadingDialog;//加载进度条
     private boolean mCancelAble;//是否可点击外面关闭进度条
-
-
 
 
     /**
@@ -43,5 +43,9 @@ public class BaseFragment extends Fragment {
         if (mLoadingDialog != null && mLoadingDialog.isShowing()) {
             mLoadingDialog.dismiss();
         }
+    }
+
+    public View inflate(int layoutId){
+        return LayoutInflater.from(getActivity()).inflate(layoutId,null);
     }
 }

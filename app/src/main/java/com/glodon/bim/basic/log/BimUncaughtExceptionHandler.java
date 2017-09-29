@@ -6,7 +6,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.telephony.TelephonyManager;
 
-import com.glodon.bim.main.BaseApplication;
+import com.glodon.bim.base.BaseApplication;
 import com.glodon.bim.basic.config.AppConfig;
 
 import org.json.JSONException;

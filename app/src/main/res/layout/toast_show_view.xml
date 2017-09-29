@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/dimen_220"
+    android:layout_height="@dimen/dimen_54"
+    android:minHeight="@dimen/dimen_54"
+    android:minWidth="@dimen/dimen_220"
+    android:background="@drawable/toast_bg"
+    android:orientation="vertical"
+    android:gravity="center">
+    <TextView
+        android:id="@+id/toast_show_view_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="图片保存成功"
+        android:gravity="center_horizontal"
+        android:textColor="#FFFFFF"
+        android:textSize="@dimen/dimen_18"
+        />
+</LinearLayout>

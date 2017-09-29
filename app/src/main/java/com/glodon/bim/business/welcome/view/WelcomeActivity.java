@@ -14,7 +14,7 @@ import com.glodon.bim.basic.utils.ScreenUtil;
 import com.glodon.bim.business.login.view.LoginActivity;
 import com.glodon.bim.business.welcome.adapter.WelcomeAdapter;
 import com.glodon.bim.business.welcome.bean.WelcomeItem;
-import com.glodon.bim.main.BaseActivity;
+import com.glodon.bim.base.BaseActivity;
 
 import java.util.ArrayList;
 import java.util.List;

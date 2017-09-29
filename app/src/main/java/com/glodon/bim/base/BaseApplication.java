@@ -1,4 +1,4 @@
-package com.glodon.bim.main;
+package com.glodon.bim.base;
 
 import android.app.Application;
 import android.content.Context;

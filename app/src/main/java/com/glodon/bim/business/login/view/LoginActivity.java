@@ -11,7 +11,10 @@ import com.glodon.bim.R;
 import com.glodon.bim.basic.listener.ThrottleClickEvents;
 import com.glodon.bim.business.login.contract.LoginContract;
 import com.glodon.bim.business.login.presenter.LoginPresenter;
-import com.glodon.bim.main.BaseActivity;
+import com.glodon.bim.base.BaseActivity;
+import com.glodon.bim.business.main.view.MainActivity;
+import com.glodon.bim.customview.DialogViewManager;
+import com.glodon.bim.customview.ToastManager;
 
 /**
  * 描述：登录界面
@@ -38,6 +41,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     protected void initDataForActivity() {
 
         initData();
+
     }
 
     private void initData() {
@@ -45,7 +49,9 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         ThrottleClickEvents.throttleClick(mLoginBtn, new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mPresenter.clickLoginBtn(mUsernameEt.getText().toString(), mPasswordEt.getText().toString());
+//                mPresenter.clickLoginBtn(mUsernameEt.getText().toString(), mPasswordEt.getText().toString());
+                Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+                startActivity(intent);
             }
         });
     }

@@ -27,7 +27,7 @@
     <uses-permission android:name="android.permission.GET_TASKS" />
 
     <application
-        android:name=".main.BaseApplication"
+        android:name=".base.BaseApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
@@ -37,13 +37,13 @@
 
         <!-- 主界面 -->
         <activity
-            android:name=".main.MainActivity"
+            android:name=".business.main.view.MainActivity"
             android:screenOrientation="portrait" />
 
         <!-- 登录界面 -->
         <activity
             android:name=".business.login.view.LoginActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <!-- 启动界面 -->
         <activity
             android:name=".business.welcome.view.SplashActivity"
@@ -55,13 +55,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!-- 二维码扫描界面 -->
         <activity
             android:name=".basic.zxing.activity.CaptureActivity"
             android:screenOrientation="portrait" />
 
         <!-- Activity基类 -->
         <activity
-            android:name=".main.BaseActivity"
+            android:name=".base.BaseActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
 
@@ -132,7 +133,7 @@
             android:name="com.sina.weibo.sdk.web.WeiboSdkWebActivity"
             android:configChanges="keyboardHidden|orientation"
             android:exported="false"
-            android:windowSoftInputMode="adjustResize"></activity>
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name="com.sina.weibo.sdk.share.WbShareTransActivity"
             android:launchMode="singleTask"
@@ -156,7 +157,19 @@
         <activity
             android:name=".test.TestShareActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".business.welcome.view.WelcomeActivity"></activity>
+
+        <!-- 启动页后的左右滑动viewpager界面 -->
+        <activity android:name=".business.welcome.view.WelcomeActivity" />
+        <!-- 选择项目界面 -->
+        <activity android:name=".business.main.view.ChooseProjectActivity" />
+        <!-- 忘记密码-图片验证码 -->
+        <activity android:name=".business.login.view.PictureCodeActivity" />
+        <!-- 忘记密码-短信验证码 -->
+        <activity android:name=".business.login.view.SmsCodeActivity" />
+        <!-- 忘记密码-重置密码 -->
+        <activity android:name=".business.login.view.ResetPasswordActivity" />
+        <activity android:name=".business.main.view.ChooseCategoryActivity" />
+        <activity android:name=".business.main.view.ChooseCategoryItemActivity"></activity>
     </application>
 
 </manifest>

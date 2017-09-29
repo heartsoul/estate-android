@@ -1,12 +1,14 @@
-package com.glodon.bim.main;
+package com.glodon.bim.base;
 
 import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.glodon.bim.R;
@@ -22,22 +24,36 @@ public class BaseActivity extends Activity {
 
     private LoadingDialog mLoadingDialog;//加载进度条
     private boolean mCancelAble;//是否可点击外面关闭进度条
-    private RelativeLayout mRootView;
+    private LinearLayout mRootView;
     private View mChildView;
+    private RelativeLayout mHeaderLayout;
+    protected BaseHeaderManger mHeader;
+    protected Activity mActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.activity_base);
+        setContentView(R.layout.base_activity);
+        mActivity = this;
         mRootView = findViewById(R.id.base_rootview);
+        mHeaderLayout = findViewById(R.id.header_parent);
+
+        mHeader = new BaseHeaderManger(mHeaderLayout);
+
+        onCreateHeader();
         mChildView = onCreateView();
         if (mChildView != null) {
-            mRootView.addView(onCreateView(), new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+            mRootView.addView(onCreateView(), new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
         }
         setListener();
         initDataForActivity();
     }
+
+    protected void onCreateHeader() {
+
+    }
+
 
     /**
      * 子类的view
@@ -49,7 +65,7 @@ public class BaseActivity extends Activity {
     /**
      * 设置监听
      */
-    protected void setListener(){
+    protected void setListener() {
 
     }
 
@@ -87,7 +103,7 @@ public class BaseActivity extends Activity {
         }
     }
 
-    public void requestPermission(String[] permissions,int requestCode){
+    public void requestPermission(String[] permissions, int requestCode) {
 
         int permission = ActivityCompat.checkSelfPermission(this, permissions[0]);
 
@@ -100,8 +116,13 @@ public class BaseActivity extends Activity {
             );
         }
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    public View inflate(int layoutId){
+        return LayoutInflater.from(this).inflate(layoutId,null);
     }
 }

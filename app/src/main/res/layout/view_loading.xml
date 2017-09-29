@@ -6,7 +6,7 @@
     android:background="@android:color/transparent"
     android:gravity="center_vertical|center"
     android:orientation="horizontal"
-    android:padding="@dimen/dimen05">
+    android:padding="@dimen/dimen_05">
 
     <ProgressBar
         style="?android:attr/progressBarStyleSmall"
@@ -19,5 +19,5 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="加载中..."
-        android:layout_marginLeft="@dimen/dimen10"/>
+        android:layout_marginLeft="@dimen/dimen_10"/>
 </LinearLayout>
