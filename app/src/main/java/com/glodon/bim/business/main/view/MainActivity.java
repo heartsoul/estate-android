@@ -3,12 +3,14 @@ package com.glodon.bim.business.main.view;
 import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -22,6 +24,7 @@ import com.glodon.bim.business.qualityManage.view.BluePrintFragment;
 import com.glodon.bim.business.qualityManage.view.ModelFragment;
 import com.glodon.bim.business.qualityManage.view.QualityCheckListFragment;
 import com.glodon.bim.business.qualityManage.view.QualityCheckModuleFragment;
+import com.glodon.bim.customview.ToastManager;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -59,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private Map<Integer, BaseFragment> mFragmentMap;
 
+    private LinearLayout mStatusLeft,mStatusRight;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +77,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void initView() {
         mDrawerView = (LinearLayout) findViewById(R.id.main_drawer);
         mContentView = (LinearLayout) findViewById(R.id.main_content);
+        mStatusLeft = (LinearLayout) findViewById(R.id.main_drawer_status_left);
+        mStatusRight = (LinearLayout) findViewById(R.id.main_drawer_status_right);
+
         LinearLayout.LayoutParams contentParams = (LinearLayout.LayoutParams) mContentView.getLayoutParams();
         contentParams.width = ScreenUtil.getScreenInfo()[0];
         mContentView.setLayoutParams(contentParams);
@@ -87,9 +94,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mModelTv = (TextView) findViewById(R.id.main_drawer_quality_model);
         mQualityCheckModuleTv = (TextView) findViewById(R.id.main_drawer_quality_module);
 
+        initStatusBar();
+
         hideDrawer(1);
     }
 
+    private void initStatusBar(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Window w = getWindow();
+            w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,  //设置StatusBar透明
+                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            int id = 0;
+            id = getResources().getIdentifier("status_bar_height", "dimen", //获取状态栏的高度
+                    "android");
+            if (id > 0) {
+                mStatusRight.getLayoutParams().height = getResources() //设置状态栏的高度
+                        .getDimensionPixelOffset(id);
+                mStatusLeft.getLayoutParams().height = getResources() //设置状态栏的高度
+                        .getDimensionPixelOffset(id);
+            }
+        }
+    }
 
     private void setListener() {
         mBackView.setOnClickListener(this);

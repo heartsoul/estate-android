@@ -4,10 +4,7 @@
     android:id="@+id/main_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal"
-    android:clipToPadding="true"
-    android:fitsSystemWindows="true"
-    android:background="@drawable/background">
+    android:orientation="horizontal">
 
     <LinearLayout
         android:id="@+id/main_drawer"
@@ -16,6 +13,13 @@
         android:orientation="vertical"
         android:background="#aaaaaa"
         >
+        <LinearLayout
+            android:id="@+id/main_drawer_status_left"
+            android:layout_width="@dimen/dimen_150"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+        </LinearLayout>
         <TextView
             android:id="@+id/main_drawer_quality_check_list"
             android:layout_width="match_parent"
@@ -55,6 +59,13 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:background="#5555aa">
+        <LinearLayout
+            android:id="@+id/main_drawer_status_right"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+        </LinearLayout>
         <RelativeLayout
             android:id="@+id/main_header_parent"
             android:layout_width="match_parent"
