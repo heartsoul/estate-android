@@ -3,10 +3,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-    <TextView
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/quality_check_list_classifes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="质检清单"
-        android:layout_marginTop="@dimen/dimen_20"
-        />
+        android:background="#FF0000"
+        android:scrollbars="none"
+        ></android.support.v7.widget.RecyclerView>
 </LinearLayout>

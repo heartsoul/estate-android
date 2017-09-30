@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="@dimen/dimen_44"
+    android:paddingLeft="@dimen/dimen_15"
+    android:paddingRight="@dimen/dimen_15"
+    >
+    <TextView
+        android:id="@+id/quality_check_list_classify_item_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="全部"/>
+    <ImageView
+        android:id="@+id/quality_check_list_classify_item_red"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dimen_02"
+        android:layout_alignLeft="@id/quality_check_list_classify_item_name"
+        android:layout_alignRight="@id/quality_check_list_classify_item_name"
+        android:background="#aa0000"
+        android:layout_below="@id/quality_check_list_classify_item_name"
+        android:layout_marginTop="@dimen/dimen_05"
+        android:visibility="invisible"
+        />
+</RelativeLayout>
