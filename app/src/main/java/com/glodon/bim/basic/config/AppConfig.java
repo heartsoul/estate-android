@@ -33,4 +33,5 @@ public class AppConfig {
      * 头像加载时，加载失败显示的图片
      */
     public static int LOADING_DRAWABLE_ERROR = R.drawable.ic_launcher;
+
 }

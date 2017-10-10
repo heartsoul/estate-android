@@ -15,13 +15,14 @@ import com.glodon.bim.R;
 
 public class BaseHeaderManger {
     private TextView mTitleView;
-    private ImageView mLeftOneView;
+    private ImageView mLeftOneView,mRightOneView;
     private RelativeLayout mHeaderParent;
 
     public BaseHeaderManger(RelativeLayout mHeaderLayout) {
         mHeaderParent = mHeaderLayout;
         mTitleView = mHeaderParent.findViewById(R.id.header_title);
         mLeftOneView = mHeaderParent.findViewById(R.id.header_left_one_icon);
+        mRightOneView = mHeaderParent.findViewById(R.id.header_right_one_icon);
 
     }
 
@@ -47,6 +48,15 @@ public class BaseHeaderManger {
 
     public BaseHeaderManger setLeftOneClickListener(View.OnClickListener listener) {
         mLeftOneView.setOnClickListener(listener);
+        return this;
+    }
+    public BaseHeaderManger setRightOneIcon(int resid) {
+        mRightOneView.setBackgroundResource(resid);
+        return this;
+    }
+
+    public BaseHeaderManger setRightOneClickListener(View.OnClickListener listener) {
+        mRightOneView.setOnClickListener(listener);
         return this;
     }
 }

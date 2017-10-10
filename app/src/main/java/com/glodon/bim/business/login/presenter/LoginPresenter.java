@@ -6,8 +6,8 @@ import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.business.login.contract.LoginContract;
 import com.glodon.bim.business.login.listener.OnLoginListener;
 import com.glodon.bim.business.login.model.LoginModel;
+import com.glodon.bim.business.qualityManage.view.QualityMangeMainActivity;
 import com.glodon.bim.common.login.User;
-import com.glodon.bim.business.main.view.MainActivity;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -70,7 +70,7 @@ public class LoginPresenter implements LoginContract.Presenter {
                                     mView.dismissLoadingDialog();
                                 }
 
-                                Intent intent = new Intent(mView.getActivity(),MainActivity.class);
+                                Intent intent = new Intent(mView.getActivity(),QualityMangeMainActivity.class);
                                 mView.getActivity().startActivity(intent);
                             }
                         }));

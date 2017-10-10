@@ -1,11 +1,15 @@
-package com.glodon.bim.business.main.view;
+package com.glodon.bim.business.qualityManage.view;
 
 import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -20,11 +24,9 @@ import com.glodon.bim.base.BaseFragment;
 import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.basic.utils.ScreenUtil;
 import com.glodon.bim.business.greendao.provider.DaoProvider;
-import com.glodon.bim.business.qualityManage.view.BluePrintFragment;
-import com.glodon.bim.business.qualityManage.view.ModelFragment;
-import com.glodon.bim.business.qualityManage.view.QualityCheckListFragment;
-import com.glodon.bim.business.qualityManage.view.QualityCheckModuleFragment;
-import com.glodon.bim.customview.ToastManager;
+import com.glodon.bim.business.qualityManage.contract.QualityMangeMainContract;
+import com.glodon.bim.business.qualityManage.presenter.QualityMangeMainPresenter;
+import com.glodon.bim.customview.PhotoAlbumDialog;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,11 +36,13 @@ import java.util.Map;
  * 作者：zhourf on 2017/9/8
  * 邮箱：zhourf@glodon.com
  */
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class QualityMangeMainActivity extends AppCompatActivity implements View.OnClickListener,QualityMangeMainContract.View {
 
     private Activity mActivity;
 
-    private int REQUEST_EXTERNAL_STORAGE = 1;
+    private QualityMangeMainContract.Presenter mPresenter;
+
+    private final int REQUEST_CAMERA = 1;
 
     private LinearLayout mDrawerView;
     private LinearLayout mContentView;
@@ -62,13 +66,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private Map<Integer, BaseFragment> mFragmentMap;
 
-    private LinearLayout mStatusLeft,mStatusRight;
+    private LinearLayout mStatusLeft, mStatusRight;
+
+    private PhotoAlbumDialog mPhotoAlbumDialog;//拍照相册弹出框
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.main_activity);
         mActivity = this;
+        mPresenter = new QualityMangeMainPresenter(this);
         initView();
         setListener();
         initDataForActivity();
@@ -99,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         hideDrawer(1);
     }
 
-    private void initStatusBar(){
+    private void initStatusBar() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Window w = getWindow();
             w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,  //设置StatusBar透明
@@ -132,10 +140,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         int id = view.getId();
         switch (id) {
-            case R.id.main_header_back_icon:
+            case R.id.main_header_back_icon://点击返回键
                 mActivity.finish();
                 break;
-            case R.id.main_header_menu_icon:
+            case R.id.main_header_menu_icon://点击菜单键
                 if (mIsDrawerOpen) {
                     hideDrawer(300);
                 } else {
@@ -143,36 +151,63 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 mIsDrawerOpen = !mIsDrawerOpen;
                 break;
-            case R.id.main_header_search_icon:
+            case R.id.main_header_search_icon://点击搜索按钮
 
                 break;
-            case R.id.main_header_new_icon:
-
+            case R.id.main_header_new_icon://点击创建
+                create();
                 break;
-            case R.id.main_drawer_quality_check_list:
+            case R.id.main_drawer_quality_check_list://点击质检清单
                 showFragmentById(mQualityCheckListFragmentId);
                 break;
-            case R.id.main_drawer_quality_blueprint:
-                showFragmentById(mBluePrintFragmentId);
+            case R.id.main_drawer_quality_blueprint://点击图纸
+//                showFragmentById(mBluePrintFragmentId);
+                mPresenter.toBluePrint();
                 break;
-            case R.id.main_drawer_quality_model:
-                showFragmentById(mModelFragmentId);
+            case R.id.main_drawer_quality_model://点击模型
+//                showFragmentById(mModelFragmentId);
+                mPresenter.toModel();
                 break;
-            case R.id.main_drawer_quality_module:
+            case R.id.main_drawer_quality_module://点击质检项目
                 showFragmentById(mQualityCheckModuleFragmentId);
                 break;
 
         }
     }
 
+    //弹出照片选择框
+    private void create() {
+        if (mPhotoAlbumDialog == null) {
+            mPhotoAlbumDialog = new PhotoAlbumDialog(this).builder(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mPresenter.openPhoto();
+                }
+            }, new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mPresenter.openAlbum();
+                }
+            }, new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mPresenter.toCreate();
+                }
+            });
+        }
+        mPhotoAlbumDialog.show();
+    }
+
+
+
     protected void initDataForActivity() {
         mFragmentMap = new HashMap<>();
-        String[] PERMISSIONS_STORAGE = {
-                Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
-        };
-//        requestPermission(PERMISSIONS_STORAGE,REQUEST_EXTERNAL_STORAGE);
-
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            String[] PERMISSIONS_STORAGE = {
+                    Manifest.permission.CAMERA,
+            };
+            requestPermission(PERMISSIONS_STORAGE, REQUEST_CAMERA);
+        }
 
         LogUtil.d("====", new DaoProvider().getCookie());
 
@@ -182,7 +217,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     //显示fragment
     private void showFragmentById(int id) {
-        if(mCurrentFragmentId == id){
+        if (mCurrentFragmentId == id) {
             return;
         }
         //开启事务，fragment的控制是由事务来实现的
@@ -240,6 +275,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    //隐藏侧边栏
     private void hideDrawer(int duraion) {
 
         final int margin = ScreenUtil.dp2px(150);
@@ -252,6 +288,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         animator2.start();
     }
 
+    //展示侧边栏
     private void showDrawer(int duraion) {
 
         final int margin = ScreenUtil.dp2px(150);
@@ -265,4 +302,64 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
+    @Override
+    public void showLoadingDialog() {
+
+    }
+
+    @Override
+    public void dismissLoadingDialog() {
+
+    }
+
+    @Override
+    public Activity getActivity() {
+        return mActivity;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        mPresenter.onActivityResult(requestCode,resultCode,data);
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(mPresenter!=null)
+        {
+            mPresenter.onDestroy();
+            mPresenter = null;
+        }
+    }
+
+    private void requestPermission(String[] permissions, int requestCode) {
+
+        int permission = ActivityCompat.checkSelfPermission(this, permissions[0]);
+
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            // We don't have permission so prompt the user
+            ActivityCompat.requestPermissions(
+                    this,
+                    permissions,
+                    requestCode
+            );
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode)
+        {
+            case REQUEST_CAMERA:
+                if(grantResults!=null && grantResults.length>0 && grantResults[0]==PackageManager.PERMISSION_GRANTED){
+                    //授权允许
+                }else{
+                    //授权拒绝
+                }
+                break;
+        }
+    }
 }

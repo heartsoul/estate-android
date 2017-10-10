@@ -6,6 +6,17 @@
 
     <!-- 透明色 -->
     <color name="transparent">#00000000</color>
+    <!-- 纯白 -->
+    <color name="white">#ffffff</color>
+    <!-- 纯黑 -->
+    <color name="black">#000000</color>
+    <!-- 登录 -->
+    <color name="c_999992">#999992</color>
+    <color name="c_f3f3f2">#f3f3f2</color>
+    <color name="c_00baf3">#00baf3</color>
+    <!--不透明度20  纯黑-->
+    <color name="c_33000000">#33000000</color>
+    <color name="c_ff5151">#ff5151</color>
 
     <!-- zxing -->
     <color name="viewfinder_frame">#ff000000</color>

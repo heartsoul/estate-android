@@ -24,13 +24,26 @@ public class ImageLoader {
     /**
      * 展示一般图片
      */
-    public static void showImage(Context context, String url, ImageView view) {
+    public static void showImageCenterCrop(Context context, String url, ImageView view) {
         Glide.with(context)
                 .load(url)
                 .placeholder(AppConfig.LOADING_DRAWABLE)
                 .error(AppConfig.LOADING_DRAWABLE_ERROR)
                 .crossFade(200)
                 .centerCrop()
+                .bitmapTransform(new CropSquareTransformation(context))
+//                .override(20,20)
+                .into(view);
+    }
+    /**
+     * 展示一般图片
+     */
+    public static void showImage(Context context, String url, ImageView view) {
+        Glide.with(context)
+                .load(url)
+                .placeholder(AppConfig.LOADING_DRAWABLE)
+                .error(AppConfig.LOADING_DRAWABLE_ERROR)
+                .crossFade(200)
                 .bitmapTransform(new CropSquareTransformation(context))
 //                .override(20,20)
                 .into(view);
@@ -101,11 +114,11 @@ public class ImageLoader {
                     case AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL:
                     case AbsListView.OnScrollListener.SCROLL_STATE_FLING:
                         // 当ListView处于滑动状态时，停止加载图片，保证操作界面流畅
-                        Glide.with(MainActivity.this).pauseRequests();
+                        Glide.with(QualityMangeMainActivity.this).pauseRequests();
                         break;
                     case AbsListView.OnScrollListener.SCROLL_STATE_IDLE:
                         // 当ListView处于静止状态时，继续加载图片
-                        Glide.with(MainActivity.this).resumeRequests();
+                        Glide.with(QualityMangeMainActivity.this).resumeRequests();
                         break;
                 }
             }

@@ -33,27 +33,30 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:hardwareAccelerated="false"
         android:theme="@style/AppBaseTheme">
 
         <!-- 主界面 -->
         <activity
-            android:name=".business.main.view.MainActivity"
+            android:name=".business.qualityManage.view.QualityMangeMainActivity"
             android:screenOrientation="portrait" />
 
         <!-- 登录界面 -->
         <activity
             android:name=".business.login.view.LoginActivity"
-            android:screenOrientation="portrait" />
-        <!-- 启动界面 -->
-        <activity
-            android:name=".business.welcome.view.SplashActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Appwelcome">
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <!-- 启动界面 -->
+        <activity
+            android:name=".business.welcome.view.SplashActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Appwelcome">
+
         </activity>
         <!-- 二维码扫描界面 -->
         <activity
@@ -159,17 +162,42 @@
             android:screenOrientation="portrait" />
 
         <!-- 启动页后的左右滑动viewpager界面 -->
-        <activity android:name=".business.welcome.view.WelcomeActivity" />
+        <activity android:name=".business.welcome.view.WelcomeActivity"
+            android:screenOrientation="portrait" />
         <!-- 选择项目界面 -->
-        <activity android:name=".business.main.view.ChooseProjectActivity" />
+        <activity android:name=".business.main.view.ChooseProjectActivity"
+            android:screenOrientation="portrait" />
         <!-- 忘记密码-图片验证码 -->
-        <activity android:name=".business.login.view.PictureCodeActivity" />
+        <activity android:name=".business.login.view.PictureCodeActivity"
+            android:screenOrientation="portrait" />
         <!-- 忘记密码-短信验证码 -->
-        <activity android:name=".business.login.view.SmsCodeActivity" />
+        <activity android:name=".business.login.view.SmsCodeActivity"
+            android:screenOrientation="portrait" />
         <!-- 忘记密码-重置密码 -->
-        <activity android:name=".business.login.view.ResetPasswordActivity" />
-        <activity android:name=".business.main.view.ChooseCategoryActivity" />
-        <activity android:name=".business.main.view.ChooseCategoryItemActivity"></activity>
+        <activity android:name=".business.login.view.ResetPasswordActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".business.main.view.ChooseCategoryActivity"
+            android:screenOrientation="portrait"  />
+        <activity android:name=".business.main.view.ChooseCategoryItemActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".business.qualityManage.view.BluePrintActivity"
+            android:screenOrientation="portrait"  />
+        <activity android:name=".business.qualityManage.view.ModelActivity"
+            android:screenOrientation="portrait"  />
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}.fileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_path" />
+        </provider>
+
+        <activity
+            android:name=".business.qualityManage.view.PhotoEditActivity"
+            android:screenOrientation="portrait" ></activity>
     </application>
 
 </manifest>

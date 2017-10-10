@@ -14,47 +14,52 @@ import com.glodon.bim.R;
 
 
 /**
- * 描述：弹出框
+ * 描述：拍照相片弹出框
  * 作者：zhourf on 2017/9/29
  * 邮箱：zhourf@glodon.com
  */
-public class DialogViewManager {
+public class PhotoAlbumDialog {
     private Context context;
     private Dialog dialog; //悬浮框
     private Display display;//window展示
-    private TextView textView,cancelView,sureView;//相册
+    private TextView mPhotoView,mAlbumView,mGoView;
 
-    public DialogViewManager(Context context) {
+    public PhotoAlbumDialog(Context context) {
         this.context = context;
         WindowManager windowManager = (WindowManager) context
                 .getSystemService(Context.WINDOW_SERVICE);
         display = windowManager.getDefaultDisplay();
     }
 
-    /**
-     * 设置显示内容
-     */
-    public DialogViewManager setText(String text){
-        if(textView!=null) {
-            textView.setText(text);
-        }
-        return this;
-    }
 
-    public DialogViewManager builder(View.OnClickListener listener) {
-        View view = LayoutInflater.from(context).inflate(R.layout.dialog_view,null);
-        textView = (TextView) view.findViewById(R.id.item_trends_delete_dialog_text);
-        cancelView = (TextView) view.findViewById(R.id.item_trends_delete_dialog_no);
-        sureView = (TextView) view.findViewById(R.id.item_trends_delete_dialog_yes);
+    public PhotoAlbumDialog builder(final View.OnClickListener photoClickListener, final View.OnClickListener albumClickListener, final View.OnClickListener goClickListener) {
+        View view = LayoutInflater.from(context).inflate(R.layout.view_photo_album_dialog,null);
+        mPhotoView = view.findViewById(R.id.photo_album_view_photo);
+        mAlbumView = view.findViewById(R.id.photo_album_view_album);
+        mGoView = view.findViewById(R.id.photo_album_view_go);
 
         //设置点击事件
-        cancelView.setOnClickListener(new View.OnClickListener() {
+        mPhotoView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
+                photoClickListener.onClick(view);
                 dismiss();
             }
         });
-        sureView.setOnClickListener(listener);
+        mAlbumView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                albumClickListener.onClick(view);
+                dismiss();
+            }
+        });
+        mGoView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                goClickListener.onClick(view);
+                dismiss();
+            }
+        });
         // 设置Dialog最小宽度为屏幕宽度
         view.setMinimumWidth(display.getWidth());
 
@@ -64,7 +69,8 @@ public class DialogViewManager {
         Window dialogWindow = dialog.getWindow();
 //        dialogWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE |
 //                WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-        dialogWindow.setGravity(Gravity.LEFT | Gravity.CENTER);
+//        dialogWindow.setGravity(Gravity.LEFT | Gravity.CENTER);
+        dialogWindow.setGravity(Gravity.BOTTOM);
         WindowManager.LayoutParams lp = dialogWindow.getAttributes();
         lp.x = 0;
         lp.y = 0;
@@ -74,12 +80,12 @@ public class DialogViewManager {
         return this;
     }
 
-    public DialogViewManager setCancelable(boolean cancel) {
+    public PhotoAlbumDialog setCancelable(boolean cancel) {
         dialog.setCancelable(cancel);
         return this;
     }
 
-    public DialogViewManager setCanceledOnTouchOutside(boolean cancel) {
+    public PhotoAlbumDialog setCanceledOnTouchOutside(boolean cancel) {
         dialog.setCanceledOnTouchOutside(cancel);
         return this;
     }
