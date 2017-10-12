@@ -3,9 +3,9 @@ package com.glodon.bim.business.qualityManage.view;
 import android.view.View;
 
 import com.glodon.bim.R;
-import com.glodon.bim.base.BaseActivity;
+import com.glodon.bim.base.BaseTitleActivity;
 
-public class BluePrintActivity extends BaseActivity {
+public class BluePrintActivity extends BaseTitleActivity {
 
 
     @Override

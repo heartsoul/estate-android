@@ -16,6 +16,8 @@
     <color name="c_00baf3">#00baf3</color>
     <!--不透明度20  纯黑-->
     <color name="c_33000000">#33000000</color>
+    <!--不透明度50  纯黑-->
+    <color name="c_80000000">#80000000</color>
     <color name="c_ff5151">#ff5151</color>
 
     <!-- zxing -->

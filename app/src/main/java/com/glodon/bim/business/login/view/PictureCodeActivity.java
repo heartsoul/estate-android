@@ -3,13 +3,13 @@ package com.glodon.bim.business.login.view;
 import android.view.View;
 
 import com.glodon.bim.R;
-import com.glodon.bim.base.BaseActivity;
+import com.glodon.bim.base.BaseTitleActivity;
 /**
  * 描述：忘记密码-图片验证码界面
  * 作者：zhourf on 2017/9/8
  * 邮箱：zhourf@glodon.com
  */
-public class PictureCodeActivity extends BaseActivity {
+public class PictureCodeActivity extends BaseTitleActivity {
 
     @Override
     protected void onCreateHeader() {

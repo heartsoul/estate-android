@@ -86,6 +86,11 @@ public class LoginPresenter implements LoginContract.Presenter {
     }
 
     @Override
+    public void forgetPassword() {
+
+    }
+
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
     }

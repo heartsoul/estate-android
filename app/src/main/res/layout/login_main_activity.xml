@@ -55,7 +55,9 @@
                         android:textColorHint="@color/c_999992"
                         android:textColor="@color/black"
                         android:maxLines="1"
-                        android:background="@color/white"/>
+                        android:background="@color/white"
+                        android:textCursorDrawable="@drawable/edit_cursor_color"
+                        />
                     <ImageView
                         android:id="@+id/login_username_delete"
                         android:layout_width="@dimen/dimen_18"
@@ -69,7 +71,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dimen_01"
                     android:background="@color/c_f3f3f2"
-                    android:layout_marginTop="@dimen/dimen_15"
+                    android:layout_marginTop="@dimen/dimen_13"
                     />
                 <TextView
                     android:id="@+id/login_password_top_text"
@@ -98,7 +100,9 @@
                         android:textColorHint="@color/c_999992"
                         android:textColor="@color/black"
                         android:maxLines="1"
-                        android:background="@color/white"/>
+                        android:background="@color/white"
+                        android:textCursorDrawable="@drawable/edit_cursor_color"
+                        />
                     <ImageView
                         android:id="@+id/login_password_delete"
                         android:layout_width="@dimen/dimen_18"
@@ -118,7 +122,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dimen_01"
                     android:background="@color/c_f3f3f2"
-                    android:layout_marginTop="@dimen/dimen_15"
+                    android:layout_marginTop="@dimen/dimen_13"
                     />
 
                 <TextView

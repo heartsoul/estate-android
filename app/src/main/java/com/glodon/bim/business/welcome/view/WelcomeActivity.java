@@ -14,7 +14,7 @@ import com.glodon.bim.basic.utils.ScreenUtil;
 import com.glodon.bim.business.login.view.LoginActivity;
 import com.glodon.bim.business.welcome.adapter.WelcomeAdapter;
 import com.glodon.bim.business.welcome.bean.WelcomeItem;
-import com.glodon.bim.base.BaseActivity;
+import com.glodon.bim.base.BaseTitleActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +24,7 @@ import java.util.List;
  * 作者：zhourf on 2017/9/11
  * 邮箱：zhourf@glodon.com
  */
-public class WelcomeActivity extends BaseActivity implements View.OnClickListener {
+public class WelcomeActivity extends BaseTitleActivity implements View.OnClickListener {
 
     private ViewPager mViewPager;
     private LinearLayout mPointParent;//点的布局

@@ -11,9 +11,9 @@ import com.glodon.bim.R;
 import com.glodon.bim.basic.image.ImageLoader;
 import com.glodon.bim.basic.image.OnImageLoadListener;
 import com.glodon.bim.basic.listener.ThrottleClickEvents;
-import com.glodon.bim.base.BaseActivity;
+import com.glodon.bim.base.BaseTitleActivity;
 
-public class TestImageActivity extends BaseActivity {
+public class TestImageActivity extends BaseTitleActivity {
 
     private Button btn;
     private ImageView iv;

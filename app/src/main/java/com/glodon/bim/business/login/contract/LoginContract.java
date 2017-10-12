@@ -24,6 +24,11 @@ public interface LoginContract {
          * @param password 密码
          */
         void clickLoginBtn(String username, String password);
+
+        /**
+         * 点击忘记密码
+         */
+        void forgetPassword();
     }
 
     interface View extends IBaseView {
