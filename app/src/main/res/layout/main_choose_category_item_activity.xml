@@ -60,7 +60,7 @@
                         android:layout_height="@dimen/dimen_24"
                         android:layout_gravity="center_vertical"
                         android:layout_marginRight="@dimen/dimen_09"
-                        android:background="@drawable/icon_search_gray"
+                        android:background="@drawable/icon_choose_category_item_search"
                         />
                 </LinearLayout>
             </LinearLayout>

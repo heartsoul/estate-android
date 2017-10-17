@@ -15,6 +15,7 @@ import com.glodon.bim.business.main.adapter.ChooseTenantAdapter;
 import com.glodon.bim.business.main.bean.ProjectItem;
 import com.glodon.bim.business.main.contract.ChooseTenantContract;
 import com.glodon.bim.business.main.presenter.ChooseTenantPresenter;
+import com.glodon.bim.common.login.UserTenant;
 
 import java.util.List;
 
@@ -77,10 +78,10 @@ public class ChooseTenantActivity extends BaseActivity implements View.OnClickLi
         int id = view.getId();
         switch (id)
         {
-            case R.id.choose_project_header_back:
+            case R.id.choose_tenant_header_back:
                 mActivity.finish();
                 break;
-            case R.id.choose_project_header_search:
+            case R.id.choose_tenant_header_search:
 
                 break;
         }
@@ -104,7 +105,7 @@ public class ChooseTenantActivity extends BaseActivity implements View.OnClickLi
 
 
     @Override
-    public void updateData(List<ProjectItem> mDataList) {
+    public void updateData(List<UserTenant> mDataList) {
         mAdapter.updateData(mDataList);
     }
 

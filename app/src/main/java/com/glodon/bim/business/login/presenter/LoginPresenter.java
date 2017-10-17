@@ -73,6 +73,7 @@ public class LoginPresenter implements LoginContract.Presenter {
                                 }
 
                                 Intent intent = new Intent(mView.getActivity(),ChooseTenantActivity.class);
+                                intent.putExtra("user",user);
                                 mView.getActivity().startActivity(intent);
                                 mView.getActivity().finish();
                             }

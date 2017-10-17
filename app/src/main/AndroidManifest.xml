@@ -165,6 +165,9 @@
         <activity
             android:name=".business.welcome.view.WelcomeActivity"
             android:screenOrientation="portrait" />
+        <!-- 选择租户界面 -->
+        <activity android:name="com.glodon.bim.business.main.view.ChooseTenantActivity"
+            android:screenOrientation="portrait"/>
         <!-- 选择项目界面 -->
         <activity
             android:name=".business.main.view.ChooseProjectActivity"

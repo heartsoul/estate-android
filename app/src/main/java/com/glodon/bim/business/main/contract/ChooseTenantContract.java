@@ -3,6 +3,7 @@ package com.glodon.bim.business.main.contract;
 import com.glodon.bim.base.IBasePresenter;
 import com.glodon.bim.base.IBaseView;
 import com.glodon.bim.business.main.bean.ProjectItem;
+import com.glodon.bim.common.login.UserTenant;
 
 import java.util.List;
 
@@ -19,7 +20,7 @@ public interface ChooseTenantContract {
         /**
          * 更新列表
          */
-        void updateData(List<ProjectItem> mDataList);
+        void updateData(List<UserTenant> mDataList);
 
     }
 

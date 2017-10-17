@@ -1,5 +1,6 @@
 package com.glodon.bim.common.login;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -8,7 +9,7 @@ import java.util.List;
  * 邮箱：zhourf@glodon.com
  */
 
-public class AccountInfo {
+public class AccountInfo  implements Serializable {
     public String name;
     public String phone;
     public String email;

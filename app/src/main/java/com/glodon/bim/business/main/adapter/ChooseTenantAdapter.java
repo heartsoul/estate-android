@@ -8,13 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.glodon.bim.R;
-import com.glodon.bim.business.main.bean.ProjectItem;
-import com.glodon.bim.business.main.view.ChooseCategoryItemActivity;
 import com.glodon.bim.business.main.view.ChooseProjectActivity;
+import com.glodon.bim.common.login.UserTenant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +24,7 @@ import java.util.List;
  */
 
 public class ChooseTenantAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private List<ProjectItem> mList;
+    private List<UserTenant> mList;
     private Activity mContext;
     private View mLastView;
 
@@ -36,7 +34,7 @@ public class ChooseTenantAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         mList = new ArrayList<>();
     }
 
-    public void updateData(List<ProjectItem> list){
+    public void updateData(List<UserTenant> list){
         mList.clear();
         mList.addAll(list);
     }
@@ -48,9 +46,9 @@ public class ChooseTenantAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        ProjectItem item = mList.get(position);
+        UserTenant item = mList.get(position);
         final ProjectLessHolder pHolder = (ProjectLessHolder) holder;
-        pHolder.mNameView.setText(item.name);
+        pHolder.mNameView.setText(item.tenantName);
         pHolder.mIconView.setBackgroundResource(R.drawable.icon_choose_tenant_item);
         pHolder.mItemParent.setOnClickListener(new View.OnClickListener() {
             @Override
