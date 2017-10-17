@@ -5,7 +5,7 @@
     android:orientation="vertical">
 
     <View
-        android:id="@+id/choose_project_header_top"
+        android:id="@+id/choose_tenant_header_top"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_20"
         android:background="@color/c_00baf3" />
@@ -16,7 +16,7 @@
         android:background="@color/c_00baf3">
 
         <ImageView
-            android:id="@+id/choose_project_header_back"
+            android:id="@+id/choose_tenant_header_back"
             android:layout_width="@dimen/dimen_20"
             android:layout_height="@dimen/dimen_20"
             android:layout_centerVertical="true"
@@ -26,12 +26,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="项目列表"
+            android:text="租户列表"
             android:textColor="@color/white"
             android:textSize="@dimen/dimen_17" />
 
         <ImageView
-            android:id="@+id/choose_project_header_search"
+            android:id="@+id/choose_tenant_header_search"
             android:layout_width="@dimen/dimen_24"
             android:layout_height="@dimen/dimen_24"
             android:layout_alignParentRight="true"
@@ -40,23 +40,8 @@
             android:background="@drawable/icon_search_white" />
     </RelativeLayout>
 
-    <RelativeLayout
-        android:id="@+id/choose_project_content"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/choose_tenant_recyclerview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white"
-        >
-        <ImageView
-            android:id="@+id/choose_project_content_bg"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/icon_choose_project_bg"
-            android:layout_alignParentBottom="true"/>
-
-        <include layout="@layout/view_pullrefresh_view"
-            android:id="@+id/choose_project_recyclerview"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            />
-    </RelativeLayout>
+        android:layout_height="match_parent" />
 </LinearLayout>

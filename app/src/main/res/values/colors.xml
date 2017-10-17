@@ -14,8 +14,14 @@
     <color name="c_999992">#999992</color>
     <color name="c_f3f3f2">#f3f3f2</color>
     <color name="c_00baf3">#00baf3</color>
+
+    <color name="c_e7e7e7">#e7e7e7</color>
+    <color name="c_5b5b5b">#5b5b5b</color>
+    <color name="c_94e6ff">#94e6ff</color>
     <!--不透明度20  纯黑-->
     <color name="c_33000000">#33000000</color>
+    <!--不透明度65  CCCCCC-->
+    <color name="c_a6cccccc">#A6CCCCCC</color>
     <!--不透明度50  纯黑-->
     <color name="c_80000000">#80000000</color>
     <color name="c_ff5151">#ff5151</color>

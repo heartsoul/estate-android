@@ -33,6 +33,11 @@ public interface LoginContract {
 
     interface View extends IBaseView {
 
+        /**
+         * 密码错误>3次后提示框
+         */
+        void showErrorDialog();
+
     }
 
     interface Model {

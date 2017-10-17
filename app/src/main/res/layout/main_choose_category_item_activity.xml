@@ -1,9 +1,85 @@
-<?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.glodon.bim.business.main.view.ChooseCategoryItemActivity">
+    android:orientation="vertical">
 
-</android.support.constraint.ConstraintLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_252"
+                android:orientation="vertical"
+                android:background="@drawable/icon_choose_category_item_bg">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_78"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/dimen_24"
+                    android:text="让您的建筑工程更简单！"
+                    android:gravity="center_horizontal"
+                    />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_04"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/dimen_16"
+                    android:text="您的专属BIM协同管理"
+                    android:gravity="center_horizontal"
+                    />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_42"
+                    android:orientation="horizontal"
+                    android:layout_marginLeft="@dimen/dimen_34"
+                    android:layout_marginRight="@dimen/dimen_34"
+                    android:layout_marginTop="@dimen/dimen_43"
+                    android:background="@drawable/corner_radius_6_white_bg"
+                    >
+                    <TextView
+                        android:layout_width="@dimen/dimen_0"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="请输入您想要的服务"
+                        android:layout_gravity="center_vertical"
+                        android:textSize="@dimen/dimen_14"
+                        android:textColor="@color/c_5b5b5b"
+                        android:layout_marginLeft="@dimen/dimen_10"
+                        />
+                    <ImageView
+                        android:layout_width="@dimen/dimen_24"
+                        android:layout_height="@dimen/dimen_24"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="@dimen/dimen_09"
+                        android:background="@drawable/icon_search_gray"
+                        />
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:background="@color/white"
+                >
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/main_choose_category_item_recyclerview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="@dimen/dimen_20"
+                    android:layout_marginLeft="@dimen/dimen_20"
+                    >
+
+                </android.support.v7.widget.RecyclerView>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

@@ -6,8 +6,9 @@ import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.business.login.contract.LoginContract;
 import com.glodon.bim.business.login.listener.OnLoginListener;
 import com.glodon.bim.business.login.model.LoginModel;
-import com.glodon.bim.business.qualityManage.view.QualityMangeMainActivity;
+import com.glodon.bim.business.main.view.ChooseTenantActivity;
 import com.glodon.bim.common.login.User;
+import com.glodon.bim.customview.ToastManager;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -26,6 +27,7 @@ public class LoginPresenter implements LoginContract.Presenter {
     private LoginContract.View mView;
     private LoginContract.Model mModel;
     private CompositeSubscription mSubscriptions;
+    private int mErrorTimes = 0;
 
     public LoginPresenter(LoginContract.View mView) {
         this.mView = mView;
@@ -70,16 +72,23 @@ public class LoginPresenter implements LoginContract.Presenter {
                                     mView.dismissLoadingDialog();
                                 }
 
-                                Intent intent = new Intent(mView.getActivity(),QualityMangeMainActivity.class);
+                                Intent intent = new Intent(mView.getActivity(),ChooseTenantActivity.class);
                                 mView.getActivity().startActivity(intent);
+                                mView.getActivity().finish();
                             }
                         }));
             }
 
             @Override
             public void onLoginFailed(Call<ResponseBody> call, Throwable t) {
+                mErrorTimes++;
                 if(mView!=null){
                     mView.dismissLoadingDialog();
+                }
+                if(mErrorTimes>3){
+                    mView.showErrorDialog();
+                }else{
+                    ToastManager.show("账号或密码错误！");
                 }
             }
         });

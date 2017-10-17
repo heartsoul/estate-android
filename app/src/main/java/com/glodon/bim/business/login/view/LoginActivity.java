@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.SystemClock;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -44,6 +45,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View, V
     private boolean mIsHidePassword = true; //密码框右侧  显示隐藏密码
     private boolean mIsHasUsername = false;//是否输入了用户名
     private boolean mIsHasPassword = false;//是否输入了密码   用于控制登录按钮状态
+    private ErrorMessageDialog mErrorDialog;//错误密码>3次的提示框
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,10 +90,10 @@ public class LoginActivity extends BaseActivity implements LoginContract.View, V
                     mUsernameLine.setBackgroundColor(getResources().getColor(R.color.c_f3f3f2));
                     lineParams.height = ScreenUtil.dp2px(1);
                     mUsernameDelete.setVisibility(View.INVISIBLE);
-                    if(TextUtils.isEmpty(temp)){
+                    if (TextUtils.isEmpty(temp)) {
                         mUsernameTop.setVisibility(View.INVISIBLE);
                         mUsernameEt.setHint("账户名");
-                    }else{
+                    } else {
                         mUsernameTop.setVisibility(View.VISIBLE);
                     }
                 }
@@ -115,10 +117,10 @@ public class LoginActivity extends BaseActivity implements LoginContract.View, V
                     mPasswordLine.setBackgroundColor(getResources().getColor(R.color.c_f3f3f2));
                     lineParams.height = ScreenUtil.dp2px(1);
                     mPasswordDelete.setVisibility(View.INVISIBLE);
-                    if(TextUtils.isEmpty(temp)){
+                    if (TextUtils.isEmpty(temp)) {
                         mPasswordTop.setVisibility(View.INVISIBLE);
                         mPasswordEt.setHint("密码");
-                    }else{
+                    } else {
                         mPasswordTop.setVisibility(View.VISIBLE);
                     }
                 }
@@ -165,14 +167,17 @@ public class LoginActivity extends BaseActivity implements LoginContract.View, V
         mPasswordHide.setOnClickListener(this);
         ThrottleClickEvents.throttleClick(mLoginBtn, this);
         ThrottleClickEvents.throttleClick(mForgetPassword, this);
+
+        mUsernameEt.setText("13810457782");
+        mPasswordEt.setText("123456789.");
     }
 
     //更改登录按钮的显示
-    private void changeLoginButton(){
-        if(mIsHasPassword || mIsHasUsername){
+    private void changeLoginButton() {
+        if (mIsHasPassword || mIsHasUsername) {
             mLoginBtn.setClickable(true);
             mLoginBtn.setBackgroundResource(R.drawable.corner_login_bg_blue);
-        }else{
+        } else {
             mLoginBtn.setClickable(false);
             mLoginBtn.setBackgroundResource(R.drawable.corner_login_bg_gray);
         }
@@ -189,24 +194,24 @@ public class LoginActivity extends BaseActivity implements LoginContract.View, V
                 mPasswordEt.setText("");
                 break;
             case R.id.login_password_showhide:
-                if(mIsHidePassword){
+                if (mIsHidePassword) {
                     //如果选中，显示密码
                     mPasswordEt.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                     mPasswordHide.setBackgroundResource(R.drawable.icon_login_password_show);
-                }else{
+                } else {
                     //否则隐藏密码
                     mPasswordEt.setTransformationMethod(PasswordTransformationMethod.getInstance());
                     mPasswordHide.setBackgroundResource(R.drawable.icon_login_password_hide);
                 }
                 //更改光标位置
                 String psd = mPasswordEt.getText().toString();
-                if(!TextUtils.isEmpty(psd)){
+                if (!TextUtils.isEmpty(psd)) {
                     mPasswordEt.setSelection(mPasswordEt.getText().toString().length());
                 }
                 mIsHidePassword = !mIsHidePassword;
                 break;
             case R.id.login_button:
-                  mPresenter.clickLoginBtn(mUsernameEt.getText().toString(), mPasswordEt.getText().toString());
+                mPresenter.clickLoginBtn(mUsernameEt.getText().toString(), mPasswordEt.getText().toString());
 //                Intent intent = new Intent(LoginActivity.this, QualityMangeMainActivity.class);
 //                startActivity(intent);
                 break;
@@ -268,21 +273,51 @@ public class LoginActivity extends BaseActivity implements LoginContract.View, V
         return this;
     }
 
-    private Handler mHandler = new Handler(){
+    private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
         }
     };
+
+    private long mStartTime = -1;
+
+
     @Override
     public void onBackPressed() {
-        ToastManager.show("再按一次退出BIM协同！");
-        mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
+        if (mStartTime == -1) {
+            mStartTime = SystemClock.currentThreadTimeMillis();
+            ToastManager.show("再按一次退出BIM协同！");
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mStartTime = -1;
+                }
+            }, 2000);
+        } else {
+            LoginActivity.this.finish();
+        }
+    }
 
-            }
-        },2000);
+    @Override
+    public void showErrorDialog() {
+        if(mErrorDialog == null){
+            mErrorDialog = new ErrorMessageDialog(this);
+            mErrorDialog.builder(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    hideErrorDialog();
+                    mPresenter.forgetPassword();
+                }
+            });
+        }
+        mErrorDialog.show();
+    }
+
+    private void hideErrorDialog(){
+        if(mErrorDialog!=null){
+            mErrorDialog.dismiss();
+        }
     }
 }
 

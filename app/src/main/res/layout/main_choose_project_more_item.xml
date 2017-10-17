@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/choose_project_more_item_parent"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="@dimen/dimen_20"
+    >
+    <TextView
+        android:id="@+id/choose_project_item_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="@dimen/dimen_16"
+        android:gravity="center_vertical"
+        android:paddingTop="@dimen/dimen_15"
+        android:paddingBottom="@dimen/dimen_15"
+        />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_01"
+        android:background="@color/c_a6cccccc"
+        android:layout_alignParentBottom="true"
+        />
+
+</RelativeLayout>

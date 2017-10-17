@@ -9,7 +9,7 @@
         android:layout_width="@dimen/dimen_330"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:background="@drawable/corner_radius_5_white_bg_"
+        android:background="@drawable/corner_radius_5_white_bg"
         android:orientation="vertical"
         android:layout_marginBottom="@dimen/dimen_15">
 

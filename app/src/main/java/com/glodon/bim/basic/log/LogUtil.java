@@ -60,6 +60,12 @@ public class LogUtil {
         }
     }
 
+    public static void e(String msg) {
+        if (isShowLog()) {
+            Log.e(TAG, msg);
+        }
+    }
+
     public static void e(String tag, String msg) {
         if (isShowLog()) {
             Log.e(tag, msg);

@@ -1,5 +1,7 @@
 package com.glodon.bim.business.login.model;
 
+import android.text.TextUtils;
+
 import com.glodon.bim.basic.network.NetRequest;
 import com.glodon.bim.basic.network.OAuth2Request;
 import com.glodon.bim.business.login.contract.LoginContract;
@@ -106,26 +108,34 @@ public class LoginModel implements LoginContract.Model {
      * oAuth2流程第四步
      */
     private void request4(Response<ResponseBody> response, String username, String password, String cookie2, String cookie3, final OnLoginListener listener) {
-        OAuth2Request.createOAuthRequest(LoginApi.class, username, password)
-                .request4(getCookie(cookie2) + ";" + getCookie(cookie3), response.headers().get(LOCATION))
-                .enqueue(new Callback<ResponseBody>() {
-                    @Override
-                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                        System.out.println("4--");
-                        System.out.println(response.headers().toString());
-                        System.out.println("4--");
-                        if (listener != null) {
-                            listener.onLoginSuccess(getCookie(response.headers().get(SET_COOKIE)));
+        String location = response.headers().get(LOCATION);
+        if(TextUtils.isEmpty(location)){
+            if (listener != null) {
+                Throwable t = new Throwable("账户密码错误");
+                listener.onLoginFailed(null, t);
+            }
+        }else {
+            OAuth2Request.createOAuthRequest(LoginApi.class, username, password)
+                    .request4(getCookie(cookie2) + ";" + getCookie(cookie3), location)
+                    .enqueue(new Callback<ResponseBody>() {
+                        @Override
+                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                            System.out.println("4--");
+                            System.out.println(response.headers().toString());
+                            System.out.println("4--");
+                            if (listener != null) {
+                                listener.onLoginSuccess(getCookie(response.headers().get(SET_COOKIE)));
+                            }
                         }
-                    }
 
-                    @Override
-                    public void onFailure(Call<ResponseBody> call, Throwable t) {
-                        if (listener != null) {
-                            listener.onLoginFailed(call, t);
+                        @Override
+                        public void onFailure(Call<ResponseBody> call, Throwable t) {
+                            if (listener != null) {
+                                listener.onLoginFailed(call, t);
+                            }
                         }
-                    }
-                });
+                    });
+        }
     }
 
     /**

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_20"
+        android:background="@color/white" />
+
+    <LinearLayout
+        android:id="@+id/choose_project_less_item_parent"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_64"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/choose_project_less_item_icon"
+            android:layout_width="@dimen/dimen_43"
+            android:layout_height="@dimen/dimen_43"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/dimen_11"
+            android:background="@drawable/icon_choose_project_item" />
+
+        <TextView
+            android:id="@+id/choose_project_less_item_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/dimen_13"
+            android:text="青岛花园"
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_16" />
+    </LinearLayout>
+</LinearLayout>
