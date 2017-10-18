@@ -2,19 +2,14 @@ package com.glodon.bim.business.main.view;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.Window;
+import android.widget.LinearLayout;
 
 import com.glodon.bim.R;
 import com.glodon.bim.base.BaseActivity;
-import com.glodon.bim.business.main.adapter.CategoryItemAdapter;
-import com.glodon.bim.business.main.bean.CategoryItem;
+import com.glodon.bim.basic.utils.ScreenUtil;
 import com.glodon.bim.business.main.contract.ChooseCategoryItemContract;
 import com.glodon.bim.business.main.presenter.ChooseCategoryItemPresenter;
-
-import java.util.List;
 
 /**
  * 描述：选择目录的具体事项界面
@@ -24,8 +19,7 @@ import java.util.List;
 public class ChooseCategoryItemActivity extends BaseActivity implements ChooseCategoryItemContract.View{
 
     private ChooseCategoryItemContract.Presenter mPresenter;
-    private RecyclerView mContentView;
-    private CategoryItemAdapter mAdapter;
+    private LinearLayout mQualityCheckListView,mModelView,mBluePrintView,mQualityCheckModuleVIew,mCreateView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,15 +31,24 @@ public class ChooseCategoryItemActivity extends BaseActivity implements ChooseCa
     }
 
     private void initView() {
-        mContentView = (RecyclerView) findViewById(R.id.main_choose_category_item_recyclerview);
-        initRecyclerView();
-    }
+        mQualityCheckListView = (LinearLayout) findViewById(R.id.choose_category_item_item_zjqd);
+        mModelView = (LinearLayout) findViewById(R.id.choose_category_item_item_mx);
+        mBluePrintView = (LinearLayout) findViewById(R.id.choose_category_item_item_tz);
+        mQualityCheckModuleVIew = (LinearLayout) findViewById(R.id.choose_category_item_item_zjxm);
+        mCreateView = (LinearLayout) findViewById(R.id.choose_category_item_item_create);
 
-    private void initRecyclerView(){
-        mContentView.setLayoutManager(new GridLayoutManager(this,3));
-        mContentView.setItemAnimator(new DefaultItemAnimator());
-        mAdapter = new CategoryItemAdapter(this);
-        mContentView.setAdapter(mAdapter);
+        //计算每个方形的宽度
+        int width = (ScreenUtil.getScreenInfo()[0]-ScreenUtil.dp2px(80))/3;
+        mQualityCheckListView.getLayoutParams().height = width;
+        mQualityCheckListView.getLayoutParams().width = width;
+        mModelView.getLayoutParams().height = width;
+        mModelView.getLayoutParams().width = width;
+        mBluePrintView.getLayoutParams().height = width;
+        mBluePrintView.getLayoutParams().width = width;
+        mQualityCheckModuleVIew.getLayoutParams().height = width;
+        mQualityCheckModuleVIew.getLayoutParams().width = width;
+        mCreateView.getLayoutParams().height = width;
+        mCreateView.getLayoutParams().width = width;
     }
 
     private void setListener() {
@@ -72,8 +75,4 @@ public class ChooseCategoryItemActivity extends BaseActivity implements ChooseCa
         return mActivity;
     }
 
-    @Override
-    public void updateData(List<CategoryItem> mDataList) {
-        mAdapter.updateData(mDataList);
-    }
 }

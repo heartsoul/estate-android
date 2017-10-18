@@ -34,4 +34,9 @@ public class AppConfig {
      */
     public static int LOADING_DRAWABLE_ERROR = R.drawable.ic_launcher;
 
+    /**
+     * 环境的url
+     */
+    public static String BASE_URL = "http://192.168.81.41/";
+
 }

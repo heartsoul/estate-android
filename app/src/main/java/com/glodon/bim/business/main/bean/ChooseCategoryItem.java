@@ -6,7 +6,7 @@ package com.glodon.bim.business.main.bean;
  * 邮箱：zhourf@glodon.com
  */
 
-public class CategoryItem {
+public class ChooseCategoryItem {
     public int resource;
     public String name;
 }

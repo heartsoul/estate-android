@@ -70,15 +70,180 @@
                 android:orientation="vertical"
                 android:background="@color/white"
                 >
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/main_choose_category_item_recyclerview"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginRight="@dimen/dimen_20"
-                    android:layout_marginLeft="@dimen/dimen_20"
-                    >
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/dimen_20">
+                    <View
+                        android:layout_width="@dimen/dimen_20"
+                        android:layout_height="@dimen/dimen_20"
+                        android:background="@color/white"/>
+                    <LinearLayout
+                        android:id="@+id/choose_category_item_item_zjqd"
+                        android:layout_width="@dimen/dimen_98"
+                        android:layout_height="@dimen/dimen_98"
+                        android:orientation="vertical"
+                        android:background="@drawable/shadow_category_item_bg">
 
-                </android.support.v7.widget.RecyclerView>
+                        <ImageView
+                            android:layout_width="@dimen/dimen_40"
+                            android:layout_height="@dimen/dimen_40"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="@dimen/dimen_20"
+                            android:background="@drawable/icon_category_item_zjqd" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="@dimen/dimen_10"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/dimen_12"
+                            android:text="质检清单"
+                            android:maxLines="1"
+                            android:ellipsize="end"
+                            />
+
+                    </LinearLayout>
+                    <View
+                        android:layout_width="@dimen/dimen_20"
+                        android:layout_height="@dimen/dimen_20"
+                        android:background="@color/white"/>
+                    <LinearLayout
+                        android:id="@+id/choose_category_item_item_tz"
+                        android:layout_width="@dimen/dimen_98"
+                        android:layout_height="@dimen/dimen_98"
+                        android:orientation="vertical"
+                        android:background="@drawable/shadow_category_item_bg">
+
+                        <ImageView
+                            android:layout_width="@dimen/dimen_40"
+                            android:layout_height="@dimen/dimen_40"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="@dimen/dimen_20"
+                            android:background="@drawable/icon_category_item_tj" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="@dimen/dimen_10"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/dimen_12"
+                            android:text="图纸"
+                            android:maxLines="1"
+                            android:ellipsize="end"
+                            />
+
+                    </LinearLayout>
+                    <View
+                        android:layout_width="@dimen/dimen_20"
+                        android:layout_height="@dimen/dimen_20"
+                        android:background="@color/white"/>
+                    <LinearLayout
+                        android:id="@+id/choose_category_item_item_mx"
+                        android:layout_width="@dimen/dimen_98"
+                        android:layout_height="@dimen/dimen_98"
+                        android:orientation="vertical"
+                        android:background="@drawable/shadow_category_item_bg">
+
+                        <ImageView
+                            android:layout_width="@dimen/dimen_40"
+                            android:layout_height="@dimen/dimen_40"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="@dimen/dimen_20"
+                            android:background="@drawable/icon_category_item_mx" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="@dimen/dimen_10"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/dimen_12"
+                            android:text="模型"
+                            android:maxLines="1"
+                            android:ellipsize="end"
+                            />
+
+                    </LinearLayout>
+                    <View
+                        android:layout_width="@dimen/dimen_20"
+                        android:layout_height="@dimen/dimen_20"
+                        android:background="@color/white"/>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/dimen_20">
+                    <View
+                        android:layout_width="@dimen/dimen_20"
+                        android:layout_height="@dimen/dimen_20"
+                        android:background="@color/white"/>
+                    <LinearLayout
+                        android:id="@+id/choose_category_item_item_zjxm"
+                        android:layout_width="@dimen/dimen_98"
+                        android:layout_height="@dimen/dimen_98"
+                        android:orientation="vertical"
+                        android:background="@drawable/shadow_category_item_bg">
+
+                        <ImageView
+                            android:layout_width="@dimen/dimen_40"
+                            android:layout_height="@dimen/dimen_40"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="@dimen/dimen_20"
+                            android:background="@drawable/icon_category_item_zjxm" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="@dimen/dimen_10"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/dimen_12"
+                            android:text="质检项目"
+                            android:maxLines="1"
+                            android:ellipsize="end"
+                            />
+
+                    </LinearLayout>
+                    <View
+                        android:layout_width="@dimen/dimen_20"
+                        android:layout_height="@dimen/dimen_20"
+                        android:background="@color/white"/>
+                    <LinearLayout
+                        android:id="@+id/choose_category_item_item_create"
+                        android:layout_width="@dimen/dimen_98"
+                        android:layout_height="@dimen/dimen_98"
+                        android:orientation="vertical"
+                        android:background="@drawable/shadow_category_item_bg">
+
+                        <ImageView
+                            android:layout_width="@dimen/dimen_40"
+                            android:layout_height="@dimen/dimen_40"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="@dimen/dimen_20"
+                            android:background="@drawable/icon_category_item_create" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="@dimen/dimen_10"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/dimen_12"
+                            android:text="新增"
+                            android:maxLines="1"
+                            android:ellipsize="end"
+                            />
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

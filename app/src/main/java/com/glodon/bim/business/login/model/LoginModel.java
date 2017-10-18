@@ -2,6 +2,7 @@ package com.glodon.bim.business.login.model;
 
 import android.text.TextUtils;
 
+import com.glodon.bim.basic.config.AppConfig;
 import com.glodon.bim.basic.network.NetRequest;
 import com.glodon.bim.basic.network.OAuth2Request;
 import com.glodon.bim.business.login.contract.LoginContract;
@@ -23,7 +24,7 @@ import rx.Observable;
 
 public class LoginModel implements LoginContract.Model {
 
-    private String baseUrl = "http://192.168.81.41/";
+
     private final String SET_COOKIE = "Set-Cookie";
     private final String LOCATION = "Location";
 
@@ -143,7 +144,7 @@ public class LoginModel implements LoginContract.Model {
      */
     @Override
     public Observable<User> getUserInfo(String cookie) {
-        return NetRequest.getInstance().getCall(baseUrl, LoginApi.class).getUserInfo(cookie);
+        return NetRequest.getInstance().getCall(AppConfig.BASE_URL, LoginApi.class).getUserInfo(cookie);
     }
 
     @Override

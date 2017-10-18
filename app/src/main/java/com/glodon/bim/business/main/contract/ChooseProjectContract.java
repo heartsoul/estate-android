@@ -2,9 +2,12 @@ package com.glodon.bim.business.main.contract;
 
 import com.glodon.bim.base.IBasePresenter;
 import com.glodon.bim.base.IBaseView;
-import com.glodon.bim.business.main.bean.ProjectItem;
+import com.glodon.bim.business.main.bean.ProjectListBean;
+import com.glodon.bim.business.main.bean.ProjectListItem;
 
 import java.util.List;
+
+import rx.Observable;
 
 /**
  * 描述：选择项目列表
@@ -19,7 +22,7 @@ public interface ChooseProjectContract {
         /**
          * 更新列表
          */
-        void updateData(List<ProjectItem> mDataList);
+        void updateData(List<ProjectListItem> mDataList);
 
         /**
          * 设置显示样式
@@ -33,6 +36,11 @@ public interface ChooseProjectContract {
     }
 
     interface Model{
-
+        /**
+         * 获取项目列表
+         * @param page 分页
+         * @param size 每页数量
+         */
+        Observable<ProjectListBean> getAvailableProjects(int page, int size);
     }
 }

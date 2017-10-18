@@ -12,8 +12,8 @@ import android.widget.ImageView;
 import com.glodon.bim.R;
 import com.glodon.bim.base.BaseActivity;
 import com.glodon.bim.business.main.adapter.ChooseTenantAdapter;
-import com.glodon.bim.business.main.bean.ProjectItem;
 import com.glodon.bim.business.main.contract.ChooseTenantContract;
+import com.glodon.bim.business.main.listener.OnTenantClickListener;
 import com.glodon.bim.business.main.presenter.ChooseTenantPresenter;
 import com.glodon.bim.common.login.UserTenant;
 
@@ -59,7 +59,12 @@ public class ChooseTenantActivity extends BaseActivity implements View.OnClickLi
         mRecyclerView.setVerticalScrollBarEnabled(true);
         final LinearLayoutManager manager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(manager);
-        mAdapter = new ChooseTenantAdapter(this);
+        mAdapter = new ChooseTenantAdapter(this, new OnTenantClickListener() {
+            @Override
+            public void clickTenant(UserTenant tenant) {
+                mPresenter.clickTenant(tenant);
+            }
+        });
         mRecyclerView.setAdapter(mAdapter);
     }
 

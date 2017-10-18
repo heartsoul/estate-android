@@ -2,6 +2,8 @@ package com.glodon.bim.basic.network;
 
 import android.util.Base64;
 
+import com.glodon.bim.basic.config.AppConfig;
+
 import java.io.IOException;
 
 import okhttp3.Interceptor;
@@ -18,13 +20,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 
 public class OAuth2Request {
-    public static final String API_BASE_URL = "http://192.168.81.41/";
 //    public static final String API_BASE_URL = "http://192.168.93.39/";
 
     private static OkHttpClient httpClient = new OkHttpClient();
     private static Retrofit.Builder builder =
             new Retrofit.Builder()
-                    .baseUrl(API_BASE_URL)
+                    .baseUrl(AppConfig.BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create());
 
     public static <S> S createOAuthRequest(Class<S> serviceClass, String username, String password) {

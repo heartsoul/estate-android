@@ -1,14 +1,12 @@
 package com.glodon.bim.business.main.view;
 
 import android.app.Activity;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
@@ -16,14 +14,12 @@ import com.glodon.bim.R;
 import com.glodon.bim.base.BaseActivity;
 import com.glodon.bim.basic.utils.ScreenUtil;
 import com.glodon.bim.business.main.adapter.ChooseProjectAdapter;
-import com.glodon.bim.business.main.bean.ProjectItem;
+import com.glodon.bim.business.main.bean.ProjectListItem;
 import com.glodon.bim.business.main.contract.ChooseProjectContract;
 import com.glodon.bim.business.main.presenter.ChooseProjectPresenter;
 import com.glodon.bim.customview.pullrefreshview.OnPullRefreshListener;
 import com.glodon.bim.customview.pullrefreshview.PullRefreshView;
-import com.glodon.bim.test.MyAdapter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -144,7 +140,7 @@ public class ChooseProjectActivity extends BaseActivity implements View.OnClickL
     }
 
     @Override
-    public void updateData(List<ProjectItem> mDataList) {
+    public void updateData(List<ProjectListItem> mDataList) {
         mAdapter.updateData(mDataList);
     }
 

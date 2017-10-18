@@ -11,7 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.glodon.bim.R;
-import com.glodon.bim.business.main.bean.ProjectItem;
+import com.glodon.bim.business.main.bean.ProjectListItem;
 import com.glodon.bim.business.main.view.ChooseCategoryItemActivity;
 
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ import java.util.List;
  */
 
 public class ChooseProjectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private List<ProjectItem> mList;
+    private List<ProjectListItem> mList;
     private Activity mContext;
     private int mSize=0;
     private View mLastView;
@@ -36,7 +36,7 @@ public class ChooseProjectAdapter extends RecyclerView.Adapter<RecyclerView.View
         this.mSize = size;
     }
 
-    public void updateData(List<ProjectItem> list){
+    public void updateData(List<ProjectListItem> list){
         mList.clear();
         mList.addAll(list);
     }
@@ -54,7 +54,7 @@ public class ChooseProjectAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        ProjectItem item = mList.get(position);
+        ProjectListItem item = mList.get(position);
         if(mSize>4) {
             final ProjectMoreHolder pHolder = (ProjectMoreHolder) holder;
             pHolder.mNameView.setText(item.name);
@@ -75,7 +75,7 @@ public class ChooseProjectAdapter extends RecyclerView.Adapter<RecyclerView.View
                     mContext.startActivity(intent);
 
                     if(mLastView!=null){
-                        mLastView.setBackground(null);
+                        mLastView.setBackgroundResource(R.drawable.shadow_category_item_bg);
                     }
                     pHolder.mItemParent.setBackgroundResource(R.drawable.corner_radius_4_choose_project_bg);
                     mLastView = pHolder.mItemParent;

@@ -2,8 +2,7 @@ package com.glodon.bim.business.main.contract;
 
 import com.glodon.bim.base.IBasePresenter;
 import com.glodon.bim.base.IBaseView;
-import com.glodon.bim.business.main.bean.CategoryItem;
-import com.glodon.bim.business.main.bean.ProjectItem;
+import com.glodon.bim.business.main.bean.ChooseCategoryItem;
 
 import java.util.List;
 
@@ -17,10 +16,6 @@ public interface ChooseCategoryItemContract {
 
     interface View extends IBaseView{
 
-        /**
-         * 更新列表
-         */
-        void updateData(List<CategoryItem> mDataList);
 
     }
 

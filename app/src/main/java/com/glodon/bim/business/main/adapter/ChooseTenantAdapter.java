@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.glodon.bim.R;
+import com.glodon.bim.business.main.listener.OnTenantClickListener;
 import com.glodon.bim.business.main.view.ChooseProjectActivity;
 import com.glodon.bim.common.login.UserTenant;
 
@@ -27,10 +28,11 @@ public class ChooseTenantAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private List<UserTenant> mList;
     private Activity mContext;
     private View mLastView;
+    private OnTenantClickListener mListener;
 
-
-    public ChooseTenantAdapter(Activity mContext) {
+    public ChooseTenantAdapter(Activity mContext,OnTenantClickListener listener) {
         this.mContext = mContext;
+        this.mListener = listener;
         mList = new ArrayList<>();
     }
 
@@ -46,15 +48,16 @@ public class ChooseTenantAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        UserTenant item = mList.get(position);
+        final UserTenant item = mList.get(position);
         final ProjectLessHolder pHolder = (ProjectLessHolder) holder;
         pHolder.mNameView.setText(item.tenantName);
         pHolder.mIconView.setBackgroundResource(R.drawable.icon_choose_tenant_item);
         pHolder.mItemParent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(mContext,ChooseProjectActivity.class);
-                mContext.startActivity(intent);
+                if(mListener!=null){
+                    mListener.clickTenant(item);
+                }
 
                 if(mLastView!=null){
                     mLastView.setBackground(null);

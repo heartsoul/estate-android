@@ -14,7 +14,8 @@
         android:id="@+id/choose_project_less_item_parent"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_64"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:background="@drawable/shadow_category_item_bg">
 
         <ImageView
             android:id="@+id/choose_project_less_item_icon"
