@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dimen_10"
+        android:layout_marginLeft="@dimen/dimen_20"
+        android:layout_marginRight="@dimen/dimen_20"
+        android:layout_marginTop="@dimen/dimen_10"
+        android:background="@drawable/shadow_category_item_bg"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_46">
+
+            <ImageView
+                android:id="@+id/quality_check_list_item_sheet_time_icon"
+                android:layout_width="@dimen/dimen_18"
+                android:layout_height="@dimen/dimen_18"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/dimen_10"
+                android:background="@drawable/icon_time_black" />
+
+            <TextView
+                android:id="@+id/quality_check_list_item_sheet_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/dimen_14"
+                android:text="待复查"
+                android:textColor="@color/c_565656"
+                android:textSize="@dimen/dimen_14" />
+
+            <TextView
+                android:id="@+id/quality_check_list_item_sheet_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/dimen_06"
+                android:layout_toLeftOf="@id/quality_check_list_item_sheet_status"
+                android:layout_toRightOf="@id/quality_check_list_item_sheet_time_icon"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="2017-10-18 21:25:00"
+                android:textColor="@color/c_565656"
+                android:textSize="@dimen/dimen_14" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/quality_check_list_item_sheet_content"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_94"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/dimen_14"
+            android:paddingRight="@dimen/dimen_17"
+            android:paddingTop="@dimen/dimen_12"
+            android:paddingBottom="@dimen/dimen_14">
+
+            <ImageView
+                android:id="@+id/quality_check_list_item_sheet_image"
+                android:layout_width="@dimen/dimen_68"
+                android:layout_height="@dimen/dimen_68"
+                android:background="@drawable/icon_default_image" />
+
+            <TextView
+                android:id="@+id/quality_check_list_item_sheet_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dimen_10"
+                android:ellipsize="end"
+                android:maxLines="3"
+                android:paddingTop="@dimen/dimen_02"
+                android:text="问题描述：现场检查内容描述现场检查内容描述现场检查内容描述现场检查内容描述现场检查内容描述现场" />
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/quality_check_list_item_sheet_bottom_parent"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_45">
+
+            <TextView
+                android:id="@+id/quality_check_list_item_sheet_submit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/dimen_20"
+                android:background="@drawable/corner_quality_list_bg_gray"
+                android:paddingBottom="@dimen/dimen_04"
+                android:paddingLeft="@dimen/dimen_13"
+                android:paddingRight="@dimen/dimen_13"
+                android:paddingTop="@dimen/dimen_04"
+                android:text="提交"
+                android:textColor="@color/c_979797"
+                android:textSize="@dimen/dimen_14" />
+
+            <TextView
+                android:id="@+id/quality_check_list_item_sheet_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/dimen_11"
+                android:layout_toLeftOf="@id/quality_check_list_item_sheet_submit"
+                android:background="@drawable/corner_quality_list_bg_gray"
+                android:paddingBottom="@dimen/dimen_04"
+                android:paddingLeft="@dimen/dimen_13"
+                android:paddingRight="@dimen/dimen_13"
+                android:paddingTop="@dimen/dimen_04"
+                android:text="删除"
+                android:textColor="@color/c_979797"
+                android:textSize="@dimen/dimen_14" />
+
+            <TextView
+                android:id="@+id/quality_check_list_item_sheet_repair"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/dimen_20"
+                android:background="@drawable/corner_quality_list_bg_repair"
+                android:paddingBottom="@dimen/dimen_04"
+                android:paddingLeft="@dimen/dimen_13"
+                android:paddingRight="@dimen/dimen_13"
+                android:paddingTop="@dimen/dimen_04"
+                android:text="整改单"
+                android:textColor="@color/c_f55353"
+                android:textSize="@dimen/dimen_14"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/quality_check_list_item_sheet_review"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/dimen_20"
+                android:background="@drawable/corner_quality_list_bg_review"
+                android:paddingBottom="@dimen/dimen_04"
+                android:paddingLeft="@dimen/dimen_13"
+                android:paddingRight="@dimen/dimen_13"
+                android:paddingTop="@dimen/dimen_04"
+                android:text="复查单"
+                android:textColor="@color/c_f88181"
+                android:textSize="@dimen/dimen_14"
+                android:visibility="gone" />
+        </RelativeLayout>
+    </LinearLayout>
+</RelativeLayout>

@@ -2,17 +2,21 @@ package com.glodon.bim.business.qualityManage.view;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.glodon.bim.R;
 import com.glodon.bim.base.BaseFragment;
-import com.glodon.bim.business.qualityManage.OnClassifyItemClickListener;
-import com.glodon.bim.business.qualityManage.adapter.QualityCheckListClassifyAdapter;
-import com.glodon.bim.business.qualityManage.bean.ClassifyItem;
+import com.glodon.bim.basic.listener.ThrottleClickEvents;
+import com.glodon.bim.business.qualityManage.adapter.QualityCheckListAdapter;
+import com.glodon.bim.business.qualityManage.bean.SheetItem;
+import com.glodon.bim.customview.pullrefreshview.OnPullRefreshListener;
+import com.glodon.bim.customview.pullrefreshview.PullRefreshView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,10 +28,11 @@ import java.util.List;
  */
 
 public class QualityCheckListFragment extends BaseFragment {
+    private PullRefreshView mPullRefreshView;
+    private RecyclerView mRecyclerView;
+    private ImageView mToTopView;
+    private QualityCheckListAdapter mAdapter;
 
-    private RecyclerView mClassifesView;
-    private QualityCheckListClassifyAdapter mAdapter;
-    private List<ClassifyItem> mDataList;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -38,28 +43,67 @@ public class QualityCheckListFragment extends BaseFragment {
 
 
     private void initView(View view) {
-        mClassifesView = view.findViewById(R.id.quality_check_list_classifes);
+        mPullRefreshView =view.findViewById(R.id.quality_check_list_recyclerview);
+        mToTopView = view.findViewById(R.id.quality_check_list_to_top);
+
+        setListener();
+        initRecyclerView();
+    }
+
+    private void setListener() {
+        ThrottleClickEvents.throttleClick(mToTopView, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mRecyclerView.smoothScrollToPosition(0);
+            }
+        });
+    }
+
+    private void initRecyclerView(){
+        mPullRefreshView.setPullDownEnable(false);
+        mPullRefreshView.setPullUpEnable(false);
+        mPullRefreshView.setOnPullRefreshListener(new OnPullRefreshListener() {
+            @Override
+            public void onPullDown() {
+
+                mPullRefreshView.onPullDownComplete();
+            }
+
+            @Override
+            public void onPullUp() {
+
+                mPullRefreshView.onPullUpComplete();
+            }
+        });
+        mRecyclerView = mPullRefreshView.getmRecyclerView();
+
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerView.setVerticalScrollBarEnabled(true);
+        final LinearLayoutManager manager = new LinearLayoutManager(getContext());
+        mRecyclerView.setLayoutManager(manager);
+        mAdapter = new QualityCheckListAdapter(getContext(),null);
+        mRecyclerView.setAdapter(mAdapter);
+        mAdapter.updateList(getDataList());
+    }
+
+    private List<SheetItem> getDataList(){
+        List<SheetItem> list = new ArrayList<>();
+        for(int i = 0;i<22;i++){
+            SheetItem item = new SheetItem();
+            item.showType = i%2;
+            if(i>0){
+                item.timeType= 1;
+            }
+            item.sheetStatus = i%7;
+            list.add(item);
+        }
+        return list;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mDataList = new ArrayList<>();
-        String[] names = {"全部","待提交","待整改","待复查","已整改","已复查","已延迟","已验收"};
-        for(int i = 0;i<8;i++){
-            ClassifyItem item = new ClassifyItem();
-            item.name = names[i];
-            mDataList.add(item);
-        }
-        mAdapter = new QualityCheckListClassifyAdapter(getContext(), mDataList, new OnClassifyItemClickListener() {
-            @Override
-            public void onClassifyItemClick(int position, ClassifyItem item) {
 
-            }
-        });
-        LinearLayoutManager llm = new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false);
-        mClassifesView.setLayoutManager(llm);
-        mClassifesView.setAdapter(mAdapter);
 
     }
 }

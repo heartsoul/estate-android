@@ -19,7 +19,7 @@ import com.glodon.bim.business.qualityManage.bean.ClassifyItem;
 import java.util.List;
 
 /**
- * 描述：
+ * 描述：清单分类
  * 作者：zhourf on 2017/9/30
  * 邮箱：zhourf@glodon.com
  */
@@ -57,13 +57,6 @@ public class QualityCheckListClassifyAdapter extends RecyclerView.Adapter<Recycl
             }else{
                 cHolder.mParent.setPadding(0,0,0,0);
                 cHolder.mParent.setMinimumWidth((int) (ScreenUtil.dp2px(36)+mPaint.measureText(cHolder.mNameView.getText().toString().trim())+0.5f));
-            }
-
-            if(position%2 ==0){
-                cHolder.mNumView.setVisibility(View.VISIBLE);
-                cHolder.mNumView.setText("22");
-            }else{
-                cHolder.mNumView.setVisibility(View.GONE);
             }
 
             if(mLastPosition == position){
