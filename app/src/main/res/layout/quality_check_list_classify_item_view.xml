@@ -1,25 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/quality_check_list_classify_item_parent"
     android:layout_width="wrap_content"
     android:layout_height="@dimen/dimen_44"
-    android:paddingLeft="@dimen/dimen_15"
-    android:paddingRight="@dimen/dimen_15"
     >
     <TextView
         android:id="@+id/quality_check_list_classify_item_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+        android:layout_centerVertical="true"
+        android:textSize="@dimen/dimen_14"
+        android:textColor="@color/c_535353"
         android:text="全部"/>
+
     <ImageView
-        android:id="@+id/quality_check_list_classify_item_red"
+        android:id="@+id/quality_check_list_classify_item_line"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/dimen_02"
         android:layout_alignLeft="@id/quality_check_list_classify_item_name"
         android:layout_alignRight="@id/quality_check_list_classify_item_name"
-        android:background="#aa0000"
-        android:layout_below="@id/quality_check_list_classify_item_name"
-        android:layout_marginTop="@dimen/dimen_05"
-        android:visibility="invisible"
+        android:background="@color/c_00b0f1"
+        android:layout_alignParentBottom="true"
+        />
+    <TextView
+        android:id="@+id/quality_check_list_classify_item_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/dimen_13"
+        android:textColor="@color/white"
+        android:layout_toRightOf="@id/quality_check_list_classify_item_name"
+        android:layout_marginTop="@dimen/dimen_07"
+        android:text="23"
+        android:background="@drawable/corner_red_point"
+        android:paddingRight="@dimen/dimen_03"
+        android:paddingLeft="@dimen/dimen_03"
+        android:visibility="gone"
         />
 </RelativeLayout>

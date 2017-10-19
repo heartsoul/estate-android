@@ -2,14 +2,17 @@ package com.glodon.bim.business.qualityManage.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextPaint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.glodon.bim.R;
 import com.glodon.bim.basic.listener.ThrottleClickEvents;
+import com.glodon.bim.basic.utils.ScreenUtil;
 import com.glodon.bim.business.qualityManage.OnClassifyItemClickListener;
 import com.glodon.bim.business.qualityManage.bean.ClassifyItem;
 
@@ -26,8 +29,10 @@ public class QualityCheckListClassifyAdapter extends RecyclerView.Adapter<Recycl
     private Context mContext;
     private List<ClassifyItem> mDataList;
     private OnClassifyItemClickListener mListener;
-    private ImageView mLastView;
+    private ImageView mLastLineView;
+    private TextView mLastTextView;
     private int mLastPosition = 0;
+    private TextPaint mPaint;
 
     public QualityCheckListClassifyAdapter(Context mContext, List<ClassifyItem> mDataList,OnClassifyItemClickListener listener) {
         this.mContext = mContext;
@@ -45,23 +50,47 @@ public class QualityCheckListClassifyAdapter extends RecyclerView.Adapter<Recycl
         if(holder instanceof ClassifyHolder){
             final ClassifyHolder cHolder = (ClassifyHolder) holder;
             cHolder.mNameView.setText(mDataList.get(position).name);
-            if(mLastPosition == position){
-                mLastView = cHolder.mRedView;
-                mLastView.setVisibility(View.VISIBLE);
+            mPaint = cHolder.mNameView.getPaint();
+            if(position==0){
+                cHolder.mParent.setPadding(ScreenUtil.dp2px(20),0,0,0);
+                cHolder.mParent.setMinimumWidth((int) (ScreenUtil.dp2px(56)+mPaint.measureText(cHolder.mNameView.getText().toString().trim())+0.5f));
             }else{
-                cHolder.mRedView.setVisibility(View.INVISIBLE);
+                cHolder.mParent.setPadding(0,0,0,0);
+                cHolder.mParent.setMinimumWidth((int) (ScreenUtil.dp2px(36)+mPaint.measureText(cHolder.mNameView.getText().toString().trim())+0.5f));
+            }
+
+            if(position%2 ==0){
+                cHolder.mNumView.setVisibility(View.VISIBLE);
+                cHolder.mNumView.setText("22");
+            }else{
+                cHolder.mNumView.setVisibility(View.GONE);
+            }
+
+            if(mLastPosition == position){
+                mLastLineView = cHolder.mLineView;
+                mLastLineView.setVisibility(View.VISIBLE);
+                mLastTextView = cHolder.mNameView;
+                mLastTextView.setTextColor(mContext.getResources().getColor(R.color.c_00b4f2));
+            }else{
+                cHolder.mLineView.setVisibility(View.INVISIBLE);
+                cHolder.mNameView.setTextColor(mContext.getResources().getColor(R.color.c_535353));
             }
             ThrottleClickEvents.throttleClick(cHolder.mNameView, new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if(position != mLastPosition){
                         mLastPosition = position;
-                        if(mLastView!=null){
-                            mLastView.setVisibility(View.INVISIBLE);
+                        if(mLastLineView !=null){
+                            mLastLineView.setVisibility(View.INVISIBLE);
+                        }
+                        if(mLastTextView!=null){
+                            mLastTextView.setTextColor(mContext.getResources().getColor(R.color.c_535353));
                         }
                         mListener.onClassifyItemClick(position,mDataList.get(position));
-                        cHolder.mRedView.setVisibility(View.VISIBLE);
-                        mLastView = cHolder.mRedView;
+                        cHolder.mLineView.setVisibility(View.VISIBLE);
+                        mLastLineView = cHolder.mLineView;
+                        cHolder.mNameView.setTextColor(mContext.getResources().getColor(R.color.c_00b4f2));
+                        mLastTextView = cHolder.mNameView;
                     }
                 }
             });
@@ -76,11 +105,15 @@ public class QualityCheckListClassifyAdapter extends RecyclerView.Adapter<Recycl
 
     class ClassifyHolder extends RecyclerView.ViewHolder{
         public TextView mNameView;
-        public ImageView mRedView;
+        public ImageView mLineView;
+        public TextView mNumView;
+        public RelativeLayout mParent;
         public ClassifyHolder(View itemView) {
             super(itemView);
             mNameView = itemView.findViewById(R.id.quality_check_list_classify_item_name);
-            mRedView = itemView.findViewById(R.id.quality_check_list_classify_item_red);
+            mNumView = itemView.findViewById(R.id.quality_check_list_classify_item_num);
+            mLineView = itemView.findViewById(R.id.quality_check_list_classify_item_line);
+            mParent = itemView.findViewById(R.id.quality_check_list_classify_item_parent);
         }
     }
 }

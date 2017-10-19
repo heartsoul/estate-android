@@ -58,7 +58,7 @@
         android:layout_width="300dp"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="#5555aa"
+        android:background="@color/c_00baf3"
         >
         <LinearLayout
             android:id="@+id/main_drawer_status_right"
@@ -75,37 +75,47 @@
             >
             <ImageView
                 android:id="@+id/main_header_back_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_launcher"/>
+                android:layout_width="@dimen/dimen_08"
+                android:layout_height="@dimen/dimen_18"
+                android:background="@drawable/icon_back_white"
+                android:layout_marginLeft="@dimen/dimen_10"
+                android:layout_centerVertical="true"/>
             <ImageView
                 android:id="@+id/main_header_menu_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_launcher"
+                android:layout_width="@dimen/dimen_24"
+                android:layout_height="@dimen/dimen_24"
+                android:background="@drawable/ic_launcher"
                 android:layout_toRightOf="@id/main_header_back_icon"
+                android:layout_marginLeft="@dimen/dimen_21"
+                android:layout_centerVertical="true"
                 />
             <TextView
                 android:id="@+id/main_header_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
                 android:text="质检清单"
                 android:layout_centerInParent="true"
+                android:textColor="@color/white"
+                android:textSize="@dimen/dimen_17"
                 />
             <ImageView
                 android:id="@+id/main_header_new_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_launcher"
+                android:layout_width="@dimen/dimen_24"
+                android:layout_height="@dimen/dimen_24"
+                android:background="@drawable/ic_launcher"
                 android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/dimen_10"
                 />
             <ImageView
                 android:id="@+id/main_header_search_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_launcher"
+                android:layout_width="@dimen/dimen_24"
+                android:layout_height="@dimen/dimen_24"
+                android:background="@drawable/icon_search_white"
                 android:layout_toLeftOf="@id/main_header_new_icon"
+                android:layout_marginRight="@dimen/dimen_10"
+                android:layout_centerVertical="true"
+
                 />
         </RelativeLayout>
         <FrameLayout

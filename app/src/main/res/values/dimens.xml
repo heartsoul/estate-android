@@ -27,11 +27,13 @@
     <dimen name="dimen_19">19dp</dimen>
     <dimen name="dimen_20">20dp</dimen>
     <dimen name="dimen_20.4">20.4dp</dimen>
+    <dimen name="dimen_21">21dp</dimen>
     <dimen name="dimen_21.6">21.6dp</dimen>
     <dimen name="dimen_22">22dp</dimen>
     <dimen name="dimen_23">23dp</dimen>
     <dimen name="dimen_24">24dp</dimen>
     <dimen name="dimen_25">25dp</dimen>
+    <dimen name="dimen_27">27dp</dimen>
     <dimen name="dimen_29">29dp</dimen>
     <dimen name="dimen_31">31dp</dimen>
     <dimen name="dimen_32">32dp</dimen>

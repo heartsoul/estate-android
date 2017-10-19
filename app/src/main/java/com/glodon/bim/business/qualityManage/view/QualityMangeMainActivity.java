@@ -9,17 +9,15 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.glodon.bim.R;
+import com.glodon.bim.base.BaseActivity;
 import com.glodon.bim.base.BaseFragment;
 import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.basic.utils.ScreenUtil;
@@ -36,7 +34,7 @@ import java.util.Map;
  * 作者：zhourf on 2017/9/8
  * 邮箱：zhourf@glodon.com
  */
-public class QualityMangeMainActivity extends AppCompatActivity implements View.OnClickListener,QualityMangeMainContract.View {
+public class QualityMangeMainActivity extends BaseActivity implements View.OnClickListener, QualityMangeMainContract.View {
 
     private Activity mActivity;
 
@@ -102,27 +100,12 @@ public class QualityMangeMainActivity extends AppCompatActivity implements View.
         mModelTv = (TextView) findViewById(R.id.main_drawer_quality_model);
         mQualityCheckModuleTv = (TextView) findViewById(R.id.main_drawer_quality_module);
 
-        initStatusBar();
+        initStatusBar(mStatusRight);
+        initStatusBar(mStatusLeft);
 
         hideDrawer(1);
     }
 
-    private void initStatusBar() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            Window w = getWindow();
-            w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,  //设置StatusBar透明
-                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            int id = 0;
-            id = getResources().getIdentifier("status_bar_height", "dimen", //获取状态栏的高度
-                    "android");
-            if (id > 0) {
-                mStatusRight.getLayoutParams().height = getResources() //设置状态栏的高度
-                        .getDimensionPixelOffset(id);
-                mStatusLeft.getLayoutParams().height = getResources() //设置状态栏的高度
-                        .getDimensionPixelOffset(id);
-            }
-        }
-    }
 
     private void setListener() {
         mBackView.setOnClickListener(this);
@@ -161,11 +144,9 @@ public class QualityMangeMainActivity extends AppCompatActivity implements View.
                 showFragmentById(mQualityCheckListFragmentId);
                 break;
             case R.id.main_drawer_quality_blueprint://点击图纸
-//                showFragmentById(mBluePrintFragmentId);
                 mPresenter.toBluePrint();
                 break;
             case R.id.main_drawer_quality_model://点击模型
-//                showFragmentById(mModelFragmentId);
                 mPresenter.toModel();
                 break;
             case R.id.main_drawer_quality_module://点击质检项目
@@ -199,10 +180,9 @@ public class QualityMangeMainActivity extends AppCompatActivity implements View.
     }
 
 
-
     protected void initDataForActivity() {
         mFragmentMap = new HashMap<>();
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             String[] PERMISSIONS_STORAGE = {
                     Manifest.permission.CAMERA,
             };
@@ -320,43 +300,28 @@ public class QualityMangeMainActivity extends AppCompatActivity implements View.
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        mPresenter.onActivityResult(requestCode,resultCode,data);
+        mPresenter.onActivityResult(requestCode, resultCode, data);
 
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(mPresenter!=null)
-        {
+        if (mPresenter != null) {
             mPresenter.onDestroy();
             mPresenter = null;
         }
     }
 
-    private void requestPermission(String[] permissions, int requestCode) {
-
-        int permission = ActivityCompat.checkSelfPermission(this, permissions[0]);
-
-        if (permission != PackageManager.PERMISSION_GRANTED) {
-            // We don't have permission so prompt the user
-            ActivityCompat.requestPermissions(
-                    this,
-                    permissions,
-                    requestCode
-            );
-        }
-    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode)
-        {
+        switch (requestCode) {
             case REQUEST_CAMERA:
-                if(grantResults!=null && grantResults.length>0 && grantResults[0]==PackageManager.PERMISSION_GRANTED){
+                if (grantResults != null && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     //授权允许
-                }else{
+                } else {
                     //授权拒绝
                 }
                 break;
