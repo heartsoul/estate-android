@@ -114,6 +114,9 @@ public class ChooseProjectPresenter implements ChooseProjectContract.Presenter {
             mSubscription.unsubscribe();
             mSubscription = null;
         }
+        mDataList = null;
+        mView = null;
+        mModel = null;
     }
 
 

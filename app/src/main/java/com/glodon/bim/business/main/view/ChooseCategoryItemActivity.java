@@ -141,6 +141,9 @@ public class ChooseCategoryItemActivity extends BaseActivity implements ChooseCa
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mPresenter.onDestroy();
+        if (mPresenter != null) {
+            mPresenter.onDestroy();
+            mPresenter = null;
+        }
     }
 }

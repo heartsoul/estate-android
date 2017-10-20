@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 
 import com.glodon.bim.basic.utils.CameraUtil;
-import com.glodon.bim.business.main.bean.ChooseCategoryItem;
 import com.glodon.bim.business.main.bean.ProjectListItem;
 import com.glodon.bim.business.main.contract.ChooseCategoryItemContract;
 import com.glodon.bim.business.qualityManage.view.BluePrintActivity;
@@ -12,9 +11,6 @@ import com.glodon.bim.business.qualityManage.view.ModelActivity;
 import com.glodon.bim.business.qualityManage.view.PhotoEditActivity;
 import com.glodon.bim.business.qualityManage.view.QualityMangeMainActivity;
 import com.glodon.bim.common.config.CommonConfig;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 描述：项目功能列表
@@ -25,14 +21,12 @@ import java.util.List;
 public class ChooseCategoryItemPresenter implements ChooseCategoryItemContract.Presenter {
 
     private ChooseCategoryItemContract.View mView;
-    private List<ChooseCategoryItem> mDataList;
     private final int REQUEST_CODE_TAKE_PHOTO = 0;
     private String mPhotoPath;
     private ProjectListItem mProjectInfo;
 
     public ChooseCategoryItemPresenter(ChooseCategoryItemContract.View mView) {
         this.mView = mView;
-        mDataList = new ArrayList<>();
     }
 
     @Override
@@ -97,6 +91,8 @@ public class ChooseCategoryItemPresenter implements ChooseCategoryItemContract.P
 
     @Override
     public void onDestroy() {
-
+        mView = null;
+        mProjectInfo = null;
+        mPhotoPath = null;
     }
 }

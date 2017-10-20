@@ -256,7 +256,10 @@ public class LoginActivity extends BaseActivity implements LoginContract.View, V
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mPresenter.onDestroy();
+        if (mPresenter != null) {
+            mPresenter.onDestroy();
+            mPresenter = null;
+        }
     }
 
     @Override

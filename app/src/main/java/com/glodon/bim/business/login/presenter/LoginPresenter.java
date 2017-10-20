@@ -111,5 +111,7 @@ public class LoginPresenter implements LoginContract.Presenter {
             mSubscriptions.unsubscribe();
             mSubscriptions = null;
         }
+        mView = null;
+        mModel = null;
     }
 }

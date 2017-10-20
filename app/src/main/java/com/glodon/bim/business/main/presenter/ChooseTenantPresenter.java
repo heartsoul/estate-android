@@ -87,6 +87,9 @@ public class ChooseTenantPresenter implements ChooseTenantContract.Presenter {
             mSubscriptions.unsubscribe();
             mSubscriptions = null;
         }
+        mDataList = null;
+        mView = null;
+        mModel = null;
     }
 
 }
