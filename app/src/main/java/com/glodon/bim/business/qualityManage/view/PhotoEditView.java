@@ -12,6 +12,8 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.widget.ImageView;
 
+import com.glodon.bim.business.qualityManage.listener.OnPhotoEditChangeListener;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +28,11 @@ public class PhotoEditView extends ImageView {
     private Path mPath;
     private List<Path> list;
     private boolean isAdd = false;
+    private OnPhotoEditChangeListener mListener;
+
+    public void setmListener(OnPhotoEditChangeListener mListener) {
+        this.mListener = mListener;
+    }
 
     private float preX, preY;// 记录上一个触摸事件的位置坐标
     private static final int MIN_MOVE_DIS = 5;// 最小的移动距离：如果我们手指在屏幕上的移动距离小于此值则不会绘制
@@ -98,6 +105,7 @@ public class PhotoEditView extends ImageView {
                     Path path = new Path();
                     path.addPath(mPath);
                     list.add(path);
+                    mListener.change(list.size()>0);
                 }
                 isAdd = false;
                 break;
@@ -123,5 +131,17 @@ public class PhotoEditView extends ImageView {
             mPath.reset();
         }
         invalidate();
+        mListener.change(list.size()>0);
+    }
+
+    public void cancel(){
+        list.clear();
+        mPath.reset();
+        invalidate();
+        mListener.change(list.size()>0);
+    }
+
+    public boolean isShowPlayBack(){
+        return list.size()>0;
     }
 }

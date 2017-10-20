@@ -8,6 +8,7 @@ import com.glodon.bim.business.qualityManage.contract.QualityMangeMainContract;
 import com.glodon.bim.business.qualityManage.view.BluePrintActivity;
 import com.glodon.bim.business.qualityManage.view.ModelActivity;
 import com.glodon.bim.business.qualityManage.view.PhotoEditActivity;
+import com.glodon.bim.common.config.CommonConfig;
 
 import java.io.File;
 
@@ -69,7 +70,7 @@ public class QualityMangeMainPresenter implements QualityMangeMainContract.Prese
                 if (resultCode == Activity.RESULT_OK) {
                     //正常返回
                     Intent intent = new Intent(mView.getActivity(), PhotoEditActivity.class);
-                    intent.putExtra("imagePath",mPhotoPath);
+                    intent.putExtra(CommonConfig.IMAGE_PATH,mPhotoPath);
                     mView.getActivity().startActivity(intent);
 
                 } else if (resultCode == Activity.RESULT_CANCELED) {

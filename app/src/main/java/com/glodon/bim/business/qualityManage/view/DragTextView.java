@@ -11,7 +11,12 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.widget.TextView;
 
+import com.glodon.bim.business.qualityManage.listener.OnDragTextListener;
+
 public class DragTextView extends TextView {
+
+    private OnDragTextListener mListener;
+
 
     private float startx;// down事件发生时，手指相对于view左上角x轴的距离
     private float starty;// down事件发生时，手指相对于view左上角y轴的距离
@@ -34,6 +39,11 @@ public class DragTextView extends TextView {
 
     public DragTextView(Context context) {
         this(context, null);
+    }
+
+
+    public void setmListener(OnDragTextListener mListener) {
+        this.mListener = mListener;
     }
 
     @Override
@@ -61,8 +71,14 @@ public class DragTextView extends TextView {
                 if (hor != 0 || ver != 0) {
                     layout(left + hor, top + ver, right + hor, bottom + ver);
                 }
+                if(mListener!=null){
+                    mListener.onStartDrag();
+                }
                 break;
             case MotionEvent.ACTION_UP:
+                if(mListener!=null){
+                    mListener.onStopDrag();
+                }
                 break;
             default:
                 break;
