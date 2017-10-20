@@ -24,11 +24,13 @@ import com.glodon.bim.base.BaseFragment;
 import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.basic.utils.ScreenUtil;
 import com.glodon.bim.business.greendao.provider.DaoProvider;
+import com.glodon.bim.business.main.bean.ProjectListItem;
 import com.glodon.bim.business.qualityManage.OnClassifyItemClickListener;
 import com.glodon.bim.business.qualityManage.adapter.QualityCheckListClassifyAdapter;
 import com.glodon.bim.business.qualityManage.bean.ClassifyItem;
 import com.glodon.bim.business.qualityManage.contract.QualityMangeMainContract;
 import com.glodon.bim.business.qualityManage.presenter.QualityMangeMainPresenter;
+import com.glodon.bim.common.config.CommonConfig;
 import com.glodon.bim.customview.PhotoAlbumDialog;
 
 import java.util.ArrayList;
@@ -79,6 +81,8 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
     private QualityCheckListClassifyAdapter mAdapter;
     private List<ClassifyItem> mDataList;
 
+    private ProjectListItem mProjectInfo;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,6 +90,7 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
         setContentView(R.layout.main_activity);
         mActivity = this;
         mPresenter = new QualityMangeMainPresenter(this);
+        mProjectInfo = (ProjectListItem) getIntent().getSerializableExtra(CommonConfig.PROJECT_LIST_ITEM);
         initView();
         setListener();
         initDataForActivity();
@@ -245,6 +250,7 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
                     mQualityCheckListFragment = new QualityCheckListFragment();
                     transaction.add(R.id.main_fragment_content, mQualityCheckListFragment);
                 }
+                mQualityCheckListFragment.setProjectInfo(mProjectInfo);
                 currentFragment = mQualityCheckListFragment;
                 break;
             case mBluePrintFragmentId:
@@ -266,6 +272,7 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
                     mQualityCheckModuleFragment = new QualityCheckModuleFragment();
                     transaction.add(R.id.main_fragment_content, mQualityCheckModuleFragment);
                 }
+                mQualityCheckModuleFragment.setProjectInfo(mProjectInfo);
                 currentFragment = mQualityCheckModuleFragment;
                 break;
         }

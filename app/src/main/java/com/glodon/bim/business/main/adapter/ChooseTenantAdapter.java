@@ -39,6 +39,7 @@ public class ChooseTenantAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public void updateData(List<UserTenant> list){
         mList.clear();
         mList.addAll(list);
+        notifyDataSetChanged();
     }
 
     @Override

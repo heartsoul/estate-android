@@ -5,11 +5,13 @@ import android.content.Intent;
 
 import com.glodon.bim.basic.utils.CameraUtil;
 import com.glodon.bim.business.main.bean.ChooseCategoryItem;
+import com.glodon.bim.business.main.bean.ProjectListItem;
 import com.glodon.bim.business.main.contract.ChooseCategoryItemContract;
 import com.glodon.bim.business.qualityManage.view.BluePrintActivity;
 import com.glodon.bim.business.qualityManage.view.ModelActivity;
 import com.glodon.bim.business.qualityManage.view.PhotoEditActivity;
 import com.glodon.bim.business.qualityManage.view.QualityMangeMainActivity;
+import com.glodon.bim.common.config.CommonConfig;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +28,7 @@ public class ChooseCategoryItemPresenter implements ChooseCategoryItemContract.P
     private List<ChooseCategoryItem> mDataList;
     private final int REQUEST_CODE_TAKE_PHOTO = 0;
     private String mPhotoPath;
+    private ProjectListItem mProjectInfo;
 
     public ChooseCategoryItemPresenter(ChooseCategoryItemContract.View mView) {
         this.mView = mView;
@@ -34,6 +37,7 @@ public class ChooseCategoryItemPresenter implements ChooseCategoryItemContract.P
 
     @Override
     public void initData(Intent intent) {
+        mProjectInfo = (ProjectListItem) intent.getSerializableExtra(CommonConfig.PROJECT_LIST_ITEM);
     }
 
 
@@ -69,6 +73,7 @@ public class ChooseCategoryItemPresenter implements ChooseCategoryItemContract.P
     @Override
     public void toQualityChickList(int type) {
         Intent intent = new Intent(mView.getActivity(), QualityMangeMainActivity.class);
+        intent.putExtra(CommonConfig.PROJECT_LIST_ITEM,mProjectInfo);
         intent.putExtra("type",type);
         mView.getActivity().startActivity(intent);
     }

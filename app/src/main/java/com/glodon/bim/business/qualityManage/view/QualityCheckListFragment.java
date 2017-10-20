@@ -1,5 +1,6 @@
 package com.glodon.bim.business.qualityManage.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -13,8 +14,11 @@ import android.widget.ImageView;
 import com.glodon.bim.R;
 import com.glodon.bim.base.BaseFragment;
 import com.glodon.bim.basic.listener.ThrottleClickEvents;
+import com.glodon.bim.business.main.bean.ProjectListItem;
 import com.glodon.bim.business.qualityManage.adapter.QualityCheckListAdapter;
-import com.glodon.bim.business.qualityManage.bean.SheetItem;
+import com.glodon.bim.business.qualityManage.bean.QualityCheckListBeanItem;
+import com.glodon.bim.business.qualityManage.contract.QualityCheckListContract;
+import com.glodon.bim.business.qualityManage.presenter.QualityCheckListPresenter;
 import com.glodon.bim.customview.pullrefreshview.OnPullRefreshListener;
 import com.glodon.bim.customview.pullrefreshview.PullRefreshView;
 
@@ -27,11 +31,17 @@ import java.util.List;
  * 邮箱：zhourf@glodon.com
  */
 
-public class QualityCheckListFragment extends BaseFragment {
+public class QualityCheckListFragment extends BaseFragment implements QualityCheckListContract.View {
     private PullRefreshView mPullRefreshView;
     private RecyclerView mRecyclerView;
     private ImageView mToTopView;
     private QualityCheckListAdapter mAdapter;
+    private QualityCheckListContract.Presenter mPresenter;
+    private ProjectListItem mProjectInfo;
+
+    public void setProjectInfo(ProjectListItem info) {
+        this.mProjectInfo = info;
+    }
 
     @Nullable
     @Override
@@ -43,11 +53,12 @@ public class QualityCheckListFragment extends BaseFragment {
 
 
     private void initView(View view) {
-        mPullRefreshView =view.findViewById(R.id.quality_check_list_recyclerview);
+        mPullRefreshView = view.findViewById(R.id.quality_check_list_recyclerview);
         mToTopView = view.findViewById(R.id.quality_check_list_to_top);
 
         setListener();
         initRecyclerView();
+        initData();
     }
 
     private void setListener() {
@@ -59,7 +70,7 @@ public class QualityCheckListFragment extends BaseFragment {
         });
     }
 
-    private void initRecyclerView(){
+    private void initRecyclerView() {
         mPullRefreshView.setPullDownEnable(false);
         mPullRefreshView.setPullUpEnable(false);
         mPullRefreshView.setOnPullRefreshListener(new OnPullRefreshListener() {
@@ -81,29 +92,56 @@ public class QualityCheckListFragment extends BaseFragment {
         mRecyclerView.setVerticalScrollBarEnabled(true);
         final LinearLayoutManager manager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(manager);
-        mAdapter = new QualityCheckListAdapter(getContext(),null);
-        mRecyclerView.setAdapter(mAdapter);
-        mAdapter.updateList(getDataList());
+
     }
 
-    private List<SheetItem> getDataList(){
-        List<SheetItem> list = new ArrayList<>();
-        for(int i = 0;i<22;i++){
-            SheetItem item = new SheetItem();
-            item.showType = i%2;
-            if(i>0){
-                item.timeType= 1;
-            }
-            item.sheetStatus = i%7;
-            list.add(item);
-        }
-        return list;
+    private void initData() {
+        mPresenter = new QualityCheckListPresenter(this);
+        mAdapter = new QualityCheckListAdapter(getContext(), mPresenter.getListener());
+        mRecyclerView.setAdapter(mAdapter);
+        mPresenter.initData(mProjectInfo);
+    }
+
+
+//    private List<QualityCheckListBeanItem> getDataList(){
+//        List<QualityCheckListBeanItem> list = new ArrayList<>();
+//        for(int i = 0;i<22;i++){
+//            QualityCheckListBeanItem item = new QualityCheckListBeanItem();
+//            item.showType = i%2;
+//            if(i>0){
+//                item.timeType= 1;
+//            }
+//            item.sheetStatus = i%7;
+//            list.add(item);
+//        }
+//        return list;
+//    }
+
+
+    @Override
+    public void showLoadingDialog() {
+        showLoadDialog(true);
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void dismissLoadingDialog() {
+        dismissLoadDialog();
+    }
 
+    @Override
+    public void updateData(List<QualityCheckListBeanItem> mDataList) {
+        mAdapter.updateList(mDataList);
+    }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        mPresenter.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mPresenter.onDestroy();
     }
 }

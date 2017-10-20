@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 
 import com.glodon.bim.R;
 import com.glodon.bim.base.BaseFragment;
+import com.glodon.bim.business.main.bean.ProjectListItem;
 
 /**
  * 描述：质检项目
@@ -16,6 +17,12 @@ import com.glodon.bim.base.BaseFragment;
  */
 
 public class QualityCheckModuleFragment extends BaseFragment {
+    private ProjectListItem mProjectInfo;
+
+    public void setProjectInfo(ProjectListItem info)
+    {
+        this.mProjectInfo = info;
+    }
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

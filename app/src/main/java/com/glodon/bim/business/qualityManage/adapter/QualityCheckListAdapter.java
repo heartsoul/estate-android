@@ -5,13 +5,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.glodon.bim.R;
+import com.glodon.bim.basic.image.ImageLoader;
 import com.glodon.bim.basic.utils.ScreenUtil;
-import com.glodon.bim.business.qualityManage.bean.SheetItem;
+import com.glodon.bim.business.qualityManage.bean.QualityCheckListBeanItem;
 import com.glodon.bim.business.qualityManage.listener.OnOperateSheetListener;
 
 import java.util.ArrayList;
@@ -26,7 +28,7 @@ import java.util.List;
 public class QualityCheckListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context mContext;
-    private List<SheetItem> mDataList;
+    private List<QualityCheckListBeanItem> mDataList;
     private OnOperateSheetListener mListener;
 
     public QualityCheckListAdapter(Context mContext, OnOperateSheetListener listener) {
@@ -35,9 +37,10 @@ public class QualityCheckListAdapter extends RecyclerView.Adapter<RecyclerView.V
         this.mListener = listener;
     }
 
-    public void updateList(List<SheetItem> dataList) {
+    public void updateList(List<QualityCheckListBeanItem> dataList) {
         mDataList.clear();
         mDataList.addAll(dataList);
+        notifyDataSetChanged();
     }
 
     @Override
@@ -56,12 +59,13 @@ public class QualityCheckListAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
-        SheetItem item = mDataList.get(position);
+        QualityCheckListBeanItem item = mDataList.get(position);
         if (holder instanceof SheetHolder) {
             SheetHolder sHolder = (SheetHolder) holder;
             //0待提交 1待整改 2待复查 3 已整改 4已复查 5已延迟 6已验收
-            sHolder.mBottomPreant.setVisibility(View.GONE);
+            sHolder.mTimeView.setText(item.inspectionDate);
 
+            sHolder.mBottomPreant.setVisibility(View.GONE);
             int color = R.color.c_f39b3d;
             String statusText = "";
             switch (item.sheetStatus){
@@ -111,6 +115,14 @@ public class QualityCheckListAdapter extends RecyclerView.Adapter<RecyclerView.V
             }
             sHolder.mStatusView.setText(statusText);
             sHolder.mStatusView.setTextColor(mContext.getResources().getColor(color));
+
+            if(item.files!=null && item.files.size()>0){
+                ImageLoader.showImageCenterCrop(mContext,item.files.get(0).url,sHolder.mImageView,R.drawable.icon_default_image);
+            }else{
+                sHolder.mImageView.setBackgroundResource(R.drawable.icon_default_image);
+            }
+            sHolder.mDesView.setText(item.description);
+
         }
 
         if (holder instanceof TimeHolder) {
@@ -145,11 +157,13 @@ public class QualityCheckListAdapter extends RecyclerView.Adapter<RecyclerView.V
         TextView mSubmitBtn, mDeleteBtn, mRepairBtn, mReviewBtn;
         LinearLayout mContentView;
         RelativeLayout mBottomPreant;
+        ImageView mImageView;
 
         SheetHolder(View itemView) {
             super(itemView);
             mTimeView = itemView.findViewById(R.id.quality_check_list_item_sheet_time);
             mStatusView = itemView.findViewById(R.id.quality_check_list_item_sheet_status);
+            mImageView = itemView.findViewById(R.id.quality_check_list_item_sheet_image);
             mDesView = itemView.findViewById(R.id.quality_check_list_item_sheet_text);
             mSubmitBtn = itemView.findViewById(R.id.quality_check_list_item_sheet_submit);
             mDeleteBtn = itemView.findViewById(R.id.quality_check_list_item_sheet_delete);

@@ -1,12 +1,14 @@
 package com.glodon.bim.business.main.bean;
 
+import java.io.Serializable;
+
 /**
  * 描述：
  * 作者：zhourf on 2017/10/18
  * 邮箱：zhourf@glodon.com
  */
 
-public class ProjectListItem {
+public class ProjectListItem implements Serializable{
     public int actualDuration;
     public String actualEnd;
     public String actualStart;

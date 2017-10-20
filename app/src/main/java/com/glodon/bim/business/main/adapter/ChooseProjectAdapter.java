@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.glodon.bim.R;
 import com.glodon.bim.business.main.bean.ProjectListItem;
 import com.glodon.bim.business.main.view.ChooseCategoryItemActivity;
+import com.glodon.bim.common.config.CommonConfig;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +40,7 @@ public class ChooseProjectAdapter extends RecyclerView.Adapter<RecyclerView.View
     public void updateData(List<ProjectListItem> list){
         mList.clear();
         mList.addAll(list);
+        notifyDataSetChanged();
     }
 
     @Override
@@ -54,7 +56,7 @@ public class ChooseProjectAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        ProjectListItem item = mList.get(position);
+        final ProjectListItem item = mList.get(position);
         if(mSize>4) {
             final ProjectMoreHolder pHolder = (ProjectMoreHolder) holder;
             pHolder.mNameView.setText(item.name);
@@ -62,6 +64,7 @@ public class ChooseProjectAdapter extends RecyclerView.Adapter<RecyclerView.View
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(mContext,ChooseCategoryItemActivity.class);
+                    intent.putExtra(CommonConfig.PROJECT_LIST_ITEM,item);
                     mContext.startActivity(intent);
                 }
             });
@@ -72,6 +75,7 @@ public class ChooseProjectAdapter extends RecyclerView.Adapter<RecyclerView.View
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(mContext,ChooseCategoryItemActivity.class);
+                    intent.putExtra(CommonConfig.PROJECT_LIST_ITEM,item);
                     mContext.startActivity(intent);
 
                     if(mLastView!=null){

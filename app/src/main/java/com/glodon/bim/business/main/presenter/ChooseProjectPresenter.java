@@ -39,7 +39,7 @@ public class ChooseProjectPresenter implements ChooseProjectContract.Presenter {
 
     @Override
     public void initData(Intent intent) {
-        Subscription sub = mModel.getAvailableProjects(0,50)
+        Subscription sub = mModel.getAvailableProjects(0,200)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<ProjectListBean>() {

@@ -3,12 +3,14 @@ package com.glodon.bim.business.qualityManage.bean;
 import java.util.List;
 
 /**
- * 描述：质检清单列表的item
+ * 描述：单据item
  * 作者：zhourf on 2017/10/19
  * 邮箱：zhourf@glodon.com
  */
 
 public class QualityCheckListBeanItem {
+
+    public String qcState;//质检状态
     public String code;
     public long constructionCompanyId;
     public String constructionCompanyName;
@@ -27,4 +29,8 @@ public class QualityCheckListBeanItem {
     public long projectId;
     public String projectName;
     public String versionId;
+
+    public int showType = 1;//卡片样式，0时间  1单据
+    public int timeType;//时间类型，0今天 1之前
+    public int sheetStatus = 1;//0待提交 1待整改 2待复查 3 已整改 4已复查 5已延迟 6已验收
 }

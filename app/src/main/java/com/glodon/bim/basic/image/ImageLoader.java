@@ -35,6 +35,22 @@ public class ImageLoader {
 //                .override(20,20)
                 .into(view);
     }
+
+    /**
+     * 展示一般图片
+     */
+    public static void showImageCenterCrop(Context context, String url, ImageView view,int defaultResource) {
+        Glide.with(context)
+                .load(url)
+                .placeholder(defaultResource)
+                .error(defaultResource)
+                .crossFade(200)
+                .centerCrop()
+                .bitmapTransform(new CropSquareTransformation(context))
+//                .override(20,20)
+                .into(view);
+    }
+
     /**
      * 展示一般图片
      */

@@ -168,8 +168,10 @@ public class LoginActivity extends BaseActivity implements LoginContract.View, V
         ThrottleClickEvents.throttleClick(mLoginBtn, this);
         ThrottleClickEvents.throttleClick(mForgetPassword, this);
 
-        mUsernameEt.setText("13810457782");
-        mPasswordEt.setText("123456789.");
+//        mUsernameEt.setText("13810457782");
+//        mPasswordEt.setText("123456789.");
+        mUsernameEt.setText("15822320523");
+        mPasswordEt.setText("123qwe");
     }
 
     //更改登录按钮的显示
