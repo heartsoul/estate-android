@@ -33,6 +33,15 @@ public interface ChooseProjectContract {
 
     interface Presenter extends IBasePresenter{
 
+        /**
+         * 上拉加载
+         */
+        void pullUp();
+
+        /**
+         * 下拉刷新
+         */
+        void pullDown();
     }
 
     interface Model{

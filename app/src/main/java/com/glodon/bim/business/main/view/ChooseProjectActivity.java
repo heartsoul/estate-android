@@ -69,13 +69,13 @@ public class ChooseProjectActivity extends BaseActivity implements View.OnClickL
         mPullRefreshView.setOnPullRefreshListener(new OnPullRefreshListener() {
             @Override
             public void onPullDown() {
-
+                mPresenter.pullDown();
                 mPullRefreshView.onPullDownComplete();
             }
 
             @Override
             public void onPullUp() {
-
+                mPresenter.pullUp();
                 mPullRefreshView.onPullUpComplete();
             }
         });
@@ -135,6 +135,7 @@ public class ChooseProjectActivity extends BaseActivity implements View.OnClickL
         }else{
             mContentParent.setPadding(0,ScreenUtil.dp2px(5),0,0);
             mBgView.setVisibility(View.INVISIBLE);
+            mPullRefreshView.setPullUpEnable(true);
         }
         mAdapter = new ChooseProjectAdapter(this,size);
         mRecyclerView.setAdapter(mAdapter);

@@ -29,6 +29,8 @@ public class ChooseProjectPresenter implements ChooseProjectContract.Presenter {
     private ChooseProjectContract.Model mModel;
     private List<ProjectListItem> mDataList;
     private CompositeSubscription mSubscription;
+    private int mCurrentPage = 0;
+    private int mSize = 35;
 
     public ChooseProjectPresenter(ChooseProjectContract.View view) {
         this.mView = view;
@@ -39,7 +41,7 @@ public class ChooseProjectPresenter implements ChooseProjectContract.Presenter {
 
     @Override
     public void initData(Intent intent) {
-        Subscription sub = mModel.getAvailableProjects(0,200)
+        Subscription sub = mModel.getAvailableProjects(mCurrentPage,mSize)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<ProjectListBean>() {
@@ -59,10 +61,43 @@ public class ChooseProjectPresenter implements ChooseProjectContract.Presenter {
                             mDataList.addAll(bean.content);
                             mView.setStyle(mDataList.size());
                             mView.updateData(mDataList);
+                            if(mCurrentPage<bean.totalPages){
+                                mCurrentPage++;
+                            }
                         }
                     }
-                })
-                ;
+                });
+
+        mSubscription.add(sub);
+    }
+
+    @Override
+    public void pullUp() {
+        Subscription sub = mModel.getAvailableProjects(mCurrentPage,mSize)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<ProjectListBean>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        LogUtil.e(e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(ProjectListBean bean) {
+                        if(bean!=null && bean.content!=null && bean.content.size()>0){
+                            mDataList.addAll(bean.content);
+                            mView.updateData(mDataList);
+                            if(mCurrentPage<bean.totalPages){
+                                mCurrentPage++;
+                            }
+                        }
+                    }
+                });
 
         mSubscription.add(sub);
     }
@@ -79,5 +114,12 @@ public class ChooseProjectPresenter implements ChooseProjectContract.Presenter {
             mSubscription.unsubscribe();
             mSubscription = null;
         }
+    }
+
+
+
+    @Override
+    public void pullDown() {
+
     }
 }
