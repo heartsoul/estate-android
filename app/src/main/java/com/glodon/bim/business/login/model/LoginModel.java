@@ -149,13 +149,18 @@ public class LoginModel implements LoginContract.Model {
 
     @Override
     public void updateCookieDb(String cookie) {
-        new LoginProviderInput().updateCookieDb(cookie);
+        if(!TextUtils.isEmpty(cookie)) {
+            new LoginProviderInput().updateCookieDb(cookie);
+        }
     }
 
 
     private String getCookie(String cookie) {
-        String[] temps = cookie.split(";");
-        return temps[0];
+        if(!TextUtils.isEmpty(cookie) && cookie.contains(";")) {
+            String[] temps = cookie.split(";");
+            return temps[0];
+        }
+        return null;
     }
 
 }

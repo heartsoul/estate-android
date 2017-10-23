@@ -6,11 +6,14 @@ package com.glodon.bim.business.qualityManage.view;
  * 邮箱：zhourf@glodon.com
  */
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.widget.TextView;
 
+import com.glodon.bim.basic.utils.ScreenUtil;
 import com.glodon.bim.business.qualityManage.listener.OnDragTextListener;
 
 public class DragTextView extends TextView {
@@ -29,6 +32,12 @@ public class DragTextView extends TextView {
     private int hor; // 触摸情况下，手指在x轴方向移动的距离
     private int ver; // 触摸情况下，手指在y轴方向移动的距离
 
+    private boolean isCanDrag = true;//是否可拖动
+
+    public void setIsCanDrag(boolean isCanDrag) {
+        this.isCanDrag = isCanDrag;
+    }
+
     public DragTextView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
@@ -39,6 +48,7 @@ public class DragTextView extends TextView {
 
     public DragTextView(Context context) {
         this(context, null);
+        setPadding(ScreenUtil.dp2px(18),ScreenUtil.dp2px(15),ScreenUtil.dp2px(18),ScreenUtil.dp2px(15));
     }
 
 
@@ -48,42 +58,54 @@ public class DragTextView extends TextView {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                // 手指刚触摸到屏幕的那一刻，手指相对于View左上角水平和竖直方向的距离:startX startY
-                startx = event.getX();
-                starty = event.getY();
-                break;
-            case MotionEvent.ACTION_MOVE:
-                // 手指停留在屏幕或移动时，手指相对与View左上角水平和竖直方向的距离:endX endY
-                endx = event.getX();
-                endy = event.getY();
-                // 获取此时刻 View的位置。
-                left = getLeft();
-                top = getTop();
-                right = getRight();
-                bottom = getBottom();
-                // 手指移动的水平距离
-                hor = (int) (endx - startx);
-                // 手指移动的竖直距离
-                ver = (int) (endy - starty);
-                // 当手指在水平或竖直方向上发生移动时，重新设置View的位置（layout方法）
-                if (hor != 0 || ver != 0) {
-                    layout(left + hor, top + ver, right + hor, bottom + ver);
-                }
-                if(mListener!=null){
-                    mListener.onStartDrag();
-                }
-                break;
-            case MotionEvent.ACTION_UP:
-                if(mListener!=null){
-                    mListener.onStopDrag();
-                }
-                break;
-            default:
-                break;
+        if (isCanDrag) {
+
+
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    // 手指刚触摸到屏幕的那一刻，手指相对于View左上角水平和竖直方向的距离:startX startY
+                    startx = event.getX();
+                    starty = event.getY();
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    // 手指停留在屏幕或移动时，手指相对与View左上角水平和竖直方向的距离:endX endY
+                    endx = event.getX();
+                    endy = event.getY();
+                    // 获取此时刻 View的位置。
+                    left = getLeft();
+                    top = getTop();
+                    right = getRight();
+                    bottom = getBottom();
+                    // 手指移动的水平距离
+                    hor = (int) (endx - startx);
+                    // 手指移动的竖直距离
+                    ver = (int) (endy - starty);
+                    // 当手指在水平或竖直方向上发生移动时，重新设置View的位置（layout方法）
+                    if (hor != 0 || ver != 0) {
+                        layout(left + hor, top + ver, right + hor, bottom + ver);
+                    }
+                    if (mListener != null) {
+                        mListener.onStartDrag();
+                    }
+                    break;
+                case MotionEvent.ACTION_UP:
+                    left = getLeft();
+                    top = getTop();
+                    right = getRight();
+                    bottom = getBottom();
+
+                    layout(left, top, right, bottom);
+                    if (mListener != null) {
+                        mListener.onStopDrag();
+                    }
+                    break;
+                default:
+                    break;
+            }
+            return true;
+        } else {
+            return super.onTouchEvent(event);
         }
-        return true;
     }
 
 }

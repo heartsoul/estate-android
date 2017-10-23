@@ -46,11 +46,11 @@
             android:name=".business.login.view.LoginActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
         </activity>
         <!-- 启动界面 -->
         <activity
@@ -189,7 +189,13 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".business.main.view.ChooseCategoryItemActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".business.qualityManage.view.BluePrintActivity"
             android:screenOrientation="portrait" />
