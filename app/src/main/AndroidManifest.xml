@@ -209,7 +209,8 @@
 
         <activity
             android:name=".business.qualityManage.view.PhotoEditActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".base.BaseActivity" />
         <activity android:name=".business.qualityManage.view.CreateCheckListActivity"></activity>
     </application>

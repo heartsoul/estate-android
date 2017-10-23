@@ -2,13 +2,17 @@ package com.glodon.bim.business.qualityManage.view;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.text.TextPaint;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
@@ -21,7 +25,9 @@ import com.glodon.bim.R;
 import com.glodon.bim.base.BaseActivity;
 import com.glodon.bim.basic.image.ImageLoader;
 import com.glodon.bim.basic.image.OnImageLoadListener;
+import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.basic.utils.CameraUtil;
+import com.glodon.bim.basic.utils.InputMethodutil;
 import com.glodon.bim.business.qualityManage.listener.OnDragTextListener;
 import com.glodon.bim.business.qualityManage.listener.OnPhotoEditChangeListener;
 import com.glodon.bim.common.config.CommonConfig;
@@ -44,15 +50,19 @@ public class PhotoEditActivity extends BaseActivity {
     private EditText mEditText;
     private DragTextView mShowText;
 
-    private TextView mTopCancel,mTopFinish;
+    private TextView mTopCancel, mTopFinish;
     private LinearLayout mBottomContent;
     private LinearLayout mBottomDelete;
     private LinearLayout mBottomDrawFunction;
-    private ImageView mDrawLine,mDrawText;
+    private ImageView mDrawLine, mDrawText;
     private View mLineView;
-    private LinearLayout mBottomCancelFinishParent,mBottomCancel,mBottomFinish;
+    private LinearLayout mBottomCancelFinishParent, mBottomCancel, mBottomFinish;
     private LinearLayout mColorParent;
-    private ImageView mColor0,mColor1,mColor2,mColor3,mColor4,mColor5,mColor6,mColor7,mColorBack;
+    private ImageView mColor0, mColor1, mColor2, mColor3, mColor4, mColor5, mColor6, mColor7, mColorBack;
+    private int softHeight=0;//输入法高度
+    private RelativeLayout rootLayout;//跟布局
+    private View mColorBottomView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,11 +76,13 @@ public class PhotoEditActivity extends BaseActivity {
 
         setListener();
 
+        getInputMethodHeight();
     }
 
     private void initView() {
+        rootLayout = (RelativeLayout) findViewById(R.id.photo_edit_root_layout);
         mImagePath = getIntent().getStringExtra(CommonConfig.IMAGE_PATH);
-        mSavePath = CameraUtil.getFilePath();
+
 
         mEditText = (EditText) findViewById(R.id.photo_edit_et);
         mShowText = (DragTextView) findViewById(R.id.photo_edit_show_text);
@@ -101,6 +113,8 @@ public class PhotoEditActivity extends BaseActivity {
         mColor7 = (ImageView) findViewById(R.id.photo_edit_bottom_color_7);
         mColorBack = (ImageView) findViewById(R.id.photo_edit_bottom_color_back);
 
+        mColorBottomView = findViewById(R.id.photo_edit_bottom_color_parent_bottomview);
+
         mPhotoEditView = (PhotoEditView) findViewById(R.id.photo_edit_background);
         ImageLoader.loadUrl(this, mImagePath, new OnImageLoadListener() {
             @Override
@@ -115,22 +129,24 @@ public class PhotoEditActivity extends BaseActivity {
         mPhotoEditView.setmListener(new OnPhotoEditChangeListener() {
             @Override
             public void change(boolean isShowPlayBack) {
-                mColorBack.setVisibility(isShowPlayBack?View.VISIBLE:View.GONE);
+                mColorBack.setVisibility(isShowPlayBack ? View.VISIBLE : View.GONE);
             }
         });
         //初次点击划线
         mDrawLine.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mPhotoEditView.setIsCanDraw(true);
                 mDrawLine.setBackgroundResource(R.drawable.icon_category_item_mx);
                 mTopCancel.setVisibility(View.VISIBLE);
                 mTopFinish.setVisibility(View.VISIBLE);
                 mColorParent.setVisibility(View.VISIBLE);
-                mColorBack.setVisibility(mPhotoEditView.isShowPlayBack()?View.VISIBLE:View.GONE);
+                mColorBack.setVisibility(mPhotoEditView.isShowPlayBack() ? View.VISIBLE : View.GONE);
                 mBottomCancelFinishParent.setVisibility(View.GONE);
                 mTopCancel.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        mPhotoEditView.setIsCanDraw(false);
                         mPhotoEditView.cancel();
 
                         mDrawLine.setBackgroundResource(R.drawable.icon_category_item_tj);
@@ -143,6 +159,7 @@ public class PhotoEditActivity extends BaseActivity {
                 mTopFinish.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        mPhotoEditView.setIsCanDraw(false);
                         mDrawLine.setBackgroundResource(R.drawable.icon_category_item_tj);
                         mTopCancel.setVisibility(View.GONE);
                         mTopFinish.setVisibility(View.GONE);
@@ -180,8 +197,11 @@ public class PhotoEditActivity extends BaseActivity {
         mBottomFinish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(mActivity,CreateCheckListActivity.class);
-                intent.putExtra(CommonConfig.IAMGE_SAVE_PATH,mSavePath);
+                Intent intent = new Intent(mActivity, CreateCheckListActivity.class);
+                if (TextUtils.isEmpty(mSavePath)) {
+                    mSavePath = mImagePath;
+                }
+                intent.putExtra(CommonConfig.IAMGE_SAVE_PATH, mSavePath);
                 mActivity.startActivity(intent);
             }
         });
@@ -190,6 +210,10 @@ public class PhotoEditActivity extends BaseActivity {
         mDrawText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //从划线的编辑状态  直接切换到输入文字 //保存到本地
+                mPhotoEditView.setIsCanDraw(false);
+                saveToLocal(mPhotoEditView);
+
                 mTopCancel.setVisibility(View.VISIBLE);
                 mTopFinish.setVisibility(View.VISIBLE);
 
@@ -203,6 +227,10 @@ public class PhotoEditActivity extends BaseActivity {
 
                 mEditText.setVisibility(View.VISIBLE);
                 mShowText.setVisibility(View.GONE);
+
+                //弹起输入法
+                mEditText.setFocusable(true);
+                InputMethodutil.ShowKeyboard(mEditText);
 
                 mTopCancel.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -228,7 +256,7 @@ public class PhotoEditActivity extends BaseActivity {
                     @Override
                     public void onClick(View view) {
                         String text = mEditText.getText().toString().trim();
-                        if(TextUtils.isEmpty(text)){
+                        if (TextUtils.isEmpty(text)) {
                             mTopCancel.setVisibility(View.GONE);
                             mTopFinish.setVisibility(View.GONE);
 
@@ -244,7 +272,7 @@ public class PhotoEditActivity extends BaseActivity {
                             mEditText.setVisibility(View.GONE);
                             mShowText.setText("");
                             mShowText.setVisibility(View.GONE);
-                        }else{
+                        } else {
                             mTopCancel.setVisibility(View.GONE);
                             mTopFinish.setVisibility(View.GONE);
 
@@ -276,13 +304,13 @@ public class PhotoEditActivity extends BaseActivity {
                                 public void onStopDrag() {
                                     mBottomContent.setVisibility(View.VISIBLE);
                                     mBottomDelete.setVisibility(View.GONE);
-                                    if(mShowText.getBottom()>mBottomDelete.getTop()){
+                                    if (mShowText.getBottom() > mBottomDelete.getTop()) {
                                         //大于范围删除
                                         mShowText.setText("");
                                         mShowText.setVisibility(View.GONE);
                                         //删除完文字 保存
                                         saveTextToImage(mPhotoEditView);
-                                    }else{
+                                    } else {
                                         //输入完文字 保存
                                         saveTextToImage(mPhotoEditView);
                                     }
@@ -296,9 +324,41 @@ public class PhotoEditActivity extends BaseActivity {
 
     }
 
+    /**
+     * 输入法高度
+     */
+    private void getInputMethodHeight(){
+        rootLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
 
+            @Override
+            public void onGlobalLayout() {
+                Rect r = new Rect();
+                rootLayout.getWindowVisibleDisplayFrame(r);
 
-    private void saveToLocal(ImageView view){
+                int screenHeight = rootLayout.getRootView().getHeight();
+                softHeight = screenHeight - (r.bottom - r.top);
+
+                //更改颜色框位置
+//                ((RelativeLayout.LayoutParams) mColorParent.getLayoutParams()).bottomMargin = softHeight;
+                if(softHeight>0) {
+                    mColorBottomView.getLayoutParams().height = softHeight;
+                    mColorBottomView.setVisibility(View.VISIBLE);
+                }else{
+                    mColorBottomView.setVisibility(View.GONE);
+                }
+                LogUtil.e("----------",softHeight+"");
+                //boolean visible = heightDiff > screenHeight / 3;
+            }
+        });
+    }
+
+    /**
+     * 保存划线到图片
+     */
+    private void saveToLocal(ImageView view) {
+        if(TextUtils.isEmpty(mSavePath)){
+            mSavePath = CameraUtil.getFilePath();
+        }
         Bitmap bitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
         view.draw(canvas);
@@ -313,8 +373,17 @@ public class PhotoEditActivity extends BaseActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        mPhotoEditView.setImageBitmap(bitmap);
+        mPhotoEditView.cancel();
     }
-    private void saveTextToImage(ImageView view){
+
+    /**
+     * 保存文字到图片
+     */
+    private void saveTextToImage(ImageView view) {
+        if(TextUtils.isEmpty(mSavePath)){
+            mSavePath = CameraUtil.getFilePath();
+        }
         Bitmap bitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
         view.draw(canvas);
@@ -323,7 +392,7 @@ public class PhotoEditActivity extends BaseActivity {
         tp.setStyle(Paint.Style.STROKE);
         tp.setStrokeWidth(2);
         tp.setTextSize(18);
-        canvas.drawText(mShowText.getText().toString().trim(),mShowText.getLeft(),mShowText.getTop(),tp);
+        canvas.drawText(mShowText.getText().toString().trim(), mShowText.getLeft(), mShowText.getTop(), tp);
 
         try {
             File imageFile = new File(mSavePath);
@@ -335,6 +404,8 @@ public class PhotoEditActivity extends BaseActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        mPhotoEditView.setImageBitmap(bitmap);
+        mPhotoEditView.cancel();
     }
 
 }

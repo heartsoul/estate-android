@@ -29,6 +29,11 @@ public class PhotoEditView extends ImageView {
     private List<Path> list;
     private boolean isAdd = false;
     private OnPhotoEditChangeListener mListener;
+    private boolean isCanDraw = false;
+
+    public void setIsCanDraw(boolean isCanDraw){
+        this.isCanDraw = isCanDraw;
+    }
 
     public void setmListener(OnPhotoEditChangeListener mListener) {
         this.mListener = mListener;
@@ -77,43 +82,47 @@ public class PhotoEditView extends ImageView {
      */
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        if(isCanDraw) {
         /*
          * 获取当前事件位置坐标
          */
-        float x = event.getX();
-        float y = event.getY();
+            float x = event.getX();
+            float y = event.getY();
 
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:// 手指接触屏幕重置路径
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:// 手指接触屏幕重置路径
 
-                mPath.moveTo(x, y);
-                preX = x;
-                preY = y;
-                break;
-            case MotionEvent.ACTION_MOVE:// 手指移动时连接路径
-                float dx = Math.abs(x - preX);
-                float dy = Math.abs(y - preY);
-                if (dx >= MIN_MOVE_DIS || dy >= MIN_MOVE_DIS) {
-                    mPath.quadTo(preX, preY, (x + preX) / 2, (y + preY) / 2);
+                    mPath.moveTo(x, y);
                     preX = x;
                     preY = y;
-                    isAdd = true;
-                }
-                break;
-            case MotionEvent.ACTION_UP:
-                if(isAdd) {
-                    Path path = new Path();
-                    path.addPath(mPath);
-                    list.add(path);
-                    mListener.change(list.size()>0);
-                }
-                isAdd = false;
-                break;
-        }
+                    break;
+                case MotionEvent.ACTION_MOVE:// 手指移动时连接路径
+                    float dx = Math.abs(x - preX);
+                    float dy = Math.abs(y - preY);
+                    if (dx >= MIN_MOVE_DIS || dy >= MIN_MOVE_DIS) {
+                        mPath.quadTo(preX, preY, (x + preX) / 2, (y + preY) / 2);
+                        preX = x;
+                        preY = y;
+                        isAdd = true;
+                    }
+                    break;
+                case MotionEvent.ACTION_UP:
+                    if (isAdd) {
+                        Path path = new Path();
+                        path.addPath(mPath);
+                        list.add(path);
+                        mListener.change(list.size() > 0);
+                    }
+                    isAdd = false;
+                    break;
+            }
 
-        // 重绘视图
-        invalidate();
-        return true;
+            // 重绘视图
+            invalidate();
+            return true;
+        }else{
+            return super.onTouchEvent(event);
+        }
     }
 
 

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/photo_edit_root_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="@dimen/dimen_0">
@@ -17,7 +18,9 @@
         android:layout_marginLeft="@dimen/dimen_15"
         android:layout_marginTop="@dimen/dimen_44"
         android:text="取消"
-        android:visibility="gone" />
+        android:visibility="gone"
+        android:textColor="@color/white"
+        android:textSize="@dimen/dimen_17"/>
 
     <TextView
         android:id="@+id/photo_edit_top_finish"
@@ -28,7 +31,8 @@
         android:layout_marginTop="@dimen/dimen_44"
         android:text="完成"
         android:textColor="@color/c_00b4f2"
-        android:visibility="gone" />
+        android:visibility="gone"
+        android:textSize="@dimen/dimen_17"/>
 
     <com.glodon.bim.business.qualityManage.view.DragTextView
         android:id="@+id/photo_edit_show_text"
@@ -45,9 +49,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dimen_78"
         android:background="#aaaaaa"
-        android:hint="write"
         android:textSize="@dimen/dimen_18"
-        android:visibility="gone" />
+        android:visibility="gone"
+        android:hint="writtttttttttttttttt"
+        />
 
     <LinearLayout
         android:id="@+id/photo_edit_bottom_content"
@@ -142,9 +147,9 @@
 
             <LinearLayout
                 android:id="@+id/photo_edit_bottom_color_parent"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_44"
+                android:gravity="center"
                 android:orientation="horizontal"
                 android:visibility="gone">
 
@@ -152,7 +157,8 @@
                     android:id="@+id/photo_edit_bottom_color_0"
                     android:layout_width="@dimen/dimen_20"
                     android:layout_height="@dimen/dimen_20"
-                    android:background="@drawable/ic_launcher" />
+                    android:background="@drawable/ic_launcher"
+                    />
 
                 <ImageView
                     android:id="@+id/photo_edit_bottom_color_1"
@@ -165,52 +171,60 @@
                     android:id="@+id/photo_edit_bottom_color_2"
                     android:layout_width="@dimen/dimen_20"
                     android:layout_height="@dimen/dimen_20"
-                    android:layout_marginLeft="@dimen/dimen_05"
+                    android:layout_marginLeft="@dimen/dimen_08"
                     android:background="@drawable/ic_launcher" />
 
                 <ImageView
                     android:id="@+id/photo_edit_bottom_color_3"
                     android:layout_width="@dimen/dimen_20"
                     android:layout_height="@dimen/dimen_20"
-                    android:layout_marginLeft="@dimen/dimen_05"
+                    android:layout_marginLeft="@dimen/dimen_08"
                     android:background="@drawable/ic_launcher" />
 
                 <ImageView
                     android:id="@+id/photo_edit_bottom_color_4"
                     android:layout_width="@dimen/dimen_20"
                     android:layout_height="@dimen/dimen_20"
-                    android:layout_marginLeft="@dimen/dimen_05"
+                    android:layout_marginLeft="@dimen/dimen_08"
                     android:background="@drawable/ic_launcher" />
 
                 <ImageView
                     android:id="@+id/photo_edit_bottom_color_5"
                     android:layout_width="@dimen/dimen_20"
                     android:layout_height="@dimen/dimen_20"
-                    android:layout_marginLeft="@dimen/dimen_05"
+                    android:layout_marginLeft="@dimen/dimen_08"
                     android:background="@drawable/ic_launcher" />
 
                 <ImageView
                     android:id="@+id/photo_edit_bottom_color_6"
                     android:layout_width="@dimen/dimen_20"
                     android:layout_height="@dimen/dimen_20"
-                    android:layout_marginLeft="@dimen/dimen_05"
+                    android:layout_marginLeft="@dimen/dimen_08"
                     android:background="@drawable/ic_launcher" />
 
                 <ImageView
                     android:id="@+id/photo_edit_bottom_color_7"
                     android:layout_width="@dimen/dimen_20"
                     android:layout_height="@dimen/dimen_20"
-                    android:layout_marginLeft="@dimen/dimen_05"
+                    android:layout_marginLeft="@dimen/dimen_08"
                     android:background="@drawable/ic_launcher" />
 
                 <ImageView
                     android:id="@+id/photo_edit_bottom_color_back"
                     android:layout_width="@dimen/dimen_20"
                     android:layout_height="@dimen/dimen_20"
-                    android:layout_marginLeft="@dimen/dimen_05"
+                    android:layout_marginLeft="@dimen/dimen_08"
                     android:background="@color/black"
                     android:visibility="gone" />
             </LinearLayout>
+
+            <View
+                android:id="@+id/photo_edit_bottom_color_parent_bottomview"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_0"
+                android:layout_below="@id/photo_edit_bottom_color_parent"
+                android:background="@color/c_f33d3d"
+                />
         </RelativeLayout>
     </LinearLayout>
 
