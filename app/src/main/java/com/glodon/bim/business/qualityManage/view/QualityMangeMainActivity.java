@@ -207,15 +207,19 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
                 }
                 break;
             case R.id.main_drawer_quality_check_list://点击质检清单
+                setSelect(0);
                 showFragmentById(mQualityCheckListFragmentId);
                 break;
             case R.id.main_drawer_quality_blueprint://点击图纸
+//                setSelect(1);
                 mPresenter.toBluePrint();
                 break;
             case R.id.main_drawer_quality_model://点击模型
+//                setSelect(2);
                 mPresenter.toModel();
                 break;
             case R.id.main_drawer_quality_module://点击质检项目
+                setSelect(3);
                 showFragmentById(mQualityCheckModuleFragmentId);
                 break;
             case R.id.main_drawer_setting:
@@ -370,7 +374,7 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
     //隐藏侧边栏
     private void hideDrawer(int duraion) {
 
-        final int margin = ScreenUtil.dp2px(150);
+        final int margin = ScreenUtil.dp2px(240);
         ObjectAnimator animator = ObjectAnimator.ofFloat(mDrawerView, "translationX", 0, -margin);
         animator.setDuration(duraion);
         animator.start();
@@ -383,7 +387,7 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
     //展示侧边栏
     private void showDrawer(int duraion) {
 
-        final int margin = ScreenUtil.dp2px(150);
+        final int margin = ScreenUtil.dp2px(240);
         ObjectAnimator animator = ObjectAnimator.ofFloat(mDrawerView, "translationX", -margin, 0);
         animator.setDuration(duraion);
         animator.start();

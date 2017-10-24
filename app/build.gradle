@@ -90,7 +90,7 @@ dependencies {
     compile 'com.android.support:support-v4:26'
     compile 'jp.wasabeef:glide-transformations:2.0.1'
     compile 'org.greenrobot:greendao:3.2.0'
+    compile 'net.zetetic:android-database-sqlcipher:3.5.7@aar'
     compile 'com.android.support:multidex:1.0.0'
-//    compile 'org.greenrobot:greendao-gradle-plugin:3.2.1'
     testCompile 'junit:junit:4.12'
 }

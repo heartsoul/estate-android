@@ -9,9 +9,12 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.ImageView;
 
+import com.glodon.bim.R;
+import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.business.qualityManage.listener.OnPhotoEditChangeListener;
 
 import java.util.ArrayList;
@@ -34,7 +37,7 @@ public class PhotoEditView extends ImageView {
 
     private List<Path> mPathList;
     private List<Integer> mColorList;
-
+    private Path mPath;
 
     public void setIsCanDraw(boolean isCanDraw){
         this.isCanDraw = isCanDraw;
@@ -58,7 +61,8 @@ public class PhotoEditView extends ImageView {
     }
 
     private void init() {
-//        list = new ArrayList<>();
+        color = getResources().getColor(R.color.white);
+        mPath = new Path();
         mPathList = new ArrayList<>();
         mColorList = new ArrayList<>();
 
@@ -75,9 +79,12 @@ public class PhotoEditView extends ImageView {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        mPaint.setColor(color);
+        canvas.drawPath(mPath,mPaint);
         if(mPathList!=null && mPathList.size()>0) {
             for(int i = 0;i<mPathList.size();i++) {
                 mPaint.setColor(mColorList.get(i));
+                LogUtil.e("-color-"+mColorList.get(i));
                 canvas.drawPath(mPathList.get(i), mPaint);
             }
         }
@@ -95,7 +102,6 @@ public class PhotoEditView extends ImageView {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if(isCanDraw) {
-             Path mPath = new Path();
         /*
          * 获取当前事件位置坐标
          */
@@ -123,6 +129,7 @@ public class PhotoEditView extends ImageView {
                         mPathList.add(mPath);
                         mColorList.add(color);
                         mListener.change(mPathList.size() > 0);
+                        mPath = new Path();
                     }
                     isAdd = false;
                     break;
