@@ -208,7 +208,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/dimen_21"
                 android:layout_toRightOf="@id/main_header_back_icon"
-                android:background="@drawable/ic_launcher" />
+                android:background="@drawable/icon_quality_check_menu" />
 
             <TextView
                 android:id="@+id/main_header_title"
