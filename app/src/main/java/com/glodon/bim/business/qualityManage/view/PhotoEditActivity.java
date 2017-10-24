@@ -41,7 +41,7 @@ import java.util.List;
  * 作者：zhourf on 2017/9/8
  * 邮箱：zhourf@glodon.com
  */
-public class PhotoEditActivity extends BaseActivity {
+public class PhotoEditActivity extends BaseActivity implements View.OnClickListener {
 
     private String mImagePath;
     private String mSavePath;
@@ -61,6 +61,10 @@ public class PhotoEditActivity extends BaseActivity {
     private int softHeight = 0;//输入法高度
     private RelativeLayout rootLayout;//跟布局
     private View mColorBottomView;
+    private int currentState = 0;//1划线  2写字
+    private int currentColor;
+    private List<ImageView> mColorList;
+    private List<Integer> mColorValueList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +86,8 @@ public class PhotoEditActivity extends BaseActivity {
         rootLayout = (RelativeLayout) findViewById(R.id.photo_edit_root_layout);
         mImagePath = getIntent().getStringExtra(CommonConfig.IMAGE_PATH);
         mDragTextList = new ArrayList<>();
-
+        mColorList = new ArrayList<>();
+        mColorValueList = new ArrayList<>();
         mEditText = (EditText) findViewById(R.id.photo_edit_et);
 
         mTopCancel = (TextView) findViewById(R.id.photo_edit_top_cancel);
@@ -134,6 +139,7 @@ public class PhotoEditActivity extends BaseActivity {
         mDrawLine.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                currentState = 1;
                 mPhotoEditView.setIsCanDraw(true);
                 mDrawLine.setBackgroundResource(R.drawable.icon_draw_line_green);
                 mTopCancel.setVisibility(View.VISIBLE);
@@ -144,6 +150,7 @@ public class PhotoEditActivity extends BaseActivity {
                 mTopCancel.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        currentState = 0;
                         mPhotoEditView.setIsCanDraw(false);
                         mPhotoEditView.cancel();
 
@@ -157,6 +164,7 @@ public class PhotoEditActivity extends BaseActivity {
                 mTopFinish.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        currentState = 0;
                         mPhotoEditView.setIsCanDraw(false);
                         mDrawLine.setBackgroundResource(R.drawable.icon_draw_line_white);
                         mTopCancel.setVisibility(View.GONE);
@@ -208,6 +216,7 @@ public class PhotoEditActivity extends BaseActivity {
         mDrawText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                currentState = 2;
                 //从划线的编辑状态  直接切换到输入文字 //保存到本地
                 mDrawLine.setBackgroundResource(R.drawable.icon_draw_line_white);
                 mPhotoEditView.setIsCanDraw(false);
@@ -233,6 +242,7 @@ public class PhotoEditActivity extends BaseActivity {
                 mTopCancel.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        currentState = 0;
                         mTopCancel.setVisibility(View.GONE);
                         mTopFinish.setVisibility(View.GONE);
 
@@ -254,7 +264,7 @@ public class PhotoEditActivity extends BaseActivity {
                 mTopFinish.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-
+                        currentState = 0;
                         String text = mEditText.getText().toString().trim();
                         if (TextUtils.isEmpty(text)) {
                             mTopCancel.setVisibility(View.GONE);
@@ -333,6 +343,90 @@ public class PhotoEditActivity extends BaseActivity {
             }
         });
 
+        mColor0.setOnClickListener(this);
+        mColor1.setOnClickListener(this);
+        mColor2.setOnClickListener(this);
+        mColor3.setOnClickListener(this);
+        mColor4.setOnClickListener(this);
+        mColor5.setOnClickListener(this);
+        mColor6.setOnClickListener(this);
+        mColor7.setOnClickListener(this);
+        mColorList.add(mColor0);
+        mColorList.add(mColor1);
+        mColorList.add(mColor2);
+        mColorList.add(mColor3);
+        mColorList.add(mColor4);
+        mColorList.add(mColor5);
+        mColorList.add(mColor6);
+        mColorList.add(mColor7);
+        mColorValueList.add(R.color.white);
+        mColorValueList.add(R.color.transparent);
+        mColorValueList.add(R.color.c_fe1d11);
+        mColorValueList.add(R.color.c_fbf412);
+        mColorValueList.add(R.color.c_16e113);
+        mColorValueList.add(R.color.c_1b9aff);
+        mColorValueList.add(R.color.c_850af8);
+        mColorValueList.add(R.color.c_fe01ff);
+
+        selectById(0);
+    }
+
+    @Override
+    public void onClick(View view) {
+        int id = view.getId();
+        switch (id)
+        {
+            case R.id.photo_edit_bottom_color_0:
+                selectById(0);
+                break;
+            case R.id.photo_edit_bottom_color_1:
+                selectById(1);
+                break;
+            case R.id.photo_edit_bottom_color_2:
+                selectById(2);
+                break;
+            case R.id.photo_edit_bottom_color_3:
+                selectById(3);
+                break;
+            case R.id.photo_edit_bottom_color_4:
+                selectById(4);
+                break;
+            case R.id.photo_edit_bottom_color_5:
+                selectById(5);
+                break;
+            case R.id.photo_edit_bottom_color_6:
+                selectById(6);
+                break;
+            case R.id.photo_edit_bottom_color_7:
+                selectById(7);
+                break;
+        }
+    }
+
+    //设置选中颜色
+    private void selectById(int position){
+        for(int i =0;i<mColorList.size();i++){
+            ImageView iv =mColorList.get(i);
+            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) iv.getLayoutParams();
+            if(i != position) {
+                params.height = ScreenUtil.dp2px(20);
+                params.width = ScreenUtil.dp2px(20);
+            }else{
+                params.height = ScreenUtil.dp2px(26);
+                params.width = ScreenUtil.dp2px(26);
+            }
+            iv.setLayoutParams(params);
+        }
+
+        currentColor = getResources().getColor(mColorValueList.get(position));
+        if(currentState == 1){
+            //划线
+            mPhotoEditView.setColor(currentColor);
+        }else if(currentState == 2){
+            //写字
+            mEditText.setTextColor(currentColor);
+//            mEditText.setTextColor(currentColor);
+        }
     }
 
     /**
@@ -418,5 +512,6 @@ public class PhotoEditActivity extends BaseActivity {
         //将之前的设定清空
         mPhotoEditView.cancel();
     }
+
 
 }

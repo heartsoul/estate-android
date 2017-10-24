@@ -30,6 +30,8 @@ public class PhotoEditView extends ImageView {
     private boolean isAdd = false;
     private OnPhotoEditChangeListener mListener;
     private boolean isCanDraw = false;
+    private int color;//画笔颜色
+
 
     public void setIsCanDraw(boolean isCanDraw){
         this.isCanDraw = isCanDraw;
@@ -59,7 +61,7 @@ public class PhotoEditView extends ImageView {
         mPaint.setXfermode(getPdf());
         mPaint.setColor(Color.RED);
         mPaint.setStyle(Paint.Style.STROKE);
-        mPaint.setStrokeWidth(20);
+        mPaint.setStrokeWidth(10);
         mPaint.setStrokeJoin(Paint.Join.ROUND);
         mPaint.setStrokeCap(Paint.Cap.ROUND);
     }
@@ -152,5 +154,10 @@ public class PhotoEditView extends ImageView {
 
     public boolean isShowPlayBack(){
         return list.size()>0;
+    }
+
+    public void setColor(int color) {
+        this.color = color;
+        mPaint.setColor(color);
     }
 }
