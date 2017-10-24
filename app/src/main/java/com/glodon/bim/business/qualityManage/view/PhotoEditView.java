@@ -25,12 +25,15 @@ import java.util.List;
 
 public class PhotoEditView extends ImageView {
     private Paint mPaint;
-    private Path mPath;
-    private List<Path> list;
+
+//    private List<Path> list;
     private boolean isAdd = false;
     private OnPhotoEditChangeListener mListener;
     private boolean isCanDraw = false;
     private int color;//画笔颜色
+
+    private List<Path> mPathList;
+    private List<Integer> mColorList;
 
 
     public void setIsCanDraw(boolean isCanDraw){
@@ -55,11 +58,14 @@ public class PhotoEditView extends ImageView {
     }
 
     private void init() {
-        list = new ArrayList<>();
+//        list = new ArrayList<>();
+        mPathList = new ArrayList<>();
+        mColorList = new ArrayList<>();
+
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mPath = new Path();
+
         mPaint.setXfermode(getPdf());
-        mPaint.setColor(Color.RED);
+        mPaint.setColor(Color.WHITE);
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setStrokeWidth(10);
         mPaint.setStrokeJoin(Paint.Join.ROUND);
@@ -69,8 +75,12 @@ public class PhotoEditView extends ImageView {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-
-        canvas.drawPath(mPath,mPaint);
+        if(mPathList!=null && mPathList.size()>0) {
+            for(int i = 0;i<mPathList.size();i++) {
+                mPaint.setColor(mColorList.get(i));
+                canvas.drawPath(mPathList.get(i), mPaint);
+            }
+        }
 
     }
 
@@ -85,6 +95,7 @@ public class PhotoEditView extends ImageView {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if(isCanDraw) {
+             Path mPath = new Path();
         /*
          * 获取当前事件位置坐标
          */
@@ -93,7 +104,6 @@ public class PhotoEditView extends ImageView {
 
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:// 手指接触屏幕重置路径
-
                     mPath.moveTo(x, y);
                     preX = x;
                     preY = y;
@@ -110,10 +120,9 @@ public class PhotoEditView extends ImageView {
                     break;
                 case MotionEvent.ACTION_UP:
                     if (isAdd) {
-                        Path path = new Path();
-                        path.addPath(mPath);
-                        list.add(path);
-                        mListener.change(list.size() > 0);
+                        mPathList.add(mPath);
+                        mColorList.add(color);
+                        mListener.change(mPathList.size() > 0);
                     }
                     isAdd = false;
                     break;
@@ -130,30 +139,24 @@ public class PhotoEditView extends ImageView {
 
 
     public void playBack() {
-        int size = list.size();
+        int size = mPathList.size();
         if(size>0){
-            list.remove(size-1);
-            if(list.size()>0) {
-                mPath = list.get(list.size() - 1);
-            }else{
-                mPath.reset();
-            }
-        }else{
-            mPath.reset();
+            mPathList.remove(size-1);
+            mColorList.remove(size-1);
         }
         invalidate();
-        mListener.change(list.size()>0);
+        mListener.change(mPathList.size()>0);
     }
 
     public void cancel(){
-        list.clear();
-        mPath.reset();
+        mPathList.clear();
+        mColorList.clear();
         invalidate();
-        mListener.change(list.size()>0);
+        mListener.change(mPathList.size()>0);
     }
 
     public boolean isShowPlayBack(){
-        return list.size()>0;
+        return mPathList.size()>0;
     }
 
     public void setColor(int color) {

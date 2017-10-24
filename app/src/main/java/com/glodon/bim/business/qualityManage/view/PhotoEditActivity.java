@@ -140,6 +140,7 @@ public class PhotoEditActivity extends BaseActivity implements View.OnClickListe
             @Override
             public void onClick(View view) {
                 currentState = 1;
+                selectById(0);
                 mPhotoEditView.setIsCanDraw(true);
                 mDrawLine.setBackgroundResource(R.drawable.icon_draw_line_green);
                 mTopCancel.setVisibility(View.VISIBLE);
@@ -217,6 +218,7 @@ public class PhotoEditActivity extends BaseActivity implements View.OnClickListe
             @Override
             public void onClick(View view) {
                 currentState = 2;
+                selectById(0);
                 //从划线的编辑状态  直接切换到输入文字 //保存到本地
                 mDrawLine.setBackgroundResource(R.drawable.icon_draw_line_white);
                 mPhotoEditView.setIsCanDraw(false);

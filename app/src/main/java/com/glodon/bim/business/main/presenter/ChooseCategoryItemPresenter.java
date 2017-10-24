@@ -22,6 +22,7 @@ public class ChooseCategoryItemPresenter implements ChooseCategoryItemContract.P
 
     private ChooseCategoryItemContract.View mView;
     private final int REQUEST_CODE_TAKE_PHOTO = 0;
+    private final int REQUEST_CODE_CHANGE_PROJECT = 1;
     private String mPhotoPath;
     private ProjectListItem mProjectInfo;
 
@@ -68,8 +69,8 @@ public class ChooseCategoryItemPresenter implements ChooseCategoryItemContract.P
     public void toQualityChickList(int type) {
         Intent intent = new Intent(mView.getActivity(), QualityMangeMainActivity.class);
         intent.putExtra(CommonConfig.PROJECT_LIST_ITEM,mProjectInfo);
-        intent.putExtra("type",type);
-        mView.getActivity().startActivity(intent);
+        intent.putExtra(CommonConfig.MAIN_FROM_TYPE,type);
+        mView.getActivity().startActivityForResult(intent,REQUEST_CODE_CHANGE_PROJECT);
     }
 
     @Override
@@ -84,6 +85,14 @@ public class ChooseCategoryItemPresenter implements ChooseCategoryItemContract.P
 
                 } else if (resultCode == Activity.RESULT_CANCELED) {
                     //返回键返回
+                }
+                break;
+            case REQUEST_CODE_CHANGE_PROJECT:
+                if (resultCode == Activity.RESULT_OK && data != null) {
+                    boolean isChangeProject = data.getBooleanExtra(CommonConfig.CHANGE_PROJECT,false);
+                    if(isChangeProject && mView!=null){
+                        mView.getActivity().finish();
+                    }
                 }
                 break;
         }

@@ -91,5 +91,6 @@ dependencies {
     compile 'jp.wasabeef:glide-transformations:2.0.1'
     compile 'org.greenrobot:greendao:3.2.0'
     compile 'com.android.support:multidex:1.0.0'
+//    compile 'org.greenrobot:greendao-gradle-plugin:3.2.1'
     testCompile 'junit:junit:4.12'
 }

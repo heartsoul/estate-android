@@ -10,4 +10,6 @@ public class CommonConfig {
     public static final String PROJECT_LIST_ITEM = "ProjectListItem";
     public static final String IMAGE_PATH = "imagePath";
     public static final String IAMGE_SAVE_PATH = "imageSavePath";
+    public static final String MAIN_FROM_TYPE = "mainFromType";
+    public static final String CHANGE_PROJECT = "changeProject";
 }

@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.glodon.bim.R;
@@ -51,13 +52,18 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
 
     private final int REQUEST_CAMERA = 1;
 
+    //drawer
     private LinearLayout mDrawerView;
+    private TextView mProjectNameView;
+    private TextView mQualityCheckListTv, mBluePrintTv, mModelTv, mQualityCheckModuleTv;
+    private RelativeLayout mQualityManagerView,mSettingView;
+    private LinearLayout mQualityContentView;
+    //content
     private LinearLayout mContentView;
+
     private ImageView mBackView, mMenuView, mSearchView, mCreateView;
 
     private boolean mIsDrawerOpen = false;
-
-    private TextView mQualityCheckListTv, mBluePrintTv, mModelTv, mQualityCheckModuleTv;
 
     private int mCurrentFragmentId = -1;
 
@@ -79,9 +85,12 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
 
     private RecyclerView mClassifesView;
     private QualityCheckListClassifyAdapter mAdapter;
-    private List<ClassifyItem> mDataList;
+    private List<ClassifyItem> mDataList;//分类数据
 
-    private ProjectListItem mProjectInfo;
+    private ProjectListItem mProjectInfo;//项目信息
+
+    private List<TextView> mContentList;
+    private int mFromType = 0;//0质检清单  1质检项目
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -91,6 +100,7 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
         mActivity = this;
         mPresenter = new QualityMangeMainPresenter(this);
         mProjectInfo = (ProjectListItem) getIntent().getSerializableExtra(CommonConfig.PROJECT_LIST_ITEM);
+        mFromType = getIntent().getIntExtra(CommonConfig.MAIN_FROM_TYPE,0);
         initView();
         setListener();
         initDataForActivity();
@@ -98,6 +108,11 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
 
     private void initView() {
         mDrawerView = (LinearLayout) findViewById(R.id.main_drawer);
+        mProjectNameView = (TextView) findViewById(R.id.main_drawer_project_name);
+        mQualityManagerView = (RelativeLayout) findViewById(R.id.main_drawer_quality);
+        mSettingView = (RelativeLayout) findViewById(R.id.main_drawer_setting);
+        mQualityContentView = (LinearLayout) findViewById(R.id.main_drawer_quality_content);
+
         mContentView = (LinearLayout) findViewById(R.id.main_content);
         mStatusLeft = (LinearLayout) findViewById(R.id.main_drawer_status_left);
         mStatusRight = (LinearLayout) findViewById(R.id.main_drawer_status_right);
@@ -123,6 +138,8 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
         hideDrawer(1);
 
         initClassify();
+
+
     }
 
     /**
@@ -153,10 +170,6 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
         mSearchView.setOnClickListener(this);
         mCreateView.setOnClickListener(this);
 
-        mQualityCheckListTv.setOnClickListener(this);
-        mBluePrintTv.setOnClickListener(this);
-        mModelTv.setOnClickListener(this);
-        mQualityCheckModuleTv.setOnClickListener(this);
     }
 
     @Override
@@ -180,6 +193,19 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
             case R.id.main_header_new_icon://点击创建
                 create();
                 break;
+            case R.id.main_drawer_project_name://点击项目名称切换项目
+                Intent data = new Intent();
+                data.putExtra(CommonConfig.CHANGE_PROJECT,true);
+                setResult(RESULT_OK,data);
+                finish();
+                break;
+            case R.id.main_drawer_quality://点击质量管理
+                if(mQualityContentView.getVisibility() == View.VISIBLE){
+                    mQualityContentView.setVisibility(View.GONE);
+                }else{
+                    mQualityContentView.setVisibility(View.VISIBLE);
+                }
+                break;
             case R.id.main_drawer_quality_check_list://点击质检清单
                 showFragmentById(mQualityCheckListFragmentId);
                 break;
@@ -191,6 +217,9 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
                 break;
             case R.id.main_drawer_quality_module://点击质检项目
                 showFragmentById(mQualityCheckModuleFragmentId);
+                break;
+            case R.id.main_drawer_setting:
+                mPresenter.toSetting(mProjectInfo);
                 break;
 
         }
@@ -233,6 +262,47 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
 
         showFragmentById(mQualityCheckListFragmentId);
         mCurrentFragmentId = mQualityCheckListFragmentId;
+
+        initDrawer();
+    }
+
+    //初始化drawer数据
+    private void initDrawer() {
+        mProjectNameView.setText(mProjectInfo.name);
+
+        mProjectNameView.setOnClickListener(this);
+        mQualityManagerView.setOnClickListener(this);
+
+        mQualityCheckListTv.setOnClickListener(this);
+        mBluePrintTv.setOnClickListener(this);
+        mModelTv.setOnClickListener(this);
+        mQualityCheckModuleTv.setOnClickListener(this);
+
+        mSettingView.setOnClickListener(this);
+
+        mContentList = new ArrayList<>();
+        mContentList.add(mQualityCheckListTv);
+        mContentList.add(mBluePrintTv);
+        mContentList.add(mModelTv);
+        mContentList.add(mQualityCheckModuleTv);
+
+        //设置选中颜色
+        if(mFromType == 0){
+            setSelect(0);//质检清单
+        }else if(mFromType == 1){
+            setSelect(3);//质检项目
+        }
+    }
+
+    private void setSelect(int position){
+        for(int i = 0;i<mContentList.size();i++){
+            TextView tv = mContentList.get(i);
+            if(i == position){
+                tv.setTextColor(getResources().getColor(R.color.c_00b5f2));
+            }else{
+                tv.setTextColor(getResources().getColor(R.color.c_d4d4d4));
+            }
+        }
     }
 
     //显示fragment

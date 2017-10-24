@@ -2,6 +2,7 @@ package com.glodon.bim.business.qualityManage.contract;
 
 import com.glodon.bim.base.IBasePresenter;
 import com.glodon.bim.base.IBaseView;
+import com.glodon.bim.business.main.bean.ProjectListItem;
 
 /**
  * 描述：质量管理主界面
@@ -37,6 +38,11 @@ public interface QualityMangeMainContract {
          * 打开创建界面
          */
         void toCreate();
+
+        /**
+         * 设置界面
+         */
+        void toSetting(ProjectListItem mProjectInfo);
     }
 
     interface View extends IBaseView {
