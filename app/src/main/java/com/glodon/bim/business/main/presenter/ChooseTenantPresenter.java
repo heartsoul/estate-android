@@ -46,6 +46,10 @@ public class ChooseTenantPresenter implements ChooseTenantContract.Presenter {
             mDataList.addAll(user.accountInfo.userTenants);
         }
         mView.updateData(mDataList);
+        //如果是一个公司 直接进入
+        if(mDataList.size()==1){
+            clickTenant(mDataList.get(0));
+        }
     }
 
 

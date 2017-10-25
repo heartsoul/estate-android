@@ -4,6 +4,7 @@ import com.glodon.bim.base.IBasePresenter;
 import com.glodon.bim.base.IBaseView;
 import com.glodon.bim.business.main.bean.ProjectListBean;
 import com.glodon.bim.business.main.bean.ProjectListItem;
+import com.glodon.bim.business.main.listener.OnProjectClickListener;
 
 import java.util.List;
 
@@ -42,6 +43,11 @@ public interface ChooseProjectContract {
          * 下拉刷新
          */
         void pullDown();
+
+        /**
+         * 获取点击项目的监听
+         */
+        OnProjectClickListener getListener();
     }
 
     interface Model{

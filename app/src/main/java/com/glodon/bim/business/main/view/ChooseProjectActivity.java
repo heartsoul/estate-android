@@ -138,6 +138,7 @@ public class ChooseProjectActivity extends BaseActivity implements View.OnClickL
             mPullRefreshView.setPullUpEnable(true);
         }
         mAdapter = new ChooseProjectAdapter(this,size);
+        mAdapter.setListener(mPresenter.getListener());
         mRecyclerView.setAdapter(mAdapter);
     }
 

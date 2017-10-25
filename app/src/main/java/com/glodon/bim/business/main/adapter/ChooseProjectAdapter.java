@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.glodon.bim.R;
 import com.glodon.bim.business.main.bean.ProjectListItem;
+import com.glodon.bim.business.main.listener.OnProjectClickListener;
 import com.glodon.bim.business.main.view.ChooseCategoryItemActivity;
 import com.glodon.bim.common.config.CommonConfig;
 
@@ -29,6 +30,7 @@ public class ChooseProjectAdapter extends RecyclerView.Adapter<RecyclerView.View
     private Activity mContext;
     private int mSize=0;
     private View mLastView;
+    private OnProjectClickListener mListener;
 
 
     public ChooseProjectAdapter(Activity mContext, int size) {
@@ -41,6 +43,10 @@ public class ChooseProjectAdapter extends RecyclerView.Adapter<RecyclerView.View
         mList.clear();
         mList.addAll(list);
         notifyDataSetChanged();
+    }
+
+    public void setListener(OnProjectClickListener mListener) {
+        this.mListener = mListener;
     }
 
     @Override
@@ -63,20 +69,24 @@ public class ChooseProjectAdapter extends RecyclerView.Adapter<RecyclerView.View
             pHolder.mItemParent.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(mContext,ChooseCategoryItemActivity.class);
-                    intent.putExtra(CommonConfig.PROJECT_LIST_ITEM,item);
-                    mContext.startActivity(intent);
+                   if(mListener!=null){
+                       mListener.clickTenant(item);
+                   }
                 }
             });
         }else{
             final ProjectLessHolder pHolder = (ProjectLessHolder) holder;
             pHolder.mNameView.setText(item.name);
+            //如果只有一个项目  直接选中进入
+            if(getItemCount()==1){
+                pHolder.mItemParent.setBackgroundResource(R.drawable.corner_radius_4_choose_project_bg);
+            }
             pHolder.mItemParent.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(mContext,ChooseCategoryItemActivity.class);
-                    intent.putExtra(CommonConfig.PROJECT_LIST_ITEM,item);
-                    mContext.startActivity(intent);
+                    if(mListener!=null){
+                        mListener.clickTenant(item);
+                    }
 
                     if(mLastView!=null){
                         mLastView.setBackgroundResource(R.drawable.shadow_category_item_bg);

@@ -6,7 +6,10 @@ import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.business.main.bean.ProjectListBean;
 import com.glodon.bim.business.main.bean.ProjectListItem;
 import com.glodon.bim.business.main.contract.ChooseProjectContract;
+import com.glodon.bim.business.main.listener.OnProjectClickListener;
 import com.glodon.bim.business.main.model.ChooseProjectModel;
+import com.glodon.bim.business.main.view.ChooseCategoryItemActivity;
+import com.glodon.bim.common.config.CommonConfig;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +34,13 @@ public class ChooseProjectPresenter implements ChooseProjectContract.Presenter {
     private CompositeSubscription mSubscription;
     private int mCurrentPage = 0;
     private int mSize = 35;
+    private OnProjectClickListener mListener = new OnProjectClickListener() {
+        @Override
+        public void clickTenant(ProjectListItem item) {
+            clickProject(item);
+        }
+    };
+
 
     public ChooseProjectPresenter(ChooseProjectContract.View view) {
         this.mView = view;
@@ -39,6 +49,19 @@ public class ChooseProjectPresenter implements ChooseProjectContract.Presenter {
         mSubscription = new CompositeSubscription();
     }
 
+    @Override
+    public OnProjectClickListener getListener(){
+        return mListener;
+    }
+
+    /**
+     * 点击项目
+     */
+    public void clickProject(ProjectListItem item) {
+        Intent intent = new Intent(mView.getActivity(), ChooseCategoryItemActivity.class);
+        intent.putExtra(CommonConfig.PROJECT_LIST_ITEM, item);
+        mView.getActivity().startActivity(intent);
+    }
     @Override
     public void initData(Intent intent) {
         Subscription sub = mModel.getAvailableProjects(mCurrentPage,mSize)
@@ -63,6 +86,10 @@ public class ChooseProjectPresenter implements ChooseProjectContract.Presenter {
                             mView.updateData(mDataList);
                             if(mCurrentPage<bean.totalPages){
                                 mCurrentPage++;
+                            }
+                            //如果只有一个项目 直接进入
+                            if(mDataList.size()==1){
+                                clickProject(mDataList.get(0));
                             }
                         }
                     }

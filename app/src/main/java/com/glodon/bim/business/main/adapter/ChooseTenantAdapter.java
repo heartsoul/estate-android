@@ -53,6 +53,9 @@ public class ChooseTenantAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         final ProjectLessHolder pHolder = (ProjectLessHolder) holder;
         pHolder.mNameView.setText(item.tenantName);
         pHolder.mIconView.setBackgroundResource(R.drawable.icon_choose_tenant_item);
+        if(getItemCount()==1){
+            pHolder.mItemParent.setBackgroundResource(R.drawable.corner_radius_4_choose_project_bg);
+        }
         pHolder.mItemParent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
