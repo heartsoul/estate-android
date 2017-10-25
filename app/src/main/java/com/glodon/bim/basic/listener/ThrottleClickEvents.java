@@ -27,6 +27,16 @@ public class ThrottleClickEvents {
     }
 
     /**
+     * 防止重复点击，默认3秒内只取第一次点击  过滤后面的点击
+     *
+     * @param view     被点击的view
+     * @param listener 点击事件
+     */
+    public static void throttleClick(final View view, final View.OnClickListener listener, long windowDuration) {
+        throttleClick(view, listener, windowDuration, TimeUnit.SECONDS);
+    }
+
+    /**
      * 防止重复点击
      *
      * @param view           被点击的view

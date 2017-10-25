@@ -37,6 +37,8 @@
     <color name="c_ab000000">#ab000000</color>
     <!--不透明度50  纯黑-->
     <color name="c_80000000">#80000000</color>
+    <!--不透明度60  纯百-->
+    <color name="c_99ffffff">#99ffffff</color>
     <color name="c_ff5151">#ff5151</color>
     <!-- 质检清单 -->
     <color name="c_535353">#535353</color>
@@ -54,7 +56,9 @@
     <color name="c_fe01ff">#fe01ff</color>
     <color name="c_525252">#525252</color>
     <color name="c_d4d4d4">#d4d4d4</color>
+    <color name="c_d8d8d8">#d8d8d8</color>
     <color name="c_00b5f2">#00b5f2</color>
+    <color name="c_464646">#464646</color>
 
     <!-- zxing -->
     <color name="viewfinder_frame">#ff000000</color>

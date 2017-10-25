@@ -48,11 +48,11 @@
             android:windowSoftInputMode="adjustPan"
             android:launchMode="singleTask"
             >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
         </activity>
         <!-- 启动界面 -->
         <activity
@@ -194,11 +194,7 @@
         <activity
             android:name=".business.main.view.ChooseCategoryItemActivity"
             android:screenOrientation="portrait">
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
 
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
         </activity>
         <!--图纸-->
         <activity
@@ -229,7 +225,13 @@
         <!--创建检查单-->
         <activity
             android:name=".business.qualityManage.view.CreateCheckListActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait" >
+            <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <!--设置-->
         <activity
             android:name="com.glodon.bim.business.setting.view.SettingActivity"

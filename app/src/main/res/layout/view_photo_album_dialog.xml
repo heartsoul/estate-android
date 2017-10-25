@@ -5,51 +5,60 @@
     android:background="@color/transparent"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="@dimen/dimen_330"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:background="@drawable/corner_radius_5_white_bg"
-        android:orientation="vertical"
-        android:layout_marginBottom="@dimen/dimen_15">
+    <TextView
+        android:id="@+id/photo_album_view_photo"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_56"
+        android:gravity="center"
+        android:text="拍照"
+        android:textColor="@color/c_464646"
+        android:background="@color/white"
+        android:textSize="@dimen/dimen_20" />
 
-        <TextView
-            android:id="@+id/photo_album_view_photo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="@dimen/dimen_10"
-            android:text="拍照"
-            android:textSize="@dimen/dimen_17" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_0.5"
+        android:background="@color/c_d8d8d8" />
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dimen_0.3"
-            android:background="#40000000" />
+    <TextView
+        android:id="@+id/photo_album_view_album"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_56"
+        android:gravity="center"
+        android:text="从手机相册选择"
+        android:textColor="@color/c_464646"
+        android:background="@color/white"
+        android:textSize="@dimen/dimen_20" />
 
-        <TextView
-            android:id="@+id/photo_album_view_album"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="@dimen/dimen_10"
-            android:text="从手机相册选择"
-            android:textSize="@dimen/dimen_17" />
+    <View
+        android:id="@+id/photo_album_view_line"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_0.5"
+        android:background="@color/c_d8d8d8" />
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dimen_0.3"
-            android:background="#40000000" />
+    <TextView
+        android:id="@+id/photo_album_view_go"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_56"
+        android:gravity="center"
+        android:text="无需照片,直接新建"
+        android:textColor="@color/c_464646"
+        android:background="@color/white"
+        android:textSize="@dimen/dimen_20" />
 
-        <TextView
-            android:id="@+id/photo_album_view_go"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="@dimen/dimen_10"
-            android:text="无需照片,直接新建"
-            android:textSize="@dimen/dimen_17" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_09"
+        android:background="@color/c_99ffffff" />
 
-    </LinearLayout>
+    <TextView
+        android:id="@+id/photo_album_view_cancel"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_56"
+        android:gravity="center"
+        android:text="取消"
+        android:textColor="@color/c_464646"
+        android:background="@color/white"
+        android:textSize="@dimen/dimen_20" />
 
 </LinearLayout>
