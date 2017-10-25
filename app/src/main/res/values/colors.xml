@@ -17,6 +17,7 @@
     <color name="c_00b0f1">#00b0f1</color>
     <color name="c_00b4f2">#00b4f2</color>
     <color name="c_ff460d">#ff460d</color>
+    <color name="c_cbcbcb">#cbcbcb</color>
 
     <color name="c_e6e6e6">#e6e6e6</color>
     <color name="c_e7e7e7">#e7e7e7</color>
@@ -27,12 +28,16 @@
     <color name="c_979797">#979797</color>
     <color name="c_f55353">#f55353</color>
     <color name="c_f88181">#f88181</color>
+    <color name="c_5d5d5d">#5d5d5d</color>
+    <color name="c_e75452">#e75452</color>
     <!--不透明度20  纯黑-->
     <color name="c_33000000">#33000000</color>
     <!--不透明度23  CCCCCC-->
     <color name="c_3bcccccc">#3bCCCCCC</color>
     <!--不透明度65  CCCCCC-->
     <color name="c_a6cccccc">#A6CCCCCC</color>
+    <!--不透明度64  CCCCCC-->
+    <color name="c_a3cccccc">#A3CCCCCC</color>
     <!--不透明度67  000000-->
     <color name="c_ab000000">#ab000000</color>
     <!--不透明度50  纯黑-->
@@ -59,6 +64,7 @@
     <color name="c_d8d8d8">#d8d8d8</color>
     <color name="c_00b5f2">#00b5f2</color>
     <color name="c_464646">#464646</color>
+    <color name="c_acacac">#acacac</color>
 
     <!-- zxing -->
     <color name="viewfinder_frame">#ff000000</color>
