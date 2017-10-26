@@ -1,7 +1,9 @@
 package com.glodon.bim.business.main.view;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -25,6 +27,7 @@ public class ChooseCategoryItemActivity extends BaseActivity implements ChooseCa
     private ChooseCategoryItemContract.Presenter mPresenter;
     private LinearLayout mQualityCheckListView, mModelView, mBluePrintView, mQualityCheckModuleVIew, mCreateView;
     private PhotoAlbumDialog mPhotoAlbumDialog;//拍照相册弹出框
+    private final int REQUEST_CAMERA = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +94,13 @@ public class ChooseCategoryItemActivity extends BaseActivity implements ChooseCa
     private void initDataForActivity() {
         mPresenter = new ChooseCategoryItemPresenter(this);
         mPresenter.initData(getIntent());
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            String[] PERMISSIONS_STORAGE = {
+                    Manifest.permission.CAMERA,
+            };
+            requestPermission(PERMISSIONS_STORAGE, REQUEST_CAMERA);
+        }
     }
 
     //弹出照片选择框

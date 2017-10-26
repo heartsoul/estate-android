@@ -36,6 +36,8 @@
     <color name="c_3bcccccc">#3bCCCCCC</color>
     <!--不透明度65  CCCCCC-->
     <color name="c_a6cccccc">#A6CCCCCC</color>
+    <!--不透明度55  CCCCCC-->
+    <color name="c_8ccccccc">#8cCCCCCC</color>
     <!--不透明度64  CCCCCC-->
     <color name="c_a3cccccc">#A3CCCCCC</color>
     <!--不透明度67  000000-->
@@ -65,6 +67,8 @@
     <color name="c_00b5f2">#00b5f2</color>
     <color name="c_464646">#464646</color>
     <color name="c_acacac">#acacac</color>
+    <color name="c_333333">#333333</color>
+    <color name="c_7a7a7a">#7a7a7a</color>
 
     <!-- zxing -->
     <color name="viewfinder_frame">#ff000000</color>

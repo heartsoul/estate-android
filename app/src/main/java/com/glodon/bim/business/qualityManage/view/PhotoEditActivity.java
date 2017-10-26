@@ -209,7 +209,7 @@ public class PhotoEditActivity extends BaseActivity implements View.OnClickListe
                 }
                 intent.putExtra(CommonConfig.IAMGE_SAVE_PATH, mSavePath);
                 mActivity.startActivity(intent);
-                mActivity.finish();
+//                mActivity.finish();
             }
         });
 

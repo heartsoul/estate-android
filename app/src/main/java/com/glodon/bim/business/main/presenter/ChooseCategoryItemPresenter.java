@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 
 import com.glodon.bim.basic.utils.CameraUtil;
+import com.glodon.bim.basic.utils.SharedPreferencesUtil;
 import com.glodon.bim.business.main.bean.ProjectListItem;
 import com.glodon.bim.business.main.contract.ChooseCategoryItemContract;
 import com.glodon.bim.business.qualityManage.view.BluePrintActivity;
@@ -33,6 +34,7 @@ public class ChooseCategoryItemPresenter implements ChooseCategoryItemContract.P
     @Override
     public void initData(Intent intent) {
         mProjectInfo = (ProjectListItem) intent.getSerializableExtra(CommonConfig.PROJECT_LIST_ITEM);
+        SharedPreferencesUtil.setProjectInfo(mProjectInfo);
     }
 
 

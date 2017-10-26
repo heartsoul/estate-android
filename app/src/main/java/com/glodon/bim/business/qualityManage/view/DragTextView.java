@@ -6,8 +6,6 @@ package com.glodon.bim.business.qualityManage.view;
  * 邮箱：zhourf@glodon.com
  */
 
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;

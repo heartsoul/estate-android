@@ -14,12 +14,18 @@ import android.widget.TextView;
 import com.glodon.bim.R;
 import com.glodon.bim.base.BaseActivity;
 import com.glodon.bim.basic.listener.ThrottleClickEvents;
+import com.glodon.bim.basic.log.LogUtil;
+import com.glodon.bim.business.qualityManage.bean.CompanyItem;
 import com.glodon.bim.business.qualityManage.contract.CreateCheckListContract;
+import com.glodon.bim.business.qualityManage.listener.OnChooseListListener;
 import com.glodon.bim.business.qualityManage.presenter.CreateCheckListPresenter;
 import com.glodon.bim.common.config.CommonConfig;
 import com.glodon.bim.customview.PhotoAlbumDialog;
 
-public class CreateCheckListActivity extends BaseActivity implements View.OnClickListener,CreateCheckListContract.View {
+import java.util.ArrayList;
+import java.util.List;
+
+public class CreateCheckListActivity extends BaseActivity implements View.OnClickListener, CreateCheckListContract.View {
 
     private CreateCheckListContract.Presenter mPresenter;
 
@@ -27,25 +33,29 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
     private LinearLayout mStatusView;//状态栏
     //导航栏
     private ImageView mNavBack;
-    private TextView mNavSubmit,mNavCheckLeftTitle,mNavCheckRightTitle;
-    private View mNavLeftLine,mNavRightLine;
+    private TextView mNavSubmit, mNavCheckLeftTitle, mNavCheckRightTitle;
+    private View mNavLeftLine, mNavRightLine;
     //内容
 
     //施工单位
     private RelativeLayout mCompanyParent;
     private ImageView mCompanyStar;
     private TextView mCompanyName;
+
+    private ChooseListDialog mChooseCompanyListDialog;
     //责任人
     private RelativeLayout mPersonParent;
     private ImageView mPersonStar;
     private TextView mPersonName;
+
+    private ChooseListDialog mChoosePersonListDialog;
     //现场描述
     private EditText mSiteDescription;
     private ImageView mSiteStar;
     //图片描述
     private EditText mPhotoDescription;
     private LinearLayout mPhotoParent;
-    private ImageView mPhoto0,mPhoto1,mPhoto2,mPhoto3;
+    private ImageView mPhoto0, mPhoto1, mPhoto2, mPhoto3;
 
     private PhotoAlbumDialog mPhotoAlbumDialog;
     //整改期限
@@ -66,12 +76,13 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
     private RelativeLayout mModelParent;
     private TextView mModelName;
     //保存删除
-    private Button mSaveBtn,mDeleteBtn;
+    private Button mSaveBtn, mDeleteBtn;
     //现场描述和图片描述  输入法弹出
     private RelativeLayout mInputParent;
-    private TextView mInputTitle,mLeftNumber;
+    private TextView mInputTitle, mLeftNumber;
     //图片删除 拖动到此处删除
     private LinearLayout mPhotoDelete;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -141,22 +152,22 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
 
     private void setListener() {
         //导航栏
-        ThrottleClickEvents.throttleClick(mNavBack,this);
-        ThrottleClickEvents.throttleClick(mNavSubmit,this);
-        ThrottleClickEvents.throttleClick(mNavCheckLeftTitle,this,1);
-        ThrottleClickEvents.throttleClick(mNavCheckRightTitle,this,1);
+        ThrottleClickEvents.throttleClick(mNavBack, this);
+        ThrottleClickEvents.throttleClick(mNavSubmit, this);
+        ThrottleClickEvents.throttleClick(mNavCheckLeftTitle, this, 1);
+        ThrottleClickEvents.throttleClick(mNavCheckRightTitle, this, 1);
 
-        ThrottleClickEvents.throttleClick(mCompanyParent,this);
-        ThrottleClickEvents.throttleClick(mPersonParent,this);
-        ThrottleClickEvents.throttleClick(mPhoto3,this,1);
-        ThrottleClickEvents.throttleClick(mRemainFlag,this,1);
-        ThrottleClickEvents.throttleClick(mRemainParent,this);
-        ThrottleClickEvents.throttleClick(mModuleParent,this);
-        ThrottleClickEvents.throttleClick(mModuleBenchmark,this);
-        ThrottleClickEvents.throttleClick(mBluePrintParent,this);
-        ThrottleClickEvents.throttleClick(mModelParent,this);
-        ThrottleClickEvents.throttleClick(mSaveBtn,this);
-        ThrottleClickEvents.throttleClick(mDeleteBtn,this);
+        ThrottleClickEvents.throttleClick(mCompanyParent, this, 1);
+        ThrottleClickEvents.throttleClick(mPersonParent, this, 1);
+        ThrottleClickEvents.throttleClick(mPhoto3, this, 1);
+        ThrottleClickEvents.throttleClick(mRemainFlag, this, 1);
+        ThrottleClickEvents.throttleClick(mRemainParent, this, 1);
+        ThrottleClickEvents.throttleClick(mModuleParent, this, 1);
+        ThrottleClickEvents.throttleClick(mModuleBenchmark, this, 1);
+        ThrottleClickEvents.throttleClick(mBluePrintParent, this, 1);
+        ThrottleClickEvents.throttleClick(mModelParent, this, 1);
+        ThrottleClickEvents.throttleClick(mSaveBtn, this, 1);
+        ThrottleClickEvents.throttleClick(mDeleteBtn, this, 1);
     }
 
     private void initData() {
@@ -164,13 +175,13 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
         initStatusBar(mStatusView);
 
         mPresenter = new CreateCheckListPresenter(this);
+        mPresenter.initData(getIntent());
     }
 
     @Override
     public void onClick(View view) {
         int id = view.getId();
-        switch (id)
-        {
+        switch (id) {
             case R.id.create_check_list_nav_back://返回按钮
                 mActivity.finish();
                 break;
@@ -190,14 +201,13 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
                 //必填  施工单位   责任人  现场描述  质检项目
                 break;
             case R.id.create_check_list_company://选择施工单位
-
+                mPresenter.showCompanyList();
                 break;
             case R.id.create_check_list_person://选择责任人
-
+                mPresenter.getPersonList();
                 break;
             case R.id.create_check_list_photo_3://添加图片
-                if(mPhotoAlbumDialog==null)
-                {
+                if (mPhotoAlbumDialog == null) {
                     mPhotoAlbumDialog = new PhotoAlbumDialog(mActivity);
                     mPhotoAlbumDialog.builder(new View.OnClickListener() {
                         @Override
@@ -214,10 +224,10 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
                 mPhotoAlbumDialog.show();
                 break;
             case R.id.create_check_list_remain_flag://整改期限开关
-                if(mRemainFlagState){
+                if (mRemainFlagState) {
                     mRemainFlag.setBackgroundResource(R.drawable.icon_flag_close);
                     mRemainParent.setVisibility(View.GONE);
-                }else{
+                } else {
                     mRemainFlag.setBackgroundResource(R.drawable.icon_flag_open);
                     mRemainParent.setVisibility(View.VISIBLE);
                 }
@@ -265,7 +275,7 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(mPresenter!=null) {
+        if (mPresenter != null) {
             mPresenter.onDestroy();
         }
     }
@@ -273,9 +283,46 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(mPresenter!=null)
-        {
+        if (mPresenter != null) {
             mPresenter.onActivityResult(requestCode, resultCode, data);
         }
+    }
+
+    @Override
+    public void showCompany(CompanyItem companyItem) {
+        mCompanyName.setText(companyItem.name);
+    }
+
+    @Override
+    public void showCompanyList(final List<String> mCompanyNameList, final int mCompanySelectPosition) {
+        mChooseCompanyListDialog = new ChooseListDialog(mActivity, mCompanySelectPosition);
+        mChooseCompanyListDialog.builder(new OnChooseListListener() {
+            @Override
+            public void onSelect(int position) {
+                mCompanyName.setText(mCompanyNameList.get(position));
+                mPresenter.setCompanySelectedPosition(position);
+                //更改施工单位  更改责任人
+                if (mCompanySelectPosition != position) {
+                    mPersonName.setText("");
+                    mPresenter.setPersonSelectedPosition(-1);
+                }
+            }
+        }, mCompanyNameList);
+        mChooseCompanyListDialog.show();
+    }
+
+    @Override
+    public void showPersonList(final List<String> mPersonNameList, int mPersonSelectPosition) {
+        mChoosePersonListDialog = new ChooseListDialog(mActivity, mPersonSelectPosition);
+        mChoosePersonListDialog.builder(new OnChooseListListener() {
+            @Override
+            public void onSelect(int position) {
+                if (position >= 0 && position < mPersonNameList.size()) {
+                    mPersonName.setText(mPersonNameList.get(position));
+                }
+                mPresenter.setPersonSelectedPosition(position);
+            }
+        }, mPersonNameList);
+        mChoosePersonListDialog.show();
     }
 }

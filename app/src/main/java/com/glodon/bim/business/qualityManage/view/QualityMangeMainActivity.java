@@ -24,6 +24,7 @@ import com.glodon.bim.base.BaseActivity;
 import com.glodon.bim.base.BaseFragment;
 import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.basic.utils.ScreenUtil;
+import com.glodon.bim.basic.utils.SharedPreferencesUtil;
 import com.glodon.bim.business.greendao.provider.DaoProvider;
 import com.glodon.bim.business.main.bean.ProjectListItem;
 import com.glodon.bim.business.qualityManage.OnClassifyItemClickListener;
@@ -100,6 +101,7 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
         mActivity = this;
         mPresenter = new QualityMangeMainPresenter(this);
         mProjectInfo = (ProjectListItem) getIntent().getSerializableExtra(CommonConfig.PROJECT_LIST_ITEM);
+
         mFromType = getIntent().getIntExtra(CommonConfig.MAIN_FROM_TYPE,0);
         initView();
         setListener();
@@ -147,7 +149,8 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
      */
     private void initClassify(){
         mDataList = new ArrayList<>();
-        String[] names = {"全部","待提交","待整改","待复查","已整改","已复查","已延迟","已验收"};
+//        String[] names = {"全部","待提交","待整改","待复查","已整改","已复查","已延迟","已验收"};
+        String[] names = {"全部","待提交","待整改","待复查","已检查","已复查","已延迟","已验收"};
         for(int i = 0;i<8;i++){
             ClassifyItem item = new ClassifyItem();
             item.name = names[i];
