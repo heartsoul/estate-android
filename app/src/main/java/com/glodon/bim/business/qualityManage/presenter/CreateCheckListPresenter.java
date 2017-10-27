@@ -1,13 +1,17 @@
 package com.glodon.bim.business.qualityManage.presenter;
 
+import android.app.Activity;
 import android.content.Intent;
 
 import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.basic.utils.SharedPreferencesUtil;
 import com.glodon.bim.business.qualityManage.bean.CompanyItem;
+import com.glodon.bim.business.qualityManage.bean.ModuleListBeanItem;
 import com.glodon.bim.business.qualityManage.bean.PersonItem;
 import com.glodon.bim.business.qualityManage.contract.CreateCheckListContract;
 import com.glodon.bim.business.qualityManage.model.CreateCheckListModel;
+import com.glodon.bim.business.qualityManage.view.ChooseModuleActivity;
+import com.glodon.bim.common.config.CommonConfig;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +29,7 @@ import rx.subscriptions.CompositeSubscription;
  */
 
 public class CreateCheckListPresenter implements CreateCheckListContract.Presenter {
+    private static final int REQUEST_CODE_CHOOSE_MODULE = 0;//跳转到选择质检项目
     private CreateCheckListContract.Model mModel;
     private CreateCheckListContract.View mView;
     private CompositeSubscription mSubscritption;
@@ -38,6 +43,9 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
     private List<PersonItem> mPersonList;
     private List<String> mPersonNameList;
     private int mPersonSelectPosition = -1;
+    //质检项目
+    private int mModuleSelectPosition = -1;
+    private ModuleListBeanItem mModuleSelectInfo;
 
     public CreateCheckListPresenter(CreateCheckListContract.View mView) {
         this.mView = mView;
@@ -130,8 +138,25 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void toModuleList() {
+        Intent intent = new Intent(mView.getActivity(), ChooseModuleActivity.class);
+        intent.putExtra(CommonConfig.MODULE_LIST_POSITION,mModuleSelectPosition);
+        mView.getActivity().startActivityForResult(intent,REQUEST_CODE_CHOOSE_MODULE);
+    }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode){
+            case REQUEST_CODE_CHOOSE_MODULE:
+                if(resultCode == Activity.RESULT_OK && data!=null){
+                    mModuleSelectPosition = data.getIntExtra(CommonConfig.MODULE_LIST_POSITION,-1);
+                    mModuleSelectInfo = (ModuleListBeanItem) data.getSerializableExtra(CommonConfig.MODULE_LIST_NAME);
+                    if(mView!=null && mModuleSelectInfo!=null){
+                        mView.showModuleName(mModuleSelectInfo.name);
+                    }
+                }
+                break;
+        }
     }
 
     @Override

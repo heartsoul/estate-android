@@ -427,7 +427,7 @@
                         android:layout_toLeftOf="@id/create_check_list_module_arrow"
                         android:layout_toRightOf="@id/create_check_list_module_title">
 
-                        <EditText
+                       <!-- <EditText
                             android:id="@+id/create_check_list_module_name"
                             android:layout_width="@dimen/dimen_0"
                             android:layout_height="wrap_content"
@@ -439,7 +439,21 @@
                             android:maxLines="1"
                             android:textColor="@color/black"
                             android:textSize="@dimen/dimen_16"
-                            android:textCursorDrawable="@drawable/edit_cursor_color"/>
+                            android:textCursorDrawable="@drawable/edit_cursor_color"
+                            />-->
+                        <TextView
+                            android:id="@+id/create_check_list_module_name"
+                            android:layout_width="@dimen/dimen_0"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1"
+                            android:background="@color/white"
+                            android:ellipsize="end"
+                            android:gravity="right"
+                            android:maxLines="1"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/dimen_16"
+                            />
 
                         <ImageView
                             android:id="@+id/create_check_list_module_benchmark"

@@ -1,6 +1,7 @@
 package com.glodon.bim.business.qualityManage.model;
 
 import com.glodon.bim.business.qualityManage.bean.CompanyItem;
+import com.glodon.bim.business.qualityManage.bean.ModuleListBean;
 import com.glodon.bim.business.qualityManage.bean.PersonItem;
 
 import java.util.List;
@@ -30,5 +31,11 @@ public interface CreateCheckListApi {
      */
     @GET("pmbasic/projects/{id}/coperationCorps/{coperationCorpId}/coperationRoles")
     Observable<List<PersonItem>> getPersonList(@Path("id") long id, @Path("coperationCorpId") long coperationCorpId, @Header("cookie") String cookie);
+
+    /**
+     * 获取质检项目列表
+     */
+    @GET("quality/templates")
+    Observable<ModuleListBean> getModuleList(@Query("projectType") String projectType, @Query("page") int  page, @Query("size") int size, @Header("cookie") String cookie);
 
 }

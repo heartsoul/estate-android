@@ -20,6 +20,7 @@ public class SharedPreferencesUtil {
     private static final String NAME = "bim_data";
     private static final String PROJECT_NAME = "project_name";
     private static final String PROJECT_ID = "project_id";
+    private static final String PROJECT_TYPE_CODE = "project_type_code";
 
     /**
      * 保存字符串
@@ -47,6 +48,7 @@ public class SharedPreferencesUtil {
         Editor editor=preferences.edit();
         editor.putString(PROJECT_NAME, item.name);
         editor.putLong(PROJECT_ID,item.deptId);
+        editor.putString(PROJECT_TYPE_CODE,item.projectTypeCode);
         editor.commit();
     }
 
@@ -65,6 +67,15 @@ public class SharedPreferencesUtil {
     public static String getProjectName(){
         SharedPreferences preferences= BaseApplication.getInstance().getSharedPreferences(NAME,Context.MODE_PRIVATE);
         return preferences.getString(PROJECT_NAME,"");
+    }
+
+    /**
+     * 获取项目类型
+     * @return
+     */
+    public static String getProjectTypeCode(){
+        SharedPreferences preferences= BaseApplication.getInstance().getSharedPreferences(NAME,Context.MODE_PRIVATE);
+        return preferences.getString(PROJECT_TYPE_CODE,"");
     }
 
 

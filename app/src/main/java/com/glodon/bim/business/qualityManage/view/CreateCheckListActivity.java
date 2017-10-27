@@ -28,7 +28,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
+/**
+ * 描述：新建检查单
+ * 作者：zhourf on 2017/9/8
+ * 邮箱：zhourf@glodon.com
+ */
 public class CreateCheckListActivity extends BaseActivity implements View.OnClickListener, CreateCheckListContract.View {
 
     private CreateCheckListContract.Presenter mPresenter;
@@ -71,7 +75,7 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
     //质检项目
     private RelativeLayout mModuleParent;
     private ImageView mModuleStar;
-    private EditText mModuleName;
+    private TextView mModuleName;
     private ImageView mModuleBenchmark;
     //关联图纸
     private RelativeLayout mBluePrintParent;
@@ -135,7 +139,7 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
         //质检项目
         mModuleParent = (RelativeLayout) findViewById(R.id.create_check_list_module);
         mModuleStar = (ImageView) findViewById(R.id.create_check_list_module_star);
-        mModuleName = (EditText) findViewById(R.id.create_check_list_module_name);
+        mModuleName = (TextView) findViewById(R.id.create_check_list_module_name);
         mModuleBenchmark = (ImageView) findViewById(R.id.create_check_list_module_benchmark);
         //关联图纸
         mBluePrintParent = (RelativeLayout) findViewById(R.id.create_check_list_blueprint);
@@ -251,7 +255,7 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
                 });
                 break;
             case R.id.create_check_list_module://选择质检项目
-
+                mPresenter.toModuleList();
                 break;
             case R.id.create_check_list_module_benchmark://质检项目标准
 
@@ -338,5 +342,10 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
             }
         }, mPersonNameList);
         mChoosePersonListDialog.show();
+    }
+
+    @Override
+    public void showModuleName(String name) {
+        mModuleName.setText(name);
     }
 }

@@ -7,6 +7,7 @@ import com.glodon.bim.business.qualityManage.bean.PersonItem;
 
 import java.util.List;
 
+import retrofit2.http.Query;
 import rx.Observable;
 
 /**
@@ -38,6 +39,12 @@ public interface CreateCheckListContract {
          * 设置选中责任人的position
          */
         void setPersonSelectedPosition(int position);
+
+        /**
+         * 跳转到质检项目列表
+         */
+        void toModuleList();
+
     }
 
     interface View extends IBaseView {
@@ -60,6 +67,11 @@ public interface CreateCheckListContract {
          * @param mPersonSelectPosition 选中的责任人
          */
         void showPersonList(List<String> mPersonNameList, int mPersonSelectPosition);
+
+        /**
+         * 显示选中的质检项目
+         */
+        void showModuleName(String name);
     }
 
     interface Model {

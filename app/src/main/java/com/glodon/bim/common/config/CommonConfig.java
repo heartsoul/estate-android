@@ -14,4 +14,6 @@ public class CommonConfig {
     public static final String CHANGE_PROJECT = "changeProject";
     public static final String USERNAME = "username";
     public static final String PASSWORD = "password";
+    public static final String MODULE_LIST_POSITION = "moduleListPosition";
+    public static final String MODULE_LIST_NAME = "moduleListName";
 }
