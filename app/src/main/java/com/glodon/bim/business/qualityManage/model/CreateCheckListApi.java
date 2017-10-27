@@ -1,11 +1,14 @@
 package com.glodon.bim.business.qualityManage.model;
 
 import com.glodon.bim.business.qualityManage.bean.CompanyItem;
+import com.glodon.bim.business.qualityManage.bean.CreateCheckListParams;
 import com.glodon.bim.business.qualityManage.bean.ModuleListBean;
 import com.glodon.bim.business.qualityManage.bean.PersonItem;
 
 import java.util.List;
 
+import okhttp3.ResponseBody;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Path;
@@ -37,5 +40,12 @@ public interface CreateCheckListApi {
      */
     @GET("quality/templates")
     Observable<ModuleListBean> getModuleList(@Query("projectType") String projectType, @Query("page") int  page, @Query("size") int size, @Header("cookie") String cookie);
+
+
+    /**
+     * 检查单 新增   提交
+     */
+    @GET("quality/{deptId}/qualityInspection/commit")
+    Observable<ResponseBody> createSubmit(@Path("deptId") long deptId, @Body CreateCheckListParams props, @Header("cookie") String cookie);
 
 }

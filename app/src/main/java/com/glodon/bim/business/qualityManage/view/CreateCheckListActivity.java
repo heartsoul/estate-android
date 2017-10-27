@@ -16,6 +16,7 @@ import com.glodon.bim.base.BaseActivity;
 import com.glodon.bim.basic.listener.ThrottleClickEvents;
 import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.business.qualityManage.bean.CompanyItem;
+import com.glodon.bim.business.qualityManage.bean.CreateCheckListParams;
 import com.glodon.bim.business.qualityManage.contract.CreateCheckListContract;
 import com.glodon.bim.business.qualityManage.listener.OnChooseListListener;
 import com.glodon.bim.business.qualityManage.presenter.CreateCheckListPresenter;
@@ -207,6 +208,7 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
                 break;
             case R.id.create_check_list_nav_submit://提交
                 //必填  施工单位   责任人  现场描述  质检项目
+                mPresenter.submit(new CreateCheckListParams());
                 break;
             case R.id.create_check_list_company://选择施工单位
                 mPresenter.showCompanyList();

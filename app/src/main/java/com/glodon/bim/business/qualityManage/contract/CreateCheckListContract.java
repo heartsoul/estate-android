@@ -3,10 +3,12 @@ package com.glodon.bim.business.qualityManage.contract;
 import com.glodon.bim.base.IBasePresenter;
 import com.glodon.bim.base.IBaseView;
 import com.glodon.bim.business.qualityManage.bean.CompanyItem;
+import com.glodon.bim.business.qualityManage.bean.CreateCheckListParams;
 import com.glodon.bim.business.qualityManage.bean.PersonItem;
 
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.http.Query;
 import rx.Observable;
 
@@ -45,6 +47,10 @@ public interface CreateCheckListContract {
          */
         void toModuleList();
 
+        /**
+         * 点击提交
+         */
+        void submit(CreateCheckListParams createCheckListParams);
     }
 
     interface View extends IBaseView {
@@ -88,5 +94,11 @@ public interface CreateCheckListContract {
          * @param coperationCorpId 施工单位id
          */
         Observable<List<PersonItem>> gePersonList(long id, long coperationCorpId);
+
+        /**
+         * 新建检查单
+         * @param deptId 项目id
+         */
+        Observable<ResponseBody> createSubmit(long deptId, CreateCheckListParams props);
     }
 }
