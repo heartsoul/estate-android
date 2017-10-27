@@ -46,8 +46,8 @@
         android:id="@+id/choose_tenant_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="@dimen/dimen_35"
-        android:layout_marginRight="@dimen/dimen_35"
-        android:layout_marginTop="@dimen/dimen_11"
+        android:layout_marginLeft="@dimen/dimen_29"
+        android:layout_marginRight="@dimen/dimen_29"
+        android:layout_marginTop="@dimen/dimen_23"
         android:background="@color/white" />
 </LinearLayout>

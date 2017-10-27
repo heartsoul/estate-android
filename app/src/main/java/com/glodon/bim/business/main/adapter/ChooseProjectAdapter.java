@@ -53,9 +53,9 @@ public class ChooseProjectAdapter extends RecyclerView.Adapter<RecyclerView.View
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         RecyclerView.ViewHolder holder ;
         if(mSize>4){
-            holder = new ProjectMoreHolder(LayoutInflater.from(mContext).inflate(R.layout.main_choose_project_more_item,null));
+            holder = new ProjectMoreHolder(LayoutInflater.from(mContext).inflate(R.layout.main_choose_project_more_item,parent,false));
         }else{
-            holder = new ProjectLessHolder(LayoutInflater.from(mContext).inflate(R.layout.main_choose_project_less_item,null));
+            holder = new ProjectLessHolder(LayoutInflater.from(mContext).inflate(R.layout.main_choose_project_less_item,parent,false));
         }
         return holder;
     }
@@ -79,7 +79,7 @@ public class ChooseProjectAdapter extends RecyclerView.Adapter<RecyclerView.View
             pHolder.mNameView.setText(item.name);
             //如果只有一个项目  直接选中进入
             if(getItemCount()==1){
-                pHolder.mItemParent.setBackgroundResource(R.drawable.corner_radius_4_choose_project_bg);
+                pHolder.mItemParent.setBackgroundResource(R.drawable.icon_choose_project_bg_selected);
             }
             pHolder.mItemParent.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -89,9 +89,9 @@ public class ChooseProjectAdapter extends RecyclerView.Adapter<RecyclerView.View
                     }
 
                     if(mLastView!=null){
-                        mLastView.setBackgroundResource(R.drawable.shadow_category_item_bg);
+                        mLastView.setBackgroundResource(R.drawable.icon_choose_project_bg_normal);
                     }
-                    pHolder.mItemParent.setBackgroundResource(R.drawable.corner_radius_4_choose_project_bg);
+                    pHolder.mItemParent.setBackgroundResource(R.drawable.icon_choose_project_bg_selected);
                     mLastView = pHolder.mItemParent;
                 }
             });

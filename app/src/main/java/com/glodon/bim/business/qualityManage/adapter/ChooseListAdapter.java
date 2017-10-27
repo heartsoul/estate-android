@@ -24,6 +24,7 @@ public class ChooseListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private Activity mActivity;
     private List<String> mDataList;
     private ImageView mLastView;
+    private TextView mLastTextView;
     private OnChooseListListener mListener;
     private int mSelectPosition = 0;
 
@@ -54,9 +55,12 @@ public class ChooseListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             public void onClick(View view) {
                 if(mLastView!=null){
                     mLastView.setVisibility(View.INVISIBLE);
+                    mLastTextView.setTextColor(mActivity.getResources().getColor(R.color.c_333333));
                 }
                 lHolder.mSelectView.setVisibility(View.VISIBLE);
+                lHolder.mNameView.setTextColor(mActivity.getResources().getColor(R.color.c_00baf3));
                 mLastView = lHolder.mSelectView;
+                mLastTextView = lHolder.mNameView;
                 mSelectPosition = position;
                 if(mListener!=null)
                 {
@@ -67,9 +71,12 @@ public class ChooseListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         if(mSelectPosition == position){
             lHolder.mSelectView.setVisibility(View.VISIBLE);
+            lHolder.mNameView.setTextColor(mActivity.getResources().getColor(R.color.c_00baf3));
             mLastView = lHolder.mSelectView;
+            mLastTextView = lHolder.mNameView;
         }else{
             lHolder.mSelectView.setVisibility(View.INVISIBLE);
+            lHolder.mNameView.setTextColor(mActivity.getResources().getColor(R.color.c_333333));
         }
     }
 

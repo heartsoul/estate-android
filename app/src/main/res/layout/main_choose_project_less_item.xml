@@ -5,24 +5,19 @@
     android:background="@color/white"
     android:orientation="vertical">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_20"
-        android:background="@color/white" />
-
     <LinearLayout
         android:id="@+id/choose_project_less_item_parent"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_64"
+        android:layout_height="@dimen/dimen_82"
         android:orientation="horizontal"
-        android:background="@drawable/shadow_category_item_bg">
+        android:background="@drawable/icon_choose_project_bg_normal">
 
         <ImageView
             android:id="@+id/choose_project_less_item_icon"
             android:layout_width="@dimen/dimen_43"
             android:layout_height="@dimen/dimen_43"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="@dimen/dimen_11"
+            android:layout_marginLeft="@dimen/dimen_20"
             android:background="@drawable/icon_choose_project_item" />
 
         <TextView

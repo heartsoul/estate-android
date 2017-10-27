@@ -47,7 +47,7 @@ public class ChooseCategoryItemActivity extends BaseActivity implements ChooseCa
         mCreateView = (LinearLayout) findViewById(R.id.choose_category_item_item_create);
 
         //计算每个方形的宽度
-        int width = (ScreenUtil.getScreenInfo()[0] - ScreenUtil.dp2px(80)) / 3;
+        int width = (ScreenUtil.getScreenInfo()[0] - ScreenUtil.dp2px(44)) / 3;
         mQualityCheckListView.getLayoutParams().height = width;
         mQualityCheckListView.getLayoutParams().width = width;
         mModelView.getLayoutParams().height = width;

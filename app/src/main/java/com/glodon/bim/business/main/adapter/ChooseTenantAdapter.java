@@ -44,7 +44,7 @@ public class ChooseTenantAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ProjectLessHolder(LayoutInflater.from(mContext).inflate(R.layout.main_choose_project_less_item,null));
+        return new ProjectLessHolder(LayoutInflater.from(mContext).inflate(R.layout.main_choose_project_less_item,parent,false));
     }
 
     @Override
@@ -54,7 +54,7 @@ public class ChooseTenantAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         pHolder.mNameView.setText(item.tenantName);
         pHolder.mIconView.setBackgroundResource(R.drawable.icon_choose_tenant_item);
         if(getItemCount()==1){
-            pHolder.mItemParent.setBackgroundResource(R.drawable.corner_radius_4_choose_project_bg);
+            pHolder.mItemParent.setBackgroundResource(R.drawable.icon_choose_project_bg_selected);
         }
         pHolder.mItemParent.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,9 +64,9 @@ public class ChooseTenantAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 }
 
                 if(mLastView!=null){
-                    mLastView.setBackground(null);
+                    mLastView.setBackgroundResource(R.drawable.icon_choose_project_bg_normal);
                 }
-                pHolder.mItemParent.setBackgroundResource(R.drawable.corner_radius_4_choose_project_bg);
+                pHolder.mItemParent.setBackgroundResource(R.drawable.icon_choose_project_bg_selected);
                 mLastView = pHolder.mItemParent;
             }
         });

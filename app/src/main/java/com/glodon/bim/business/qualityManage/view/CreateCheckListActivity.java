@@ -21,9 +21,14 @@ import com.glodon.bim.business.qualityManage.listener.OnChooseListListener;
 import com.glodon.bim.business.qualityManage.presenter.CreateCheckListPresenter;
 import com.glodon.bim.common.config.CommonConfig;
 import com.glodon.bim.customview.PhotoAlbumDialog;
+import com.glodon.bim.customview.datepicker.TNBCustomDatePickerUtils;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public class CreateCheckListActivity extends BaseActivity implements View.OnClickListener, CreateCheckListContract.View {
 
@@ -234,7 +239,17 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
                 mRemainFlagState = !mRemainFlagState;
                 break;
             case R.id.create_check_list_remain://选择整改期限
-
+                TNBCustomDatePickerUtils.showDayPicker(mActivity, new TNBCustomDatePickerUtils.OnDateSelectedListener() {
+                    @Override
+                    public void onDateSelected(Map<String, Integer> map) {
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.set(map.get("year"), map.get("month") - 1, map.get("date"));
+                        Date date = calendar.getTime();
+                        String time = (new SimpleDateFormat("yyyy-MM-dd")).format(date);
+                        LogUtil.e("当前选择的时间为：-------------" + time);
+                        mRemainName.setText(time);
+                    }
+                });
                 break;
             case R.id.create_check_list_module://选择质检项目
 
@@ -295,7 +310,7 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
 
     @Override
     public void showCompanyList(final List<String> mCompanyNameList, final int mCompanySelectPosition) {
-        mChooseCompanyListDialog = new ChooseListDialog(mActivity, mCompanySelectPosition);
+        mChooseCompanyListDialog = new ChooseListDialog(mActivity, mCompanySelectPosition,"选择施工单位");
         mChooseCompanyListDialog.builder(new OnChooseListListener() {
             @Override
             public void onSelect(int position) {
@@ -313,7 +328,7 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
 
     @Override
     public void showPersonList(final List<String> mPersonNameList, int mPersonSelectPosition) {
-        mChoosePersonListDialog = new ChooseListDialog(mActivity, mPersonSelectPosition);
+        mChoosePersonListDialog = new ChooseListDialog(mActivity, mPersonSelectPosition,"选择责任人");
         mChoosePersonListDialog.builder(new OnChooseListListener() {
             @Override
             public void onSelect(int position) {

@@ -7,28 +7,16 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_54">
+        android:layout_height="@dimen/dimen_50">
         <TextView
-            android:id="@+id/choose_list_cancel"
+            android:id="@+id/choose_list_dialog_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:text="取消"
-            android:textColor="@color/c_7a7a7a"
-            android:textSize="@dimen/dimen_15"
-            android:layout_marginLeft="@dimen/dimen_20"/>
+            android:layout_centerInParent="true"
+            android:text="选择施工单位"
+            android:textColor="@color/c_070707"
+            android:textSize="@dimen/dimen_18"/>
 
-
-        <TextView
-            android:id="@+id/choose_list_sure"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="@dimen/dimen_20"
-            android:text="确定"
-            android:textColor="@color/c_00baf3"
-            android:textSize="@dimen/dimen_15"/>
     </RelativeLayout>
 
 

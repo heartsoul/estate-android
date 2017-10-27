@@ -32,41 +32,36 @@ public class ChooseListDialog {
     private Context context;
     private Dialog dialog; //悬浮框
     private Display display;//window展示
-    private TextView mSureView,mCancelView;
+    private TextView mTitleView;
+    private String mTitle;
     private RecyclerView mRecyclerView;
     private RelativeLayout mRecyclerViewRoot;
     private ChooseListAdapter mAdapter;
     private int mSelectPosition=0;
 
-    public ChooseListDialog(Context context) {
-        this.context = context;
-        WindowManager windowManager = (WindowManager) context
-                .getSystemService(Context.WINDOW_SERVICE);
-        display = windowManager.getDefaultDisplay();
-    }
-    public ChooseListDialog(Context context,int selectPosition) {
+    public ChooseListDialog(Context context,int selectPosition,String title) {
         this.context = context;
         WindowManager windowManager = (WindowManager) context
                 .getSystemService(Context.WINDOW_SERVICE);
         display = windowManager.getDefaultDisplay();
         this.mSelectPosition = selectPosition;
+        this.mTitle = title;
     }
 
 
     public ChooseListDialog builder(final OnChooseListListener listener, List<String> list) {
         View view = LayoutInflater.from(context).inflate(R.layout.view_choose_list_dialog,null);
-        mSureView = view.findViewById(R.id.choose_list_sure);
-        mCancelView = view.findViewById(R.id.choose_list_cancel);
+        mTitleView = view.findViewById(R.id.choose_list_dialog_title);
         mRecyclerView = view.findViewById(R.id.choose_list_recyclerview);
         mRecyclerViewRoot = view.findViewById(R.id.choose_list_recyclerview_root);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
-
+        mTitleView.setText(mTitle);
         LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) mRecyclerViewRoot.getLayoutParams();
         params.width = LinearLayout.LayoutParams.MATCH_PARENT;
         if(list!=null){
             int size = list.size();
             if(size>5){
-                params.height = ScreenUtil.dp2px(235);
+                params.height = ScreenUtil.dp2px(240);
             }else{
                 params.height = LinearLayout.LayoutParams.WRAP_CONTENT;
                 mRecyclerView.getLayoutParams().height = LinearLayout.LayoutParams.WRAP_CONTENT;
@@ -79,26 +74,14 @@ public class ChooseListDialog {
             @Override
             public void onSelect(int position) {
                 mSelectPosition = position;
-            }
-        });
-        mRecyclerView.setAdapter(mAdapter);
-        //设置点击事件
-        mSureView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
                 if(listener!=null) {
                     listener.onSelect(mSelectPosition);
                 }
                 dismiss();
             }
         });
+        mRecyclerView.setAdapter(mAdapter);
 
-        mCancelView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dismiss();
-            }
-        });
         // 设置Dialog最小宽度为屏幕宽度
         view.setMinimumWidth(display.getWidth());
 

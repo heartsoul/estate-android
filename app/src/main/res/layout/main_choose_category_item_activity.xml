@@ -74,17 +74,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginTop="@dimen/dimen_20">
-                    <View
-                        android:layout_width="@dimen/dimen_20"
-                        android:layout_height="@dimen/dimen_20"
-                        android:background="@color/white"/>
+                    android:layout_marginTop="@dimen/dimen_14"
+                    android:paddingLeft="@dimen/dimen_14"
+                    android:paddingRight="@dimen/dimen_14">
                     <LinearLayout
                         android:id="@+id/choose_category_item_item_zjqd"
                         android:layout_width="@dimen/dimen_98"
                         android:layout_height="@dimen/dimen_98"
                         android:orientation="vertical"
-                        android:background="@drawable/shadow_category_item_bg">
+                        android:background="@drawable/icon_choose_category_item_background">
 
                         <ImageView
                             android:layout_width="@dimen/dimen_40"
@@ -107,7 +105,7 @@
 
                     </LinearLayout>
                     <View
-                        android:layout_width="@dimen/dimen_20"
+                        android:layout_width="@dimen/dimen_08"
                         android:layout_height="@dimen/dimen_20"
                         android:background="@color/white"/>
                     <LinearLayout
@@ -115,7 +113,7 @@
                         android:layout_width="@dimen/dimen_98"
                         android:layout_height="@dimen/dimen_98"
                         android:orientation="vertical"
-                        android:background="@drawable/shadow_category_item_bg">
+                        android:background="@drawable/icon_choose_category_item_background">
 
                         <ImageView
                             android:layout_width="@dimen/dimen_40"
@@ -138,7 +136,7 @@
 
                     </LinearLayout>
                     <View
-                        android:layout_width="@dimen/dimen_20"
+                        android:layout_width="@dimen/dimen_08"
                         android:layout_height="@dimen/dimen_20"
                         android:background="@color/white"/>
                     <LinearLayout
@@ -146,7 +144,7 @@
                         android:layout_width="@dimen/dimen_98"
                         android:layout_height="@dimen/dimen_98"
                         android:orientation="vertical"
-                        android:background="@drawable/shadow_category_item_bg">
+                        android:background="@drawable/icon_choose_category_item_background">
 
                         <ImageView
                             android:layout_width="@dimen/dimen_40"
@@ -168,19 +166,15 @@
                             />
 
                     </LinearLayout>
-                    <View
-                        android:layout_width="@dimen/dimen_20"
-                        android:layout_height="@dimen/dimen_20"
-                        android:background="@color/white"/>
 
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginTop="@dimen/dimen_20">
+                    android:layout_marginTop="@dimen/dimen_08">
                     <View
-                        android:layout_width="@dimen/dimen_20"
+                        android:layout_width="@dimen/dimen_14"
                         android:layout_height="@dimen/dimen_20"
                         android:background="@color/white"/>
                     <LinearLayout
@@ -188,7 +182,7 @@
                         android:layout_width="@dimen/dimen_98"
                         android:layout_height="@dimen/dimen_98"
                         android:orientation="vertical"
-                        android:background="@drawable/shadow_category_item_bg">
+                        android:background="@drawable/icon_choose_category_item_background">
 
                         <ImageView
                             android:layout_width="@dimen/dimen_40"
@@ -211,7 +205,7 @@
 
                     </LinearLayout>
                     <View
-                        android:layout_width="@dimen/dimen_20"
+                        android:layout_width="@dimen/dimen_08"
                         android:layout_height="@dimen/dimen_20"
                         android:background="@color/white"/>
                     <LinearLayout
@@ -219,7 +213,7 @@
                         android:layout_width="@dimen/dimen_98"
                         android:layout_height="@dimen/dimen_98"
                         android:orientation="vertical"
-                        android:background="@drawable/shadow_category_item_bg">
+                        android:background="@drawable/icon_choose_category_item_background">
 
                         <ImageView
                             android:layout_width="@dimen/dimen_40"
@@ -241,8 +235,6 @@
                             />
 
                     </LinearLayout>
-
-
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

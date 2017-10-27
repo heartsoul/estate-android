@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/dimen_47">
+    android:layout_height="@dimen/dimen_48">
 
     <TextView
         android:id="@+id/quality_create_check_list_choose_list_name"
@@ -10,8 +10,7 @@
         android:textSize="@dimen/dimen_16"
         android:textColor="@color/c_333333"
         android:text="首开"
-        android:gravity="center_vertical"
-        android:layout_marginLeft="@dimen/dimen_21"
+        android:gravity="center"
         android:maxLines="1"
         android:ellipsize="end"
         />

@@ -129,14 +129,20 @@ public class ChooseProjectActivity extends BaseActivity implements View.OnClickL
 
     @Override
     public void setStyle(int size) {
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) mPullRefreshView.getLayoutParams();
         if(size<=4){
-            mContentParent.setPadding(ScreenUtil.dp2px(38),ScreenUtil.dp2px(11),ScreenUtil.dp2px(38),0);
+            params.leftMargin = ScreenUtil.dp2px(29);
+            params.topMargin = ScreenUtil.dp2px(23);
+            params.rightMargin = ScreenUtil.dp2px(29);
             mBgView.setVisibility(View.VISIBLE);
         }else{
-            mContentParent.setPadding(0,ScreenUtil.dp2px(5),0,0);
+            params.leftMargin = 0;
+            params.topMargin = ScreenUtil.dp2px(5);
+            params.rightMargin = 0;
             mBgView.setVisibility(View.INVISIBLE);
             mPullRefreshView.setPullUpEnable(true);
         }
+        mPullRefreshView.setLayoutParams(params);
         mAdapter = new ChooseProjectAdapter(this,size);
         mAdapter.setListener(mPresenter.getListener());
         mRecyclerView.setAdapter(mAdapter);
