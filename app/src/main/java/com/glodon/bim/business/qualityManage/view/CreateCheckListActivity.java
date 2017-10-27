@@ -24,7 +24,6 @@ import com.glodon.bim.customview.PhotoAlbumDialog;
 import com.glodon.bim.customview.datepicker.TNBCustomDatePickerUtils;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -239,7 +238,7 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
                 mRemainFlagState = !mRemainFlagState;
                 break;
             case R.id.create_check_list_remain://选择整改期限
-                TNBCustomDatePickerUtils.showDayPicker(mActivity, new TNBCustomDatePickerUtils.OnDateSelectedListener() {
+                TNBCustomDatePickerUtils.showDayDialog(mActivity, new TNBCustomDatePickerUtils.OnDateSelectedListener() {
                     @Override
                     public void onDateSelected(Map<String, Integer> map) {
                         Calendar calendar = Calendar.getInstance();

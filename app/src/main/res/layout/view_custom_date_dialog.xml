@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/transparent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_54"
+        android:background="@color/white">
+        <TextView
+            android:id="@+id/custom_date_dialog_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="取消"
+            android:textColor="@color/c_7a7a7a"
+            android:textSize="@dimen/dimen_16"
+            android:layout_marginLeft="@dimen/dimen_20" />
+        <TextView
+            android:id="@+id/custom_date_dialog_sure"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="确定"
+            android:textColor="@color/c_00baf3"
+            android:textSize="@dimen/dimen_16"
+            android:layout_marginRight="@dimen/dimen_20"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_0.5"
+        android:background="@color/c_cbcbcb" />
+
+    <LinearLayout
+        android:id="@+id/custom_date_dialog_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/white">
+
+    </LinearLayout>
+
+</LinearLayout>

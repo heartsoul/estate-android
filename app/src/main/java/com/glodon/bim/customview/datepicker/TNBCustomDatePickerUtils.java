@@ -62,6 +62,17 @@ public class TNBCustomDatePickerUtils {
 		TNBDateDialog.showTimeDialog(context,listener);
 	}
 
+	/**
+	 * 日期选择
+	 * @param context
+	 * @param listener
+	 */
+	public static void showDayDialog(final Activity context,
+									 final OnDateSelectedListener listener) {
+		CustomDateDialog dialog = new CustomDateDialog(context);
+		dialog.builder(listener);
+		dialog.show();
+	}
 
 
 	/**
