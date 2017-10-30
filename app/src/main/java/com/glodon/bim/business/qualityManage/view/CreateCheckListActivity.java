@@ -3,6 +3,7 @@ package com.glodon.bim.business.qualityManage.view;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -180,8 +181,18 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
     }
 
     private void initData() {
-        mImagePath = getIntent().getStringExtra(CommonConfig.IAMGE_SAVE_PATH);
+        //状态栏
         initStatusBar(mStatusView);
+
+        //判断图片
+        mImagePath = getIntent().getStringExtra(CommonConfig.IAMGE_SAVE_PATH);
+        if(TextUtils.isEmpty(mImagePath)){
+            mPhotoParent.setVisibility(View.GONE);
+            mPhotoDescription.setVisibility(View.GONE);
+        }else{
+            mPhotoParent.setVisibility(View.VISIBLE);
+            mPhotoDescription.setVisibility(View.VISIBLE);
+        }
 
         mPresenter = new CreateCheckListPresenter(this);
         mPresenter.initData(getIntent());

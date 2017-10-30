@@ -8,6 +8,7 @@ import com.glodon.bim.basic.utils.SharedPreferencesUtil;
 import com.glodon.bim.business.main.bean.ProjectListItem;
 import com.glodon.bim.business.main.contract.ChooseCategoryItemContract;
 import com.glodon.bim.business.qualityManage.view.BluePrintActivity;
+import com.glodon.bim.business.qualityManage.view.CreateCheckListActivity;
 import com.glodon.bim.business.qualityManage.view.ModelActivity;
 import com.glodon.bim.business.qualityManage.view.PhotoEditActivity;
 import com.glodon.bim.business.qualityManage.view.QualityMangeMainActivity;
@@ -64,7 +65,8 @@ public class ChooseCategoryItemPresenter implements ChooseCategoryItemContract.P
 
     @Override
     public void toCreate() {
-
+        Intent intent = new Intent(mView.getActivity(), CreateCheckListActivity.class);
+        mView.getActivity().startActivity(intent);
     }
 
     @Override

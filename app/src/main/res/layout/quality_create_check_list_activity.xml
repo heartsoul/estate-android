@@ -104,7 +104,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/white"
+                android:background="@color/c_f9f9f9"
                 android:orientation="vertical"
                 android:focusable="true"
                 android:focusableInTouchMode="true">
@@ -112,7 +112,8 @@
                 <RelativeLayout
                     android:id="@+id/create_check_list_company"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dimen_56">
+                    android:layout_height="@dimen/dimen_56"
+                    android:background="@color/white">
 
                     <TextView
                         android:id="@+id/create_check_list_company_title"
@@ -168,7 +169,8 @@
                 <RelativeLayout
                     android:id="@+id/create_check_list_person"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dimen_52">
+                    android:layout_height="@dimen/dimen_52"
+                    android:background="@color/white">
 
                     <TextView
                         android:id="@+id/create_check_list_person_title"
@@ -223,7 +225,8 @@
                 <!--现场描述-->
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:background="@color/white">
 
                     <EditText
                         android:id="@+id/create_check_list_site_desription"
@@ -275,11 +278,13 @@
                     android:textSize="@dimen/dimen_14"
                     android:textCursorDrawable="@drawable/edit_cursor_color"/>
 
+
                 <LinearLayout
                     android:id="@+id/create_check_list_photo_parent"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
+                    android:background="@color/white"
                     android:paddingBottom="@dimen/dimen_23"
                     android:paddingLeft="@dimen/dimen_20">
 
@@ -312,12 +317,15 @@
 
                 </LinearLayout>
                 <!--需整改期限-->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_20"
+                    android:background="@color/c_f9f9f9"/>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:paddingBottom="@dimen/dimen_20"
-                    android:paddingTop="@dimen/dimen_20">
+                    android:background="@color/white">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -384,11 +392,16 @@
 
                     </RelativeLayout>
                 </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_11"
+                    android:background="@color/c_f9f9f9"/>
                 <!--质检项目-->
                 <RelativeLayout
                     android:id="@+id/create_check_list_module"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dimen_52">
+                    android:layout_height="@dimen/dimen_52"
+                    android:background="@color/white">
 
                     <TextView
                         android:id="@+id/create_check_list_module_title"
@@ -477,7 +490,8 @@
                 <RelativeLayout
                     android:id="@+id/create_check_list_blueprint"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dimen_52">
+                    android:layout_height="@dimen/dimen_52"
+                    android:background="@color/white">
 
                     <TextView
                         android:id="@+id/create_check_list_blueprint_title"
@@ -524,7 +538,8 @@
                 <RelativeLayout
                     android:id="@+id/create_check_list_model"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dimen_52">
+                    android:layout_height="@dimen/dimen_52"
+                    android:background="@color/white">
 
                     <TextView
                         android:id="@+id/create_check_list_model_title"

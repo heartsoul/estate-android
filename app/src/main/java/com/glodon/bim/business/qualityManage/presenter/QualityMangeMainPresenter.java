@@ -7,12 +7,11 @@ import com.glodon.bim.basic.utils.CameraUtil;
 import com.glodon.bim.business.main.bean.ProjectListItem;
 import com.glodon.bim.business.qualityManage.contract.QualityMangeMainContract;
 import com.glodon.bim.business.qualityManage.view.BluePrintActivity;
+import com.glodon.bim.business.qualityManage.view.CreateCheckListActivity;
 import com.glodon.bim.business.qualityManage.view.ModelActivity;
 import com.glodon.bim.business.qualityManage.view.PhotoEditActivity;
 import com.glodon.bim.business.setting.view.SettingActivity;
 import com.glodon.bim.common.config.CommonConfig;
-
-import java.io.File;
 
 /**
  * 描述：质量管理
@@ -57,7 +56,8 @@ public class QualityMangeMainPresenter implements QualityMangeMainContract.Prese
 
     @Override
     public void toCreate() {
-
+        Intent intent = new Intent(mView.getActivity(), CreateCheckListActivity.class);
+        mView.getActivity().startActivity(intent);
     }
 
     @Override
