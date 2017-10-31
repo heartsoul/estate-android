@@ -627,12 +627,16 @@
             android:orientation="vertical"
             android:visibility="gone">
 
-
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_0.5"
+                android:background="@color/c_a3cccccc" />
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingBottom="@dimen/dimen_06"
-                android:background="@color/white">
+                android:background="@color/white"
+                android:paddingTop="@dimen/dimen_06">
 
                 <TextView
                     android:id="@+id/create_check_list_input_title"

@@ -203,6 +203,7 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
         ThrottleClickEvents.throttleClick(mSaveBtn, this, 1);
         ThrottleClickEvents.throttleClick(mDeleteBtn, this, 1);
 
+        //输入现场描述字数的监听
         mSiteDescription.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
