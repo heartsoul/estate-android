@@ -15,9 +15,9 @@ import android.widget.TextView;
 import com.glodon.bim.R;
 import com.glodon.bim.base.BaseActivity;
 import com.glodon.bim.basic.listener.ThrottleClickEvents;
-import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.business.qualityManage.bean.CompanyItem;
 import com.glodon.bim.business.qualityManage.bean.CreateCheckListParams;
+import com.glodon.bim.business.qualityManage.bean.CreateCheckListParamsFile;
 import com.glodon.bim.business.qualityManage.contract.CreateCheckListContract;
 import com.glodon.bim.business.qualityManage.listener.OnChooseListListener;
 import com.glodon.bim.business.qualityManage.presenter.CreateCheckListPresenter;
@@ -26,10 +26,12 @@ import com.glodon.bim.customview.PhotoAlbumDialog;
 import com.glodon.bim.customview.datepicker.TNBCustomDatePickerUtils;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
 /**
  * 描述：新建检查单
  * 作者：zhourf on 2017/9/8
@@ -63,7 +65,7 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
     private EditText mSiteDescription;
     private ImageView mSiteStar;
     //图片描述
-    private EditText mPhotoDescription;
+//    private EditText mPhotoDescription;
     private LinearLayout mPhotoParent;
     private ImageView mPhoto0, mPhoto1, mPhoto2, mPhoto3;
 
@@ -92,6 +94,13 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
     private TextView mInputTitle, mLeftNumber;
     //图片删除 拖动到此处删除
     private LinearLayout mPhotoDelete;
+
+    //提示框
+    private SaveDeleteDialog mHintDialog;
+    private SaveDeleteDialog mDeleteDialog;
+    private SaveDeleteDialog mBackDialog;
+    //图片集合
+    private List<CreateCheckListParamsFile> mPhotoList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,7 +137,7 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
         mSiteDescription = (EditText) findViewById(R.id.create_check_list_site_desription);
         mSiteStar = (ImageView) findViewById(R.id.create_check_list_site_desription_star);
         //图片描述
-        mPhotoDescription = (EditText) findViewById(R.id.create_check_list_photo_desription);
+//        mPhotoDescription = (EditText) findViewById(R.id.create_check_list_photo_desription);
         mPhotoParent = (LinearLayout) findViewById(R.id.create_check_list_photo_parent);
         mPhoto0 = (ImageView) findViewById(R.id.create_check_list_photo_0);
         mPhoto1 = (ImageView) findViewById(R.id.create_check_list_photo_1);
@@ -186,13 +195,16 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
 
         //判断图片
         mImagePath = getIntent().getStringExtra(CommonConfig.IAMGE_SAVE_PATH);
-        if(TextUtils.isEmpty(mImagePath)){
+        if (TextUtils.isEmpty(mImagePath)) {
             mPhotoParent.setVisibility(View.GONE);
-            mPhotoDescription.setVisibility(View.GONE);
-        }else{
+//            mPhotoDescription.setVisibility(View.GONE);
+        } else {
             mPhotoParent.setVisibility(View.VISIBLE);
-            mPhotoDescription.setVisibility(View.VISIBLE);
+//            mPhotoDescription.setVisibility(View.VISIBLE);
         }
+
+        //默认单据 检查单
+        mParams.inspectionType = CommonConfig.TYPE_INSPECTION;
 
         mPresenter = new CreateCheckListPresenter(this);
         mPresenter.initData(getIntent());
@@ -203,23 +215,25 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
         int id = view.getId();
         switch (id) {
             case R.id.create_check_list_nav_back://返回按钮
-                mActivity.finish();
+                back();
                 break;
             case R.id.create_check_list_nav_check_left_title://检查单
                 mNavLeftLine.setVisibility(View.VISIBLE);
                 mNavCheckLeftTitle.setTextSize(17);
                 mNavRightLine.setVisibility(View.INVISIBLE);
                 mNavCheckRightTitle.setTextSize(15);
+                mParams.inspectionType = CommonConfig.TYPE_INSPECTION;
                 break;
             case R.id.create_check_list_nav_check_right_title://验收单
                 mNavLeftLine.setVisibility(View.INVISIBLE);
                 mNavCheckLeftTitle.setTextSize(15);
                 mNavRightLine.setVisibility(View.VISIBLE);
                 mNavCheckRightTitle.setTextSize(17);
+                mParams.inspectionType = CommonConfig.TYPE_ACCEPTANCE;
                 break;
             case R.id.create_check_list_nav_submit://提交
                 //必填  施工单位   责任人  现场描述  质检项目
-                mPresenter.submit(new CreateCheckListParams());
+                submit();
                 break;
             case R.id.create_check_list_company://选择施工单位
                 mPresenter.showCompanyList();
@@ -262,8 +276,8 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
                         calendar.set(map.get("year"), map.get("month") - 1, map.get("date"));
                         Date date = calendar.getTime();
                         String time = (new SimpleDateFormat("yyyy-MM-dd")).format(date);
-                        LogUtil.e("当前选择的时间为：-------------" + time);
                         mRemainName.setText(time);
+                        mParams.lastRectificationDate = calendar.getTimeInMillis()+"";
                     }
                 });
                 break;
@@ -280,12 +294,25 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
 
                 break;
             case R.id.create_check_list_save://保存
-
+                save();
                 break;
             case R.id.create_check_list_delete://删除
-
+                mDeleteDialog = new SaveDeleteDialog(mActivity);
+                mDeleteDialog.getDeleteDialog(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        //调用接口删除
+                        mPresenter.deleteCheckList();
+                    }
+                });
+                mDeleteDialog.show();
                 break;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        back();
     }
 
     @Override
@@ -326,7 +353,7 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
 
     @Override
     public void showCompanyList(final List<String> mCompanyNameList, final int mCompanySelectPosition) {
-        mChooseCompanyListDialog = new ChooseListDialog(mActivity, mCompanySelectPosition,"选择施工单位");
+        mChooseCompanyListDialog = new ChooseListDialog(mActivity, mCompanySelectPosition, "选择施工单位");
         mChooseCompanyListDialog.builder(new OnChooseListListener() {
             @Override
             public void onSelect(int position) {
@@ -344,7 +371,7 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
 
     @Override
     public void showPersonList(final List<String> mPersonNameList, int mPersonSelectPosition) {
-        mChoosePersonListDialog = new ChooseListDialog(mActivity, mPersonSelectPosition,"选择责任人");
+        mChoosePersonListDialog = new ChooseListDialog(mActivity, mPersonSelectPosition, "选择责任人");
         mChoosePersonListDialog.builder(new OnChooseListListener() {
             @Override
             public void onSelect(int position) {
@@ -360,5 +387,158 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
     @Override
     public void showModuleName(String name) {
         mModuleName.setText(name);
+    }
+
+    @Override
+    public void showDeleteButton() {
+        mDeleteBtn.setVisibility(View.VISIBLE);
+    }
+
+    //点击返回按钮
+    private void back(){
+        if(isShowBackDialog()){
+            mBackDialog = new SaveDeleteDialog(mActivity);
+            mBackDialog.getBackDialog(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mActivity.finish();
+                }
+            }, new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    save();
+                }
+            });
+            mBackDialog.show();
+        }else{
+            mActivity.finish();
+        }
+    }
+
+    private CreateCheckListParams mParams = new CreateCheckListParams();
+    //点击保存
+    private void  save(){
+        if(checkMustInfo()){
+            assembleData();
+            mPresenter.save(mParams);
+        }
+    }
+    //点击提交
+    private void submit(){
+        if(checkMustInfo()) {
+            assembleData();
+            mPresenter.submit(mParams);
+        }
+    }
+    //收集页面数据
+    private void assembleData(){
+        mParams.description = mSiteDescription.getText().toString().trim();
+        mParams.isNeedRectification = mRemainFlagState;
+        mParams.files = mPhotoList;
+    }
+
+    /**
+     * 检测必填项
+     * return  true  所有必填项都已填写   false 有必填项没有填写
+     */
+    private boolean checkMustInfo() {
+        List<String> temp = new ArrayList<>();
+        String companyName = mCompanyName.getText().toString().trim();
+        if (TextUtils.isEmpty(companyName)) {
+            mCompanyStar.setVisibility(View.VISIBLE);
+            temp.add("施工单位");
+        } else {
+            mCompanyStar.setVisibility(View.INVISIBLE);
+        }
+        String personName = mPersonName.getText().toString().trim();
+        if (TextUtils.isEmpty(personName)) {
+            mPersonStar.setVisibility(View.VISIBLE);
+            temp.add("责任人");
+        } else {
+            mPersonStar.setVisibility(View.INVISIBLE);
+        }
+        String siteContent = mSiteDescription.getText().toString().trim();
+        if (TextUtils.isEmpty(siteContent)) {
+            mSiteStar.setVisibility(View.VISIBLE);
+            temp.add("现场描述");
+        } else {
+            mSiteStar.setVisibility(View.INVISIBLE);
+        }
+        String moduleName = mModuleName.getText().toString().trim();
+        if (TextUtils.isEmpty(moduleName)) {
+            mModuleStar.setVisibility(View.VISIBLE);
+            temp.add("质检项目");
+        } else {
+            mModuleStar.setVisibility(View.INVISIBLE);
+        }
+        int size = temp.size();
+        if (size > 0) {
+            String content = "";
+            //有必填项没有填写
+            if (size == 1) {
+                content = "您还未选择" + temp.get(0) + "!";
+            }
+            if (size == 2) {
+                content = "您还未选择" + temp.get(0) + "和" + temp.get(1) + "!";
+            }
+            if (size == 3) {
+                content = "您还未选择" + temp.get(0) + "、" + temp.get(1) + "和" + temp.get(2) + "!";
+            }
+            if (size == 4) {
+                content = "您还未选择" + temp.get(0) + "、" + temp.get(1) + "、" + temp.get(2) + "和" + temp.get(3) + "!";
+            }
+            mHintDialog = new SaveDeleteDialog(mActivity);
+            mHintDialog.getHintDialog(content);
+            mHintDialog.show();
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    /**
+     * 是否显示退出的提示
+     */
+    private boolean isShowBackDialog(){
+        String temp = mCompanyName.getText().toString().trim();
+        if(!TextUtils.isEmpty(temp)){
+            return true;
+        }
+        temp = mPersonName.getText().toString().trim();
+        if(!TextUtils.isEmpty(temp)){
+            return true;
+        }
+        temp = mSiteDescription.getText().toString().trim();
+        if(!TextUtils.isEmpty(temp)){
+            return true;
+        }
+//        temp = mPhotoDescription.getText().toString().trim();
+//        if(!TextUtils.isEmpty(temp)){
+//            return true;
+//        }
+
+        if(mPhotoList!=null && mPhotoList.size()>0){
+            return true;
+        }
+
+        if(mRemainFlagState){
+            temp = mRemainName.getText().toString().trim();
+            if(!TextUtils.isEmpty(temp)){
+                return true;
+            }
+        }
+        temp = mModelName.getText().toString().trim();
+        if(!TextUtils.isEmpty(temp)){
+            return true;
+        }
+        temp = mBluePrintName.getText().toString().trim();
+        if(!TextUtils.isEmpty(temp)){
+            return true;
+        }
+        temp = mModelName.getText().toString().trim();
+        if(!TextUtils.isEmpty(temp)){
+            return true;
+        }
+        return false;
     }
 }

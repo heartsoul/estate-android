@@ -43,6 +43,9 @@ public class SaveDeleteDialog {
     }
 
 
+    /**
+     * 提示信息  还有必填数据没有填写
+     */
     public SaveDeleteDialog getHintDialog(String content) {
         View view = LayoutInflater.from(context).inflate(R.layout.view_save_delete_dialog,null);
         mTitleView = view.findViewById(R.id.save_delete_dialog_title);
@@ -54,6 +57,117 @@ public class SaveDeleteDialog {
 
         mTitleView.setText("提示信息");
         mContentView.setText(content);
+        mLeftView.setText("取消");
+        mLeftView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dismiss();
+            }
+        });
+        mMiddleView.setVisibility(View.GONE);
+        mLineView.setVisibility(View.GONE);
+        mRightView.setText("知道了");
+        mRightView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dismiss();
+            }
+        });
+        mRightView.setTextColor(context.getResources().getColor(R.color.c_00baf3));
+
+        dialogSetting(view);
+
+        return this;
+    }
+
+    /**
+     * 删除确认信息
+     */
+    public SaveDeleteDialog getDeleteDialog(final View.OnClickListener mDeleteListener) {
+        View view = LayoutInflater.from(context).inflate(R.layout.view_save_delete_dialog,null);
+        mTitleView = view.findViewById(R.id.save_delete_dialog_title);
+        mContentView = view.findViewById(R.id.save_delete_dialog_content);
+        mLeftView = view.findViewById(R.id.save_delete_dialog_left);
+        mMiddleView = view.findViewById(R.id.save_delete_dialog_middle);
+        mRightView = view.findViewById(R.id.save_delete_dialog_right);
+        mLineView = view.findViewById(R.id.save_delete_dialog_middle_line);
+
+        mTitleView.setText("是否确认删除？");
+        mContentView.setText("删除当前数据后，数据不可恢复哦!");
+        mLeftView.setText("取消");
+        mLeftView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dismiss();
+            }
+        });
+        mMiddleView.setVisibility(View.GONE);
+        mLineView.setVisibility(View.GONE);
+        mRightView.setText("删除");
+        mRightView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dismiss();
+                if(mDeleteListener!=null)
+                {
+                    mDeleteListener.onClick(mRightView);
+                }
+            }
+        });
+        mRightView.setTextColor(context.getResources().getColor(R.color.c_00baf3));
+
+        dialogSetting(view);
+
+        return this;
+    }
+
+    /**
+     * 退出确认信息
+     */
+    public SaveDeleteDialog getBackDialog(final View.OnClickListener mDontSaveListener,final View.OnClickListener mSaveListener) {
+        View view = LayoutInflater.from(context).inflate(R.layout.view_save_delete_dialog,null);
+        mTitleView = view.findViewById(R.id.save_delete_dialog_title);
+        mContentView = view.findViewById(R.id.save_delete_dialog_content);
+        mLeftView = view.findViewById(R.id.save_delete_dialog_left);
+        mMiddleView = view.findViewById(R.id.save_delete_dialog_middle);
+        mRightView = view.findViewById(R.id.save_delete_dialog_right);
+        mLineView = view.findViewById(R.id.save_delete_dialog_middle_line);
+
+        mTitleView.setText("是否确认退出当前页面？");
+        mContentView.setText("您还未保存当前数据!");
+        mLeftView.setText("取消");
+        mLeftView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dismiss();
+            }
+        });
+        mMiddleView.setVisibility(View.VISIBLE);
+        mLineView.setVisibility(View.VISIBLE);
+        mMiddleView.setText("不保存");
+        mMiddleView.setTextColor(context.getResources().getColor(R.color.c_e75452));
+        mMiddleView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dismiss();
+                if(mDontSaveListener!=null)
+                {
+                    mDontSaveListener.onClick(mMiddleView);
+                }
+            }
+        });
+        mRightView.setText("保存");
+        mRightView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dismiss();
+                if(mSaveListener!=null)
+                {
+                    mSaveListener.onClick(mRightView);
+                }
+            }
+        });
+        mRightView.setTextColor(context.getResources().getColor(R.color.c_00baf3));
 
         dialogSetting(view);
 

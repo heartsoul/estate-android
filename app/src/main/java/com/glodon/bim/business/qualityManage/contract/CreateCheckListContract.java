@@ -51,6 +51,17 @@ public interface CreateCheckListContract {
          * 点击提交
          */
         void submit(CreateCheckListParams createCheckListParams);
+
+        /**
+         * 删除当前单据
+         */
+        void deleteCheckList();
+
+        /**
+         * 点击保存
+         * @param mParams
+         */
+        void save(CreateCheckListParams mParams);
     }
 
     interface View extends IBaseView {
@@ -78,6 +89,11 @@ public interface CreateCheckListContract {
          * 显示选中的质检项目
          */
         void showModuleName(String name);
+
+        /**
+         * 保存成功后显示删除按钮
+         */
+        void showDeleteButton();
     }
 
     interface Model {
@@ -96,9 +112,15 @@ public interface CreateCheckListContract {
         Observable<List<PersonItem>> gePersonList(long id, long coperationCorpId);
 
         /**
-         * 新建检查单
+         * 新建检查单 提交
          * @param deptId 项目id
          */
         Observable<ResponseBody> createSubmit(long deptId, CreateCheckListParams props);
+
+        /**
+         * 新建检查单 保存
+         * @param deptId 项目id
+         */
+        Observable<ResponseBody> createSave(long deptId,CreateCheckListParams props);
     }
 }

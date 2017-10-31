@@ -140,7 +140,7 @@
                         android:layout_height="@dimen/dimen_08"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="@dimen/dimen_07"
-                        android:background="@drawable/ic_launcher"
+                        android:background="@drawable/icon_create_check_list_star"
                         android:visibility="invisible"/>
 
                     <TextView
@@ -197,7 +197,7 @@
                         android:layout_height="@dimen/dimen_08"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="@dimen/dimen_07"
-                        android:background="@drawable/ic_launcher"
+                        android:background="@drawable/icon_create_check_list_star"
                         android:visibility="invisible"/>
 
                     <TextView
@@ -251,7 +251,7 @@
                         android:layout_height="@dimen/dimen_08"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="@dimen/dimen_07"
-                        android:background="@drawable/ic_launcher"
+                        android:background="@drawable/icon_create_check_list_star"
                         android:visibility="invisible"/>
                 </RelativeLayout>
 
@@ -259,7 +259,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dimen_01"
                     android:layout_marginLeft="@dimen/dimen_19"
-                    android:background="@color/c_a3cccccc" />
+                    android:background="@color/c_a3cccccc"
+                    android:visibility="gone"/>
                 <!--图片描述-->
                 <EditText
                     android:id="@+id/create_check_list_photo_desription"
@@ -276,7 +277,8 @@
                     android:scrollbars="vertical"
                     android:textColorHint="@color/c_acacac"
                     android:textSize="@dimen/dimen_14"
-                    android:textCursorDrawable="@drawable/edit_cursor_color"/>
+                    android:textCursorDrawable="@drawable/edit_cursor_color"
+                    android:visibility="gone"/>
 
 
                 <LinearLayout
@@ -428,7 +430,7 @@
                         android:layout_height="@dimen/dimen_08"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="@dimen/dimen_07"
-                        android:background="@drawable/ic_launcher"
+                        android:background="@drawable/icon_create_check_list_star"
                         android:visibility="invisible" />
 
                     <LinearLayout

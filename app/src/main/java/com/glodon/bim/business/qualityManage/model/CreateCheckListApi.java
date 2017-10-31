@@ -11,6 +11,7 @@ import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import rx.Observable;
@@ -47,5 +48,12 @@ public interface CreateCheckListApi {
      */
     @GET("quality/{deptId}/qualityInspection/commit")
     Observable<ResponseBody> createSubmit(@Path("deptId") long deptId, @Body CreateCheckListParams props, @Header("cookie") String cookie);
+
+
+    /**
+     * 检查单 新增   保存
+     */
+    @POST("quality/{deptId}/qualityInspection")
+    Observable<ResponseBody> createSave(@Path("deptId") long deptId, @Body CreateCheckListParams props, @Header("cookie") String cookie);
 
 }

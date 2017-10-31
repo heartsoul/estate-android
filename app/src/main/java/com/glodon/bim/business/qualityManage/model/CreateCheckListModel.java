@@ -37,4 +37,9 @@ public class CreateCheckListModel implements CreateCheckListContract.Model {
 //        return NetRequest.getInstance().getCall(AppConfig.BASE_URL,CreateCheckListApi.class).createSubmit(deptId,props,new DaoProvider().getCookie());
         return NetRequest.getInstance().getCall("http://192.168.72.48/",CreateCheckListApi.class).createSubmit(deptId,props,new DaoProvider().getCookie());
     }
+    @Override
+    public Observable<ResponseBody> createSave(long deptId,CreateCheckListParams props){
+//        return NetRequest.getInstance().getCall(AppConfig.BASE_URL,CreateCheckListApi.class).createSubmit(deptId,props,new DaoProvider().getCookie());
+        return NetRequest.getInstance().getCall("http://192.168.72.48/",CreateCheckListApi.class).createSave(deptId,props,new DaoProvider().getCookie());
+    }
 }

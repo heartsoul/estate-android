@@ -14,6 +14,7 @@ import com.glodon.bim.business.qualityManage.contract.CreateCheckListContract;
 import com.glodon.bim.business.qualityManage.model.CreateCheckListModel;
 import com.glodon.bim.business.qualityManage.view.ChooseModuleActivity;
 import com.glodon.bim.common.config.CommonConfig;
+import com.glodon.bim.customview.ToastManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -147,24 +148,8 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
 
 
     @Override
-    public void submit(CreateCheckListParams createCheckListParams) {
-        //现场描述
-        mInput.description = "测试description";
-        //项目名称
-        mInput.projectName = SharedPreferencesUtil.getProjectName();
-        //新建的时间
-        mInput.inspectionDate  = SystemClock.currentThreadTimeMillis()+"";
-        //施工单位
-        mInput.constructionCompanyId = mCompanyList.get(mCompanySelectPosition).id;
-        //是否整改
-        mInput.isNeedRectification = true;
-        mInput.lastRectificationDate = (SystemClock.currentThreadTimeMillis()+1000000)+"";
-        //质检项目
-        mInput.inspectionProjectName = mModuleSelectInfo.name;
-        mInput.inspectionProjectId = mModuleSelectInfo.id;
-        //责任人
-        mInput.responsibleUserId = mPersonList.get(mPersonSelectPosition).userId;
-        mInput.responsibleUserName = mPersonList.get(mPersonSelectPosition).name;
+    public void submit(CreateCheckListParams params) {
+        assembleParams(params);
 
         Subscription sub = mModel.createSubmit(mProjectId,mInput)
                 .subscribeOn(Schedulers.io())
@@ -183,9 +168,73 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
                     @Override
                     public void onNext(ResponseBody responseBody) {
                         LogUtil.e("---response",responseBody.toString());
+                        ToastManager.showSubmitToast();
+                        if(mView!=null)
+                        {
+                            mView.getActivity().finish();
+                        }
                     }
                 });
         mSubscritption.add(sub);
+    }
+
+    @Override
+    public void deleteCheckList() {
+
+    }
+
+    @Override
+    public void save(CreateCheckListParams params) {
+        assembleParams(params);
+        Subscription sub = mModel.createSave(mProjectId,mInput)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<ResponseBody>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        LogUtil.e("---response",e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(ResponseBody responseBody) {
+                        LogUtil.e("---response",responseBody.toString());
+                        ToastManager.showSaveToast();
+                        if(mView!=null)
+                        {
+                            mView.showDeleteButton();
+                        }
+                    }
+                });
+        mSubscritption.add(sub);
+    }
+
+    //组织保存和提交的数据
+    private void assembleParams(CreateCheckListParams params){
+
+        //施工单位
+        mInput.constructionCompanyId = mCompanyList.get(mCompanySelectPosition).id;
+        //责任人
+        mInput.responsibleUserId = mPersonList.get(mPersonSelectPosition).userId;
+        mInput.responsibleUserName = mPersonList.get(mPersonSelectPosition).name;
+        //现场描述
+        mInput.description = params.description;
+        //图片描述
+        mInput.files = params.files;
+        //项目名称
+        mInput.projectName = SharedPreferencesUtil.getProjectName();
+        //新建的时间
+        mInput.inspectionDate  = SystemClock.currentThreadTimeMillis()+"";
+        //是否整改
+        mInput.isNeedRectification = params.isNeedRectification;
+        mInput.lastRectificationDate = params.lastRectificationDate;
+        //质检项目
+        mInput.inspectionProjectName = mModuleSelectInfo.name;
+        mInput.inspectionProjectId = mModuleSelectInfo.id;
     }
 
     @Override

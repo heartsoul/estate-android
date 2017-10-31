@@ -24,6 +24,7 @@ public class CreateCheckListParams {
     public String inspectionProjectName;
     //施工单位
     public long constructionCompanyId;
+    //整改期限
     public boolean isNeedRectification;
     public String lastRectificationDate;
     //现场描述
