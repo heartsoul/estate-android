@@ -10,12 +10,14 @@ import com.glodon.bim.business.qualityManage.bean.CompanyItem;
 import com.glodon.bim.business.qualityManage.bean.CreateCheckListParams;
 import com.glodon.bim.business.qualityManage.bean.ModuleListBeanItem;
 import com.glodon.bim.business.qualityManage.bean.PersonItem;
+import com.glodon.bim.business.qualityManage.bean.SaveBean;
 import com.glodon.bim.business.qualityManage.contract.CreateCheckListContract;
 import com.glodon.bim.business.qualityManage.model.CreateCheckListModel;
 import com.glodon.bim.business.qualityManage.view.ChooseModuleActivity;
 import com.glodon.bim.common.config.CommonConfig;
 import com.glodon.bim.customview.ToastManager;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +41,7 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
     private CompositeSubscription mSubscritption;
 
     private long mProjectId;//项目id
+    private long mInspectId = -1;//检查单id，新增时没有   编辑时有值
     //施工单位列表
     private List<CompanyItem> mCompanyList;
     private List<String> mCompanyNameList;
@@ -63,6 +66,7 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
         mProjectId = SharedPreferencesUtil.getProjectId();
         mInput = new CreateCheckListParams();
         mInput.projectId = mProjectId;
+        mInput.code = SystemClock.currentThreadTimeMillis()+"";
     }
 
     @Override
@@ -151,42 +155,134 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
     public void submit(CreateCheckListParams params) {
         assembleParams(params);
 
-        Subscription sub = mModel.createSubmit(mProjectId,mInput)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<ResponseBody>() {
-                    @Override
-                    public void onCompleted() {
+        if(mInspectId==-1) {
+            //新增
+            Subscription sub = mModel.createSubmit(mProjectId, mInput)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Subscriber<SaveBean>() {
+                        @Override
+                        public void onCompleted() {
 
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        LogUtil.e("---response",e.getMessage());
-                    }
-
-                    @Override
-                    public void onNext(ResponseBody responseBody) {
-                        LogUtil.e("---response",responseBody.toString());
-                        ToastManager.showSubmitToast();
-                        if(mView!=null)
-                        {
-                            mView.getActivity().finish();
                         }
-                    }
-                });
-        mSubscritption.add(sub);
+
+                        @Override
+                        public void onError(Throwable e) {
+                            LogUtil.e("submit---response", e.getMessage());
+                        }
+
+                        @Override
+                        public void onNext(SaveBean responseBody) {
+                            LogUtil.e("submit---response", responseBody.id+"");
+                            ToastManager.showSubmitToast();
+                            if (mView != null) {
+                                mView.getActivity().finish();
+                            }
+                        }
+                    });
+            mSubscritption.add(sub);
+        }else{
+            //编辑
+            Subscription sub = mModel.editSubmit(mProjectId,mInspectId, mInput)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Subscriber<ResponseBody>() {
+                        @Override
+                        public void onCompleted() {
+
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            LogUtil.e("edit submit error---response", e.getMessage());
+                        }
+
+                        @Override
+                        public void onNext(ResponseBody responseBody) {
+                            try {
+                                LogUtil.e("edit submit---response", responseBody.string());
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            ToastManager.showSubmitToast();
+                            if (mView != null) {
+                                mView.getActivity().finish();
+                            }
+                        }
+                    });
+            mSubscritption.add(sub);
+        }
     }
 
-    @Override
-    public void deleteCheckList() {
 
-    }
 
     @Override
     public void save(CreateCheckListParams params) {
         assembleParams(params);
-        Subscription sub = mModel.createSave(mProjectId,mInput)
+        if(mInspectId==-1) {
+            //新增
+            Subscription sub = mModel.createSave(mProjectId, mInput)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Subscriber<SaveBean>() {
+                        @Override
+                        public void onCompleted() {
+
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            LogUtil.e("save error---response", e.getMessage());
+                        }
+
+                        @Override
+                        public void onNext(SaveBean responseBody) {
+                            LogUtil.e("save---response", responseBody.id + "");
+                            mInspectId = responseBody.id;
+                            ToastManager.showSaveToast();
+                            if (mView != null) {
+                                mView.showDeleteButton();
+                            }
+                        }
+                    });
+            mSubscritption.add(sub);
+        }else{
+            //编辑
+            Subscription sub = mModel.editSave(mProjectId, mInspectId,mInput)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Subscriber<ResponseBody>() {
+                        @Override
+                        public void onCompleted() {
+
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            LogUtil.e("edit save error---response", e.getMessage());
+                        }
+
+                        @Override
+                        public void onNext(ResponseBody responseBody) {
+                            try {
+                                LogUtil.e("edit save---response", responseBody.string());
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+//                            mInspectId = responseBody.id;
+                            ToastManager.showSaveToast();
+                            if (mView != null) {
+                                mView.showDeleteButton();
+                            }
+                        }
+                    });
+            mSubscritption.add(sub);
+        }
+    }
+
+    @Override
+    public void deleteCheckList() {
+        Subscription sub = mModel.createDelete(mProjectId,mInspectId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<ResponseBody>() {
@@ -197,16 +293,19 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
 
                     @Override
                     public void onError(Throwable e) {
-                        LogUtil.e("---response",e.getMessage());
+                        LogUtil.e("delete---response",e.getMessage());
                     }
 
                     @Override
                     public void onNext(ResponseBody responseBody) {
-                        LogUtil.e("---response",responseBody.toString());
-                        ToastManager.showSaveToast();
+                        try {
+                            LogUtil.e("delete---response",responseBody.string());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                         if(mView!=null)
                         {
-                            mView.showDeleteButton();
+                            mView.getActivity().finish();
                         }
                     }
                 });

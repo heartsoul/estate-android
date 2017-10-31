@@ -2,9 +2,13 @@ package com.glodon.bim.business.qualityManage.view;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -15,6 +19,7 @@ import android.widget.TextView;
 import com.glodon.bim.R;
 import com.glodon.bim.base.BaseActivity;
 import com.glodon.bim.basic.listener.ThrottleClickEvents;
+import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.business.qualityManage.bean.CompanyItem;
 import com.glodon.bim.business.qualityManage.bean.CreateCheckListParams;
 import com.glodon.bim.business.qualityManage.bean.CreateCheckListParamsFile;
@@ -90,8 +95,9 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
     //保存删除
     private Button mSaveBtn, mDeleteBtn;
     //现场描述和图片描述  输入法弹出
-    private RelativeLayout mInputParent;
+    private LinearLayout mInputParent;
     private TextView mInputTitle, mLeftNumber;
+    private View mInputBottomView;
     //图片删除 拖动到此处删除
     private LinearLayout mPhotoDelete;
 
@@ -101,6 +107,11 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
     private SaveDeleteDialog mBackDialog;
     //图片集合
     private List<CreateCheckListParamsFile> mPhotoList;
+
+    //输入法变化
+    private int softHeight = 0;//输入法高度
+    private LinearLayout rootLayout;//跟布局
+    private int initHeight = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,10 +124,13 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
 
         initData();
 
+        getInputMethodHeight();
+
     }
 
     private void initView() {
         mStatusView = (LinearLayout) findViewById(R.id.create_check_list_status);
+        rootLayout = (LinearLayout) findViewById(R.id.create_check_list_root);
         //导航栏
         mNavBack = (ImageView) findViewById(R.id.create_check_list_nav_back);
         mNavSubmit = (TextView) findViewById(R.id.create_check_list_nav_submit);
@@ -162,9 +176,10 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
         mSaveBtn = (Button) findViewById(R.id.create_check_list_save);
         mDeleteBtn = (Button) findViewById(R.id.create_check_list_delete);
         //现场描述和图片描述  输入法弹出
-        mInputParent = (RelativeLayout) findViewById(R.id.create_check_list_input);
+        mInputParent = (LinearLayout) findViewById(R.id.create_check_list_input);
         mInputTitle = (TextView) findViewById(R.id.create_check_list_input_title);
         mLeftNumber = (TextView) findViewById(R.id.create_check_list_input_num_left);
+        mInputBottomView = findViewById(R.id.create_check_list_input_bottom);
         //图片删除 拖动到此处删除
         mPhotoDelete = (LinearLayout) findViewById(R.id.create_check_list_photo_delete);
     }
@@ -187,6 +202,26 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
         ThrottleClickEvents.throttleClick(mModelParent, this, 1);
         ThrottleClickEvents.throttleClick(mSaveBtn, this, 1);
         ThrottleClickEvents.throttleClick(mDeleteBtn, this, 1);
+
+        mSiteDescription.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(!TextUtils.isEmpty(charSequence) && charSequence.length()>255){
+                    mSiteDescription.setText(charSequence.toString().substring(0,255));
+                    mSiteDescription.setSelection(mSiteDescription.getText().toString().trim().length());
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                mLeftNumber.setText((255-mSiteDescription.getText().toString().trim().length())+"");
+            }
+        });
     }
 
     private void initData() {
@@ -208,6 +243,33 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
 
         mPresenter = new CreateCheckListPresenter(this);
         mPresenter.initData(getIntent());
+    }
+
+    /**
+     * 输入法高度
+     */
+    private void getInputMethodHeight() {
+        rootLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+
+            @Override
+            public void onGlobalLayout() {
+                Rect r = new Rect();
+                rootLayout.getWindowVisibleDisplayFrame(r);
+
+                int screenHeight = rootLayout.getRootView().getHeight();
+                softHeight = screenHeight - (r.bottom - r.top);
+
+                LogUtil.e("height="+softHeight+" "+screenHeight);
+                //更改颜色框位置
+                if (softHeight > screenHeight/3) {
+                    mInputBottomView.getLayoutParams().height = softHeight-initHeight;
+                    mInputParent.setVisibility(View.VISIBLE);
+                } else {
+                    initHeight = softHeight;
+                    mInputParent.setVisibility(View.GONE);
+                }
+            }
+        });
     }
 
     @Override

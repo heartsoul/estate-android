@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/create_check_list_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
@@ -105,9 +106,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/c_f9f9f9"
-                android:orientation="vertical"
                 android:focusable="true"
-                android:focusableInTouchMode="true">
+                android:focusableInTouchMode="true"
+                android:orientation="vertical">
                 <!--施工单位-->
                 <RelativeLayout
                     android:id="@+id/create_check_list_company"
@@ -141,7 +142,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="@dimen/dimen_07"
                         android:background="@drawable/icon_create_check_list_star"
-                        android:visibility="invisible"/>
+                        android:visibility="invisible" />
 
                     <TextView
                         android:id="@+id/create_check_list_company_name"
@@ -198,7 +199,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="@dimen/dimen_07"
                         android:background="@drawable/icon_create_check_list_star"
-                        android:visibility="invisible"/>
+                        android:visibility="invisible" />
 
                     <TextView
                         android:id="@+id/create_check_list_person_name"
@@ -242,8 +243,8 @@
                         android:scrollbarSize="@dimen/dimen_02"
                         android:scrollbars="vertical"
                         android:textColorHint="@color/c_acacac"
-                        android:textSize="@dimen/dimen_14"
-                        android:textCursorDrawable="@drawable/edit_cursor_color"/>
+                        android:textCursorDrawable="@drawable/edit_cursor_color"
+                        android:textSize="@dimen/dimen_14" />
 
                     <ImageView
                         android:id="@+id/create_check_list_site_desription_star"
@@ -252,7 +253,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="@dimen/dimen_07"
                         android:background="@drawable/icon_create_check_list_star"
-                        android:visibility="invisible"/>
+                        android:visibility="invisible" />
                 </RelativeLayout>
 
                 <View
@@ -260,7 +261,7 @@
                     android:layout_height="@dimen/dimen_01"
                     android:layout_marginLeft="@dimen/dimen_19"
                     android:background="@color/c_a3cccccc"
-                    android:visibility="gone"/>
+                    android:visibility="gone" />
                 <!--图片描述-->
                 <EditText
                     android:id="@+id/create_check_list_photo_desription"
@@ -276,17 +277,17 @@
                     android:scrollbarSize="@dimen/dimen_02"
                     android:scrollbars="vertical"
                     android:textColorHint="@color/c_acacac"
-                    android:textSize="@dimen/dimen_14"
                     android:textCursorDrawable="@drawable/edit_cursor_color"
-                    android:visibility="gone"/>
+                    android:textSize="@dimen/dimen_14"
+                    android:visibility="gone" />
 
 
                 <LinearLayout
                     android:id="@+id/create_check_list_photo_parent"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
                     android:background="@color/white"
+                    android:orientation="horizontal"
                     android:paddingBottom="@dimen/dimen_23"
                     android:paddingLeft="@dimen/dimen_20">
 
@@ -322,12 +323,13 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dimen_20"
-                    android:background="@color/c_f9f9f9"/>
+                    android:background="@color/c_f9f9f9" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:background="@color/white">
+                    android:background="@color/white"
+                    android:orientation="vertical">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -355,8 +357,7 @@
                     <RelativeLayout
                         android:id="@+id/create_check_list_remain"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/dimen_56"
-                        >
+                        android:layout_height="@dimen/dimen_56">
 
                         <TextView
                             android:id="@+id/create_check_list_remain_title"
@@ -394,10 +395,11 @@
 
                     </RelativeLayout>
                 </LinearLayout>
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dimen_11"
-                    android:background="@color/c_f9f9f9"/>
+                    android:background="@color/c_f9f9f9" />
                 <!--质检项目-->
                 <RelativeLayout
                     android:id="@+id/create_check_list_module"
@@ -442,20 +444,20 @@
                         android:layout_toLeftOf="@id/create_check_list_module_arrow"
                         android:layout_toRightOf="@id/create_check_list_module_title">
 
-                       <!-- <EditText
-                            android:id="@+id/create_check_list_module_name"
-                            android:layout_width="@dimen/dimen_0"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:layout_weight="1"
-                            android:background="@color/white"
-                            android:ellipsize="end"
-                            android:gravity="right"
-                            android:maxLines="1"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/dimen_16"
-                            android:textCursorDrawable="@drawable/edit_cursor_color"
-                            />-->
+                        <!-- <EditText
+                             android:id="@+id/create_check_list_module_name"
+                             android:layout_width="@dimen/dimen_0"
+                             android:layout_height="wrap_content"
+                             android:layout_gravity="center_vertical"
+                             android:layout_weight="1"
+                             android:background="@color/white"
+                             android:ellipsize="end"
+                             android:gravity="right"
+                             android:maxLines="1"
+                             android:textColor="@color/black"
+                             android:textSize="@dimen/dimen_16"
+                             android:textCursorDrawable="@drawable/edit_cursor_color"
+                             />-->
                         <TextView
                             android:id="@+id/create_check_list_module_name"
                             android:layout_width="@dimen/dimen_0"
@@ -467,8 +469,7 @@
                             android:gravity="right"
                             android:maxLines="1"
                             android:textColor="@color/black"
-                            android:textSize="@dimen/dimen_16"
-                            />
+                            android:textSize="@dimen/dimen_16" />
 
                         <ImageView
                             android:id="@+id/create_check_list_module_benchmark"
@@ -583,6 +584,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/c_f9f9f9"
                     android:orientation="vertical"
                     android:paddingBottom="@dimen/dimen_30">
 
@@ -616,42 +618,56 @@
             </LinearLayout>
         </ScrollView>
         <!--现场描述和图片描述  输入法弹出-->
-        <RelativeLayout
+
+        <LinearLayout
             android:id="@+id/create_check_list_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:paddingBottom="@dimen/dimen_06"
+            android:orientation="vertical"
             android:visibility="gone">
 
-            <TextView
-                android:id="@+id/create_check_list_input_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dimen_15"
-                android:text="现场情况描述"
-                android:textColor="@color/c_5d5d5d"
-                android:textSize="@dimen/dimen_12" />
 
-            <TextView
-                android:id="@+id/create_check_list_input_num_all"
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="@dimen/dimen_18"
-                android:text="/255"
-                android:textColor="@color/c_00baf3"
-                android:textSize="@dimen/dimen_12" />
+                android:paddingBottom="@dimen/dimen_06"
+                android:background="@color/white">
 
-            <TextView
-                android:id="@+id/create_check_list_input_num_left"
-                android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/create_check_list_input_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dimen_15"
+                    android:text="现场情况描述"
+                    android:textColor="@color/c_5d5d5d"
+                    android:textSize="@dimen/dimen_12" />
+
+                <TextView
+                    android:id="@+id/create_check_list_input_num_all"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/dimen_18"
+                    android:text="/255"
+                    android:textColor="@color/c_00baf3"
+                    android:textSize="@dimen/dimen_12" />
+
+                <TextView
+                    android:id="@+id/create_check_list_input_num_left"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@id/create_check_list_input_num_all"
+                    android:text="255"
+                    android:textColor="@color/c_e75452"
+                    android:textSize="@dimen/dimen_12" />
+            </RelativeLayout>
+            <View
+                android:id="@+id/create_check_list_input_bottom"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_toLeftOf="@id/create_check_list_input_num_all"
-                android:text="25"
-                android:textColor="@color/c_e75452"
-                android:textSize="@dimen/dimen_12" />
-        </RelativeLayout>
+                android:background="@color/transparent"/>
+        </LinearLayout>
         <!--图片删除-->
         <LinearLayout
             android:id="@+id/create_check_list_photo_delete"

@@ -5,11 +5,11 @@ import com.glodon.bim.base.IBaseView;
 import com.glodon.bim.business.qualityManage.bean.CompanyItem;
 import com.glodon.bim.business.qualityManage.bean.CreateCheckListParams;
 import com.glodon.bim.business.qualityManage.bean.PersonItem;
+import com.glodon.bim.business.qualityManage.bean.SaveBean;
 
 import java.util.List;
 
 import okhttp3.ResponseBody;
-import retrofit2.http.Query;
 import rx.Observable;
 
 /**
@@ -59,6 +59,7 @@ public interface CreateCheckListContract {
 
         /**
          * 点击保存
+         *
          * @param mParams
          */
         void save(CreateCheckListParams mParams);
@@ -73,14 +74,16 @@ public interface CreateCheckListContract {
 
         /**
          * 展示施工单位列表
-         * @param mCompanyNameList 列表集合
-         * @param mCompanySelectPosition  被选中的position
+         *
+         * @param mCompanyNameList       列表集合
+         * @param mCompanySelectPosition 被选中的position
          */
         void showCompanyList(List<String> mCompanyNameList, int mCompanySelectPosition);
 
         /**
          * 展示责任人列表
-         * @param mPersonNameList 责任人列表
+         *
+         * @param mPersonNameList       责任人列表
          * @param mPersonSelectPosition 选中的责任人
          */
         void showPersonList(List<String> mPersonNameList, int mPersonSelectPosition);
@@ -99,28 +102,56 @@ public interface CreateCheckListContract {
     interface Model {
         /**
          * 获取施工单位列表
-         * @param id  项目id
-         * @param deptTypeEnums  监理JLDW  业主JSDW     (SJDW SGDW)
+         *
+         * @param id            项目id
+         * @param deptTypeEnums 监理JLDW  业主JSDW     (SJDW SGDW)
          */
         Observable<List<CompanyItem>> getCompaniesList(long id, List<String> deptTypeEnums);
 
         /**
          * 查询施工单位负责人
-         * @param id 项目id
+         *
+         * @param id               项目id
          * @param coperationCorpId 施工单位id
          */
         Observable<List<PersonItem>> gePersonList(long id, long coperationCorpId);
 
         /**
          * 新建检查单 提交
+         *
          * @param deptId 项目id
          */
-        Observable<ResponseBody> createSubmit(long deptId, CreateCheckListParams props);
+        Observable<SaveBean> createSubmit(long deptId, CreateCheckListParams props);
+
+        /**
+         * 编辑检查单 提交
+         *
+         * @param deptId 项目id
+         * @param id     检查单id
+         */
+        Observable<ResponseBody> editSubmit(long deptId, long id, CreateCheckListParams props);
 
         /**
          * 新建检查单 保存
+         *
          * @param deptId 项目id
          */
-        Observable<ResponseBody> createSave(long deptId,CreateCheckListParams props);
+        Observable<SaveBean> createSave(long deptId, CreateCheckListParams props);
+
+        /**
+         * 编辑检查单 保存
+         *
+         * @param deptId 项目id
+         * @param id     检查单id
+         */
+        Observable<ResponseBody> editSave(long deptId, long id, CreateCheckListParams props);
+
+        /**
+         * 删除检查单
+         *
+         * @param deptId 项目id
+         * @param id     检查单id
+         */
+        Observable<ResponseBody> createDelete(long deptId, long id);
     }
 }

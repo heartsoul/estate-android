@@ -4,14 +4,17 @@ import com.glodon.bim.business.qualityManage.bean.CompanyItem;
 import com.glodon.bim.business.qualityManage.bean.CreateCheckListParams;
 import com.glodon.bim.business.qualityManage.bean.ModuleListBean;
 import com.glodon.bim.business.qualityManage.bean.PersonItem;
+import com.glodon.bim.business.qualityManage.bean.SaveBean;
 
 import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import rx.Observable;
@@ -46,14 +49,35 @@ public interface CreateCheckListApi {
     /**
      * 检查单 新增   提交
      */
-    @GET("quality/{deptId}/qualityInspection/commit")
-    Observable<ResponseBody> createSubmit(@Path("deptId") long deptId, @Body CreateCheckListParams props, @Header("cookie") String cookie);
+    @POST("quality/{deptId}/qualityInspection/commit")
+    Observable<SaveBean> createSubmit(@Path("deptId") long deptId, @Body CreateCheckListParams props, @Header("cookie") String cookie);
 
 
     /**
      * 检查单 新增   保存
      */
     @POST("quality/{deptId}/qualityInspection")
-    Observable<ResponseBody> createSave(@Path("deptId") long deptId, @Body CreateCheckListParams props, @Header("cookie") String cookie);
+    Observable<SaveBean> createSave(@Path("deptId") long deptId, @Body CreateCheckListParams props, @Header("cookie") String cookie);
+
+    /**
+     * 检查单 编辑   提交
+     */
+    @PUT("quality/{deptId}/qualityInspection/{id}/commit")
+    Observable<ResponseBody> editSubmit(@Path("deptId") long deptId,@Path("id") long id, @Body CreateCheckListParams props, @Header("cookie") String cookie);
+
+
+    /**
+     * 检查单 编辑   保存
+     */
+    @PUT("quality/{deptId}/qualityInspection/{id}")
+    Observable<ResponseBody> editSave(@Path("deptId") long deptId,@Path("id") long id, @Body CreateCheckListParams props, @Header("cookie") String cookie);
+
+
+
+    /**
+     * 检查单 删除
+     */
+    @DELETE("quality/{deptId}/qualityInspection/{id}")
+    Observable<ResponseBody> createDelete(@Path("deptId") long deptId, @Path("id") long id, @Header("cookie") String cookie);
 
 }
