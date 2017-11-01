@@ -12,6 +12,7 @@ import com.glodon.bim.business.qualityManage.view.ModelActivity;
 import com.glodon.bim.business.qualityManage.view.PhotoEditActivity;
 import com.glodon.bim.business.setting.view.SettingActivity;
 import com.glodon.bim.common.config.CommonConfig;
+import com.glodon.bim.customview.album.AlbumEditActivity;
 
 /**
  * 描述：质量管理
@@ -21,9 +22,10 @@ import com.glodon.bim.common.config.CommonConfig;
 
 public class QualityMangeMainPresenter implements QualityMangeMainContract.Presenter {
 
-    private QualityMangeMainContract.View mView;
-
     private final int REQUEST_CODE_TAKE_PHOTO = 0;
+    private final int REQUEST_CODE_OPEN_ALBUM = 1;
+
+    private QualityMangeMainContract.View mView;
     private String mPhotoPath;
 
     public QualityMangeMainPresenter(QualityMangeMainContract.View mView) {
@@ -51,12 +53,15 @@ public class QualityMangeMainPresenter implements QualityMangeMainContract.Prese
 
     @Override
     public void openAlbum() {
-
+        Intent intent = new Intent(mView.getActivity(), AlbumEditActivity.class);
+        intent.putExtra(CommonConfig.ALBUM_FROM_TYPE,0);
+        mView.getActivity().startActivityForResult(intent,REQUEST_CODE_OPEN_ALBUM);
     }
 
     @Override
     public void toCreate() {
         Intent intent = new Intent(mView.getActivity(), CreateCheckListActivity.class);
+        intent.putExtra(CommonConfig.SHOW_PHOTO,false);
         mView.getActivity().startActivity(intent);
     }
 
@@ -85,6 +90,9 @@ public class QualityMangeMainPresenter implements QualityMangeMainContract.Prese
                 } else if (resultCode == Activity.RESULT_CANCELED) {
                     //返回键返回
                 }
+                break;
+            case REQUEST_CODE_OPEN_ALBUM://打开相册
+
                 break;
         }
     }

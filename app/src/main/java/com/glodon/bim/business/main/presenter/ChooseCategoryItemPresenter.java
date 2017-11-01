@@ -13,6 +13,7 @@ import com.glodon.bim.business.qualityManage.view.ModelActivity;
 import com.glodon.bim.business.qualityManage.view.PhotoEditActivity;
 import com.glodon.bim.business.qualityManage.view.QualityMangeMainActivity;
 import com.glodon.bim.common.config.CommonConfig;
+import com.glodon.bim.customview.album.AlbumEditActivity;
 
 /**
  * 描述：项目功能列表
@@ -60,12 +61,15 @@ public class ChooseCategoryItemPresenter implements ChooseCategoryItemContract.P
 
     @Override
     public void openAlbum() {
-
+        Intent intent = new Intent(mView.getActivity(), AlbumEditActivity.class);
+        intent.putExtra(CommonConfig.ALBUM_FROM_TYPE,0);
+        mView.getActivity().startActivity(intent);
     }
 
     @Override
     public void toCreate() {
         Intent intent = new Intent(mView.getActivity(), CreateCheckListActivity.class);
+        intent.putExtra(CommonConfig.SHOW_PHOTO,false);
         mView.getActivity().startActivity(intent);
     }
 

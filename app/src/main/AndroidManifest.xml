@@ -48,9 +48,9 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN" />
 
-            <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <!-- 启动界面 -->
@@ -185,17 +185,15 @@
         <activity
             android:name=".business.login.view.ResetPasswordActivity"
             android:screenOrientation="portrait" />
-        <!--项目目录-->
+        <!-- 项目目录 -->
         <activity
             android:name=".business.main.view.ChooseCategoryActivity"
             android:screenOrientation="portrait" />
-        <!--项目功能-->
+        <!-- 项目功能 -->
         <activity
             android:name=".business.main.view.ChooseCategoryItemActivity"
-            android:screenOrientation="portrait">
-
-        </activity>
-        <!--图纸-->
+            android:screenOrientation="portrait"></activity>
+        <!-- 图纸 -->
         <activity
             android:name=".business.qualityManage.view.BluePrintActivity"
             android:screenOrientation="portrait" />
@@ -212,34 +210,41 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_path" />
         </provider>
-        <!--拍照后图片编辑-->
+        <!-- 拍照后图片编辑 -->
         <activity
             android:name=".business.qualityManage.view.PhotoEditActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
-        <!--基类-->
+        <!-- 基类 -->
         <activity
             android:name=".base.BaseActivity"
             android:screenOrientation="portrait" />
-        <!--创建检查单-->
+        <!-- 创建检查单 -->
         <activity
             android:name=".business.qualityManage.view.CreateCheckListActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan">
+
+
+        </activity>
+        <!-- 选择质检项目 -->
+        <activity
+            android:name=".business.qualityManage.view.ChooseModuleActivity"
+            android:screenOrientation="portrait" />
+        <!-- 设置 -->
+        <activity
+            android:name=".business.setting.view.SettingActivity"
+            android:screenOrientation="portrait" />
+        <!--相册-->
+        <activity android:name=".customview.album.AlbumEditActivity"
+            android:screenOrientation="portrait">
             <!--<intent-filter>-->
                 <!--<action android:name="android.intent.action.MAIN" />-->
+
 
                 <!--<category android:name="android.intent.category.LAUNCHER" />-->
             <!--</intent-filter>-->
         </activity>
-        <!--选择质检项目-->
-        <activity
-            android:name="com.glodon.bim.business.qualityManage.view.ChooseModuleActivity"
-            android:screenOrientation="portrait" />
-        <!--设置-->
-        <activity
-            android:name="com.glodon.bim.business.setting.view.SettingActivity"
-            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

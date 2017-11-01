@@ -16,9 +16,13 @@ import com.glodon.bim.business.qualityManage.model.CreateCheckListModel;
 import com.glodon.bim.business.qualityManage.view.ChooseModuleActivity;
 import com.glodon.bim.common.config.CommonConfig;
 import com.glodon.bim.customview.ToastManager;
+import com.glodon.bim.customview.album.AlbumData;
+import com.glodon.bim.customview.album.AlbumEditActivity;
+import com.glodon.bim.customview.album.TNBImageItem;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import okhttp3.ResponseBody;
@@ -35,7 +39,9 @@ import rx.subscriptions.CompositeSubscription;
  */
 
 public class CreateCheckListPresenter implements CreateCheckListContract.Presenter {
-    private static final int REQUEST_CODE_CHOOSE_MODULE = 0;//跳转到选择质检项目
+    private final int REQUEST_CODE_CHOOSE_MODULE = 0;//跳转到选择质检项目
+    private final int REQUEST_CODE_OPEN_ALBUM = 1;
+    private final int REQUEST_CODE_TAKE_PHOTO = 2;
     private CreateCheckListContract.Model mModel;
     private CreateCheckListContract.View mView;
     private CompositeSubscription mSubscritption;
@@ -50,6 +56,8 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
     private List<PersonItem> mPersonList;
     private List<String> mPersonNameList;
     private int mPersonSelectPosition = -1;
+    //图片
+    private LinkedHashMap<String,TNBImageItem> mSelectedMap;
     //质检项目
     private int mModuleSelectPosition = -1;
     private ModuleListBeanItem mModuleSelectInfo;
@@ -67,6 +75,7 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
         mInput = new CreateCheckListParams();
         mInput.projectId = mProjectId;
         mInput.code = SystemClock.currentThreadTimeMillis()+"";
+        mSelectedMap = new LinkedHashMap<>();
     }
 
     @Override
@@ -281,6 +290,24 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
     }
 
     @Override
+    public void openAlbum() {
+        Intent intent = new Intent(mView.getActivity(), AlbumEditActivity.class);
+        intent.putExtra(CommonConfig.ALBUM_FROM_TYPE,1);
+        intent.putExtra(CommonConfig.ALBUM_DATA,new AlbumData(mSelectedMap));
+        mView.getActivity().startActivityForResult(intent,REQUEST_CODE_OPEN_ALBUM);
+    }
+
+    @Override
+    public void takePhoto() {
+
+    }
+
+    @Override
+    public void setSelectedImages(LinkedHashMap<String, TNBImageItem> map) {
+        this.mSelectedMap = map;
+    }
+
+    @Override
     public void deleteCheckList() {
         Subscription sub = mModel.createDelete(mProjectId,mInspectId)
                 .subscribeOn(Schedulers.io())
@@ -355,6 +382,21 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
                         mView.showModuleName(mModuleSelectInfo.name);
                     }
                 }
+                break;
+            case REQUEST_CODE_OPEN_ALBUM:
+                if(resultCode == Activity.RESULT_OK && data!=null){
+                    AlbumData album  = (AlbumData) data.getSerializableExtra(CommonConfig.ALBUM_DATA);
+                    if(album!=null)
+                    {
+                        mSelectedMap = album.map;
+                        if(mView!=null){
+                            mView.showImages(mSelectedMap);
+                        }
+                    }
+                }
+                break;
+            case REQUEST_CODE_TAKE_PHOTO:
+
                 break;
         }
     }

@@ -18,8 +18,8 @@ import android.widget.TextView;
 
 import com.glodon.bim.R;
 import com.glodon.bim.base.BaseActivity;
+import com.glodon.bim.basic.image.ImageLoader;
 import com.glodon.bim.basic.listener.ThrottleClickEvents;
-import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.business.qualityManage.bean.CompanyItem;
 import com.glodon.bim.business.qualityManage.bean.CreateCheckListParams;
 import com.glodon.bim.business.qualityManage.bean.CreateCheckListParamsFile;
@@ -28,12 +28,16 @@ import com.glodon.bim.business.qualityManage.listener.OnChooseListListener;
 import com.glodon.bim.business.qualityManage.presenter.CreateCheckListPresenter;
 import com.glodon.bim.common.config.CommonConfig;
 import com.glodon.bim.customview.PhotoAlbumDialog;
+import com.glodon.bim.customview.album.AlbumData;
+import com.glodon.bim.customview.album.AlbumEditActivity;
+import com.glodon.bim.customview.album.TNBImageItem;
 import com.glodon.bim.customview.datepicker.TNBCustomDatePickerUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -43,6 +47,7 @@ import java.util.Map;
  * 邮箱：zhourf@glodon.com
  */
 public class CreateCheckListActivity extends BaseActivity implements View.OnClickListener, CreateCheckListContract.View {
+
 
     private CreateCheckListContract.Presenter mPresenter;
 
@@ -112,6 +117,9 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
     private int softHeight = 0;//输入法高度
     private LinearLayout rootLayout;//跟布局
     private int initHeight = 0;
+
+    //是否显示图片   有的入口是无需图片直接创建
+    private boolean mIsShowPhoto = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -226,24 +234,38 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
     }
 
     private void initData() {
+        mPresenter = new CreateCheckListPresenter(this);
+        mPresenter.initData(getIntent());
         //状态栏
         initStatusBar(mStatusView);
 
         //判断图片
-        mImagePath = getIntent().getStringExtra(CommonConfig.IAMGE_SAVE_PATH);
-        if (TextUtils.isEmpty(mImagePath)) {
+        mIsShowPhoto = getIntent().getBooleanExtra(CommonConfig.SHOW_PHOTO,true);
+
+        if (!mIsShowPhoto) {
             mPhotoParent.setVisibility(View.GONE);
-//            mPhotoDescription.setVisibility(View.GONE);
         } else {
             mPhotoParent.setVisibility(View.VISIBLE);
-//            mPhotoDescription.setVisibility(View.VISIBLE);
+            mImagePath = getIntent().getStringExtra(CommonConfig.IAMGE_SAVE_PATH);
+            AlbumData data = (AlbumData) getIntent().getSerializableExtra(CommonConfig.ALBUM_DATA);
+
+            LinkedHashMap<String,TNBImageItem> map = new LinkedHashMap<>();
+            if(!TextUtils.isEmpty(mImagePath)){
+                TNBImageItem item = new TNBImageItem();
+                item.imagePath = mImagePath;
+                map.put(mImagePath,item);
+            }
+            if(data!=null && data.map!=null){
+                map = data.map;
+            }
+            showImages(map);
+            mPresenter.setSelectedImages(map);
         }
 
         //默认单据 检查单
         mParams.inspectionType = CommonConfig.TYPE_INSPECTION;
 
-        mPresenter = new CreateCheckListPresenter(this);
-        mPresenter.initData(getIntent());
+
     }
 
     /**
@@ -309,12 +331,12 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
                     mPhotoAlbumDialog.builder(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-
+                            mPresenter.takePhoto();
                         }
                     }, new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-
+                            mPresenter.openAlbum();
                         }
                     });
                 }
@@ -455,6 +477,51 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
     public void showDeleteButton() {
         mDeleteBtn.setVisibility(View.VISIBLE);
     }
+
+    @Override
+    public void showImages(LinkedHashMap<String, TNBImageItem> mSelectedMap) {
+        int size = mSelectedMap.size();
+        List<ImageView> list = new ArrayList<>();
+        list.add(mPhoto0);
+        list.add(mPhoto1);
+        list.add(mPhoto2);
+        int position = 0;
+        for(Map.Entry<String,TNBImageItem> entry:mSelectedMap.entrySet()){
+            TNBImageItem item = entry.getValue();
+            String url = item.thumbnailPath;
+            if(TextUtils.isEmpty(url)){
+                url = item.imagePath;
+            }
+            ImageLoader.showImageCenterCrop(mActivity,url,list.get(position),R.drawable.icon_default_image);
+            position++;
+        }
+        if(size==0){
+            mPhoto0.setVisibility(View.GONE);
+            mPhoto1.setVisibility(View.GONE);
+            mPhoto2.setVisibility(View.GONE);
+            mPhoto3.setVisibility(View.VISIBLE);
+        }
+        if(size==1){
+            mPhoto0.setVisibility(View.VISIBLE);
+            mPhoto1.setVisibility(View.GONE);
+            mPhoto2.setVisibility(View.GONE);
+            mPhoto3.setVisibility(View.VISIBLE);
+        }
+        if(size==2){
+            mPhoto0.setVisibility(View.VISIBLE);
+            mPhoto1.setVisibility(View.VISIBLE);
+            mPhoto2.setVisibility(View.GONE);
+            mPhoto3.setVisibility(View.VISIBLE);
+        }
+        if(size==3){
+            mPhoto0.setVisibility(View.VISIBLE);
+            mPhoto1.setVisibility(View.VISIBLE);
+            mPhoto2.setVisibility(View.VISIBLE);
+            mPhoto3.setVisibility(View.GONE);
+        }
+    }
+
+
 
     //点击返回按钮
     private void back(){

@@ -22,7 +22,6 @@ import com.glodon.bim.R;
 import com.glodon.bim.base.BaseActivity;
 import com.glodon.bim.basic.image.ImageLoader;
 import com.glodon.bim.basic.image.OnImageLoadListener;
-import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.basic.utils.CameraUtil;
 import com.glodon.bim.basic.utils.InputMethodutil;
 import com.glodon.bim.basic.utils.ScreenUtil;

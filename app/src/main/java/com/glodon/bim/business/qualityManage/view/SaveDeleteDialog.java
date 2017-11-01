@@ -1,26 +1,16 @@
 package com.glodon.bim.business.qualityManage.view;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.glodon.bim.R;
-import com.glodon.bim.basic.utils.ScreenUtil;
-import com.glodon.bim.business.qualityManage.adapter.ChooseListAdapter;
-import com.glodon.bim.business.qualityManage.listener.OnChooseListListener;
-
-import java.util.List;
 
 
 /**

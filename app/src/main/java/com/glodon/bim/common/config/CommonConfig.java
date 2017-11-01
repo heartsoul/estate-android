@@ -18,4 +18,7 @@ public class CommonConfig {
     public static final String MODULE_LIST_NAME = "moduleListName";
     public static final String TYPE_INSPECTION = "inspection";
     public static final String TYPE_ACCEPTANCE = "acceptance";
+    public static final String ALBUM_DATA = "albumData";
+    public static final String ALBUM_FROM_TYPE = "albumFromType";
+    public static final String SHOW_PHOTO = "showPhoto";
 }

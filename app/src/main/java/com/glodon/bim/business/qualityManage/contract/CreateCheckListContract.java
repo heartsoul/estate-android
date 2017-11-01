@@ -6,7 +6,9 @@ import com.glodon.bim.business.qualityManage.bean.CompanyItem;
 import com.glodon.bim.business.qualityManage.bean.CreateCheckListParams;
 import com.glodon.bim.business.qualityManage.bean.PersonItem;
 import com.glodon.bim.business.qualityManage.bean.SaveBean;
+import com.glodon.bim.customview.album.TNBImageItem;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import okhttp3.ResponseBody;
@@ -63,6 +65,21 @@ public interface CreateCheckListContract {
          * @param mParams
          */
         void save(CreateCheckListParams mParams);
+
+        /**
+         * 打开相册
+         */
+        void openAlbum();
+
+        /**
+         * 点击拍照
+         */
+        void takePhoto();
+
+        /**
+         * 设置选中的图片
+         */
+        void setSelectedImages(LinkedHashMap<String, TNBImageItem> map);
     }
 
     interface View extends IBaseView {
@@ -97,6 +114,12 @@ public interface CreateCheckListContract {
          * 保存成功后显示删除按钮
          */
         void showDeleteButton();
+
+        /**
+         * 展示图片
+         * @param mSelectedMap
+         */
+        void showImages(LinkedHashMap<String, TNBImageItem> mSelectedMap);
     }
 
     interface Model {
