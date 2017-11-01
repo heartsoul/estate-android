@@ -10,8 +10,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
@@ -24,12 +22,8 @@ import com.glodon.bim.base.BaseActivity;
 import com.glodon.bim.base.BaseFragment;
 import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.basic.utils.ScreenUtil;
-import com.glodon.bim.basic.utils.SharedPreferencesUtil;
 import com.glodon.bim.business.greendao.provider.DaoProvider;
 import com.glodon.bim.business.main.bean.ProjectListItem;
-import com.glodon.bim.business.qualityManage.OnClassifyItemClickListener;
-import com.glodon.bim.business.qualityManage.adapter.QualityCheckListClassifyAdapter;
-import com.glodon.bim.business.qualityManage.bean.ClassifyItem;
 import com.glodon.bim.business.qualityManage.contract.QualityMangeMainContract;
 import com.glodon.bim.business.qualityManage.presenter.QualityMangeMainPresenter;
 import com.glodon.bim.common.config.CommonConfig;
@@ -84,13 +78,11 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
 
     private PhotoAlbumDialog mPhotoAlbumDialog;//拍照相册弹出框
 
-    private RecyclerView mClassifesView;
-    private QualityCheckListClassifyAdapter mAdapter;
-    private List<ClassifyItem> mDataList;//分类数据
+
 
     private ProjectListItem mProjectInfo;//项目信息
-
     private List<TextView> mContentList;
+
     private int mFromType = 0;//0质检清单  1质检项目
 
     @Override
@@ -118,7 +110,7 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
         mContentView = (LinearLayout) findViewById(R.id.main_content);
         mStatusLeft = (LinearLayout) findViewById(R.id.main_drawer_status_left);
         mStatusRight = (LinearLayout) findViewById(R.id.main_drawer_status_right);
-        mClassifesView = (RecyclerView) findViewById(R.id.quality_check_list_classifes);
+
 
         LinearLayout.LayoutParams contentParams = (LinearLayout.LayoutParams) mContentView.getLayoutParams();
         contentParams.width = ScreenUtil.getScreenInfo()[0];
@@ -139,33 +131,9 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
 
         hideDrawer(1);
 
-        initClassify();
-
-
     }
 
-    /**
-     * 初始化分类
-     */
-    private void initClassify(){
-        mDataList = new ArrayList<>();
-//        String[] names = {"全部","待提交","待整改","待复查","已整改","已复查","已延迟","已验收"};
-        String[] names = {"全部","待提交","待整改","待复查","已检查","已复查","已延迟","已验收"};
-        for(int i = 0;i<8;i++){
-            ClassifyItem item = new ClassifyItem();
-            item.name = names[i];
-            mDataList.add(item);
-        }
-        mAdapter = new QualityCheckListClassifyAdapter(this, mDataList, new OnClassifyItemClickListener() {
-            @Override
-            public void onClassifyItemClick(int position, ClassifyItem item) {
 
-            }
-        });
-        LinearLayoutManager llm = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
-        mClassifesView.setLayoutManager(llm);
-        mClassifesView.setAdapter(mAdapter);
-    }
 
     private void setListener() {
         mBackView.setOnClickListener(this);

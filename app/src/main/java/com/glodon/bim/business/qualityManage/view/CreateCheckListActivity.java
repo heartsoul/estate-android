@@ -260,7 +260,6 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
                 int screenHeight = rootLayout.getRootView().getHeight();
                 softHeight = screenHeight - (r.bottom - r.top);
 
-                LogUtil.e("height="+softHeight+" "+screenHeight);
                 //更改颜色框位置
                 if (softHeight > screenHeight/3) {
                     mInputBottomView.getLayoutParams().height = softHeight-initHeight;

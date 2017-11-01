@@ -16,7 +16,7 @@ import rx.Observable;
 
 public class QualityCheckListModel implements QualityCheckListContract.Model{
     @Override
-    public Observable<QualityCheckListBean> getQualityCheckList(long deptId, int page, int size) {
-        return NetRequest.getInstance().getCall(AppConfig.BASE_URL,QualityCheckListApi.class).getQualityCheckList(deptId,page,size,new DaoProvider().getCookie());
+    public Observable<QualityCheckListBean> getQualityCheckList(long deptId,String qcState, int page, int size) {
+        return NetRequest.getInstance().getCall(AppConfig.BASE_URL,QualityCheckListApi.class).getQualityCheckList(deptId,qcState,page,size,new DaoProvider().getCookie());
     }
 }

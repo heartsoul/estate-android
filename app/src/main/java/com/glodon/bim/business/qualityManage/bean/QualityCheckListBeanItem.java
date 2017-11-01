@@ -10,25 +10,26 @@ import java.util.List;
 
 public class QualityCheckListBeanItem {
 
-    public String qcState;//质检状态
     public String code;
-    public long constructionCompanyId;
-    public String constructionCompanyName;
     public String description;
-    public List<QualityCheckListBeanItemElement> elementList;
     public List<QualityCheckListBeanItemFile> files;
     public long id;
-    public long inspectionCompanyId;
-    public String inspectionCompanyName;
     public String inspectionDate;
-    public long inspectionProjectId;
-    public String inspectionProjectName;
     public String inspectionType;
     public String lastRectificationDate;
     public boolean needRectification;
     public long projectId;
-    public String projectName;
-    public String versionId;
+    public String qcState;//质检状态
+
+//    public long constructionCompanyId;
+//    public String constructionCompanyName;
+//    public List<QualityCheckListBeanItemElement> elementList;
+//    public long inspectionCompanyId;
+//    public String inspectionCompanyName;
+//    public long inspectionProjectId;
+//    public String inspectionProjectName;
+//    public String projectName;
+//    public String versionId;
 
     public int showType = 1;//卡片样式，0时间  1单据
     public int timeType;//时间类型，0今天 1之前

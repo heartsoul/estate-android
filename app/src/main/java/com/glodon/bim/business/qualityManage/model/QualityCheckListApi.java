@@ -28,6 +28,6 @@ public interface QualityCheckListApi {
     /**
      * 获取质检清单
      */
-    @GET("quality/{deptId}/qualityInspection")
-    Observable<QualityCheckListBean> getQualityCheckList(@Path("deptId") long deptId, @Query("page") int page, @Query("size") int size,@Header("cookie") String cookie);
+    @GET("quality/{deptId}/qualityInspection/all")
+    Observable<QualityCheckListBean> getQualityCheckList(@Path("deptId") long deptId, @Query("qcState") String qcState, @Query("page") int page, @Query("size") int size,@Header("cookie") String cookie);
 }

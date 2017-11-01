@@ -15,7 +15,10 @@ import com.glodon.bim.R;
 import com.glodon.bim.base.BaseFragment;
 import com.glodon.bim.basic.listener.ThrottleClickEvents;
 import com.glodon.bim.business.main.bean.ProjectListItem;
+import com.glodon.bim.business.qualityManage.OnClassifyItemClickListener;
 import com.glodon.bim.business.qualityManage.adapter.QualityCheckListAdapter;
+import com.glodon.bim.business.qualityManage.adapter.QualityCheckListClassifyAdapter;
+import com.glodon.bim.business.qualityManage.bean.ClassifyItem;
 import com.glodon.bim.business.qualityManage.bean.QualityCheckListBeanItem;
 import com.glodon.bim.business.qualityManage.contract.QualityCheckListContract;
 import com.glodon.bim.business.qualityManage.presenter.QualityCheckListPresenter;
@@ -39,9 +42,16 @@ public class QualityCheckListFragment extends BaseFragment implements QualityChe
     private QualityCheckListContract.Presenter mPresenter;
     private ProjectListItem mProjectInfo;
 
+    private RecyclerView mClassifesView;
+    private QualityCheckListClassifyAdapter mCalssifyAdapter;
+    private String mCurrentState = "";//当前选择的列表状态
+
+    private List<ClassifyItem> mDataList;//分类数据
+
     public void setProjectInfo(ProjectListItem info) {
         this.mProjectInfo = info;
     }
+
 
     @Nullable
     @Override
@@ -55,8 +65,10 @@ public class QualityCheckListFragment extends BaseFragment implements QualityChe
     private void initView(View view) {
         mPullRefreshView = view.findViewById(R.id.quality_check_list_recyclerview);
         mToTopView = view.findViewById(R.id.quality_check_list_to_top);
+        mClassifesView = view.findViewById(R.id.quality_check_list_classifes);
 
         setListener();
+        initClassify();
         initRecyclerView();
         initData();
     }
@@ -76,13 +88,13 @@ public class QualityCheckListFragment extends BaseFragment implements QualityChe
         mPullRefreshView.setOnPullRefreshListener(new OnPullRefreshListener() {
             @Override
             public void onPullDown() {
-
+                mPresenter.pullDown();
                 mPullRefreshView.onPullDownComplete();
             }
 
             @Override
             public void onPullUp() {
-
+                mPresenter.pullUp();
                 mPullRefreshView.onPullUpComplete();
             }
         });
@@ -93,6 +105,34 @@ public class QualityCheckListFragment extends BaseFragment implements QualityChe
         final LinearLayoutManager manager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(manager);
 
+    }
+
+    /**
+     * 初始化分类
+     */
+    private void initClassify(){
+        mDataList = new ArrayList<>();
+//        String[] names = {"全部","待提交","待整改","待复查","已整改","已复查","已延迟","已验收"};
+        String[] names = {"全部","待提交","待整改","待复查","已检查","已复查","已延迟","已验收"};
+        final String[] states = {"","staged","unrectified","unreviewed","inspected","reviewed","delayed","accepted"};
+
+        for(int i = 0;i<8;i++){
+            ClassifyItem item = new ClassifyItem();
+            item.name = names[i];
+            mDataList.add(item);
+        }
+        mCalssifyAdapter = new QualityCheckListClassifyAdapter(getActivity(), mDataList, new OnClassifyItemClickListener() {
+            @Override
+            public void onClassifyItemClick(int position, ClassifyItem item) {
+                if(!mCurrentState.equals(states[position])) {
+                    mCurrentState = states[position];
+                    mPresenter.getClassifyData(mCurrentState);
+                }
+            }
+        });
+        LinearLayoutManager llm = new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false);
+        mClassifesView.setLayoutManager(llm);
+        mClassifesView.setAdapter(mCalssifyAdapter);
     }
 
     private void initData() {
@@ -144,4 +184,5 @@ public class QualityCheckListFragment extends BaseFragment implements QualityChe
         super.onDestroy();
         mPresenter.onDestroy();
     }
+
 }

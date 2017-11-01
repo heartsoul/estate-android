@@ -31,6 +31,9 @@ public class QualityCheckListPresenter implements QualityCheckListContract.Prese
     private CompositeSubscription mSubscription;
     private ProjectListItem mProjectInfo;
     private List<QualityCheckListBeanItem> mDataList;
+    private String mQcState = "";
+    private int mCurrentPage = 0;
+    private int mSize = 20;
     private OnOperateSheetListener mListener = new OnOperateSheetListener() {
         @Override
         public void delete(int position) {
@@ -63,6 +66,8 @@ public class QualityCheckListPresenter implements QualityCheckListContract.Prese
         return mListener;
     }
 
+
+
     public QualityCheckListPresenter(QualityCheckListContract.View mView) {
         this.mView = mView;
         mModel = new QualityCheckListModel();
@@ -76,8 +81,20 @@ public class QualityCheckListPresenter implements QualityCheckListContract.Prese
         getDataList();
     }
 
+    @Override
+    public void pullDown() {
+        mCurrentPage = 0;
+        mDataList.clear();
+        getDataList();
+    }
+
+    /**
+     * 初始化数据
+     */
     private void getDataList() {
-        Subscription sub = mModel.getQualityCheckList(mProjectInfo.deptId, 0, 30).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+        Subscription sub = mModel.getQualityCheckList(mProjectInfo.deptId, mQcState,mCurrentPage, mSize)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<QualityCheckListBean>() {
                     @Override
                     public void onCompleted() {
@@ -93,14 +110,33 @@ public class QualityCheckListPresenter implements QualityCheckListContract.Prese
                     public void onNext(QualityCheckListBean bean) {
                         if(bean != null && bean.content!=null && bean.content.size()>0){
                             mDataList.addAll(bean.content);
-                            if(mView!=null) {
-                                mView.updateData(mDataList);
+                            if(mCurrentPage<bean.totalPages){
+                                mCurrentPage++;
                             }
+                        }
+                        if(mView!=null) {
+                            mView.updateData(mDataList);
                         }
                     }
                 });
         mSubscription.add(sub);
     }
+
+
+
+    @Override
+    public void pullUp() {
+        getDataList();
+    }
+
+    @Override
+    public void getClassifyData(String mCurrentState) {
+        mCurrentPage = 0;
+        mQcState = mCurrentState;
+        mDataList.clear();
+        getDataList();
+    }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

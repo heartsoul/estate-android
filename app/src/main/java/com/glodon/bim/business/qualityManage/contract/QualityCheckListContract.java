@@ -33,6 +33,22 @@ public interface QualityCheckListContract {
          * 获取监听接口
          */
         OnOperateSheetListener getListener();
+
+        /**
+         * 下拉刷新
+         */
+        void pullDown();
+
+        /**
+         * 上拉加载
+         */
+        void pullUp();
+
+        /**
+         * 获取分类的数据
+         * @param mCurrentState 当前分类
+         */
+        void getClassifyData(String mCurrentState);
     }
 
     interface View extends IBaseView {
@@ -50,6 +66,6 @@ public interface QualityCheckListContract {
          * @param page 分页
          * @param size 每页数量
          */
-        Observable<QualityCheckListBean> getQualityCheckList(long deptId,int page, int size);
+        Observable<QualityCheckListBean> getQualityCheckList(long deptId,String qcState,int page, int size);
     }
 }

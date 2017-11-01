@@ -42,12 +42,27 @@
             android:background="@drawable/icon_search_white" />
     </RelativeLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/choose_tenant_recyclerview"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="@dimen/dimen_29"
-        android:layout_marginRight="@dimen/dimen_29"
-        android:layout_marginTop="@dimen/dimen_23"
-        android:background="@color/white" />
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/icon_choose_project_bg"
+            android:scaleType="centerCrop" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/choose_tenant_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dimen_29"
+            android:layout_marginRight="@dimen/dimen_29"
+            android:layout_marginTop="@dimen/dimen_23"
+            android:background="@color/white" />
+
+
+    </RelativeLayout>
+
 </LinearLayout>

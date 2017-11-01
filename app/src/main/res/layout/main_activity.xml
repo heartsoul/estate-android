@@ -240,12 +240,7 @@
                 />
         </RelativeLayout>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/quality_check_list_classifes"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dimen_44"
-            android:background="@color/white"
-            android:scrollbars="none"></android.support.v7.widget.RecyclerView>
+
 
         <FrameLayout
             android:id="@+id/main_fragment_content"
