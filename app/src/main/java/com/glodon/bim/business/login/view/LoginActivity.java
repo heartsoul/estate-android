@@ -55,6 +55,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View, V
         initView();
         setListener();
         initDataForActivity();
+
     }
 
     private void initView() {

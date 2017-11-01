@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextPaint;
 import android.text.TextUtils;
@@ -42,6 +43,7 @@ import java.util.List;
  */
 public class PhotoEditActivity extends BaseActivity implements View.OnClickListener {
 
+    private final int REQUEST_CODE_CREATE_CHECK_LIST = 0;
     private String mImagePath;
     private String mSavePath;
 
@@ -65,6 +67,8 @@ public class PhotoEditActivity extends BaseActivity implements View.OnClickListe
     private List<ImageView> mColorList;
     private List<Integer> mColorValueList;
 
+    private boolean isFromCreateCheckList = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,6 +86,7 @@ public class PhotoEditActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void initView() {
+        isFromCreateCheckList = getIntent().getBooleanExtra(CommonConfig.FROM_CREATE_CHECK_LIST,false);
         rootLayout = (RelativeLayout) findViewById(R.id.photo_edit_root_layout);
         mImagePath = getIntent().getStringExtra(CommonConfig.IMAGE_PATH);
         mDragTextList = new ArrayList<>();
@@ -196,7 +201,6 @@ public class PhotoEditActivity extends BaseActivity implements View.OnClickListe
         mBottomFinish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(mActivity, CreateCheckListActivity.class);
                 if (mDragTextList.size() > 0) {
                     saveTextToImage(mPhotoEditView);
                     for (DragTextView textview : mDragTextList) {
@@ -206,9 +210,19 @@ public class PhotoEditActivity extends BaseActivity implements View.OnClickListe
                 if (TextUtils.isEmpty(mSavePath)) {
                     mSavePath = mImagePath;
                 }
-                intent.putExtra(CommonConfig.IAMGE_SAVE_PATH, mSavePath);
-                mActivity.startActivity(intent);
-//                mActivity.finish();
+                //判断是否来自创建检查单
+                if(isFromCreateCheckList){
+                    Intent data = new Intent();
+                    data.putExtra(CommonConfig.IAMGE_SAVE_PATH, mSavePath);
+                    setResult(RESULT_OK,data);
+                    finish();
+                }else {
+                    Intent intent = new Intent(mActivity, CreateCheckListActivity.class);
+
+                    intent.putExtra(CommonConfig.IAMGE_SAVE_PATH, mSavePath);
+                    mActivity.startActivityForResult(intent, REQUEST_CODE_CREATE_CHECK_LIST);
+                    mActivity.finish();
+                }
             }
         });
 
@@ -478,6 +492,8 @@ public class PhotoEditActivity extends BaseActivity implements View.OnClickListe
         }
         mPhotoEditView.setImageBitmap(bitmap);
         mPhotoEditView.cancel();
+
+        frushStyemDCIM();
     }
 
     /**
@@ -512,7 +528,24 @@ public class PhotoEditActivity extends BaseActivity implements View.OnClickListe
         mPhotoEditView.setImageBitmap(bitmap);
         //将之前的设定清空
         mPhotoEditView.cancel();
+
+        frushStyemDCIM();
     }
 
+    //刷新系统相册
+    private void frushStyemDCIM(){
+        sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(new File(mSavePath))));
+    }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode)
+        {
+            case REQUEST_CODE_CREATE_CHECK_LIST:
+                setResult(RESULT_OK,data);
+                finish();
+                break;
+        }
+    }
 }

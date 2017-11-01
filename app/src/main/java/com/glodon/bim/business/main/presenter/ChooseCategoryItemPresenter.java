@@ -26,6 +26,7 @@ public class ChooseCategoryItemPresenter implements ChooseCategoryItemContract.P
     private ChooseCategoryItemContract.View mView;
     private final int REQUEST_CODE_TAKE_PHOTO = 0;
     private final int REQUEST_CODE_CHANGE_PROJECT = 1;
+    private final int REQUEST_CODE_CREATE_CHECK_LIST = 2;
     private String mPhotoPath;
     private ProjectListItem mProjectInfo;
 
@@ -89,7 +90,7 @@ public class ChooseCategoryItemPresenter implements ChooseCategoryItemContract.P
                     //正常返回
                     Intent intent = new Intent(mView.getActivity(), PhotoEditActivity.class);
                     intent.putExtra("imagePath",mPhotoPath);
-                    mView.getActivity().startActivity(intent);
+                    mView.getActivity().startActivityForResult(intent,REQUEST_CODE_CREATE_CHECK_LIST);
 
                 } else if (resultCode == Activity.RESULT_CANCELED) {
                     //返回键返回
@@ -102,6 +103,9 @@ public class ChooseCategoryItemPresenter implements ChooseCategoryItemContract.P
                         mView.getActivity().finish();
                     }
                 }
+                break;
+            case REQUEST_CODE_CREATE_CHECK_LIST:
+
                 break;
         }
     }

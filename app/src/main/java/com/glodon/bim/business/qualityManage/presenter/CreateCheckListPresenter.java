@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.SystemClock;
 
 import com.glodon.bim.basic.log.LogUtil;
+import com.glodon.bim.basic.utils.CameraUtil;
 import com.glodon.bim.basic.utils.SharedPreferencesUtil;
 import com.glodon.bim.business.qualityManage.bean.CompanyItem;
 import com.glodon.bim.business.qualityManage.bean.CreateCheckListParams;
@@ -14,6 +15,7 @@ import com.glodon.bim.business.qualityManage.bean.SaveBean;
 import com.glodon.bim.business.qualityManage.contract.CreateCheckListContract;
 import com.glodon.bim.business.qualityManage.model.CreateCheckListModel;
 import com.glodon.bim.business.qualityManage.view.ChooseModuleActivity;
+import com.glodon.bim.business.qualityManage.view.PhotoEditActivity;
 import com.glodon.bim.common.config.CommonConfig;
 import com.glodon.bim.customview.ToastManager;
 import com.glodon.bim.customview.album.AlbumData;
@@ -42,6 +44,7 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
     private final int REQUEST_CODE_CHOOSE_MODULE = 0;//跳转到选择质检项目
     private final int REQUEST_CODE_OPEN_ALBUM = 1;
     private final int REQUEST_CODE_TAKE_PHOTO = 2;
+    private final int REQUEST_CODE_PHOTO_EDIT = 3;
     private CreateCheckListContract.Model mModel;
     private CreateCheckListContract.View mView;
     private CompositeSubscription mSubscritption;
@@ -64,6 +67,7 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
 
     //新建检查单参数
     private CreateCheckListParams mInput;
+    private String mPhotoPath;//拍照的路径
 
     public CreateCheckListPresenter(CreateCheckListContract.View mView) {
         this.mView = mView;
@@ -299,7 +303,8 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
 
     @Override
     public void takePhoto() {
-
+        mPhotoPath = CameraUtil.getFilePath();
+        CameraUtil.openCamera(mPhotoPath, mView.getActivity(), REQUEST_CODE_TAKE_PHOTO);
     }
 
     @Override
@@ -396,7 +401,27 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
                 }
                 break;
             case REQUEST_CODE_TAKE_PHOTO:
+                if (resultCode == Activity.RESULT_OK) {
+                    //正常返回
+                    Intent intent = new Intent(mView.getActivity(), PhotoEditActivity.class);
+                    intent.putExtra(CommonConfig.IMAGE_PATH,mPhotoPath);
+                    intent.putExtra(CommonConfig.FROM_CREATE_CHECK_LIST,true);
+                    mView.getActivity().startActivityForResult(intent,REQUEST_CODE_PHOTO_EDIT);
 
+                } else if (resultCode == Activity.RESULT_CANCELED) {
+                    //返回键返回
+                }
+                break;
+            case REQUEST_CODE_PHOTO_EDIT:
+                if(resultCode == Activity.RESULT_OK && data!=null){
+                    mPhotoPath = data.getStringExtra(CommonConfig.IAMGE_SAVE_PATH);
+                    TNBImageItem item = new TNBImageItem();
+                    item.imagePath = mPhotoPath;
+                    mSelectedMap.put(mPhotoPath,item);
+                    if(mView!=null){
+                        mView.showImages(mSelectedMap);
+                    }
+                }
                 break;
         }
     }

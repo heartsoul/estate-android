@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 
@@ -57,6 +58,7 @@ public class CameraUtil {
     }
 
     public static String getFilePath(){
-        return DIR_APP_CACHE_CAMERA+getCameraName()+".jpg";
+//        return DIR_APP_CACHE_CAMERA+getCameraName()+".jpg";
+        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath()+"/"+getCameraName()+".jpg";
     }
 }

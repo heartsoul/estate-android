@@ -90,7 +90,17 @@ public class AlbumEditActivity extends BaseActivity implements View.OnClickListe
                 }
             }
         });
-        mAdapter.setSelectedMap((AlbumData) getIntent().getSerializableExtra(CommonConfig.ALBUM_DATA));
+        //设置选中后的数量
+        AlbumData data = (AlbumData) getIntent().getSerializableExtra(CommonConfig.ALBUM_DATA);
+        if(data!=null) {
+            LinkedHashMap<String, TNBImageItem> map = data.map;
+            if(map.size()==0){
+                mNavFinish.setText("完成");
+            }else{
+                mNavFinish.setText("完成("+map.size()+")");
+            }
+        }
+        mAdapter.setSelectedMap(data);
         mRecyclerView.setAdapter(mAdapter);
     }
 
