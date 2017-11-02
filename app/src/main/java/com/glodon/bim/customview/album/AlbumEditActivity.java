@@ -14,6 +14,7 @@ import com.glodon.bim.base.BaseActivity;
 import com.glodon.bim.basic.listener.ThrottleClickEvents;
 import com.glodon.bim.business.qualityManage.view.CreateCheckListActivity;
 import com.glodon.bim.common.config.CommonConfig;
+import com.glodon.bim.customview.photopreview.PhotoPreviewActivity;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -25,6 +26,7 @@ import java.util.List;
  */
 public class AlbumEditActivity extends BaseActivity implements View.OnClickListener {
 
+    private static final int REQUEST_CODE_PHOTO_PREVIEW = 0;
     private TextView mNavCancel,mNavFinish;
     private View mStatusView;
     private RecyclerView mRecyclerView;
@@ -32,6 +34,7 @@ public class AlbumEditActivity extends BaseActivity implements View.OnClickListe
     private AlbumEditAdapter mAdapter;
     private List<TNBImageItem> mDataList;
     private int fromType = 0;//0 从选择目录页跳转 或 从质检清单页跳转   1 从检查单页跳转
+    private OnAlbumChangeListener mListener ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,11 +79,12 @@ public class AlbumEditActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void initRecyclerView(){
+
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setVerticalScrollBarEnabled(true);
         GridLayoutManager manager = new GridLayoutManager(this,4);
         mRecyclerView.setLayoutManager(manager);
-        mAdapter = new AlbumEditAdapter(this, new OnAlbumChangeListener() {
+        mListener = new OnAlbumChangeListener() {
             @Override
             public void onChange(LinkedHashMap<String, TNBImageItem> map) {
                 if(map.size()==0){
@@ -89,7 +93,8 @@ public class AlbumEditActivity extends BaseActivity implements View.OnClickListe
                     mNavFinish.setText("完成("+map.size()+")");
                 }
             }
-        });
+        };
+        mAdapter = new AlbumEditAdapter(this, mListener);
         //设置选中后的数量
         AlbumData data = (AlbumData) getIntent().getSerializableExtra(CommonConfig.ALBUM_DATA);
         if(data!=null) {
@@ -133,7 +138,36 @@ public class AlbumEditActivity extends BaseActivity implements View.OnClickListe
 
                 break;
             case R.id.album_edit_preview:
+                Intent intent = new Intent(mActivity, PhotoPreviewActivity.class);
+                intent.putExtra(CommonConfig.ALBUM_DATA,mAdapter.getSelectedImages());
+                startActivityForResult(intent,REQUEST_CODE_PHOTO_PREVIEW);
+                break;
+        }
+    }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode)
+        {
+            case REQUEST_CODE_PHOTO_PREVIEW:
+                if(resultCode == RESULT_OK && data!=null) {
+                    AlbumData albumdata = (AlbumData) data.getSerializableExtra(CommonConfig.ALBUM_DATA);
+                    if(albumdata!=null)
+                    {
+                        mAdapter=new AlbumEditAdapter(mActivity,mListener);
+                        mAdapter.setSelectedMap(albumdata);
+                        mRecyclerView.setAdapter(mAdapter);
+                        mAdapter.upateData(mDataList);
+
+                        LinkedHashMap<String, TNBImageItem> map = albumdata.map;
+                        if(map.size()==0){
+                            mNavFinish.setText("完成");
+                        }else{
+                            mNavFinish.setText("完成("+map.size()+")");
+                        }
+                    }
+                }
                 break;
         }
     }

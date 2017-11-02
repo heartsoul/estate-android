@@ -66,6 +66,16 @@ public class ImageLoader {
     }
 
     /**
+     * 展示一般图片
+     */
+    public static void showImageNormal(Context context, String url, ImageView view) {
+        Glide.with(context)
+                .load(url)
+                .crossFade(200)
+                .into(view);
+    }
+
+    /**
      * 展示头像 圆形
      */
     public static void showHeadIcon(Context context, String url, ImageView view) {

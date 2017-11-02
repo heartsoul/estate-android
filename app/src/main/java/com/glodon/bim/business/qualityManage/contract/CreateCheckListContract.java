@@ -80,6 +80,12 @@ public interface CreateCheckListContract {
          * 设置选中的图片
          */
         void setSelectedImages(LinkedHashMap<String, TNBImageItem> map);
+
+        /**
+         * 跳转到图片预览页
+         * @param position  当前的图片
+         */
+        void toPreview(int position);
     }
 
     interface View extends IBaseView {

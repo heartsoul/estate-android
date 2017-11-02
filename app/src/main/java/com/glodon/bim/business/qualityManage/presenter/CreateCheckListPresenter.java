@@ -21,6 +21,7 @@ import com.glodon.bim.customview.ToastManager;
 import com.glodon.bim.customview.album.AlbumData;
 import com.glodon.bim.customview.album.AlbumEditActivity;
 import com.glodon.bim.customview.album.TNBImageItem;
+import com.glodon.bim.customview.photopreview.PhotoPreviewActivity;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -41,10 +42,12 @@ import rx.subscriptions.CompositeSubscription;
  */
 
 public class CreateCheckListPresenter implements CreateCheckListContract.Presenter {
+
     private final int REQUEST_CODE_CHOOSE_MODULE = 0;//跳转到选择质检项目
     private final int REQUEST_CODE_OPEN_ALBUM = 1;
     private final int REQUEST_CODE_TAKE_PHOTO = 2;
     private final int REQUEST_CODE_PHOTO_EDIT = 3;
+    private static final int REQUEST_CODE_PHOTO_PREVIEW = 4;//图片预览
     private CreateCheckListContract.Model mModel;
     private CreateCheckListContract.View mView;
     private CompositeSubscription mSubscritption;
@@ -301,6 +304,19 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
         mView.getActivity().startActivityForResult(intent,REQUEST_CODE_OPEN_ALBUM);
     }
 
+
+    /**
+     * 跳转到图片预览
+     * @param position 点击的图片的位置
+     */
+    @Override
+    public void toPreview(int position){
+        Intent intent = new Intent(mView.getActivity(), PhotoPreviewActivity.class);
+        intent.putExtra(CommonConfig.ALBUM_DATA,new AlbumData(mSelectedMap));
+        intent.putExtra(CommonConfig.ALBUM_POSITION,position);
+        mView.getActivity().startActivityForResult(intent,REQUEST_CODE_PHOTO_PREVIEW);
+    }
+
     @Override
     public void takePhoto() {
         mPhotoPath = CameraUtil.getFilePath();
@@ -420,6 +436,18 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
                     mSelectedMap.put(mPhotoPath,item);
                     if(mView!=null){
                         mView.showImages(mSelectedMap);
+                    }
+                }
+                break;
+            case REQUEST_CODE_PHOTO_PREVIEW:
+                if(resultCode == Activity.RESULT_OK && data!=null){
+                    AlbumData album  = (AlbumData) data.getSerializableExtra(CommonConfig.ALBUM_DATA);
+                    if(album!=null)
+                    {
+                        mSelectedMap = album.map;
+                        if(mView!=null){
+                            mView.showImages(mSelectedMap);
+                        }
                     }
                 }
                 break;

@@ -22,4 +22,5 @@ public class CommonConfig {
     public static final String ALBUM_FROM_TYPE = "albumFromType";
     public static final String SHOW_PHOTO = "showPhoto";
     public static final String FROM_CREATE_CHECK_LIST = "fromCheckList";
+    public static final String ALBUM_POSITION = "albumPosition";
 }

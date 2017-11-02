@@ -31,6 +31,7 @@ import com.glodon.bim.customview.PhotoAlbumDialog;
 import com.glodon.bim.customview.album.AlbumData;
 import com.glodon.bim.customview.album.TNBImageItem;
 import com.glodon.bim.customview.datepicker.TNBCustomDatePickerUtils;
+import com.glodon.bim.customview.photopreview.PhotoPreviewActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -200,6 +201,9 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
 
         ThrottleClickEvents.throttleClick(mCompanyParent, this, 1);
         ThrottleClickEvents.throttleClick(mPersonParent, this, 1);
+        ThrottleClickEvents.throttleClick(mPhoto0, this, 1);
+        ThrottleClickEvents.throttleClick(mPhoto1, this, 1);
+        ThrottleClickEvents.throttleClick(mPhoto2, this, 1);
         ThrottleClickEvents.throttleClick(mPhoto3, this, 1);
         ThrottleClickEvents.throttleClick(mRemainFlag, this, 1);
         ThrottleClickEvents.throttleClick(mRemainParent, this, 1);
@@ -324,6 +328,15 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
             case R.id.create_check_list_person://选择责任人
                 mPresenter.getPersonList();
                 break;
+            case R.id.create_check_list_photo_0:
+                mPresenter.toPreview(0);
+                break;
+            case R.id.create_check_list_photo_1:
+                mPresenter.toPreview(1);
+                break;
+            case R.id.create_check_list_photo_2:
+                mPresenter.toPreview(2);
+                break;
             case R.id.create_check_list_photo_3://添加图片
                 if (mPhotoAlbumDialog == null) {
                     mPhotoAlbumDialog = new PhotoAlbumDialog(mActivity);
@@ -392,6 +405,7 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
                 break;
         }
     }
+
 
     @Override
     public void onBackPressed() {

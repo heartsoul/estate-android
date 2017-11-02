@@ -106,15 +106,6 @@ public class AlbumEditAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public void setSelectedMap(AlbumData data){
         if(data!=null && data.map!=null && data.map.size()>0){
             mSelectedMap = data.map;
-
-            //如果是拍照的图片，那么就在这里无选中状态，并且在总数上要减掉
-//            int count=0;
-//            for(TNBImageItem item:mDataList){
-//                if(mSelectedMap.containsKey(item.imagePath)){
-//                    count++;
-//                }
-//            }
-//            max = max-(mSelectedMap.size()-count);
         }
 
 

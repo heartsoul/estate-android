@@ -236,15 +236,20 @@
             android:name=".business.setting.view.SettingActivity"
             android:screenOrientation="portrait" />
         <!--相册-->
-        <activity android:name=".customview.album.AlbumEditActivity"
+        <activity
+            android:name=".customview.album.AlbumEditActivity"
             android:screenOrientation="portrait">
             <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
+            <!--<action android:name="android.intent.action.MAIN" />-->
 
 
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--<category android:name="android.intent.category.LAUNCHER" />-->
             <!--</intent-filter>-->
         </activity>
+        <!--图片预览-->
+        <activity
+            android:name="com.glodon.bim.customview.photopreview.PhotoPreviewActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
