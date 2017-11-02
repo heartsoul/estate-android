@@ -6,7 +6,10 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.text.TextPaint;
 import android.text.TextUtils;
 import android.view.View;
@@ -31,6 +34,7 @@ import com.glodon.bim.business.qualityManage.listener.OnPhotoEditChangeListener;
 import com.glodon.bim.common.config.CommonConfig;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -86,7 +90,7 @@ public class PhotoEditActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void initView() {
-        isFromCreateCheckList = getIntent().getBooleanExtra(CommonConfig.FROM_CREATE_CHECK_LIST,false);
+        isFromCreateCheckList = getIntent().getBooleanExtra(CommonConfig.FROM_CREATE_CHECK_LIST, false);
         rootLayout = (RelativeLayout) findViewById(R.id.photo_edit_root_layout);
         mImagePath = getIntent().getStringExtra(CommonConfig.IMAGE_PATH);
         mDragTextList = new ArrayList<>();
@@ -211,12 +215,12 @@ public class PhotoEditActivity extends BaseActivity implements View.OnClickListe
                     mSavePath = mImagePath;
                 }
                 //判断是否来自创建检查单
-                if(isFromCreateCheckList){
+                if (isFromCreateCheckList) {
                     Intent data = new Intent();
                     data.putExtra(CommonConfig.IAMGE_SAVE_PATH, mSavePath);
-                    setResult(RESULT_OK,data);
+                    setResult(RESULT_OK, data);
                     finish();
-                }else {
+                } else {
                     Intent intent = new Intent(mActivity, CreateCheckListActivity.class);
 
                     intent.putExtra(CommonConfig.IAMGE_SAVE_PATH, mSavePath);
@@ -389,8 +393,7 @@ public class PhotoEditActivity extends BaseActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         int id = view.getId();
-        switch (id)
-        {
+        switch (id) {
             case R.id.photo_edit_bottom_color_0:
                 selectById(0);
                 break;
@@ -419,14 +422,14 @@ public class PhotoEditActivity extends BaseActivity implements View.OnClickListe
     }
 
     //设置选中颜色
-    private void selectById(int position){
-        for(int i =0;i<mColorList.size();i++){
-            ImageView iv =mColorList.get(i);
+    private void selectById(int position) {
+        for (int i = 0; i < mColorList.size(); i++) {
+            ImageView iv = mColorList.get(i);
             LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) iv.getLayoutParams();
-            if(i != position) {
+            if (i != position) {
                 params.height = ScreenUtil.dp2px(20);
                 params.width = ScreenUtil.dp2px(20);
-            }else{
+            } else {
                 params.height = ScreenUtil.dp2px(26);
                 params.width = ScreenUtil.dp2px(26);
             }
@@ -434,10 +437,10 @@ public class PhotoEditActivity extends BaseActivity implements View.OnClickListe
         }
 
         currentColor = getResources().getColor(mColorValueList.get(position));
-        if(currentState == 1){
+        if (currentState == 1) {
             //划线
             mPhotoEditView.setColor(currentColor);
-        }else if(currentState == 2){
+        } else if (currentState == 2) {
             //写字
             mEditText.setTextColor(currentColor);
 //            mEditText.setTextColor(currentColor);
@@ -493,7 +496,7 @@ public class PhotoEditActivity extends BaseActivity implements View.OnClickListe
         mPhotoEditView.setImageBitmap(bitmap);
         mPhotoEditView.cancel();
 
-        frushStyemDCIM();
+        CameraUtil.frushStyemDCIM(mActivity,mSavePath);
     }
 
     /**
@@ -511,7 +514,7 @@ public class PhotoEditActivity extends BaseActivity implements View.OnClickListe
         for (DragTextView mShowText : mDragTextList) {
             TextPaint tp = mShowText.getPaint();
             Paint.FontMetrics metrics = tp.getFontMetrics();
-            canvas.drawText(mShowText.getText().toString().trim(), mShowText.getLeft()+mShowText.getPaddingLeft(), mShowText.getBottom() - metrics.descent-mShowText.getPaddingBottom(), tp);
+            canvas.drawText(mShowText.getText().toString().trim(), mShowText.getLeft() + mShowText.getPaddingLeft(), mShowText.getBottom() - metrics.descent - mShowText.getPaddingBottom(), tp);
         }
 
         try {
@@ -529,21 +532,17 @@ public class PhotoEditActivity extends BaseActivity implements View.OnClickListe
         //将之前的设定清空
         mPhotoEditView.cancel();
 
-        frushStyemDCIM();
+        CameraUtil.frushStyemDCIM(mActivity,mSavePath);
     }
 
-    //刷新系统相册
-    private void frushStyemDCIM(){
-        sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(new File(mSavePath))));
-    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode)
-        {
+        switch (requestCode) {
             case REQUEST_CODE_CREATE_CHECK_LIST:
-                setResult(RESULT_OK,data);
+                setResult(RESULT_OK, data);
                 finish();
                 break;
         }

@@ -1,8 +1,10 @@
 package com.glodon.bim.business.qualityManage.view;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Rect;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -20,6 +22,7 @@ import com.glodon.bim.R;
 import com.glodon.bim.base.BaseActivity;
 import com.glodon.bim.basic.image.ImageLoader;
 import com.glodon.bim.basic.listener.ThrottleClickEvents;
+import com.glodon.bim.basic.utils.CameraUtil;
 import com.glodon.bim.business.qualityManage.bean.CompanyItem;
 import com.glodon.bim.business.qualityManage.bean.CreateCheckListParams;
 import com.glodon.bim.business.qualityManage.bean.CreateCheckListParamsFile;
@@ -49,6 +52,7 @@ import java.util.Map;
 public class CreateCheckListActivity extends BaseActivity implements View.OnClickListener, CreateCheckListContract.View {
 
 
+    private static final int REQUEST_CAMERA = 4;
     private CreateCheckListContract.Presenter mPresenter;
 
     private String mImagePath;//前面传递过来的图片路径
@@ -269,6 +273,13 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
         mParams.inspectionType = CommonConfig.TYPE_INSPECTION;
 
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            String[] PERMISSIONS_STORAGE = {
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+            };
+            requestPermission(PERMISSIONS_STORAGE, REQUEST_CAMERA);
+        }
     }
 
     /**
@@ -507,6 +518,7 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
             }
             ImageLoader.showImageCenterCrop(mActivity,url,list.get(position),R.drawable.icon_default_image);
             position++;
+            CameraUtil.frushStyemDCIM(mActivity,item.imagePath);
         }
         if(size==0){
             mPhoto0.setVisibility(View.GONE);
@@ -560,10 +572,10 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
     private CreateCheckListParams mParams = new CreateCheckListParams();
     //点击保存
     private void  save(){
-        if(checkMustInfo()){
-            assembleData();
+//        if(checkMustInfo()){
+//            assembleData();
             mPresenter.save(mParams);
-        }
+//        }
     }
     //点击提交
     private void submit(){

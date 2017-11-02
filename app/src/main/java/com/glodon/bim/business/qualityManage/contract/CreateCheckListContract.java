@@ -4,6 +4,7 @@ import com.glodon.bim.base.IBasePresenter;
 import com.glodon.bim.base.IBaseView;
 import com.glodon.bim.business.qualityManage.bean.CompanyItem;
 import com.glodon.bim.business.qualityManage.bean.CreateCheckListParams;
+import com.glodon.bim.business.qualityManage.bean.ImageUploadBean;
 import com.glodon.bim.business.qualityManage.bean.PersonItem;
 import com.glodon.bim.business.qualityManage.bean.SaveBean;
 import com.glodon.bim.customview.album.TNBImageItem;
@@ -11,6 +12,8 @@ import com.glodon.bim.customview.album.TNBImageItem;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import rx.Observable;
 
@@ -83,7 +86,8 @@ public interface CreateCheckListContract {
 
         /**
          * 跳转到图片预览页
-         * @param position  当前的图片
+         *
+         * @param position 当前的图片
          */
         void toPreview(int position);
     }
@@ -123,6 +127,7 @@ public interface CreateCheckListContract {
 
         /**
          * 展示图片
+         *
          * @param mSelectedMap
          */
         void showImages(LinkedHashMap<String, TNBImageItem> mSelectedMap);
@@ -182,5 +187,16 @@ public interface CreateCheckListContract {
          * @param id     检查单id
          */
         Observable<ResponseBody> createDelete(long deptId, long id);
+
+        /**
+         * 上传图片  获取operationCode
+         */
+        Observable<ResponseBody> getOperationCode(String containerId, String name, String digest, long length);
+
+        /**
+         * 上传图片  上传文件
+         */
+        Observable<ResponseBody> uploadImage(String operationCode, RequestBody description, MultipartBody.Part file);
+        Observable<ResponseBody> uploadImage(String operationCode,MultipartBody multipartBody );
     }
 }

@@ -1,6 +1,7 @@
 package com.glodon.bim.basic.utils;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -9,6 +10,7 @@ import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 
 /**
  * 描述：相机工具类
@@ -60,5 +62,29 @@ public class CameraUtil {
     public static String getFilePath(){
 //        return DIR_APP_CACHE_CAMERA+getCameraName()+".jpg";
         return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath()+"/"+getCameraName()+".jpg";
+    }
+
+    //刷新系统相册
+    public static void frushStyemDCIM(Context context,String path) {
+        //插入系统图库
+//        try {
+//            File file = new File(path);
+//            MediaStore.Images.Media.insertImage(context.getContentResolver(),
+//                    file.getAbsolutePath(), file.getName(), null);
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        }
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {//如果是4.4及以上版本
+            //更新系统图库 某一个文件
+            context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(new File(path))));
+        } else {
+            //更新系统图库  所有文件
+            context.sendBroadcast(new Intent(
+                    Intent.ACTION_MEDIA_MOUNTED,
+                    Uri.parse("file://"
+                            + Environment.getExternalStorageDirectory())));
+        }
     }
 }
