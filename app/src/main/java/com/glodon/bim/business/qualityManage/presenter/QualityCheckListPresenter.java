@@ -3,12 +3,15 @@ package com.glodon.bim.business.qualityManage.presenter;
 import android.content.Intent;
 
 import com.glodon.bim.basic.log.LogUtil;
+import com.glodon.bim.basic.utils.SharedPreferencesUtil;
 import com.glodon.bim.business.main.bean.ProjectListItem;
 import com.glodon.bim.business.qualityManage.bean.QualityCheckListBean;
 import com.glodon.bim.business.qualityManage.bean.QualityCheckListBeanItem;
 import com.glodon.bim.business.qualityManage.contract.QualityCheckListContract;
 import com.glodon.bim.business.qualityManage.listener.OnOperateSheetListener;
 import com.glodon.bim.business.qualityManage.model.QualityCheckListModel;
+import com.glodon.bim.business.qualityManage.view.QualityCheckListDetailActivity;
+import com.glodon.bim.common.config.CommonConfig;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +29,8 @@ import rx.subscriptions.CompositeSubscription;
  */
 
 public class QualityCheckListPresenter implements QualityCheckListContract.Presenter {
+    public static final int REQUEST_CODE_DETAIL = 0;
+
     private QualityCheckListContract.View mView;
     private QualityCheckListContract.Model mModel;
     private CompositeSubscription mSubscription;
@@ -35,6 +40,8 @@ public class QualityCheckListPresenter implements QualityCheckListContract.Prese
     private int mCurrentPage = 0;
     private int mSize = 20;
     private OnOperateSheetListener mListener = new OnOperateSheetListener() {
+
+
         @Override
         public void delete(int position) {
 
@@ -42,7 +49,10 @@ public class QualityCheckListPresenter implements QualityCheckListContract.Prese
 
         @Override
         public void detail(int position) {
-
+            Intent intent = new Intent(mView.getActivity(), QualityCheckListDetailActivity.class);
+            intent.putExtra(CommonConfig.QUALITY_CHECK_LIST_DEPTID, SharedPreferencesUtil.getProjectId());
+            intent.putExtra(CommonConfig.QUALITY_CHECK_LIST_ID,mDataList.get(position).id);
+            mView.getActivity().startActivityForResult(intent,REQUEST_CODE_DETAIL);
         }
 
         @Override
@@ -140,7 +150,12 @@ public class QualityCheckListPresenter implements QualityCheckListContract.Prese
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode)
+        {
+            case REQUEST_CODE_DETAIL://检查单详情
 
+                break;
+        }
     }
 
     @Override

@@ -23,4 +23,6 @@ public class CommonConfig {
     public static final String SHOW_PHOTO = "showPhoto";
     public static final String FROM_CREATE_CHECK_LIST = "fromCheckList";
     public static final String ALBUM_POSITION = "albumPosition";
+    public static final String QUALITY_CHECK_LIST_DEPTID = "qualityCheckListDeptId";
+    public static final String QUALITY_CHECK_LIST_ID = "qualityCheckListId";
 }

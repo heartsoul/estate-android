@@ -123,6 +123,15 @@ public class QualityCheckListAdapter extends RecyclerView.Adapter<RecyclerView.V
             }
             sHolder.mDesView.setText(item.description);
 
+            sHolder.mContentView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(mListener!=null){
+                        mListener.detail(position);
+                    }
+                }
+            });
+
         }
 
         if (holder instanceof TimeHolder) {

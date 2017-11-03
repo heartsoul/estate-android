@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/quality_check_list_detail_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <!--检查单问题-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/dimen_20"
+        android:paddingRight="@dimen/dimen_20">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_20">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="施工单位："
+                android:textColor="@color/c_757575"
+                android:textSize="@dimen/dimen_14" />
+
+            <TextView
+                android:id="@+id/quality_check_list_detail_company"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dimen_80"
+                android:text="城建集团"
+                android:textColor="@color/black"
+                android:textSize="@dimen/dimen_14" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_10">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="责任人："
+                android:textColor="@color/c_757575"
+                android:textSize="@dimen/dimen_14" />
+
+            <TextView
+                android:id="@+id/quality_check_list_detail_person"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dimen_80"
+                android:text="张大大"
+                android:textColor="@color/black"
+                android:textSize="@dimen/dimen_14" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_10">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="质检项目："
+                android:textColor="@color/c_757575"
+                android:textSize="@dimen/dimen_14" />
+
+            <TextView
+                android:id="@+id/quality_check_list_detail_module"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/dimen_80"
+                android:text="结构柱"
+                android:textColor="@color/black"
+                android:textSize="@dimen/dimen_14" />
+
+            <ImageView
+                android:id="@+id/quality_check_list_detail_benchmark"
+                android:layout_width="@dimen/dimen_15"
+                android:layout_height="@dimen/dimen_15"
+                android:layout_marginLeft="@dimen/dimen_08"
+                android:layout_toRightOf="@id/quality_check_list_detail_module"
+                android:background="@drawable/icon_benchmark" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_10">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="现场描述："
+                android:textColor="@color/c_757575"
+                android:textSize="@dimen/dimen_14" />
+
+            <TextView
+                android:id="@+id/quality_check_list_detail_site_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dimen_80"
+                android:text="现场描述现场描述现场描述现场描述现场描述现场描述现场描述现场描述现场描述现场描述"
+                android:textColor="@color/black"
+                android:textSize="@dimen/dimen_14" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_10">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="保存时间："
+                android:textColor="@color/c_757575"
+                android:textSize="@dimen/dimen_14" />
+
+            <TextView
+                android:id="@+id/quality_check_list_detail_time_save"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dimen_80"
+                android:text="2017-10-17 "
+                android:textColor="@color/black"
+                android:textSize="@dimen/dimen_14" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_10">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="提交时间："
+                android:textColor="@color/c_757575"
+                android:textSize="@dimen/dimen_14" />
+
+            <TextView
+                android:id="@+id/quality_check_list_detail_time_submit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dimen_80"
+                android:text="2017-10-17"
+                android:textColor="@color/black"
+                android:textSize="@dimen/dimen_14" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_10">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="提交时间："
+                android:textColor="@color/c_757575"
+                android:textSize="@dimen/dimen_14" />
+
+            <TextView
+                android:id="@+id/quality_check_list_detail_blueprint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dimen_80"
+                android:text="图纸号 JPGR-DD"
+                android:textColor="@color/c_00b5f2"
+                android:textSize="@dimen/dimen_14" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_10">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="提交时间："
+                android:textColor="@color/c_757575"
+                android:textSize="@dimen/dimen_14" />
+
+            <TextView
+                android:id="@+id/quality_check_list_detail_model"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dimen_80"
+                android:text="构建 JPGR-DD"
+                android:textColor="@color/c_00b5f2"
+                android:textSize="@dimen/dimen_14" />
+
+        </RelativeLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_20"
+        android:background="@color/white" />
+</LinearLayout>
+
