@@ -1,17 +1,23 @@
 package com.glodon.bim.business.qualityManage.presenter;
 
+import android.app.Activity;
 import android.content.Intent;
 
 import com.glodon.bim.basic.log.LogUtil;
+import com.glodon.bim.basic.utils.CameraUtil;
 import com.glodon.bim.basic.utils.SharedPreferencesUtil;
 import com.glodon.bim.business.main.bean.ProjectListItem;
 import com.glodon.bim.business.qualityManage.bean.QualityCheckListBean;
 import com.glodon.bim.business.qualityManage.bean.QualityCheckListBeanItem;
 import com.glodon.bim.business.qualityManage.contract.QualityCheckListContract;
+import com.glodon.bim.business.qualityManage.contract.QualityMangeMainContract;
 import com.glodon.bim.business.qualityManage.listener.OnOperateSheetListener;
 import com.glodon.bim.business.qualityManage.model.QualityCheckListModel;
+import com.glodon.bim.business.qualityManage.view.CreateReviewActivity;
+import com.glodon.bim.business.qualityManage.view.PhotoEditActivity;
 import com.glodon.bim.business.qualityManage.view.QualityCheckListDetailActivity;
 import com.glodon.bim.common.config.CommonConfig;
+import com.glodon.bim.customview.album.AlbumEditActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +36,10 @@ import rx.subscriptions.CompositeSubscription;
 
 public class QualityCheckListPresenter implements QualityCheckListContract.Presenter {
     public static final int REQUEST_CODE_DETAIL = 0;
-
+    private final int REQUEST_CODE_TAKE_PHOTO = 1;
+    private final int REQUEST_CODE_OPEN_ALBUM = 2;
+    private final int REQUEST_CODE_CREATE_REVIEW = 3;
+    private final int REQUEST_CODE_CREATE_REPAIR = 4;
     private QualityCheckListContract.View mView;
     private QualityCheckListContract.Model mModel;
     private CompositeSubscription mSubscription;
@@ -39,6 +48,15 @@ public class QualityCheckListPresenter implements QualityCheckListContract.Prese
     private String mQcState = "";
     private int mCurrentPage = 0;
     private int mSize = 20;
+
+
+
+    private String mPhotoPath;
+
+    private String mCreateType = CommonConfig.CREATE_TYPE_REPAIR;
+
+    private int mClickPosition = 0;
+
     private OnOperateSheetListener mListener = new OnOperateSheetListener() {
 
 
@@ -62,12 +80,16 @@ public class QualityCheckListPresenter implements QualityCheckListContract.Prese
 
         @Override
         public void repair(int position) {
-
+            mCreateType = CommonConfig.CREATE_TYPE_REPAIR;
+            mClickPosition = position;
+            mView.create();
         }
 
         @Override
         public void review(int position) {
-
+            mCreateType = CommonConfig.CREATE_TYPE_REVIEW;
+            mClickPosition = position;
+            mView.create();
         }
     };
 
@@ -147,12 +169,67 @@ public class QualityCheckListPresenter implements QualityCheckListContract.Prese
         getDataList();
     }
 
+    @Override
+    public void openPhoto() {
+        mPhotoPath = CameraUtil.getFilePath();
+        CameraUtil.openCamera(mPhotoPath, mView.getActivity(), REQUEST_CODE_TAKE_PHOTO);
+    }
+
+    @Override
+    public void openAlbum() {
+        Intent intent = new Intent(mView.getActivity(), AlbumEditActivity.class);
+        intent.putExtra(CommonConfig.ALBUM_FROM_TYPE,0);
+        intent.putExtra(CommonConfig.CREATE_TYPE,mCreateType);//表示创建什么单据
+        mView.getActivity().startActivityForResult(intent,REQUEST_CODE_OPEN_ALBUM);
+    }
+
+    @Override
+    public void toCreate() {
+        Intent intent = new Intent(mView.getActivity(), CreateReviewActivity.class);
+        intent.putExtra(CommonConfig.CREATE_TYPE,mCreateType);
+        intent.putExtra(CommonConfig.SHOW_PHOTO,false);
+        intent.putExtra(CommonConfig.QUALITY_CHECK_LIST_DEPTID,SharedPreferencesUtil.getProjectId());
+        intent.putExtra(CommonConfig.QUALITY_CHECK_LIST_ID,mDataList.get(mClickPosition).id);
+        int requestCode = 0;
+        if(mCreateType.equals(CommonConfig.CREATE_TYPE_REPAIR)){
+            requestCode = REQUEST_CODE_CREATE_REPAIR;
+        }else if(mCreateType.equals(CommonConfig.CREATE_TYPE_REVIEW)){
+            requestCode = REQUEST_CODE_CREATE_REVIEW;
+        }
+        mView.getActivity().startActivityForResult(intent,requestCode);
+    }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode)
         {
             case REQUEST_CODE_DETAIL://检查单详情
+
+                break;
+            case REQUEST_CODE_TAKE_PHOTO:
+                if (resultCode == Activity.RESULT_OK) {
+                    //正常返回
+                    Intent intent = new Intent(mView.getActivity(), PhotoEditActivity.class);
+                    intent.putExtra(CommonConfig.IMAGE_PATH,mPhotoPath);
+                    intent.putExtra(CommonConfig.CREATE_TYPE,mCreateType);//表示创建检查单
+                    int code = 0;
+                    if(mCreateType.equals(CommonConfig.CREATE_TYPE_REPAIR)){
+                        code = REQUEST_CODE_CREATE_REPAIR;
+                    }else if(mCreateType.equals(CommonConfig.CREATE_TYPE_REVIEW)){
+                        code = REQUEST_CODE_CREATE_REVIEW;
+                    }
+                    mView.getActivity().startActivityForResult(intent,code);
+
+                }
+                break;
+            case REQUEST_CODE_OPEN_ALBUM:
+
+                break;
+            case REQUEST_CODE_CREATE_REPAIR:
+
+                break;
+            case REQUEST_CODE_CREATE_REVIEW:
 
                 break;
         }

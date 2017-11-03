@@ -21,6 +21,7 @@ public class SharedPreferencesUtil {
     private static final String PROJECT_NAME = "project_name";
     private static final String PROJECT_ID = "project_id";
     private static final String PROJECT_TYPE_CODE = "project_type_code";
+    private static final String PROJECT_CREATE_TYPE = "project_create_type";
 
     /**
      * 保存字符串
@@ -78,5 +79,18 @@ public class SharedPreferencesUtil {
         return preferences.getString(PROJECT_TYPE_CODE,"");
     }
 
+    /**
+     * 设置当前创建的是什么类型   0 检查单  1整改单   2复查单
+     */
+    public static void setCreateType(String type){
+        SharedPreferences preferences= BaseApplication.getInstance().getSharedPreferences(NAME,Context.MODE_PRIVATE);
+        Editor editor=preferences.edit();
+        editor.putString(PROJECT_CREATE_TYPE, type);
+        editor.commit();
+    }
 
+    public static String getCreateType(){
+        SharedPreferences preferences= BaseApplication.getInstance().getSharedPreferences(NAME,Context.MODE_PRIVATE);
+        return preferences.getString(PROJECT_CREATE_TYPE,"0");
+    }
 }

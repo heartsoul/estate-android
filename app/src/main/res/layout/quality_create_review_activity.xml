@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <View
+        android:id="@+id/create_review_status"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_20"
+        android:background="@color/c_00baf3" />
+
+    <!--导航-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_43"
+        android:background="@color/c_00baf3">
+
+        <TextView
+            android:id="@+id/create_review_nav_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="取消"
+            android:textColor="@color/white"
+            android:textSize="@dimen/dimen_15"
+            android:layout_marginLeft="@dimen/dimen_10"/>
+
+        <TextView
+            android:id="@+id/create_review_nav_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="复查单"
+            android:textColor="@color/white"
+            android:textSize="@dimen/dimen_17" />
+        <TextView
+            android:id="@+id/create_review_nav_submit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/dimen_11"
+            android:text="提交"
+            android:textColor="@color/white"
+            android:textSize="@dimen/dimen_15"
+            />
+
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@color/c_f9f9f9"
+            >
+            <!--图片描述-->
+            <EditText
+                android:id="@+id/create_review_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="@dimen/dimen_86"
+                android:background="@color/white"
+                android:gravity="top"
+                android:hint="图片描述...."
+                android:paddingBottom="@dimen/dimen_13"
+                android:paddingLeft="@dimen/dimen_20"
+                android:paddingRight="@dimen/dimen_20"
+                android:paddingTop="@dimen/dimen_16"
+                android:scrollbarSize="@dimen/dimen_02"
+                android:scrollbars="vertical"
+                android:textColorHint="@color/c_acacac"
+                android:textCursorDrawable="@drawable/edit_cursor_color"
+                android:textSize="@dimen/dimen_14"
+                />
+
+            <TextView
+                android:id="@+id/create_review_description_num"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/dimen_14"
+                android:textColor="@color/c_dedede"
+                android:background="@color/white"
+                android:gravity="right"
+                android:text="255字"
+                android:paddingRight="@dimen/dimen_20"
+                />
+            <LinearLayout
+                android:id="@+id/create_review_photo_parent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/dimen_23"
+                android:paddingLeft="@dimen/dimen_20">
+
+                <ImageView
+                    android:id="@+id/create_review_photo_0"
+                    android:layout_width="@dimen/dimen_80"
+                    android:layout_height="@dimen/dimen_80"
+                    android:layout_marginRight="@dimen/dimen_10"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/create_review_photo_1"
+                    android:layout_width="@dimen/dimen_80"
+                    android:layout_height="@dimen/dimen_80"
+                    android:layout_marginRight="@dimen/dimen_10"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/create_review_photo_2"
+                    android:layout_width="@dimen/dimen_80"
+                    android:layout_height="@dimen/dimen_80"
+                    android:layout_marginRight="@dimen/dimen_10"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/create_review_photo_3"
+                    android:layout_width="@dimen/dimen_80"
+                    android:layout_height="@dimen/dimen_80"
+                    android:background="@drawable/icon_add_picture" />
+
+            </LinearLayout>
+            <!--需整改期限-->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_20"
+                android:background="@color/c_f9f9f9" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_57"
+                    android:paddingLeft="@dimen/dimen_20"
+                    android:paddingRight="@dimen/dimen_20">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="复查合格"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dimen_16" />
+
+                    <ImageView
+                        android:id="@+id/create_review_remain_flag"
+                        android:layout_width="@dimen/dimen_51"
+                        android:layout_height="@dimen/dimen_31"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/icon_flag_close" />
+                </RelativeLayout>
+
+                <View
+                    android:id="@+id/create_review_remain_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_0.5"
+                    android:background="@color/c_a3cccccc"
+                    android:layout_marginLeft="@dimen/dimen_11"/>
+                
+                <RelativeLayout
+                    android:id="@+id/create_review_remain"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_56">
+
+                    <TextView
+                        android:id="@+id/create_review_remain_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/dimen_20"
+                        android:text="整改期限"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dimen_16" />
+
+                    <ImageView
+                        android:id="@+id/create_review_remain_arrow"
+                        android:layout_width="@dimen/dimen_05"
+                        android:layout_height="@dimen/dimen_12"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/dimen_21"
+                        android:background="@drawable/icon_arrow_right_gray" />
+
+                    <TextView
+                        android:id="@+id/create_review_remain_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/dimen_10"
+                        android:layout_marginRight="@dimen/dimen_10"
+                        android:layout_toLeftOf="@id/create_review_remain_arrow"
+                        android:layout_toRightOf="@id/create_review_remain_title"
+                        android:ellipsize="end"
+                        android:gravity="right"
+                        android:maxLines="1"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dimen_16" />
+
+                </RelativeLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_20"
+                android:background="@color/c_f9f9f9" />
+            <RelativeLayout
+                android:id="@+id/create_review_detail"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_54"
+                android:paddingLeft="@dimen/dimen_20"
+                android:paddingRight="@dimen/dimen_20"
+                android:background="@color/white">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="检查单"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_16" />
+
+                <ImageView
+                    android:id="@+id/create_review_detail_icon"
+                    android:layout_width="@dimen/dimen_12"
+                    android:layout_height="@dimen/dimen_06"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/icon_drawer_arrow_down" />
+            </RelativeLayout>
+            <include layout="@layout/quality_check_list_detail_view"
+                android:id="@+id/create_review_detail_content"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/c_f9f9f9"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/dimen_30">
+
+                <Button
+                    android:id="@+id/create_review__save"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_40"
+                    android:layout_marginLeft="@dimen/dimen_38"
+                    android:layout_marginRight="@dimen/dimen_38"
+                    android:layout_marginTop="@dimen/dimen_30"
+                    android:background="@drawable/corner_radius_33_blue_bg"
+                    android:text="保存"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/dimen_16" />
+
+                <Button
+                    android:id="@+id/create_review_delete"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_40"
+                    android:layout_marginLeft="@dimen/dimen_38"
+                    android:layout_marginRight="@dimen/dimen_38"
+                    android:layout_marginTop="@dimen/dimen_20"
+                    android:background="@drawable/corner_radius_33_gray_bg"
+                    android:text="删除"
+                    android:textColor="@color/c_5b5b5b"
+                    android:textSize="@dimen/dimen_16"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

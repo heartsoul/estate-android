@@ -56,6 +56,7 @@ public class QualityMangeMainPresenter implements QualityMangeMainContract.Prese
     public void openAlbum() {
         Intent intent = new Intent(mView.getActivity(), AlbumEditActivity.class);
         intent.putExtra(CommonConfig.ALBUM_FROM_TYPE,0);
+        intent.putExtra(CommonConfig.CREATE_TYPE,CommonConfig.CREATE_TYPE_CHECK);//表示创建检查单
         mView.getActivity().startActivityForResult(intent,REQUEST_CODE_OPEN_ALBUM);
     }
 
@@ -86,6 +87,7 @@ public class QualityMangeMainPresenter implements QualityMangeMainContract.Prese
                     //正常返回
                     Intent intent = new Intent(mView.getActivity(), PhotoEditActivity.class);
                     intent.putExtra(CommonConfig.IMAGE_PATH,mPhotoPath);
+                    intent.putExtra(CommonConfig.CREATE_TYPE,CommonConfig.CREATE_TYPE_CHECK);//表示创建检查单
                     mView.getActivity().startActivityForResult(intent,REQUEST_CODE_CREATE_CHECK_LIST);
 
                 } else if (resultCode == Activity.RESULT_CANCELED) {

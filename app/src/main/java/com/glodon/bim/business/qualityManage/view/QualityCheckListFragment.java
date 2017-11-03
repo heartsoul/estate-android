@@ -22,6 +22,7 @@ import com.glodon.bim.business.qualityManage.bean.ClassifyItem;
 import com.glodon.bim.business.qualityManage.bean.QualityCheckListBeanItem;
 import com.glodon.bim.business.qualityManage.contract.QualityCheckListContract;
 import com.glodon.bim.business.qualityManage.presenter.QualityCheckListPresenter;
+import com.glodon.bim.customview.PhotoAlbumDialog;
 import com.glodon.bim.customview.pullrefreshview.OnPullRefreshListener;
 import com.glodon.bim.customview.pullrefreshview.PullRefreshView;
 
@@ -47,6 +48,8 @@ public class QualityCheckListFragment extends BaseFragment implements QualityChe
     private String mCurrentState = "";//当前选择的列表状态
 
     private List<ClassifyItem> mDataList;//分类数据
+
+    private PhotoAlbumDialog mPhotoAlbumDialog;//拍照相册弹出框
 
     public void setProjectInfo(ProjectListItem info) {
         this.mProjectInfo = info;
@@ -143,19 +146,28 @@ public class QualityCheckListFragment extends BaseFragment implements QualityChe
     }
 
 
-//    private List<QualityCheckListBeanItem> getDataList(){
-//        List<QualityCheckListBeanItem> list = new ArrayList<>();
-//        for(int i = 0;i<22;i++){
-//            QualityCheckListBeanItem item = new QualityCheckListBeanItem();
-//            item.showType = i%2;
-//            if(i>0){
-//                item.timeType= 1;
-//            }
-//            item.sheetStatus = i%7;
-//            list.add(item);
-//        }
-//        return list;
-//    }
+    @Override
+    public void create() {
+        if (mPhotoAlbumDialog == null) {
+            mPhotoAlbumDialog = new PhotoAlbumDialog(getActivity()).builder(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mPresenter.openPhoto();
+                }
+            }, new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mPresenter.openAlbum();
+                }
+            }, new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mPresenter.toCreate();
+                }
+            });
+        }
+        mPhotoAlbumDialog.show();
+    }
 
 
     @Override

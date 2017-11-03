@@ -22,6 +22,7 @@ import com.glodon.bim.base.BaseActivity;
 import com.glodon.bim.base.BaseFragment;
 import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.basic.utils.ScreenUtil;
+import com.glodon.bim.basic.utils.SharedPreferencesUtil;
 import com.glodon.bim.business.greendao.provider.DaoProvider;
 import com.glodon.bim.business.main.bean.ProjectListItem;
 import com.glodon.bim.business.qualityManage.contract.QualityMangeMainContract;
@@ -77,8 +78,6 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
     private LinearLayout mStatusLeft, mStatusRight;
 
     private PhotoAlbumDialog mPhotoAlbumDialog;//拍照相册弹出框
-
-
 
     private ProjectListItem mProjectInfo;//项目信息
     private List<TextView> mContentList;
@@ -201,7 +200,8 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
     }
 
     //弹出照片选择框
-    private void create() {
+    @Override
+    public void create() {
         if (mPhotoAlbumDialog == null) {
             mPhotoAlbumDialog = new PhotoAlbumDialog(this).builder(new View.OnClickListener() {
                 @Override

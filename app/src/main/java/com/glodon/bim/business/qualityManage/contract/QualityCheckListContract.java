@@ -49,6 +49,21 @@ public interface QualityCheckListContract {
          * @param mCurrentState 当前分类
          */
         void getClassifyData(String mCurrentState);
+
+        /**
+         * 打开相机
+         */
+        void openPhoto();
+
+        /**
+         * 打开相册
+         */
+        void openAlbum();
+
+        /**
+         * 打开创建界面
+         */
+        void toCreate();
     }
 
     interface View extends IBaseView {
@@ -57,6 +72,11 @@ public interface QualityCheckListContract {
          * 刷新列表
          */
         void updateData(List<QualityCheckListBeanItem> mDataList);
+
+        /**
+         * 打开相册手机
+         */
+        void create();
     }
 
     interface Model {

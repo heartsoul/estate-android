@@ -253,6 +253,8 @@
         <!--检查单详情-->
         <activity android:name="com.glodon.bim.business.qualityManage.view.QualityCheckListDetailActivity"
             android:screenOrientation="portrait"/>
+        <activity android:name="com.glodon.bim.business.qualityManage.view.CreateReviewActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

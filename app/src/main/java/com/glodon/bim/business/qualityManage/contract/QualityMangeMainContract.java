@@ -46,7 +46,10 @@ public interface QualityMangeMainContract {
     }
 
     interface View extends IBaseView {
-
+        /**
+         * 打开相册拍照
+         */
+        void create();
     }
 
     interface Model {

@@ -13,6 +13,7 @@ import com.glodon.bim.R;
 import com.glodon.bim.base.BaseActivity;
 import com.glodon.bim.basic.listener.ThrottleClickEvents;
 import com.glodon.bim.business.qualityManage.view.CreateCheckListActivity;
+import com.glodon.bim.business.qualityManage.view.CreateReviewActivity;
 import com.glodon.bim.common.config.CommonConfig;
 import com.glodon.bim.customview.photopreview.PhotoPreviewActivity;
 
@@ -35,6 +36,7 @@ public class AlbumEditActivity extends BaseActivity implements View.OnClickListe
     private List<TNBImageItem> mDataList;
     private int fromType = 0;//0 从选择目录页跳转 或 从质检清单页跳转   1 从检查单页跳转
     private OnAlbumChangeListener mListener ;
+    private String mCreateType = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +53,7 @@ public class AlbumEditActivity extends BaseActivity implements View.OnClickListe
 
     private void initData() {
         fromType = getIntent().getIntExtra(CommonConfig.ALBUM_FROM_TYPE,0);
+        mCreateType = getIntent().getStringExtra(CommonConfig.CREATE_TYPE);
         new AsyncTask<Void, Void, List<TNBImageItem>>() {
             @Override
             protected List<TNBImageItem> doInBackground(Void... voids) {
@@ -124,10 +127,23 @@ public class AlbumEditActivity extends BaseActivity implements View.OnClickListe
                 break;
             case R.id.album_edit_nav_finish:
                 if(fromType == 0){
-                    Intent intent = new Intent(mActivity, CreateCheckListActivity.class);
-                    intent.putExtra(CommonConfig.ALBUM_DATA,mAdapter.getSelectedImages());
-                    startActivity(intent);
-                    finish();
+                    switch (mCreateType){
+                        case CommonConfig.CREATE_TYPE_CHECK:
+                            Intent intent = new Intent(mActivity, CreateCheckListActivity.class);
+                            intent.putExtra(CommonConfig.ALBUM_DATA, mAdapter.getSelectedImages());
+                            startActivity(intent);
+                            finish();
+                            break;
+                        case CommonConfig.CREATE_TYPE_REPAIR:
+                        case CommonConfig.CREATE_TYPE_REVIEW:
+                            Intent reviewIntent = new Intent(mActivity,CreateReviewActivity.class);
+                            reviewIntent.putExtra(CommonConfig.ALBUM_DATA, mAdapter.getSelectedImages());
+                            reviewIntent.putExtra(CommonConfig.CREATE_TYPE,mCreateType);
+                            mActivity.startActivity(reviewIntent);
+                            mActivity.finish();
+                            break;
+                    }
+
                 }
                 if(fromType == 1){
                     Intent data = new Intent();

@@ -73,6 +73,8 @@ public class PhotoEditActivity extends BaseActivity implements View.OnClickListe
 
     private boolean isFromCreateCheckList = false;
 
+    private String mCreateType = "-1";//创建的类型  0 检查单   1整改单  2复查单
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,6 +93,7 @@ public class PhotoEditActivity extends BaseActivity implements View.OnClickListe
 
     private void initView() {
         isFromCreateCheckList = getIntent().getBooleanExtra(CommonConfig.FROM_CREATE_CHECK_LIST, false);
+        mCreateType = getIntent().getStringExtra(CommonConfig.CREATE_TYPE);
         rootLayout = (RelativeLayout) findViewById(R.id.photo_edit_root_layout);
         mImagePath = getIntent().getStringExtra(CommonConfig.IMAGE_PATH);
         mDragTextList = new ArrayList<>();
@@ -221,11 +224,27 @@ public class PhotoEditActivity extends BaseActivity implements View.OnClickListe
                     setResult(RESULT_OK, data);
                     finish();
                 } else {
-                    Intent intent = new Intent(mActivity, CreateCheckListActivity.class);
+                    if(!TextUtils.isEmpty(mCreateType)){
+                        switch (mCreateType)
+                        {
+                            case CommonConfig.CREATE_TYPE_CHECK:
+                                Intent intent = new Intent(mActivity, CreateCheckListActivity.class);
+                                intent.putExtra(CommonConfig.IAMGE_SAVE_PATH, mSavePath);
+                                mActivity.startActivityForResult(intent, REQUEST_CODE_CREATE_CHECK_LIST);
+                                mActivity.finish();
+                                break;
+                            case CommonConfig.CREATE_TYPE_REPAIR:
+                            case CommonConfig.CREATE_TYPE_REVIEW:
+                                Intent reviewIntent = new Intent(mActivity,CreateReviewActivity.class);
+                                reviewIntent.putExtra(CommonConfig.IAMGE_SAVE_PATH, mSavePath);
+                                reviewIntent.putExtra(CommonConfig.CREATE_TYPE,mCreateType);
+                                mActivity.startActivityForResult(reviewIntent, REQUEST_CODE_CREATE_CHECK_LIST);
+                                mActivity.finish();
 
-                    intent.putExtra(CommonConfig.IAMGE_SAVE_PATH, mSavePath);
-                    mActivity.startActivityForResult(intent, REQUEST_CODE_CREATE_CHECK_LIST);
-                    mActivity.finish();
+                                break;
+                        }
+                    }
+
                 }
             }
         });

@@ -25,4 +25,8 @@ public class CommonConfig {
     public static final String ALBUM_POSITION = "albumPosition";
     public static final String QUALITY_CHECK_LIST_DEPTID = "qualityCheckListDeptId";
     public static final String QUALITY_CHECK_LIST_ID = "qualityCheckListId";
+    public static final String CREATE_TYPE = "createType";
+    public static final String CREATE_TYPE_CHECK = "0";//新建检查单
+    public static final String CREATE_TYPE_REPAIR = "1";//新建整改单
+    public static final String CREATE_TYPE_REVIEW = "2";//新建复查单
 }
