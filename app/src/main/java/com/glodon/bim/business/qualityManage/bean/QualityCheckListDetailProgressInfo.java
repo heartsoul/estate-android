@@ -14,8 +14,11 @@ public class QualityCheckListDetailProgressInfo {
     public String description; //描述
     public List<QualityCheckListBeanItemFile> files; //图片
     public String handleDate;//处理日期
+    //根据此id拿头像
+    public long handlerId;
     public String handlerName;//处理者
+    public String handlerTitle;//处理者岗位
     public int id;
     public String lastRectificationDate;//整改期限
-    public String updateTime;//提交时间
+    public String updateTime;//最新时间
 }

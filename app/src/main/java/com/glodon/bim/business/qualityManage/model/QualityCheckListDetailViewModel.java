@@ -1,11 +1,20 @@
 package com.glodon.bim.business.qualityManage.model;
 
+import android.util.Log;
+
 import com.glodon.bim.basic.config.AppConfig;
+import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.basic.network.NetRequest;
 import com.glodon.bim.business.greendao.provider.DaoProvider;
 import com.glodon.bim.business.qualityManage.bean.QualityCheckListDetailBean;
 import com.glodon.bim.business.qualityManage.contract.QualityCheckListDetailViewContract;
 
+import java.io.IOException;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import rx.Observable;
 
 /**
@@ -21,4 +30,23 @@ public class QualityCheckListDetailViewModel implements QualityCheckListDetailVi
         return NetRequest.getInstance().getCall(AppConfig.BASE_URL,QualityCheckListApi.class).getQualityCheckListDetail(deptId,id,new DaoProvider().getCookie());
     }
 
+    public void getQualityDetail(long deptId,long id){
+        LogUtil.e("deptid="+deptId+"  id="+id);
+        NetRequest.getInstance().getCall(AppConfig.BASE_URL,QualityCheckListApi.class).getQualityCheckListDetail_(deptId,id,new DaoProvider().getCookie())
+                .enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        try {
+                            LogUtil.e(response.errorBody().string());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        LogUtil.e(t.getMessage());
+                    }
+                });
+    }
 }

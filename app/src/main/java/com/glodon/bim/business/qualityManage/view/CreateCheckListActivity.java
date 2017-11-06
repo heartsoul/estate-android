@@ -34,7 +34,6 @@ import com.glodon.bim.customview.PhotoAlbumDialog;
 import com.glodon.bim.customview.album.AlbumData;
 import com.glodon.bim.customview.album.TNBImageItem;
 import com.glodon.bim.customview.datepicker.TNBCustomDatePickerUtils;
-import com.glodon.bim.customview.photopreview.PhotoPreviewActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -587,7 +586,7 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
     //收集页面数据
     private void assembleData(){
         mParams.description = mSiteDescription.getText().toString().trim();
-        mParams.isNeedRectification = mRemainFlagState;
+        mParams.needRectification = mRemainFlagState;
         mParams.files = mPhotoList;
     }
 

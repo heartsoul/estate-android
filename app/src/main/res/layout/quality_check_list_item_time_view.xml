@@ -27,7 +27,7 @@
         >
         <View
             android:layout_width="@dimen/dimen_0"
-            android:layout_height="@dimen/dimen_03"
+            android:layout_height="@dimen/dimen_01"
             android:layout_weight="1"
             android:layout_gravity="center_vertical"
             android:background="@color/c_e6e6e6"
@@ -45,7 +45,7 @@
             />
         <View
             android:layout_width="@dimen/dimen_0"
-            android:layout_height="@dimen/dimen_03"
+            android:layout_height="@dimen/dimen_01"
             android:layout_weight="1"
             android:layout_gravity="center_vertical"
             android:background="@color/c_e6e6e6"

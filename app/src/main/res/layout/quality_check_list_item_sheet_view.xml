@@ -6,16 +6,17 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/dimen_10"
-        android:layout_marginLeft="@dimen/dimen_20"
-        android:layout_marginRight="@dimen/dimen_20"
-        android:layout_marginTop="@dimen/dimen_10"
-        android:background="@drawable/shadow_category_item_bg"
+        android:layout_marginLeft="@dimen/dimen_10"
+        android:layout_marginRight="@dimen/dimen_10"
+        android:paddingLeft="@dimen/dimen_10"
+        android:paddingRight="@dimen/dimen_10"
+        android:background="@drawable/icon_choose_project_bg_normal"
         android:orientation="vertical">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dimen_46">
+            android:layout_height="@dimen/dimen_46"
+            android:layout_marginTop="@dimen/dimen_15">
 
             <ImageView
                 android:id="@+id/quality_check_list_item_sheet_time_icon"
@@ -51,7 +52,11 @@
                 android:textSize="@dimen/dimen_14" />
 
         </RelativeLayout>
-
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_0.5"
+            android:background="@color/c_e6e6e6"
+            />
         <LinearLayout
             android:id="@+id/quality_check_list_item_sheet_content"
             android:layout_width="match_parent"
@@ -81,11 +86,16 @@
                 android:text="问题描述：现场检查内容描述现场检查内容描述现场检查内容描述现场检查内容描述现场检查内容描述现场" />
 
         </LinearLayout>
-
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_0.5"
+            android:background="@color/c_e6e6e6"
+            />
         <RelativeLayout
             android:id="@+id/quality_check_list_item_sheet_bottom_parent"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dimen_45">
+            android:layout_height="@dimen/dimen_45"
+            android:layout_marginBottom="@dimen/dimen_20">
 
             <TextView
                 android:id="@+id/quality_check_list_item_sheet_submit"

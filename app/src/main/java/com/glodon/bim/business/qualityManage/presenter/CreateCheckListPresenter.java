@@ -3,7 +3,6 @@ package com.glodon.bim.business.qualityManage.presenter;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.SystemClock;
-import android.util.Log;
 
 import com.glodon.bim.basic.config.AppConfig;
 import com.glodon.bim.basic.log.LogUtil;
@@ -30,7 +29,6 @@ import com.glodon.bim.customview.photopreview.PhotoPreviewActivity;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -512,9 +510,11 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
 
         //施工单位
         mInput.constructionCompanyId = mCompanyList.get(mCompanySelectPosition).id;
+        mInput.constructionCompanyName = mCompanyList.get(mCompanySelectPosition).name;
         //责任人
         mInput.responsibleUserId = mPersonList.get(mPersonSelectPosition).userId;
         mInput.responsibleUserName = mPersonList.get(mPersonSelectPosition).name;
+        mInput.responsibleUserTitle = mPersonList.get(mPersonSelectPosition).title;
         //现场描述
         mInput.description = params.description;
         //图片描述
@@ -522,13 +522,13 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
         //项目名称
         mInput.projectName = SharedPreferencesUtil.getProjectName();
         //新建的时间
-        mInput.inspectionDate = SystemClock.currentThreadTimeMillis() + "";
+//        mInput.inspectionDate = SystemClock.currentThreadTimeMillis() + "";
         //是否整改
-        mInput.isNeedRectification = params.isNeedRectification;
+        mInput.needRectification = params.needRectification;
         mInput.lastRectificationDate = params.lastRectificationDate;
         //质检项目
-        mInput.inspectionProjectName = mModuleSelectInfo.name;
-        mInput.inspectionProjectId = mModuleSelectInfo.id;
+        mInput.qualityCheckpointName = mModuleSelectInfo.name;
+        mInput.qualityCheckpointId = mModuleSelectInfo.id;
     }
 
     @Override

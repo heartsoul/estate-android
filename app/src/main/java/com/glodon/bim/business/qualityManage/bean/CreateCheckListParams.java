@@ -15,30 +15,33 @@ public class CreateCheckListParams {
     public long projectId;
     //项目名称
     public String projectName;
-    public String inspectionDate;
+//    public String inspectionDate;
     //检查单位
-    public long inspectionCompanyId;//该账户所在单位
+//    public long inspectionCompanyId;//该账户所在单位
     //质检项目id
-    public long inspectionProjectId;
+    public long qualityCheckpointId;
     //质检项目名称
-    public String inspectionProjectName;
+    public String qualityCheckpointName;
     //施工单位
     public long constructionCompanyId;
+    public String constructionCompanyName;
     //整改期限
-    public boolean isNeedRectification;
+    public boolean needRectification;
     public String lastRectificationDate;
     //现场描述
     public String description;
     public String inspectionType;
-    public String versionId;//模型版本id
     public List<CreateCheckListParamsFile> files;
     // 责任人id
     public long responsibleUserId;
     // 责任人名称
     public String responsibleUserName;
-    public long buildingId;
+    public String responsibleUserTitle;
+    //模型
+    public String versionId;//模型版本id
+    public Long buildingId;
     public String buildingName;
     public String elementId;
     public String elementName;
-    public String qcState;
+//    public String qcState;
 }

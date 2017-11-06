@@ -22,6 +22,7 @@ import com.glodon.bim.business.qualityManage.bean.ClassifyItem;
 import com.glodon.bim.business.qualityManage.bean.QualityCheckListBeanItem;
 import com.glodon.bim.business.qualityManage.contract.QualityCheckListContract;
 import com.glodon.bim.business.qualityManage.presenter.QualityCheckListPresenter;
+import com.glodon.bim.common.config.CommonConfig;
 import com.glodon.bim.customview.PhotoAlbumDialog;
 import com.glodon.bim.customview.pullrefreshview.OnPullRefreshListener;
 import com.glodon.bim.customview.pullrefreshview.PullRefreshView;
@@ -115,20 +116,16 @@ public class QualityCheckListFragment extends BaseFragment implements QualityChe
      */
     private void initClassify(){
         mDataList = new ArrayList<>();
-//        String[] names = {"全部","待提交","待整改","待复查","已整改","已复查","已延迟","已验收"};
-        String[] names = {"全部","待提交","待整改","待复查","已检查","已复查","已延迟","已验收"};
-        final String[] states = {"","staged","unrectified","unreviewed","inspected","reviewed","delayed","accepted"};
-
         for(int i = 0;i<8;i++){
             ClassifyItem item = new ClassifyItem();
-            item.name = names[i];
+            item.name = CommonConfig.CLASSIFY_NAMES[i];
             mDataList.add(item);
         }
         mCalssifyAdapter = new QualityCheckListClassifyAdapter(getActivity(), mDataList, new OnClassifyItemClickListener() {
             @Override
             public void onClassifyItemClick(int position, ClassifyItem item) {
-                if(!mCurrentState.equals(states[position])) {
-                    mCurrentState = states[position];
+                if(!mCurrentState.equals(CommonConfig.CLASSIFY_STATES[position])) {
+                    mCurrentState = CommonConfig.CLASSIFY_STATES[position];
                     mPresenter.getClassifyData(mCurrentState);
                 }
             }

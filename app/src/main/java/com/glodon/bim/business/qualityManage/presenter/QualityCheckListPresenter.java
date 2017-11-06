@@ -5,6 +5,8 @@ import android.content.Intent;
 
 import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.basic.utils.CameraUtil;
+import com.glodon.bim.basic.utils.DateUtil;
+import com.glodon.bim.basic.utils.DateUtils;
 import com.glodon.bim.basic.utils.SharedPreferencesUtil;
 import com.glodon.bim.business.main.bean.ProjectListItem;
 import com.glodon.bim.business.qualityManage.bean.QualityCheckListBean;
@@ -48,7 +50,8 @@ public class QualityCheckListPresenter implements QualityCheckListContract.Prese
     private String mQcState = "";
     private int mCurrentPage = 0;
     private int mSize = 20;
-
+    private List<String> mDateKeyList = new ArrayList<>();  //标记分隔时间
+    private List<QualityCheckListBeanItem> mList = new ArrayList<>(); //添加了分隔时间的数据
 
 
     private String mPhotoPath;
@@ -69,7 +72,7 @@ public class QualityCheckListPresenter implements QualityCheckListContract.Prese
         public void detail(int position) {
             Intent intent = new Intent(mView.getActivity(), QualityCheckListDetailActivity.class);
             intent.putExtra(CommonConfig.QUALITY_CHECK_LIST_DEPTID, SharedPreferencesUtil.getProjectId());
-            intent.putExtra(CommonConfig.QUALITY_CHECK_LIST_ID,mDataList.get(position).id);
+            intent.putExtra(CommonConfig.QUALITY_CHECK_LIST_ID,mList.get(position).id);
             mView.getActivity().startActivityForResult(intent,REQUEST_CODE_DETAIL);
         }
 
@@ -147,13 +150,39 @@ public class QualityCheckListPresenter implements QualityCheckListContract.Prese
                             }
                         }
                         if(mView!=null) {
-                            mView.updateData(mDataList);
+                            handleDate();
+                            mView.updateData(mList);
                         }
                     }
                 });
         mSubscription.add(sub);
     }
 
+
+    private void handleDate(){
+        mDateKeyList.clear();
+        mList.clear();
+        if(mDataList!=null && mDataList.size()>0){
+            for(QualityCheckListBeanItem item :mDataList){
+                String now = DateUtil.getListDate(Long.parseLong(item.updateTime));
+                if(mDateKeyList.contains(now)){
+                    mList.add(item);
+                }else{
+                    QualityCheckListBeanItem bean = new QualityCheckListBeanItem();
+                    bean.showType = 0;
+                    if(DateUtils.isToday(item.updateTime)){
+                        bean.timeType = 0;
+                    }else {
+                        bean.timeType =1;
+                    }
+                    bean.updateTime = item.updateTime;
+                    mDateKeyList.add(now);
+                    mList.add(bean);
+                    mList.add(item);
+                }
+            }
+        }
+    }
 
 
     @Override
@@ -189,7 +218,7 @@ public class QualityCheckListPresenter implements QualityCheckListContract.Prese
         intent.putExtra(CommonConfig.CREATE_TYPE,mCreateType);
         intent.putExtra(CommonConfig.SHOW_PHOTO,false);
         intent.putExtra(CommonConfig.QUALITY_CHECK_LIST_DEPTID,SharedPreferencesUtil.getProjectId());
-        intent.putExtra(CommonConfig.QUALITY_CHECK_LIST_ID,mDataList.get(mClickPosition).id);
+        intent.putExtra(CommonConfig.QUALITY_CHECK_LIST_ID,mList.get(mClickPosition).id);
         int requestCode = 0;
         if(mCreateType.equals(CommonConfig.CREATE_TYPE_REPAIR)){
             requestCode = REQUEST_CODE_CREATE_REPAIR;

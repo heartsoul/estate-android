@@ -1,6 +1,7 @@
 package com.glodon.bim.business.qualityManage.view;
 
 import android.app.Activity;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -9,9 +10,11 @@ import android.widget.TextView;
 
 import com.glodon.bim.R;
 import com.glodon.bim.basic.image.ImageLoader;
+import com.glodon.bim.basic.utils.DateUtil;
 import com.glodon.bim.basic.utils.ScreenUtil;
 import com.glodon.bim.business.qualityManage.bean.QualityCheckListBeanItemFile;
 import com.glodon.bim.business.qualityManage.bean.QualityCheckListDetailBean;
+import com.glodon.bim.business.qualityManage.bean.QualityCheckListDetailInspectionInfo;
 import com.glodon.bim.business.qualityManage.bean.QualityCheckListDetailProgressInfo;
 import com.glodon.bim.business.qualityManage.contract.QualityCheckListDetailViewContract;
 import com.glodon.bim.business.qualityManage.presenter.QualityCheckListDetailViewPresenter;
@@ -46,16 +49,16 @@ public class QualityCheckListDetailView implements QualityCheckListDetailViewCon
 
 
     private  void initView() {
-        mParent = (LinearLayout) view.findViewById(R.id.quality_check_list_detail_parent);
-        mModuleBenchMarkView = (ImageView) view.findViewById(R.id.quality_check_list_detail_benchmark);
-        mCompanyView = (TextView) view.findViewById(R.id.quality_check_list_detail_company);
-        mPersonView = (TextView) view.findViewById(R.id.quality_check_list_detail_person);
-        mModuleView = (TextView) view.findViewById(R.id.quality_check_list_detail_module);
-        mSiteDescription = (TextView) view.findViewById(R.id.quality_check_list_detail_site_description);
-        mSaveTimeView = (TextView) view.findViewById(R.id.quality_check_list_detail_time_save);
-        mSubmitTimeView = (TextView) view.findViewById(R.id.quality_check_list_detail_time_submit);
-        mBluePrintView = (TextView) view.findViewById(R.id.quality_check_list_detail_blueprint);
-        mModelView = (TextView) view.findViewById(R.id.quality_check_list_detail_model);
+        mParent = view.findViewById(R.id.quality_check_list_detail_parent);
+        mModuleBenchMarkView =view.findViewById(R.id.quality_check_list_detail_benchmark);
+        mCompanyView = view.findViewById(R.id.quality_check_list_detail_company);
+        mPersonView = view.findViewById(R.id.quality_check_list_detail_person);
+        mModuleView = view.findViewById(R.id.quality_check_list_detail_module);
+        mSiteDescription = view.findViewById(R.id.quality_check_list_detail_site_description);
+        mSaveTimeView = view.findViewById(R.id.quality_check_list_detail_time_save);
+        mSubmitTimeView =  view.findViewById(R.id.quality_check_list_detail_time_submit);
+        mBluePrintView = view.findViewById(R.id.quality_check_list_detail_blueprint);
+        mModelView = view.findViewById(R.id.quality_check_list_detail_model);
     }
 
     public void getInfo(long deptId,long id){
@@ -65,6 +68,7 @@ public class QualityCheckListDetailView implements QualityCheckListDetailViewCon
 
     public void updateData(QualityCheckListDetailBean bean) {
         mBean = bean;
+        addBasicInfo();
         addCheckDescription();
         List<QualityCheckListDetailProgressInfo> list = mBean.progressInfos;
         if(list!=null && list.size()>0){
@@ -72,6 +76,19 @@ public class QualityCheckListDetailView implements QualityCheckListDetailViewCon
                 addHistoryDescription(info);
             }
         }
+    }
+
+    //添加基本信息
+    private void addBasicInfo() {
+        QualityCheckListDetailInspectionInfo info = mBean.inspectionInfo;
+        mCompanyView.setText(info.constructionCompanyName);
+        mPersonView.setText(info.responsibleUserName);
+        mModuleView.setText(info.qualityCheckpointName);
+        mSiteDescription.setText(info.description);
+        mSaveTimeView.setText(DateUtil.getNormalTime(Long.parseLong(info.createTime)));
+        mSubmitTimeView.setText(DateUtil.getNormalTime(Long.parseLong(info.updateTime)));
+        mBluePrintView.setText("");
+        mModelView.setText(info.elementName);
     }
 
     //添加检查时的问题
@@ -90,10 +107,24 @@ public class QualityCheckListDetailView implements QualityCheckListDetailViewCon
         ImageView image1 = view.findViewById(R.id.quality_check_list_detail_item_image_1);
         ImageView image2 = view.findViewById(R.id.quality_check_list_detail_item_image_2);
 
+        QualityCheckListDetailInspectionInfo info = mBean.inspectionInfo;
+
+        //头像
+        ImageLoader.showHeadIcon(mActivity,"",headIcon);
+        //创建者
+        nameView.setText(info.creatorName+ (TextUtils.isEmpty(info.inspectionUserTitle)?"":"-"+info.inspectionUserTitle));
+        //状态
         statusView.setBackgroundResource(R.drawable.check_list_status_blue);
         statusView.setTextColor(mActivity.getResources().getColor(R.color.c_00b5f2));
+        statusView.setText("inspection".equals(info.inspectionType)?"检查":"验收");
+        //时间
+        timeView.setText(DateUtil.getNormalTime(Long.parseLong(info.updateTime)));
+        //描述，无
         desView.setVisibility(View.GONE);
 
+        //整改期限
+        timeLimitView.setText("整改期："+DateUtil.getNormalDate(Long.parseLong(info.lastRectificationDate)));
+        //图片
         List<QualityCheckListBeanItemFile> files  = mBean.inspectionInfo.files;
         if(files!=null && files.size()!=0){
             int size = files.size();
@@ -143,10 +174,13 @@ public class QualityCheckListDetailView implements QualityCheckListDetailViewCon
         ImageView image1 = view.findViewById(R.id.quality_check_list_detail_item_image_1);
         ImageView image2 = view.findViewById(R.id.quality_check_list_detail_item_image_2);
 
+        //头像
         ImageLoader.showHeadIcon(mActivity,"",headIcon);
-        nameView.setText(info.handlerName);
-        timeView.setText(info.updateTime);
-
+        //创建者
+        nameView.setText(info.handlerName+(TextUtils.isEmpty(info.handlerTitle)?"":"-"+info.handlerTitle));
+        //最新时间
+        timeView.setText(DateUtil.getNormalTime(Long.parseLong(info.updateTime)));
+        //状态
         String billType = info.billType;
         statusView.setText(billType);
         if("整改".equals(info.billType)){
@@ -157,11 +191,12 @@ public class QualityCheckListDetailView implements QualityCheckListDetailViewCon
             statusView.setBackgroundResource(R.drawable.check_list_status_red);
             statusView.setTextColor(mActivity.getResources().getColor(R.color.c_f33d3d));
             timeLimitView.setVisibility(View.VISIBLE);
-            timeLimitView.setText(info.lastRectificationDate);
+            //整改期限
+            timeLimitView.setText("整改期："+DateUtil.getNormalDate(Long.parseLong(info.lastRectificationDate)));
         }
-
+        //描述
         desView.setText(info.description);
-
+        //图片
         List<QualityCheckListBeanItemFile> files  = mBean.inspectionInfo.files;
         if(files!=null && files.size()!=0){
             int size = files.size();

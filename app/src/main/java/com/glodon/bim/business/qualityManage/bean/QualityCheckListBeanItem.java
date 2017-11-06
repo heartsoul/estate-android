@@ -20,6 +20,7 @@ public class QualityCheckListBeanItem {
     public boolean needRectification;
     public long projectId;
     public String qcState;//质检状态
+    public String updateTime;
 
 //    public long constructionCompanyId;
 //    public String constructionCompanyName;

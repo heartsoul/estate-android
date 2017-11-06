@@ -56,6 +56,7 @@ public class QualityCheckListDetailViewPresenter implements QualityCheckListDeta
                 ;
         mSubscription.add( sub);
 
+
     }
 
     @Override

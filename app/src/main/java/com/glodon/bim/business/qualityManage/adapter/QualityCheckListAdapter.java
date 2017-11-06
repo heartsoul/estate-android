@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.glodon.bim.R;
 import com.glodon.bim.basic.image.ImageLoader;
+import com.glodon.bim.basic.utils.DateUtil;
 import com.glodon.bim.basic.utils.ScreenUtil;
 import com.glodon.bim.business.qualityManage.bean.QualityCheckListBeanItem;
 import com.glodon.bim.business.qualityManage.listener.OnOperateSheetListener;
@@ -63,7 +64,7 @@ public class QualityCheckListAdapter extends RecyclerView.Adapter<RecyclerView.V
         if (holder instanceof SheetHolder) {
             SheetHolder sHolder = (SheetHolder) holder;
             //0待提交 1待整改 2待复查 3 已整改 4已复查 5已延迟 6已验收
-            sHolder.mTimeView.setText(item.inspectionDate);
+            sHolder.mTimeView.setText(DateUtil.getListTime(Long.parseLong(item.updateTime)));
 
             sHolder.mBottomPreant.setVisibility(View.GONE);
             int color = R.color.c_f39b3d;
@@ -144,9 +145,11 @@ public class QualityCheckListAdapter extends RecyclerView.Adapter<RecyclerView.V
             if (item.timeType == 0) {
                 tHolder.mTodayView.setVisibility(View.VISIBLE);
                 tHolder.mBeforeView.setVisibility(View.GONE);
+                tHolder.mTodayView.setText("今天");
             } else {
                 tHolder.mTodayView.setVisibility(View.GONE);
                 tHolder.mBeforeView.setVisibility(View.VISIBLE);
+                tHolder.mBeforeTextView.setText(DateUtil.getListDate(Long.parseLong(item.updateTime)));
             }
         }
     }

@@ -29,4 +29,7 @@ public class CommonConfig {
     public static final String CREATE_TYPE_CHECK = "0";//新建检查单
     public static final String CREATE_TYPE_REPAIR = "1";//新建整改单
     public static final String CREATE_TYPE_REVIEW = "2";//新建复查单
+
+    public static final String[] CLASSIFY_NAMES = {"全部","待提交","待整改","待复查","已检查","已复查","已延迟","已验收"};
+    public static final String[] CLASSIFY_STATES = {"","staged","unrectified","unreviewed","inspected","reviewed","delayed","accepted"};
 }

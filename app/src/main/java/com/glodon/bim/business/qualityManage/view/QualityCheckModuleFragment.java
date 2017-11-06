@@ -14,6 +14,7 @@ import com.glodon.bim.business.main.bean.ProjectListItem;
 import com.glodon.bim.business.qualityManage.OnClassifyItemClickListener;
 import com.glodon.bim.business.qualityManage.adapter.QualityCheckListClassifyAdapter;
 import com.glodon.bim.business.qualityManage.bean.ClassifyItem;
+import com.glodon.bim.common.config.CommonConfig;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,19 +56,16 @@ public class QualityCheckModuleFragment extends BaseFragment {
      */
     private void initClassify(){
         mDataList = new ArrayList<>();
-//        String[] names = {"全部","待提交","待整改","待复查","已整改","已复查","已延迟","已验收"};
-        String[] names = {"全部","待提交","待整改","待复查","已检查","已复查","已延迟","已验收"};
-        final String[] states = {"","staged","unrectified","unreviewed","inspected","reviewed","delayed","accepted"};
 
         for(int i = 0;i<8;i++){
             ClassifyItem item = new ClassifyItem();
-            item.name = names[i];
+            item.name = CommonConfig.CLASSIFY_NAMES[i];
             mDataList.add(item);
         }
         mCalssifyAdapter = new QualityCheckListClassifyAdapter(getActivity(), mDataList, new OnClassifyItemClickListener() {
             @Override
             public void onClassifyItemClick(int position, ClassifyItem item) {
-                mCurrentState = states[position];
+                mCurrentState = CommonConfig.CLASSIFY_STATES[position];
             }
         });
         LinearLayoutManager llm = new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false);
