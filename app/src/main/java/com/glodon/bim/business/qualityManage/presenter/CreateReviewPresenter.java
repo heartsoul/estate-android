@@ -12,6 +12,7 @@ import com.glodon.bim.common.config.CommonConfig;
 import com.glodon.bim.customview.album.AlbumData;
 import com.glodon.bim.customview.album.AlbumEditActivity;
 import com.glodon.bim.customview.album.TNBImageItem;
+import com.glodon.bim.customview.photopreview.PhotoPreviewActivity;
 
 import java.util.LinkedHashMap;
 
@@ -63,6 +64,19 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter{
     @Override
     public void initData(Intent intent) {
 
+    }
+
+    /**
+     * 跳转到图片预览
+     *
+     * @param position 点击的图片的位置
+     */
+    @Override
+    public void toPreview(int position) {
+        Intent intent = new Intent(mView.getActivity(), PhotoPreviewActivity.class);
+        intent.putExtra(CommonConfig.ALBUM_DATA, new AlbumData(mSelectedMap));
+        intent.putExtra(CommonConfig.ALBUM_POSITION, position);
+        mView.getActivity().startActivityForResult(intent, REQUEST_CODE_PHOTO_PREVIEW);
     }
 
     @Override

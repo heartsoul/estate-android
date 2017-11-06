@@ -244,7 +244,8 @@
                         android:scrollbars="vertical"
                         android:textColorHint="@color/c_acacac"
                         android:textCursorDrawable="@drawable/edit_cursor_color"
-                        android:textSize="@dimen/dimen_14" />
+                        android:textSize="@dimen/dimen_14"
+                        android:maxLength="255"/>
 
                     <ImageView
                         android:id="@+id/create_check_list_site_desription_star"

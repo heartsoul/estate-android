@@ -52,7 +52,8 @@
         android:fillViewport="true">
 
         <include layout="@layout/quality_check_list_detail_view"
-            android:id="@+id/quality_check_list_detail_parent"/>
+            android:id="@+id/quality_check_list_detail_content"
+            />
     </ScrollView>
 
 </LinearLayout>

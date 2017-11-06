@@ -52,12 +52,15 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/c_f9f9f9"
         android:fillViewport="true">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:background="@color/c_f9f9f9"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             >
             <!--图片描述-->
             <EditText
@@ -77,6 +80,7 @@
                 android:textColorHint="@color/c_acacac"
                 android:textCursorDrawable="@drawable/edit_cursor_color"
                 android:textSize="@dimen/dimen_14"
+                android:maxLength="255"
                 />
 
             <TextView
@@ -128,12 +132,13 @@
 
             </LinearLayout>
             <!--需整改期限-->
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimen_20"
                 android:background="@color/c_f9f9f9" />
-
             <LinearLayout
+                android:id="@+id/create_review_remain_parent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
@@ -209,12 +214,13 @@
                         android:textSize="@dimen/dimen_16" />
 
                 </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_20"
+                    android:background="@color/c_f9f9f9" />
             </LinearLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dimen_20"
-                android:background="@color/c_f9f9f9" />
+
             <RelativeLayout
                 android:id="@+id/create_review_detail"
                 android:layout_width="match_parent"
@@ -239,7 +245,10 @@
                     android:background="@drawable/icon_drawer_arrow_down" />
             </RelativeLayout>
             <include layout="@layout/quality_check_list_detail_view"
-                android:id="@+id/create_review_detail_content"/>
+                android:id="@+id/create_review_detail_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"/>
 
             <LinearLayout
                 android:layout_width="match_parent"

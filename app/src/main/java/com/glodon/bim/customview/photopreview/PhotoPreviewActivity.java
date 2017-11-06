@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 描述：拍照后编辑
+ * 描述：图片预览
  * 作者：zhourf on 2017/9/8
  * 邮箱：zhourf@glodon.com
  */

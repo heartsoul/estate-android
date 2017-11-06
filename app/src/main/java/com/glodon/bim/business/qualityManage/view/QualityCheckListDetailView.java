@@ -49,7 +49,7 @@ public class QualityCheckListDetailView implements QualityCheckListDetailViewCon
 
 
     private  void initView() {
-        mParent = view.findViewById(R.id.quality_check_list_detail_parent);
+        mParent = (LinearLayout) view;
         mModuleBenchMarkView =view.findViewById(R.id.quality_check_list_detail_benchmark);
         mCompanyView = view.findViewById(R.id.quality_check_list_detail_company);
         mPersonView = view.findViewById(R.id.quality_check_list_detail_person);
@@ -66,6 +66,7 @@ public class QualityCheckListDetailView implements QualityCheckListDetailViewCon
         mPresenter.getInspectInfo(deptId,id);
     }
 
+    @Override
     public void updateData(QualityCheckListDetailBean bean) {
         mBean = bean;
         addBasicInfo();

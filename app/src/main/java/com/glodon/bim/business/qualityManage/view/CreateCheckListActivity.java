@@ -226,15 +226,23 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if(!TextUtils.isEmpty(charSequence) && charSequence.length()>255){
-                    mSiteDescription.setText(charSequence.toString().substring(0,255));
-                    mSiteDescription.setSelection(mSiteDescription.getText().toString().trim().length());
-                }
+//                if(!TextUtils.isEmpty(charSequence) && charSequence.length()>255){
+//                    mSiteDescription.setText(charSequence.toString().substring(0,255));
+//                    mSiteDescription.setSelection(mSiteDescription.getText().toString().trim().length());
+//                }
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
-                mLeftNumber.setText((255-mSiteDescription.getText().toString().trim().length())+"");
+//                mLeftNumber.setText((255-mSiteDescription.getText().toString().trim().length())+"");
+                String text = mSiteDescription.getText().toString().trim();
+                int num ;
+                if(TextUtils.isEmpty(text)){
+                    num = 255;
+                }else{
+                    num = 255-text.length();
+                }
+                mLeftNumber.setText(num);
             }
         });
     }

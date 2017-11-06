@@ -22,6 +22,8 @@ public interface CreateReviewContract {
         void takePhoto();
 
         void openAlbum();
+
+        void toPreview(int i);
     }
 
     interface View extends IBaseView {

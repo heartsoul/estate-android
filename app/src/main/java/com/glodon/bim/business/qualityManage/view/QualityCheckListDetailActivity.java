@@ -52,7 +52,7 @@ public class QualityCheckListDetailActivity extends BaseActivity implements View
     private void initView() {
         mStatusView = findViewById(R.id.quality_check_list_detail_status);
         mBackView = (ImageView) findViewById(R.id.quality_check_list_detail_back);
-        mParent = (LinearLayout) findViewById(R.id.quality_check_list_detail_parent);
+        mParent = (LinearLayout) findViewById(R.id.quality_check_list_detail_content);
         mRepairView = (TextView) findViewById(R.id.quality_check_list_detail_repair);
 
     }

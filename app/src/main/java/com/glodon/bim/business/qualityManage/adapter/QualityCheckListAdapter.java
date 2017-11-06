@@ -133,6 +133,26 @@ public class QualityCheckListAdapter extends RecyclerView.Adapter<RecyclerView.V
                 }
             });
 
+            sHolder.mRepairBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(mListener!=null)
+                    {
+                        mListener.repair(position);
+                    }
+                }
+            });
+
+            sHolder.mReviewBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(mListener!=null)
+                    {
+                        mListener.review(position);
+                    }
+                }
+            });
+
         }
 
         if (holder instanceof TimeHolder) {

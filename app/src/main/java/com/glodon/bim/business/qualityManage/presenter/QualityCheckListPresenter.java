@@ -37,11 +37,11 @@ import rx.subscriptions.CompositeSubscription;
  */
 
 public class QualityCheckListPresenter implements QualityCheckListContract.Presenter {
-    public static final int REQUEST_CODE_DETAIL = 0;
-    private final int REQUEST_CODE_TAKE_PHOTO = 1;
-    private final int REQUEST_CODE_OPEN_ALBUM = 2;
-    private final int REQUEST_CODE_CREATE_REVIEW = 3;
-    private final int REQUEST_CODE_CREATE_REPAIR = 4;
+    public static final int REQUEST_CODE_DETAIL = 10;
+    private final int REQUEST_CODE_TAKE_PHOTO = 11;
+    private final int REQUEST_CODE_OPEN_ALBUM = 12;
+    private final int REQUEST_CODE_CREATE_REVIEW = 13;
+    private final int REQUEST_CODE_CREATE_REPAIR = 14;
     private QualityCheckListContract.View mView;
     private QualityCheckListContract.Model mModel;
     private CompositeSubscription mSubscription;

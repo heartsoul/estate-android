@@ -3,7 +3,9 @@ package com.glodon.bim.business.qualityManage.view;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -25,8 +27,12 @@ import com.glodon.bim.common.config.CommonConfig;
 import com.glodon.bim.customview.PhotoAlbumDialog;
 import com.glodon.bim.customview.album.AlbumData;
 import com.glodon.bim.customview.album.TNBImageItem;
+import com.glodon.bim.customview.datepicker.TNBCustomDatePickerUtils;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,6 +60,7 @@ public class CreateReviewActivity extends BaseActivity implements View.OnClickLi
     private View mRemainLine;
     private RelativeLayout mRemainParent;
     private TextView mRemainName;
+    private LinearLayout mRemain;
     //检查单问题
     private RelativeLayout mDetail;
     private ImageView mDetailIcon;
@@ -71,8 +78,8 @@ public class CreateReviewActivity extends BaseActivity implements View.OnClickLi
     private String mCreateType; //创建的类型
     private AlbumData data;//相册传递的数据
 
-    private boolean mIsShowPhoto = true;
-
+    private boolean mIsShowPhoto = true;//是否显示图片
+    private boolean mIsUpToStandard = false;//是否合格
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,6 +111,7 @@ public class CreateReviewActivity extends BaseActivity implements View.OnClickLi
         mRemainLine = findViewById(R.id.create_review_remain_line);
         mRemainParent = (RelativeLayout) findViewById(R.id.create_review_remain);
         mRemainName = (TextView) findViewById(R.id.create_review_remain_name);
+        mRemain = (LinearLayout) findViewById(R.id.create_review_remain_parent);
         //检查单问题
         mDetail = (RelativeLayout) findViewById(R.id.create_review_detail);
         mDetailIcon = (ImageView) findViewById(R.id.create_review_detail_icon);
@@ -122,11 +130,35 @@ public class CreateReviewActivity extends BaseActivity implements View.OnClickLi
         ThrottleClickEvents.throttleClick(mPhoto1,this);
         ThrottleClickEvents.throttleClick(mPhoto2,this);
         ThrottleClickEvents.throttleClick(mPhoto3,this);
-        ThrottleClickEvents.throttleClick(mRemainFlag,this);
-        ThrottleClickEvents.throttleClick(mRemainParent,this);
-        ThrottleClickEvents.throttleClick(mDetail,this);
+        ThrottleClickEvents.throttleClick(mRemainFlag,this,1);
+        ThrottleClickEvents.throttleClick(mRemainParent,this,1);
+        ThrottleClickEvents.throttleClick(mDetail,this,1);
         ThrottleClickEvents.throttleClick(mSaveView,this);
         ThrottleClickEvents.throttleClick(mDeleteView,this);
+
+        mDesView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+                String text = mDesView.getText().toString().trim();
+                int num ;
+                if(TextUtils.isEmpty(text)){
+                    num = 255;
+                }else{
+                    num = 255-text.length();
+                }
+                mDesNumView.setText(num+"字");
+            }
+        });
     }
 
     @Override
@@ -141,13 +173,13 @@ public class CreateReviewActivity extends BaseActivity implements View.OnClickLi
 
                 break;
             case R.id.create_review_photo_0:
-
+                mPresenter.toPreview(0);
                 break;
             case R.id.create_review_photo_1:
-
+                mPresenter.toPreview(1);
                 break;
             case R.id.create_review_photo_2:
-
+                mPresenter.toPreview(2);
                 break;
             case R.id.create_review_photo_3:
                 if (mPhotoAlbumDialog == null) {
@@ -166,14 +198,38 @@ public class CreateReviewActivity extends BaseActivity implements View.OnClickLi
                 }
                 mPhotoAlbumDialog.show();
                 break;
-            case R.id.create_review_remain_flag:
-
+            case R.id.create_review_remain_flag://是否合格
+                if(mIsUpToStandard){
+                    mRemainParent.setVisibility(View.VISIBLE);
+                    mRemainLine.setVisibility(View.VISIBLE);
+                    mRemainFlag.setBackgroundResource(R.drawable.icon_flag_close);
+                }else{
+                    mRemainParent.setVisibility(View.GONE);
+                    mRemainLine.setVisibility(View.GONE);
+                    mRemainFlag.setBackgroundResource(R.drawable.icon_flag_open);
+                }
+                mIsUpToStandard = !mIsUpToStandard;
                 break;
             case R.id.create_review_remain:
-
+                TNBCustomDatePickerUtils.showDayDialog(mActivity, new TNBCustomDatePickerUtils.OnDateSelectedListener() {
+                    @Override
+                    public void onDateSelected(Map<String, Integer> map) {
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.set(map.get("year"), map.get("month") - 1, map.get("date"));
+                        Date date = calendar.getTime();
+                        String time = (new SimpleDateFormat("yyyy-MM-dd")).format(date);
+                        mRemainName.setText(time);
+                    }
+                });
                 break;
             case R.id.create_review_detail:
-
+                if(mDetailContent.getVisibility() == View.VISIBLE){
+                    mDetailContent.setVisibility(View.GONE);
+                    mDetailIcon.setBackgroundResource(R.drawable.icon_drawer_arrow_down);
+                }else{
+                    mDetailContent.setVisibility(View.VISIBLE);
+                    mDetailIcon.setBackgroundResource(R.drawable.icon_draw_arrow_up);
+                }
                 break;
             case R.id.create_review__save:
 
@@ -185,6 +241,23 @@ public class CreateReviewActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void initData() {
+        mPresenter = new CreateReviewPresenter(this);
+        deptId = getIntent().getLongExtra(CommonConfig.QUALITY_CHECK_LIST_DEPTID,0);
+        id = getIntent().getLongExtra(CommonConfig.QUALITY_CHECK_LIST_ID,0);
+        mPresenter.initData(getIntent());
+        mDetailView = new QualityCheckListDetailView(mActivity,mDetailContent);
+        mDetailView.getInfo(deptId,id);
+
+        //创建的类型  整改  /复查
+        mCreateType = getIntent().getStringExtra(CommonConfig.CREATE_TYPE);
+        if(CommonConfig.CREATE_TYPE_REPAIR .equals(mCreateType)){
+            mTitleView.setText("整改单");
+            mRemain.setVisibility(View.GONE);
+        }else if(CommonConfig.CREATE_TYPE_REVIEW.equals(mCreateType)){
+            mTitleView.setText("复查单");
+            mRemain.setVisibility(View.VISIBLE);
+        }
+
         //获取图片
         mIsShowPhoto = getIntent().getBooleanExtra(CommonConfig.SHOW_PHOTO,true);
         if(mIsShowPhoto){
@@ -206,12 +279,7 @@ public class CreateReviewActivity extends BaseActivity implements View.OnClickLi
             mPhotoParent.setVisibility(View.GONE);
         }
 
-        mPresenter = new CreateReviewPresenter(this);
-        deptId = getIntent().getLongExtra(CommonConfig.QUALITY_CHECK_LIST_DEPTID,0);
-        id = getIntent().getLongExtra(CommonConfig.QUALITY_CHECK_LIST_ID,0);
-        mPresenter.initData(getIntent());
-        mDetailView = new QualityCheckListDetailView(mActivity,mDetailContent);
-        mDetailView.getInfo(deptId,id);
+
     }
 
     @Override

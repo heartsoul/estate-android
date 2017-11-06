@@ -387,7 +387,10 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        mPresenter.onActivityResult(requestCode, resultCode, data);
+        if(mPresenter!=null) {
+            mPresenter.onActivityResult(requestCode, resultCode, data);
+        }
+        mFragmentMap.get(mCurrentFragmentId).onActivityResult(requestCode, resultCode, data);
 
     }
 

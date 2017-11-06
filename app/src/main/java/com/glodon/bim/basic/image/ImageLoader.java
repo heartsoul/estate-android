@@ -72,6 +72,7 @@ public class ImageLoader {
         Glide.with(context)
                 .load(url)
                 .crossFade(200)
+                .centerCrop()
                 .into(view);
     }
 
