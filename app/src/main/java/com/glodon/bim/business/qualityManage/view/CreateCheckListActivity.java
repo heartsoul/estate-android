@@ -579,10 +579,10 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
     private CreateCheckListParams mParams = new CreateCheckListParams();
     //点击保存
     private void  save(){
-//        if(checkMustInfo()){
-//            assembleData();
+        if(checkMustInfo()){
+            assembleData();
             mPresenter.save(mParams);
-//        }
+        }
     }
     //点击提交
     private void submit(){

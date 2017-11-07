@@ -246,4 +246,8 @@ public class QualityCheckListDetailView implements QualityCheckListDetailViewCon
     public Activity getActivity() {
         return mActivity;
     }
+
+    public QualityCheckListDetailBean getDetailInfo() {
+        return mBean;
+    }
 }

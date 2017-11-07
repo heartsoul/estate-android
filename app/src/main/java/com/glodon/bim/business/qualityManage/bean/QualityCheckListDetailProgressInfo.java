@@ -18,7 +18,7 @@ public class QualityCheckListDetailProgressInfo {
     public long handlerId;
     public String handlerName;//处理者
     public String handlerTitle;//处理者岗位
-    public int id;
+    public long id;
     public String lastRectificationDate;//整改期限
     public String updateTime;//最新时间
 }

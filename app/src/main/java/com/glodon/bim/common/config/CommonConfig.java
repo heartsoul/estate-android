@@ -32,4 +32,11 @@ public class CommonConfig {
 
     public static final String[] CLASSIFY_NAMES = {"全部","待提交","待整改","待复查","已检查","已复查","已延迟","已验收"};
     public static final String[] CLASSIFY_STATES = {"","staged","unrectified","unreviewed","inspected","reviewed","delayed","accepted"};
+    /**
+     * 复查合格 "closed"
+     *
+     * 复查不合格  "notAccepted"
+     */
+    public static final String STATUS_CLOSED = "closed";
+    public static final String STATUS_NOT_ACCEPTED = "notAccepted";
 }

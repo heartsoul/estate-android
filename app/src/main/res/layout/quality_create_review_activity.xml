@@ -63,25 +63,38 @@
             android:focusableInTouchMode="true"
             >
             <!--图片描述-->
-            <EditText
-                android:id="@+id/create_review_description"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:minHeight="@dimen/dimen_86"
-                android:background="@color/white"
-                android:gravity="top"
-                android:hint="图片描述...."
-                android:paddingBottom="@dimen/dimen_13"
-                android:paddingLeft="@dimen/dimen_20"
-                android:paddingRight="@dimen/dimen_20"
-                android:paddingTop="@dimen/dimen_16"
-                android:scrollbarSize="@dimen/dimen_02"
-                android:scrollbars="vertical"
-                android:textColorHint="@color/c_acacac"
-                android:textCursorDrawable="@drawable/edit_cursor_color"
-                android:textSize="@dimen/dimen_14"
-                android:maxLength="255"
-                />
+                android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/create_review_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="@dimen/dimen_86"
+                    android:background="@color/white"
+                    android:gravity="top"
+                    android:hint="现场情况描述...."
+                    android:paddingBottom="@dimen/dimen_13"
+                    android:paddingLeft="@dimen/dimen_20"
+                    android:paddingRight="@dimen/dimen_20"
+                    android:paddingTop="@dimen/dimen_16"
+                    android:scrollbarSize="@dimen/dimen_02"
+                    android:scrollbars="vertical"
+                    android:textColorHint="@color/c_acacac"
+                    android:textCursorDrawable="@drawable/edit_cursor_color"
+                    android:textSize="@dimen/dimen_14"
+                    android:maxLength="255"
+                    />
+                <ImageView
+                    android:id="@+id/create_review_description_star"
+                    android:layout_width="@dimen/dimen_08"
+                    android:layout_height="@dimen/dimen_08"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/dimen_07"
+                    android:background="@drawable/icon_create_check_list_star"
+                    android:visibility="invisible" />
+            </RelativeLayout>
+
 
             <TextView
                 android:id="@+id/create_review_description_num"
