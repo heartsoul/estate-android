@@ -13,6 +13,7 @@ import com.glodon.bim.R;
 import com.glodon.bim.base.BaseActivity;
 import com.glodon.bim.basic.listener.ThrottleClickEvents;
 import com.glodon.bim.basic.utils.ScreenUtil;
+import com.glodon.bim.business.authority.AuthorityManager;
 import com.glodon.bim.business.main.contract.ChooseCategoryItemContract;
 import com.glodon.bim.business.main.presenter.ChooseCategoryItemPresenter;
 import com.glodon.bim.customview.PhotoAlbumDialog;
@@ -37,6 +38,18 @@ public class ChooseCategoryItemActivity extends BaseActivity implements ChooseCa
         initView();
         setListener();
         initDataForActivity();
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //权限控制  是否显示新检检查单按钮
+        if(AuthorityManager.isShowCreateButton()){
+            mCreateView.setVisibility(View.VISIBLE);
+        }else{
+            mCreateView.setVisibility(View.GONE);
+        }
     }
 
     private void initView() {

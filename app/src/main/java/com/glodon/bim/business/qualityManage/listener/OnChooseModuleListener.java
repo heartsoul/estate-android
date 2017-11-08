@@ -10,5 +10,5 @@ import com.glodon.bim.business.qualityManage.bean.ModuleListBeanItem;
 
 public interface OnChooseModuleListener {
 
-    void onSelect(ModuleListBeanItem item,int position);
+    void onSelect(ModuleListBeanItem item,long selectId);
 }

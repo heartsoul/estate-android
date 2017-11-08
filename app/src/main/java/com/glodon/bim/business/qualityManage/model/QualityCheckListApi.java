@@ -4,6 +4,8 @@ import com.glodon.bim.business.qualityManage.bean.QualityCheckListBean;
 import com.glodon.bim.business.qualityManage.bean.QualityCheckListDetailBean;
 import com.glodon.bim.common.login.User;
 
+import java.util.List;
+
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -30,7 +32,14 @@ public interface QualityCheckListApi {
      * 获取质检清单
      */
     @GET("quality/{deptId}/qualityInspection/all")
-    Observable<QualityCheckListBean> getQualityCheckList(@Path("deptId") long deptId, @Query("qcState") String qcState, @Query("page") int page, @Query("size") int size,@Header("cookie") String cookie);
+    Observable<QualityCheckListBean> getQualityCheckList(@Path("deptId") long deptId, @Query("qcState") String qcState, @Query("page") int page, @Query("size") int size, @Query("sort") String[] sort, @Header("cookie") String cookie);
+
+    /**
+     * 获取质检清单
+     */
+    @GET("quality/{deptId}/qualityInspection/all")
+    Call<ResponseBody> getQualityCheckList2(@Path("deptId") long deptId, @Query("qcState") String qcState, @Query("page") int page, @Query("size") int size, @Query("sort") String[] sort, @Header("cookie") String cookie);
+
 
     /**
      * 获取检查单详情

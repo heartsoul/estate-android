@@ -13,11 +13,11 @@ public class ModuleListBeanItem implements Serializable {
 
     public String code;
     public List<ModuleListBeanItemElementType> elementTypes;
-    public int id;
+    public long id =-1;
     public String name;
     public String projectType;
     public String requirement;
-    public int specialtyId;
+    public long specialtyId;
     public String specialtyName;
 
 }

@@ -3,7 +3,11 @@ package com.glodon.bim.business.qualityManage.presenter;
 import android.app.Activity;
 import android.content.Intent;
 
+import com.glodon.bim.basic.config.AppConfig;
+import com.glodon.bim.basic.log.LogUtil;
+import com.glodon.bim.basic.network.NetRequest;
 import com.glodon.bim.basic.utils.CameraUtil;
+import com.glodon.bim.business.greendao.provider.DaoProvider;
 import com.glodon.bim.business.qualityManage.bean.QualityCheckListDetailBean;
 import com.glodon.bim.business.qualityManage.bean.QualityCheckListDetailProgressInfo;
 import com.glodon.bim.business.qualityManage.bean.QualityGetRepairInfo;
@@ -12,6 +16,7 @@ import com.glodon.bim.business.qualityManage.bean.QualityRepairParams;
 import com.glodon.bim.business.qualityManage.bean.QualityReviewParams;
 import com.glodon.bim.business.qualityManage.bean.SaveBean;
 import com.glodon.bim.business.qualityManage.contract.CreateReviewContract;
+import com.glodon.bim.business.qualityManage.model.CreateReviewApi;
 import com.glodon.bim.business.qualityManage.model.CreateReviewModel;
 import com.glodon.bim.business.qualityManage.view.PhotoEditActivity;
 import com.glodon.bim.common.config.CommonConfig;
@@ -20,10 +25,14 @@ import com.glodon.bim.customview.album.AlbumEditActivity;
 import com.glodon.bim.customview.album.TNBImageItem;
 import com.glodon.bim.customview.photopreview.PhotoPreviewActivity;
 
+import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.List;
 
 import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -57,6 +66,7 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter{
     private String mCreateType; //创建的类型
 
     private boolean mIsEditStatus = false;//是否编辑状态
+    private String mCode = "";//当前单据的code
 
 
 
@@ -131,6 +141,7 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter{
                     public void onNext(QualityGetRepairInfo info) {
                         if(info != null){
                             mIsEditStatus = true;
+                            mCode = info.code;
                             if(mView!=null){
                                 mView.showDesAndImages(info.description,info.files);
                             }
@@ -160,6 +171,7 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter{
                     public void onNext(QualityGetReviewInfo info) {
                         if(info != null){
                             mIsEditStatus = true;
+                            mCode = info.code;
                             if(mView!=null){
                                 mView.showDesAndImages(info.description,info.files);
                                 mView.showRectificationInfo(info.status,info.lastRectificationDate);
@@ -263,7 +275,7 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter{
     //组织整改单参数
     private QualityRepairParams getRepairParams(String des){
         QualityRepairParams props = new QualityRepairParams();
-        props.code = System.currentTimeMillis()+"";
+        props.code = mCode;
         props.description = des;
         props.inspectionId = id;
         QualityCheckListDetailBean info = mView.getDetailInfo();
@@ -336,7 +348,7 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter{
 
     private QualityReviewParams getReviewParams(String des, String mCurrentStatus, String mSelectedTime){
         QualityReviewParams props = new QualityReviewParams();
-        props.code = System.currentTimeMillis()+"";
+        props.code = mCode;
         props.description = des;
         props.inspectionId = id;
         props.status = mCurrentStatus;
@@ -389,6 +401,7 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter{
                     @Override
                     public void onNext(SaveBean saveBean) {
                         if(saveBean!=null){
+                            mCode = saveBean.code;
                             if(mView!=null){
                                 mView.showDelete();
                             }
@@ -400,30 +413,48 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter{
 
     private void createSaveRepair(String des) {
         QualityRepairParams props = getRepairParams(des);
-        Subscription sub = mModel.createSaveRepair(deptId,props)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<SaveBean>() {
-                    @Override
-                    public void onCompleted() {
+//        Subscription sub = mModel.createSaveRepair(deptId,props)
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Subscriber<SaveBean>() {
+//                    @Override
+//                    public void onCompleted() {
+//
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//                        LogUtil.e(e.getMessage());
+//                    }
+//
+//                    @Override
+//                    public void onNext(SaveBean saveBean) {
+//                        if(saveBean!=null){
+//                            mCode = saveBean.code;
+//                            if(mView!=null){
+//                                mView.showDelete();
+//                            }
+//                        }
+//                    }
+//                });
+//        mSubscription.add(sub);
+        NetRequest.getInstance().getCall(AppConfig.BASE_URL, CreateReviewApi.class).createSaveRepair2(deptId,props,new DaoProvider().getCookie())
+        .enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    LogUtil.e(response.errorBody().string());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
 
-                    }
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                LogUtil.e("er="+t.getMessage());
+            }
+        });
 
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(SaveBean saveBean) {
-                        if(saveBean!=null){
-                            if(mView!=null){
-                                mView.showDelete();
-                            }
-                        }
-                    }
-                });
-        mSubscription.add(sub);
     }
 
     private void editSaveReview(String des, String mCurrentStatus, String mSelectedTime) {
@@ -445,6 +476,7 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter{
                     @Override
                     public void onNext(SaveBean saveBean) {
                         if(saveBean!=null){
+                            mCode = saveBean.code;
                             if(mView!=null){
                                 mView.showDelete();
                             }
@@ -473,6 +505,7 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter{
                     @Override
                     public void onNext(SaveBean saveBean) {
                         if(saveBean!=null){
+                            mCode = saveBean.code;
                             if(mView!=null){
                                 mView.showDelete();
                             }

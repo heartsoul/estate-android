@@ -7,6 +7,7 @@ import com.glodon.bim.business.qualityManage.bean.QualityReviewParams;
 import com.glodon.bim.business.qualityManage.bean.SaveBean;
 
 import okhttp3.ResponseBody;
+import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
@@ -30,6 +31,11 @@ public interface CreateReviewApi {
      */
     @POST("quality/{deptId}/qualityRectification")
     Observable<SaveBean> createSaveRepair(@Path("deptId") long deptId, @Body QualityRepairParams props,@Header("cookie") String cookie);
+    /**
+     * 整改单  新增  保存
+     */
+    @POST("quality/{deptId}/qualityRectification")
+    Call<ResponseBody> createSaveRepair2(@Path("deptId") long deptId, @Body QualityRepairParams props, @Header("cookie") String cookie);
 
     /**
      * 整改单  编辑  保存

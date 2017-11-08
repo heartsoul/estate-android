@@ -3,6 +3,8 @@ package com.glodon.bim.business.main.presenter;
 import android.content.Intent;
 
 import com.glodon.bim.basic.log.LogUtil;
+import com.glodon.bim.basic.utils.SharedPreferencesUtil;
+import com.glodon.bim.business.authority.AuthorityManager;
 import com.glodon.bim.business.main.bean.ProjectListBean;
 import com.glodon.bim.business.main.bean.ProjectListItem;
 import com.glodon.bim.business.main.contract.ChooseProjectContract;
@@ -58,6 +60,8 @@ public class ChooseProjectPresenter implements ChooseProjectContract.Presenter {
      * 点击项目
      */
     public void clickProject(ProjectListItem item) {
+        SharedPreferencesUtil.setProjectInfo(item);
+        AuthorityManager.getAuthorities();
         Intent intent = new Intent(mView.getActivity(), ChooseCategoryItemActivity.class);
         intent.putExtra(CommonConfig.PROJECT_LIST_ITEM, item);
         mView.getActivity().startActivity(intent);

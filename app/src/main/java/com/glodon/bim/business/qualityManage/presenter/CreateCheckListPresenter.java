@@ -78,13 +78,17 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
     //图片
     private LinkedHashMap<String, TNBImageItem> mSelectedMap;
     //质检项目
-    private int mModuleSelectPosition = -1;
+//    private int mModuleSelectPosition = -1;
     private ModuleListBeanItem mModuleSelectInfo;
 
     //新建检查单参数
     private CreateCheckListParams mInput;
     private String mPhotoPath;//拍照的路径
 
+    private String mCode = "";//当前单据code
+
+    //编辑状态下  前面传递过来的参数
+    private CreateCheckListParams mEditParams;
     public CreateCheckListPresenter(CreateCheckListContract.View mView) {
         this.mView = mView;
         mModel = new CreateCheckListModel();
@@ -94,18 +98,69 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
         mProjectId = SharedPreferencesUtil.getProjectId();
         mInput = new CreateCheckListParams();
         mInput.projectId = mProjectId;
-        mInput.code = SystemClock.currentThreadTimeMillis() + "";
         mSelectedMap = new LinkedHashMap<>();
+        mModuleSelectInfo = new ModuleListBeanItem();
+    }
+
+
+    @Override
+    public void setEditState(CreateCheckListParams mParams) {
+        mInput = mParams;
+        mCode = mParams.code;
+        mInspectId = mParams.inspectId;
     }
 
     @Override
     public void initData(Intent intent) {
+        mEditParams = (CreateCheckListParams) intent.getSerializableExtra(CommonConfig.CREATE_CHECK_LIST_PROPS);
+        getCompanyList(mEditParams);
 
-        getCompanyList();
+    }
+
+    //初始化责任人  编辑状态下
+    private void initPerson(){
+        if(mEditParams!=null){
+            //设置质检项目
+
+            mModuleSelectInfo.name = mEditParams.qualityCheckpointName;
+            mModuleSelectInfo.id = mEditParams.qualityCheckpointId;
+            //设置责任人
+            Subscription sub = mModel.gePersonList(mProjectId, mCompanyList.get(mCompanySelectPosition).coperationId)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Subscriber<List<PersonItem>>() {
+                        @Override
+                        public void onCompleted() {
+
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+
+                        }
+
+                        @Override
+                        public void onNext(List<PersonItem> personItems) {
+                            mPersonList = personItems;
+                            mPersonNameList.clear();
+                            if (mPersonList != null && mPersonList.size() > 0) {
+                                for (int i = 0;i<mPersonList.size();i++) {
+                                    PersonItem item = mPersonList.get(i);
+                                    mPersonNameList.add(item.name);
+                                    if(mEditParams.responsibleUserName.equals(item.name)){
+                                        mPersonSelectPosition = i;
+                                    }
+                                }
+
+                            }
+                        }
+                    });
+            mSubscritption.add(sub);
+        }
     }
 
     //获取施工单位列表
-    private void getCompanyList() {
+    private void getCompanyList(final CreateCheckListParams mParams) {
         List<String> list = new ArrayList<>();
         list.add("SGDW");
         Subscription sub = mModel.getCompaniesList(mProjectId, list)
@@ -131,7 +186,23 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
                             for (CompanyItem item : mCompanyList) {
                                 mCompanyNameList.add(item.name);
                             }
-                            mView.showCompany(mCompanyList.get(0));
+
+                            //设置编辑状态的施工单位
+                            if (mParams != null) {
+                                CompanyItem item = new CompanyItem();
+                                item.id = mParams.constructionCompanyId;
+                                item.name = mParams.constructionCompanyName;
+                                mView.showCompany(item);
+                                for (int i = 0; i < mCompanyList.size(); i++) {
+                                    if (item.id == mCompanyList.get(i).id) {
+                                        mCompanySelectPosition = i;
+                                        break;
+                                    }
+                                }
+                                initPerson();
+                            } else {
+                                mView.showCompany(mCompanyList.get(0));
+                            }
                         }
                     }
                 });
@@ -252,7 +323,7 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
         final String name = file.getName();
         String digest = name;
         long length = file.length();
-        LogUtil.e("length=",length+"");
+        LogUtil.e("length=", length + "");
         Subscription sub = mModel.getOperationCode(containerId, name, digest, length)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -271,7 +342,7 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
                     public void onNext(ResponseBody responseBody) {
                         try {
                             String operationCode = responseBody.string();
-                            LogUtil.e("code = ",operationCode);
+                            LogUtil.e("code = ", operationCode);
 
                             // 创建 RequestBody，用于封装 请求RequestBody
 //                            RequestBody requestFile =
@@ -326,7 +397,7 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
 //                                    });
 //                            mSubscritption.add(subs);
 
-                            uploadImage2(operationCode,file);
+                            uploadImage2(operationCode, file);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -336,11 +407,11 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
     }
 
 
-    private void uploadImage2(String operationCode,File file) {
+    private void uploadImage2(String operationCode, File file) {
 
 
         //Create Upload Server Client
-        CreateCheckListApi service = NetRequest.getInstance().getCall(AppConfig.BASE_UPLOAD_URL,CreateCheckListApi.class);
+        CreateCheckListApi service = NetRequest.getInstance().getCall(AppConfig.BASE_UPLOAD_URL, CreateCheckListApi.class);
 
         //File creating from selected URL
 
@@ -350,14 +421,14 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
         MultipartBody.Part body =
                 MultipartBody.Part.createFormData("uploaded_file", file.getName(), requestFile);
 //        ("nss/v1/insecure/{operationCode}")
-        String temp = "nss/v1/insecure/objects?operationCode="+operationCode;
-        String url="";
+        String temp = "nss/v1/insecure/objects?operationCode=" + operationCode;
+        String url = "";
         try {
-            url = URLEncoder.encode(temp,"UTF-8");
+            url = URLEncoder.encode(temp, "UTF-8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        Call<ResponseBody> resultCall = service.uploadImage2(temp,body);
+        Call<ResponseBody> resultCall = service.uploadImage2(temp, body);
 
         resultCall.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -371,7 +442,7 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                LogUtil.e("error 98989=",t.getMessage());
+                LogUtil.e("error 98989=", t.getMessage());
             }
         });
     }
@@ -380,7 +451,7 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
     public void save(CreateCheckListParams params) {
 //        uploadImage();
         assembleParams(params);
-        if(mInspectId==-1) {
+        if (mInspectId == -1) {
             //新增
             Subscription sub = mModel.createSave(mProjectId, mInput)
                     .subscribeOn(Schedulers.io())
@@ -400,6 +471,7 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
                         public void onNext(SaveBean responseBody) {
                             LogUtil.e("save---response", responseBody.id + "");
                             mInspectId = responseBody.id;
+                            mCode = responseBody.code;
                             ToastManager.showSaveToast();
                             if (mView != null) {
                                 mView.showDeleteButton();
@@ -407,9 +479,9 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
                         }
                     });
             mSubscritption.add(sub);
-        }else{
+        } else {
             //编辑
-            Subscription sub = mModel.editSave(mProjectId, mInspectId,mInput)
+            Subscription sub = mModel.editSave(mProjectId, mInspectId, mInput)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Subscriber<ResponseBody>() {
@@ -425,15 +497,8 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
 
                         @Override
                         public void onNext(ResponseBody responseBody) {
-                            try {
-                                LogUtil.e("edit save---response", responseBody.string());
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-//                            mInspectId = responseBody.id;
-                            ToastManager.showSaveToast();
-                            if (mView != null) {
-                                mView.showDeleteButton();
+                            if (responseBody != null) {
+                                ToastManager.showSaveToast();
                             }
                         }
                     });
@@ -462,6 +527,7 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
         intent.putExtra(CommonConfig.ALBUM_POSITION, position);
         mView.getActivity().startActivityForResult(intent, REQUEST_CODE_PHOTO_PREVIEW);
     }
+
 
     @Override
     public void takePhoto() {
@@ -527,14 +593,17 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
         mInput.needRectification = params.needRectification;
         mInput.lastRectificationDate = params.lastRectificationDate;
         //质检项目
+
         mInput.qualityCheckpointName = mModuleSelectInfo.name;
         mInput.qualityCheckpointId = mModuleSelectInfo.id;
+
+        mInput.code = mCode;
     }
 
     @Override
     public void toModuleList() {
         Intent intent = new Intent(mView.getActivity(), ChooseModuleActivity.class);
-        intent.putExtra(CommonConfig.MODULE_LIST_POSITION, mModuleSelectPosition);
+        intent.putExtra(CommonConfig.MODULE_LIST_POSITION, mModuleSelectInfo.id);
         mView.getActivity().startActivityForResult(intent, REQUEST_CODE_CHOOSE_MODULE);
     }
 
@@ -544,7 +613,7 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
         switch (requestCode) {
             case REQUEST_CODE_CHOOSE_MODULE:
                 if (resultCode == Activity.RESULT_OK && data != null) {
-                    mModuleSelectPosition = data.getIntExtra(CommonConfig.MODULE_LIST_POSITION, -1);
+//                    mModuleSelectPosition = data.getIntExtra(CommonConfig.MODULE_LIST_POSITION, -1);
                     mModuleSelectInfo = (ModuleListBeanItem) data.getSerializableExtra(CommonConfig.MODULE_LIST_NAME);
                     if (mView != null && mModuleSelectInfo != null) {
                         mView.showModuleName(mModuleSelectInfo.name);

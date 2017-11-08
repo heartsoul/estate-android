@@ -32,15 +32,15 @@ public class ChooseModulePresenter implements ChooseModuleContract.Presenter {
     private ChooseModuleContract.Model mModel;
     private List<ModuleListBeanItem> mDataList;
     private CompositeSubscription mSubscription;
-    private int mSelectPosition = -1;
+    private long mSelectId = -1;
     private int mCurrentPage = 0;
     private int mSize = 35;
     private OnChooseModuleListener mListener = new OnChooseModuleListener() {
         @Override
-        public void onSelect(ModuleListBeanItem item, int position) {
+        public void onSelect(ModuleListBeanItem item, long position) {
             Intent data = new Intent();
-            data.putExtra(CommonConfig.MODULE_LIST_NAME,mDataList.get(position));
-            data.putExtra(CommonConfig.MODULE_LIST_POSITION,position);
+            data.putExtra(CommonConfig.MODULE_LIST_NAME,item);
+//            data.putExtra(CommonConfig.MODULE_LIST_POSITION,position);
             mView.getActivity().setResult(Activity.RESULT_OK,data);
             mView.getActivity().finish();
         }
@@ -59,7 +59,7 @@ public class ChooseModulePresenter implements ChooseModuleContract.Presenter {
 
     @Override
     public void initData(Intent intent) {
-        mSelectPosition = intent.getIntExtra(CommonConfig.MODULE_LIST_POSITION,-1);
+        mSelectId = intent.getLongExtra(CommonConfig.MODULE_LIST_POSITION,-1);
         Subscription sub = mModel.getModuleList(SharedPreferencesUtil.getProjectTypeCode(),mCurrentPage,mSize)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -81,9 +81,9 @@ public class ChooseModulePresenter implements ChooseModuleContract.Presenter {
                             mDataList.clear();
                             mDataList.addAll(bean.content);
                             if(mView!=null){
-                                mView.initListView(mDataList,mSelectPosition);
+                                mView.initListView(mDataList, mSelectId);
                             }
-                            if(mCurrentPage<bean.totalPages-1){
+                            if(mCurrentPage<bean.totalPages){
                                 mCurrentPage++;
                             }
                         }
@@ -120,7 +120,7 @@ public class ChooseModulePresenter implements ChooseModuleContract.Presenter {
                             if(mView!=null){
                                 mView.updateListView(mDataList);
                             }
-                            if(mCurrentPage<bean.totalPages-1){
+                            if(mCurrentPage<bean.totalPages){
                                 mCurrentPage++;
                             }
                         }

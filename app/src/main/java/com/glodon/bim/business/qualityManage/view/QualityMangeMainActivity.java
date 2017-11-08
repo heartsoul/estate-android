@@ -23,6 +23,7 @@ import com.glodon.bim.base.BaseFragment;
 import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.basic.utils.ScreenUtil;
 import com.glodon.bim.basic.utils.SharedPreferencesUtil;
+import com.glodon.bim.business.authority.AuthorityManager;
 import com.glodon.bim.business.greendao.provider.DaoProvider;
 import com.glodon.bim.business.main.bean.ProjectListItem;
 import com.glodon.bim.business.qualityManage.contract.QualityMangeMainContract;
@@ -129,6 +130,13 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
         initStatusBar(mStatusLeft);
 
         hideDrawer(1);
+
+        //权限控制  是否显示新检检查单按钮
+        if(AuthorityManager.isShowCreateButton()){
+            mCreateView.setVisibility(View.VISIBLE);
+        }else{
+            mCreateView.setVisibility(View.GONE);
+        }
 
     }
 

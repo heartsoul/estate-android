@@ -42,9 +42,9 @@ public interface ChooseModuleContract {
 
         /**
          * 初始化列表
-         * @param selectPosition 选中的position
+         * @param selectId 选中的id
          */
-        void initListView(List<ModuleListBeanItem> list, int selectPosition);
+        void initListView(List<ModuleListBeanItem> list, long selectId);
 
         /**
          * 更新列表

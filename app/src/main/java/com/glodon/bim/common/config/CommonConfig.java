@@ -39,4 +39,12 @@ public class CommonConfig {
      */
     public static final String STATUS_CLOSED = "closed";
     public static final String STATUS_NOT_ACCEPTED = "notAccepted";
+    public static final String QC_STATE_STAGED = "staged";
+    public static final String QC_STATE_UNRECTIFIED = "unrectified";
+    public static final String QC_STATE_UNREVIEWED = "unreviewed";
+    public static final String QC_STATE_INSPECTED = "inspected";
+    public static final String QC_STATE_REVIEWED = "reviewed";
+    public static final String QC_STATE_DELAYED = "delayed";
+    public static final String QC_STATE_ACCEPTED = "accepted";
+    public static final String CREATE_CHECK_LIST_PROPS = "createCheckListProps";
 }

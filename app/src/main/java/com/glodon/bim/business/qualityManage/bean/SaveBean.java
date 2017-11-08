@@ -8,4 +8,5 @@ package com.glodon.bim.business.qualityManage.bean;
 
 public class SaveBean {
     public long id;
+    public String code;
 }

@@ -14,8 +14,10 @@ import com.glodon.bim.R;
 import com.glodon.bim.basic.image.ImageLoader;
 import com.glodon.bim.basic.utils.DateUtil;
 import com.glodon.bim.basic.utils.ScreenUtil;
+import com.glodon.bim.business.authority.AuthorityManager;
 import com.glodon.bim.business.qualityManage.bean.QualityCheckListBeanItem;
 import com.glodon.bim.business.qualityManage.listener.OnOperateSheetListener;
+import com.glodon.bim.common.config.CommonConfig;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,13 +66,15 @@ public class QualityCheckListAdapter extends RecyclerView.Adapter<RecyclerView.V
         if (holder instanceof SheetHolder) {
             SheetHolder sHolder = (SheetHolder) holder;
             //0待提交 1待整改 2待复查 3 已整改 4已复查 5已延迟 6已验收
+//          {"全部", "待提交",  "待整改",       "待复查",      "已检查",      "已复查",    "已延迟",  "已验收"};
+//          {"",     "staged", "unrectified",  "unreviewed",  "inspected",  "reviewed",  "delayed","accepted"};
             sHolder.mTimeView.setText(DateUtil.getListTime(Long.parseLong(item.updateTime)));
 
             sHolder.mBottomPreant.setVisibility(View.GONE);
             int color = R.color.c_f39b3d;
             String statusText = "";
-            switch (item.sheetStatus){
-                case 0:
+            switch (item.qcState){
+                case CommonConfig.QC_STATE_STAGED:
                     color = R.color.c_f39b3d;
                     statusText = "待提交";
                     sHolder.mBottomPreant.setVisibility(View.VISIBLE);
@@ -79,37 +83,45 @@ public class QualityCheckListAdapter extends RecyclerView.Adapter<RecyclerView.V
                     sHolder.mRepairBtn.setVisibility(View.GONE);
                     sHolder.mReviewBtn.setVisibility(View.GONE);
                     break;
-                case 1:
+                case CommonConfig.QC_STATE_UNRECTIFIED:
                     color = R.color.c_f33d3d;
                     statusText = "待整改";
                     sHolder.mBottomPreant.setVisibility(View.VISIBLE);
                     sHolder.mSubmitBtn.setVisibility(View.GONE);
                     sHolder.mDeleteBtn.setVisibility(View.GONE);
-                    sHolder.mRepairBtn.setVisibility(View.VISIBLE);
+                    if(AuthorityManager.isCreateRepair()) {
+                        sHolder.mRepairBtn.setVisibility(View.VISIBLE);
+                    }else{
+                        sHolder.mRepairBtn.setVisibility(View.GONE);
+                    }
                     sHolder.mReviewBtn.setVisibility(View.GONE);
                     break;
-                case 2:
+                case CommonConfig.QC_STATE_UNREVIEWED:
                     color = R.color.c_f33d3d;
                     statusText = "待复查";
                     sHolder.mBottomPreant.setVisibility(View.VISIBLE);
                     sHolder.mSubmitBtn.setVisibility(View.GONE);
                     sHolder.mDeleteBtn.setVisibility(View.GONE);
                     sHolder.mRepairBtn.setVisibility(View.GONE);
-                    sHolder.mReviewBtn.setVisibility(View.VISIBLE);
+                    if(AuthorityManager.isCreateReview()) {
+                        sHolder.mReviewBtn.setVisibility(View.VISIBLE);
+                    }else{
+                        sHolder.mReviewBtn.setVisibility(View.GONE);
+                    }
                     break;
-                case 3:
+                case CommonConfig.QC_STATE_INSPECTED:
                     color = R.color.c_28d575;
-                    statusText = "已整改";
+                    statusText = "已检查";
                     break;
-                case 4:
+                case CommonConfig.QC_STATE_REVIEWED:
                     color = R.color.c_28d575;
                     statusText = "已复查";
                     break;
-                case 5:
+                case CommonConfig.QC_STATE_DELAYED:
                     color = R.color.c_28d575;
                     statusText = "已延迟";
                     break;
-                case 6:
+                case CommonConfig.QC_STATE_ACCEPTED:
                     color = R.color.c_28d575;
                     statusText = "已验收";
                     break;

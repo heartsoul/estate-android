@@ -9,14 +9,14 @@ package com.glodon.bim.business.qualityManage.bean;
 public class CompanyItem {
     public String alias;
     public String code;
-    public int coperationId;
+    public long coperationId;
     public String extData;
     public boolean external;
     public boolean formal;
-    public int id;
+    public long id;
     public String name;
-    public int orderNum;
-    public int parentId;
+    public long orderNum;
+    public long parentId;
     public String treePath;
     public String type;
     

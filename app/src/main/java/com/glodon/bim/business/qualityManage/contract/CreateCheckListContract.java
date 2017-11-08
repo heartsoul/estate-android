@@ -90,6 +90,11 @@ public interface CreateCheckListContract {
          * @param position 当前的图片
          */
         void toPreview(int position);
+
+        /**
+         * 设置为编辑状态
+         */
+        void setEditState(CreateCheckListParams mParams);
     }
 
     interface View extends IBaseView {

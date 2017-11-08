@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.glodon.bim.R;
 import com.glodon.bim.business.qualityManage.bean.ModuleListBeanItem;
-import com.glodon.bim.business.qualityManage.listener.OnChooseListListener;
 import com.glodon.bim.business.qualityManage.listener.OnChooseModuleListener;
 
 import java.util.ArrayList;
@@ -28,20 +27,19 @@ public class ChooseModuleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private ImageView mLastView;
     private TextView mLastTextView;
     private OnChooseModuleListener mListener;
-    private int mSelectPosition = 0;
+    private long mSelectId = 0;
 
-    public ChooseModuleAdapter(Activity mActivity, List<ModuleListBeanItem> dataList, int selectPosition) {
+    public ChooseModuleAdapter(Activity mActivity, List<ModuleListBeanItem> dataList, long selectId) {
         this.mActivity = mActivity;
         if(dataList==null){
             dataList = new ArrayList<>();
         }
         this.mDataList = dataList;
-        this.mSelectPosition = selectPosition;
+        this.mSelectId = selectId;
     }
 
     public void updateList(List<ModuleListBeanItem> dataList){
-        mDataList.clear();
-        mDataList.addAll(dataList);
+        mDataList=dataList;
         notifyDataSetChanged();
     }
 
@@ -69,15 +67,15 @@ public class ChooseModuleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 lHolder.mNameView.setTextColor(mActivity.getResources().getColor(R.color.c_00baf3));
                 mLastView = lHolder.mSelectView;
                 mLastTextView = lHolder.mNameView;
-                mSelectPosition = position;
+                mSelectId = position;
                 if(mListener!=null)
                 {
-                    mListener.onSelect(mDataList.get(position),position);
+                    mListener.onSelect(mDataList.get(position),mSelectId);
                 }
             }
         });
 
-        if(mSelectPosition == position){
+        if(mSelectId == mDataList.get(position).id){
             lHolder.mSelectView.setVisibility(View.VISIBLE);
             lHolder.mNameView.setTextColor(mActivity.getResources().getColor(R.color.c_00baf3));
             mLastView = lHolder.mSelectView;

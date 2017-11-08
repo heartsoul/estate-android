@@ -1,5 +1,6 @@
 package com.glodon.bim.business.qualityManage.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -8,7 +9,7 @@ import java.util.List;
  * 邮箱：zhourf@glodon.com
  */
 
-public class CreateCheckListParams {
+public class CreateCheckListParams implements Serializable {
     //编号
     public String code;
     //项目id
@@ -44,4 +45,7 @@ public class CreateCheckListParams {
     public String elementId;
     public String elementName;
 //    public String qcState;
+
+    //检查单id
+    public long inspectId;
 }

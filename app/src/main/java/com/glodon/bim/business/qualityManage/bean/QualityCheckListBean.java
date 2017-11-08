@@ -15,7 +15,7 @@ public class QualityCheckListBean {
     public int number;
     public int numberOfElements;
     public int size;
-    public List<String> sort;
+    public List<QualityCheckListBeanSort> sort;
     public int totalElements;
     public int totalPages;
 }

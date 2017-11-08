@@ -79,6 +79,7 @@ public interface CreateCheckListApi {
     @PUT("quality/{deptId}/qualityInspection/{id}")
     Observable<ResponseBody> editSave(@Path("deptId") long deptId, @Path("id") long id, @Body CreateCheckListParams props, @Header("cookie") String cookie);
 
+
     /**
      * 检查单 删除
      */

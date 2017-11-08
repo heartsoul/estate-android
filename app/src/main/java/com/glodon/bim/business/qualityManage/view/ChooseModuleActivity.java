@@ -90,9 +90,9 @@ public class ChooseModuleActivity extends BaseActivity implements View.OnClickLi
 
 
     @Override
-    public void initListView(List<ModuleListBeanItem> list, int selectPosition) {
+    public void initListView(List<ModuleListBeanItem> list, long selectId) {
 
-        mAdapter = new ChooseModuleAdapter(mActivity,list,selectPosition);
+        mAdapter = new ChooseModuleAdapter(mActivity,list,selectId);
         mAdapter.setmListener(mPresenter.getmListener());
         mRecyclerView.setAdapter(mAdapter);
     }
@@ -100,6 +100,7 @@ public class ChooseModuleActivity extends BaseActivity implements View.OnClickLi
     @Override
     public void updateListView(List<ModuleListBeanItem> mDataList) {
         mAdapter.updateList(mDataList);
+
     }
 
     private void setListener() {

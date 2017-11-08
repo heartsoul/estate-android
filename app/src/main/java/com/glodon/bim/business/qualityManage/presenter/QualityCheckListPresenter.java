@@ -9,12 +9,19 @@ import com.glodon.bim.basic.utils.DateUtil;
 import com.glodon.bim.basic.utils.DateUtils;
 import com.glodon.bim.basic.utils.SharedPreferencesUtil;
 import com.glodon.bim.business.main.bean.ProjectListItem;
+import com.glodon.bim.business.qualityManage.bean.CreateCheckListParams;
+import com.glodon.bim.business.qualityManage.bean.CreateCheckListParamsFile;
 import com.glodon.bim.business.qualityManage.bean.QualityCheckListBean;
 import com.glodon.bim.business.qualityManage.bean.QualityCheckListBeanItem;
+import com.glodon.bim.business.qualityManage.bean.QualityCheckListBeanItemFile;
+import com.glodon.bim.business.qualityManage.bean.QualityCheckListDetailBean;
+import com.glodon.bim.business.qualityManage.bean.QualityCheckListDetailInspectionInfo;
 import com.glodon.bim.business.qualityManage.contract.QualityCheckListContract;
-import com.glodon.bim.business.qualityManage.contract.QualityMangeMainContract;
 import com.glodon.bim.business.qualityManage.listener.OnOperateSheetListener;
+import com.glodon.bim.business.qualityManage.model.CreateCheckListModel;
+import com.glodon.bim.business.qualityManage.model.QualityCheckListDetailViewModel;
 import com.glodon.bim.business.qualityManage.model.QualityCheckListModel;
+import com.glodon.bim.business.qualityManage.view.CreateCheckListActivity;
 import com.glodon.bim.business.qualityManage.view.CreateReviewActivity;
 import com.glodon.bim.business.qualityManage.view.PhotoEditActivity;
 import com.glodon.bim.business.qualityManage.view.QualityCheckListDetailActivity;
@@ -24,6 +31,7 @@ import com.glodon.bim.customview.album.AlbumEditActivity;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -42,6 +50,7 @@ public class QualityCheckListPresenter implements QualityCheckListContract.Prese
     private final int REQUEST_CODE_OPEN_ALBUM = 12;
     private final int REQUEST_CODE_CREATE_REVIEW = 13;
     private final int REQUEST_CODE_CREATE_REPAIR = 14;
+    private final int REQUEST_CODE_TO_EDIT = 15;
     private QualityCheckListContract.View mView;
     private QualityCheckListContract.Model mModel;
     private CompositeSubscription mSubscription;
@@ -65,19 +74,95 @@ public class QualityCheckListPresenter implements QualityCheckListContract.Prese
 
         @Override
         public void delete(int position) {
+            Subscription sub = new CreateCheckListModel().createDelete(SharedPreferencesUtil.getProjectId(),mList.get(position).id)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Subscriber<ResponseBody>() {
+                        @Override
+                        public void onCompleted() {
 
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+
+                        }
+
+                        @Override
+                        public void onNext(ResponseBody responseBody) {
+                            if(responseBody!=null){
+                                pullDown();
+                            }
+                        }
+                    });
+            mSubscription.add(sub);
         }
 
         @Override
         public void detail(int position) {
-            Intent intent = new Intent(mView.getActivity(), QualityCheckListDetailActivity.class);
-            intent.putExtra(CommonConfig.QUALITY_CHECK_LIST_DEPTID, SharedPreferencesUtil.getProjectId());
-            intent.putExtra(CommonConfig.QUALITY_CHECK_LIST_ID,mList.get(position).id);
-            mView.getActivity().startActivityForResult(intent,REQUEST_CODE_DETAIL);
+            if(CommonConfig.QC_STATE_STAGED.equals(mList.get(position).qcState)){
+                //待提交时 先获取详情  然后 进入编辑
+                Subscription sub = new QualityCheckListDetailViewModel().getQualityCheckListDetail(SharedPreferencesUtil.getProjectId(),mList.get(position).id)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Subscriber<QualityCheckListDetailBean>() {
+                            @Override
+                            public void onCompleted() {
+
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                LogUtil.e("检查单详情 error =",e.getMessage());
+                            }
+
+                            @Override
+                            public void onNext(QualityCheckListDetailBean bean) {
+                                if(bean!=null){
+                                    QualityCheckListDetailInspectionInfo info = bean.inspectionInfo;
+                                    Intent intent = new Intent(mView.getActivity(), CreateCheckListActivity.class);
+                                    intent.putExtra(CommonConfig.CREATE_CHECK_LIST_PROPS,getProps(info));
+                                    mView.getActivity().startActivityForResult(intent,REQUEST_CODE_TO_EDIT);
+                                }
+                            }
+                        });
+                mSubscription.add( sub);
+
+            }else {
+                Intent intent = new Intent(mView.getActivity(), QualityCheckListDetailActivity.class);
+                intent.putExtra(CommonConfig.QUALITY_CHECK_LIST_DEPTID, SharedPreferencesUtil.getProjectId());
+                intent.putExtra(CommonConfig.QUALITY_CHECK_LIST_ID, mList.get(position).id);
+                mView.getActivity().startActivityForResult(intent, REQUEST_CODE_DETAIL);
+            }
         }
 
         @Override
-        public void submit(int position) {
+        public void submit(final int position) {
+            Subscription sub = new QualityCheckListDetailViewModel().getQualityCheckListDetail(SharedPreferencesUtil.getProjectId(),mList.get(position).id)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Subscriber<QualityCheckListDetailBean>() {
+                        @Override
+                        public void onCompleted() {
+
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            LogUtil.e("检查单详情 error =",e.getMessage());
+                        }
+
+                        @Override
+                        public void onNext(QualityCheckListDetailBean bean) {
+                            if(bean!=null){
+                                QualityCheckListDetailInspectionInfo info = bean.inspectionInfo;
+                                toSubmit(position,getProps(info));
+                            }
+                        }
+                    })
+                    ;
+            mSubscription.add( sub);
+
 
         }
 
@@ -95,6 +180,70 @@ public class QualityCheckListPresenter implements QualityCheckListContract.Prese
             mView.create();
         }
     };
+
+    private CreateCheckListParams getProps(QualityCheckListDetailInspectionInfo info){
+        CreateCheckListParams props = new CreateCheckListParams();
+        props.inspectId = info.id;
+        props.responsibleUserTitle = info.responsibleUserTitle;
+        props.code = info.code;
+        props.inspectionType = info.inspectionType;
+        List<CreateCheckListParamsFile> fileList = new ArrayList<>();
+        for(QualityCheckListBeanItemFile file:info.files){
+            CreateCheckListParamsFile f = new CreateCheckListParamsFile();
+//                                    public String extData;
+//                                    public long id;
+//                                    public String name;
+//                                    public String objectId;
+//                                    public String url;
+            f.extData = file.extData;
+            f.objectId = file.objectId;
+            f.name = file.name;
+            fileList.add(f);
+        }
+        if(fileList.size()>0){
+            props.files = fileList;
+        }
+        props.buildingId = info.buildingId;
+        props.buildingName = info.buildingName;
+        props.constructionCompanyId = info.constructionCompanyId;
+        props.constructionCompanyName = info.constructionCompanyName;
+        props.description = info.description;
+        props.elementId = info.elementId;
+        props.elementName = info.elementName;
+        props.lastRectificationDate = info.lastRectificationDate;
+        props.needRectification = info.needRectification;
+        props.projectId  = info.projectId;
+        props.projectName = info.projectName;
+        props.qualityCheckpointId = info.qualityCheckpointId;
+        props.qualityCheckpointName = info.qualityCheckpointName;
+        props.responsibleUserName = info.responsibleUserName;
+        props.responsibleUserId = info.responsibleUserId;
+        return  props;
+    }
+
+    //提交
+    private void toSubmit(int position,CreateCheckListParams props){
+        Subscription sub = new CreateCheckListModel().editSubmit(SharedPreferencesUtil.getProjectId(),mList.get(position).id,props)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<ResponseBody>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(ResponseBody responseBody) {
+
+                    }
+                });
+        mSubscription.add(sub);
+    }
 
     @Override
     public OnOperateSheetListener getListener(){
@@ -156,6 +305,7 @@ public class QualityCheckListPresenter implements QualityCheckListContract.Prese
                     }
                 });
         mSubscription.add(sub);
+
     }
 
 
@@ -253,13 +403,16 @@ public class QualityCheckListPresenter implements QualityCheckListContract.Prese
                 }
                 break;
             case REQUEST_CODE_OPEN_ALBUM:
-
+                pullDown();
                 break;
             case REQUEST_CODE_CREATE_REPAIR:
-
+                pullDown();
                 break;
             case REQUEST_CODE_CREATE_REVIEW:
-
+                pullDown();
+                break;
+            case REQUEST_CODE_TO_EDIT:
+                pullDown();
                 break;
         }
     }

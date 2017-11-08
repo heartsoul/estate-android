@@ -23,6 +23,7 @@ import com.glodon.bim.base.BaseActivity;
 import com.glodon.bim.basic.image.ImageLoader;
 import com.glodon.bim.basic.listener.ThrottleClickEvents;
 import com.glodon.bim.basic.utils.CameraUtil;
+import com.glodon.bim.basic.utils.DateUtil;
 import com.glodon.bim.business.qualityManage.bean.CompanyItem;
 import com.glodon.bim.business.qualityManage.bean.CreateCheckListParams;
 import com.glodon.bim.business.qualityManage.bean.CreateCheckListParamsFile;
@@ -124,6 +125,9 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
     //是否显示图片   有的入口是无需图片直接创建
     private boolean mIsShowPhoto = true;
 
+    //待提交时，从列表传递过来的参数
+    private CreateCheckListParams mParams ;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -140,6 +144,8 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
     }
 
     private void initView() {
+        mParams = (CreateCheckListParams) getIntent().getSerializableExtra(CommonConfig.CREATE_CHECK_LIST_PROPS);
+
         mStatusView = (LinearLayout) findViewById(R.id.create_check_list_status);
         rootLayout = (LinearLayout) findViewById(R.id.create_check_list_root);
         //导航栏
@@ -193,6 +199,32 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
         mInputBottomView = findViewById(R.id.create_check_list_input_bottom);
         //图片删除 拖动到此处删除
         mPhotoDelete = (LinearLayout) findViewById(R.id.create_check_list_photo_delete);
+
+
+    }
+
+    //如果前面传递过来数据了   则直接设置上
+    private void setPropsInfo() {
+        if(mParams!=null){
+            mCompanyName.setText(mParams.constructionCompanyName);
+            mPersonName.setText(mParams.responsibleUserName);
+            mSiteDescription.setText(mParams.description);
+            if(mParams.needRectification){
+                mRemainFlag.setBackgroundResource(R.drawable.icon_flag_open);
+                mRemainFlagState = true;
+                mRemainName.setText(DateUtil.getNormalDate(Long.parseLong(mParams.lastRectificationDate)));
+                mRemainParent.setVisibility(View.VISIBLE);
+            }else{
+                mRemainParent.setVisibility(View.GONE);
+                mRemainFlagState = false;
+                mRemainFlag.setBackgroundResource(R.drawable.icon_flag_close);
+            }
+            mModuleName.setText(mParams.qualityCheckpointName);
+            showDeleteButton();
+            mPresenter.setEditState(mParams);
+        }else{
+            mParams = new CreateCheckListParams();
+        }
     }
 
     private void setListener() {
@@ -242,13 +274,14 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
                 }else{
                     num = 255-text.length();
                 }
-                mLeftNumber.setText(num);
+                mLeftNumber.setText(num+"");
             }
         });
     }
 
     private void initData() {
         mPresenter = new CreateCheckListPresenter(this);
+        setPropsInfo();
         mPresenter.initData(getIntent());
         //状态栏
         initStatusBar(mStatusView);
@@ -287,6 +320,8 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
             };
             requestPermission(PERMISSIONS_STORAGE, REQUEST_CAMERA);
         }
+
+
     }
 
     /**
@@ -576,7 +611,6 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
         }
     }
 
-    private CreateCheckListParams mParams = new CreateCheckListParams();
     //点击保存
     private void  save(){
         if(checkMustInfo()){
