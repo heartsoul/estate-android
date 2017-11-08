@@ -10,6 +10,7 @@
         android:layout_marginRight="@dimen/dimen_10"
         android:paddingLeft="@dimen/dimen_10"
         android:paddingRight="@dimen/dimen_10"
+        android:paddingBottom="@dimen/dimen_23"
         android:background="@drawable/icon_choose_project_bg_normal"
         android:orientation="vertical">
 
@@ -87,6 +88,7 @@
 
         </LinearLayout>
         <View
+            android:id="@+id/quality_check_list_item_sheet_bottom_line"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimen_0.5"
             android:background="@color/c_e6e6e6"
@@ -94,8 +96,7 @@
         <RelativeLayout
             android:id="@+id/quality_check_list_item_sheet_bottom_parent"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dimen_45"
-            android:layout_marginBottom="@dimen/dimen_23">
+            android:layout_height="@dimen/dimen_45">
 
             <TextView
                 android:id="@+id/quality_check_list_item_sheet_submit"

@@ -21,6 +21,10 @@ public class QualityCheckListBeanItem {
     public long projectId;
     public String qcState;//质检状态
     public String updateTime;
+    /** 检查人 */
+    public long creatorId;
+    /** 施工单位责任人id */
+    public long responsibleUserId;
 
 //    public long constructionCompanyId;
 //    public String constructionCompanyName;

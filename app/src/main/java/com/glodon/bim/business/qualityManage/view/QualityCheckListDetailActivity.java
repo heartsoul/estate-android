@@ -37,6 +37,8 @@ public class QualityCheckListDetailActivity extends BaseActivity implements View
 
     private long deptId,id;//项目id 和检查单id
 
+    private boolean isShowRepair = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,6 +85,13 @@ public class QualityCheckListDetailActivity extends BaseActivity implements View
         mPresenter = new QualityCheckListDetailPresenter(this);
         deptId = getIntent().getLongExtra(CommonConfig.QUALITY_CHECK_LIST_DEPTID,0);
         id = getIntent().getLongExtra(CommonConfig.QUALITY_CHECK_LIST_ID,0);
+        //是否显示新建整改单按钮
+        isShowRepair = getIntent().getBooleanExtra(CommonConfig.QUALITY_CHECK_LIST_SHOW_REPAIR,false);
+        if(isShowRepair){
+            mRepairView.setVisibility(View.VISIBLE);
+        }else{
+            mRepairView.setVisibility(View.GONE);
+        }
         mPresenter.initData(getIntent());
         mDetailView = new QualityCheckListDetailView(mActivity,mParent);
         mDetailView.getInfo(deptId,id);

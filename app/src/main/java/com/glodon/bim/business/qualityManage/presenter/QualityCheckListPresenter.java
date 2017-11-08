@@ -2,12 +2,14 @@ package com.glodon.bim.business.qualityManage.presenter;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.view.View;
 
 import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.basic.utils.CameraUtil;
 import com.glodon.bim.basic.utils.DateUtil;
 import com.glodon.bim.basic.utils.DateUtils;
 import com.glodon.bim.basic.utils.SharedPreferencesUtil;
+import com.glodon.bim.business.authority.AuthorityManager;
 import com.glodon.bim.business.main.bean.ProjectListItem;
 import com.glodon.bim.business.qualityManage.bean.CreateCheckListParams;
 import com.glodon.bim.business.qualityManage.bean.CreateCheckListParamsFile;
@@ -100,7 +102,8 @@ public class QualityCheckListPresenter implements QualityCheckListContract.Prese
 
         @Override
         public void detail(int position) {
-            if(CommonConfig.QC_STATE_STAGED.equals(mList.get(position).qcState)){
+            //排除待提交状态和权限
+            if(CommonConfig.QC_STATE_STAGED.equals(mList.get(position).qcState) &&(AuthorityManager.isQualityCheckSubmit() && AuthorityManager.isMe(mList.get(position).creatorId))){
                 //待提交时 先获取详情  然后 进入编辑
                 Subscription sub = new QualityCheckListDetailViewModel().getQualityCheckListDetail(SharedPreferencesUtil.getProjectId(),mList.get(position).id)
                         .subscribeOn(Schedulers.io())
@@ -129,9 +132,11 @@ public class QualityCheckListPresenter implements QualityCheckListContract.Prese
                 mSubscription.add( sub);
 
             }else {
+
                 Intent intent = new Intent(mView.getActivity(), QualityCheckListDetailActivity.class);
                 intent.putExtra(CommonConfig.QUALITY_CHECK_LIST_DEPTID, SharedPreferencesUtil.getProjectId());
                 intent.putExtra(CommonConfig.QUALITY_CHECK_LIST_ID, mList.get(position).id);
+                intent.putExtra(CommonConfig.QUALITY_CHECK_LIST_SHOW_REPAIR,AuthorityManager.isCreateRepair()&& AuthorityManager.isMe(mList.get(position).responsibleUserId));
                 mView.getActivity().startActivityForResult(intent, REQUEST_CODE_DETAIL);
             }
         }

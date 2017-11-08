@@ -3,6 +3,7 @@ package com.glodon.bim.business.main.presenter;
 import android.content.Intent;
 
 import com.glodon.bim.basic.log.LogUtil;
+import com.glodon.bim.basic.utils.SharedPreferencesUtil;
 import com.glodon.bim.business.main.contract.ChooseTenantContract;
 import com.glodon.bim.business.main.model.ChooseTenantModel;
 import com.glodon.bim.business.main.view.ChooseProjectActivity;
@@ -55,7 +56,8 @@ public class ChooseTenantPresenter implements ChooseTenantContract.Presenter {
 
     @Override
     public void clickTenant(UserTenant tenant) {
-
+        //保存当前的租户下的用户id
+        SharedPreferencesUtil.setUserId(tenant.id);
         Subscription sub = mModel.setCurrentTenant(tenant.tenantId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

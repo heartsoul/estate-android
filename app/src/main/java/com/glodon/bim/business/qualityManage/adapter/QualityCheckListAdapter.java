@@ -77,20 +77,37 @@ public class QualityCheckListAdapter extends RecyclerView.Adapter<RecyclerView.V
                 case CommonConfig.QC_STATE_STAGED:
                     color = R.color.c_f39b3d;
                     statusText = "待提交";
-                    sHolder.mBottomPreant.setVisibility(View.VISIBLE);
-                    sHolder.mSubmitBtn.setVisibility(View.VISIBLE);
-                    sHolder.mDeleteBtn.setVisibility(View.VISIBLE);
+                    sHolder.mBottomPreant.setVisibility(View.GONE);
+                    sHolder.mBottomLineView.setVisibility(View.GONE);
                     sHolder.mRepairBtn.setVisibility(View.GONE);
                     sHolder.mReviewBtn.setVisibility(View.GONE);
+                    if(AuthorityManager.isQualityCheckSubmit() && AuthorityManager.isMe(item.creatorId)){
+                        sHolder.mSubmitBtn.setVisibility(View.VISIBLE);
+                        sHolder.mBottomPreant.setVisibility(View.VISIBLE);
+                        sHolder.mBottomLineView.setVisibility(View.VISIBLE);
+                    }else{
+                        sHolder.mSubmitBtn.setVisibility(View.GONE);
+                    }
+                    if(AuthorityManager.isQualityCheckDelete() && AuthorityManager.isMe(item.creatorId)){
+                        sHolder.mDeleteBtn.setVisibility(View.VISIBLE);
+                        sHolder.mBottomPreant.setVisibility(View.VISIBLE);
+                        sHolder.mBottomLineView.setVisibility(View.VISIBLE);
+                    }else{
+                        sHolder.mDeleteBtn.setVisibility(View.GONE);
+                    }
                     break;
                 case CommonConfig.QC_STATE_UNRECTIFIED:
                     color = R.color.c_f33d3d;
                     statusText = "待整改";
-                    sHolder.mBottomPreant.setVisibility(View.VISIBLE);
+                    sHolder.mBottomPreant.setVisibility(View.GONE);
+                    sHolder.mBottomLineView.setVisibility(View.GONE);
                     sHolder.mSubmitBtn.setVisibility(View.GONE);
                     sHolder.mDeleteBtn.setVisibility(View.GONE);
                     if(AuthorityManager.isCreateRepair()) {
+//                        if(AuthorityManager.isCreateRepair()&& AuthorityManager.isMe(item.responsibleUserId)) {
                         sHolder.mRepairBtn.setVisibility(View.VISIBLE);
+                        sHolder.mBottomPreant.setVisibility(View.VISIBLE);
+                        sHolder.mBottomLineView.setVisibility(View.VISIBLE);
                     }else{
                         sHolder.mRepairBtn.setVisibility(View.GONE);
                     }
@@ -99,29 +116,40 @@ public class QualityCheckListAdapter extends RecyclerView.Adapter<RecyclerView.V
                 case CommonConfig.QC_STATE_UNREVIEWED:
                     color = R.color.c_f33d3d;
                     statusText = "待复查";
-                    sHolder.mBottomPreant.setVisibility(View.VISIBLE);
+                    sHolder.mBottomPreant.setVisibility(View.GONE);
+                    sHolder.mBottomLineView.setVisibility(View.GONE);
                     sHolder.mSubmitBtn.setVisibility(View.GONE);
                     sHolder.mDeleteBtn.setVisibility(View.GONE);
                     sHolder.mRepairBtn.setVisibility(View.GONE);
-                    if(AuthorityManager.isCreateReview()) {
+                    if(AuthorityManager.isCreateReview()&& AuthorityManager.isMe(item.creatorId)) {
                         sHolder.mReviewBtn.setVisibility(View.VISIBLE);
+                        sHolder.mBottomPreant.setVisibility(View.VISIBLE);
+                        sHolder.mBottomLineView.setVisibility(View.VISIBLE);
                     }else{
                         sHolder.mReviewBtn.setVisibility(View.GONE);
                     }
                     break;
                 case CommonConfig.QC_STATE_INSPECTED:
+                    sHolder.mBottomPreant.setVisibility(View.GONE);
+                    sHolder.mBottomLineView.setVisibility(View.GONE);
                     color = R.color.c_28d575;
                     statusText = "已检查";
                     break;
                 case CommonConfig.QC_STATE_REVIEWED:
+                    sHolder.mBottomPreant.setVisibility(View.GONE);
+                    sHolder.mBottomLineView.setVisibility(View.GONE);
                     color = R.color.c_28d575;
                     statusText = "已复查";
                     break;
                 case CommonConfig.QC_STATE_DELAYED:
+                    sHolder.mBottomPreant.setVisibility(View.GONE);
+                    sHolder.mBottomLineView.setVisibility(View.GONE);
                     color = R.color.c_28d575;
                     statusText = "已延迟";
                     break;
                 case CommonConfig.QC_STATE_ACCEPTED:
+                    sHolder.mBottomPreant.setVisibility(View.GONE);
+                    sHolder.mBottomLineView.setVisibility(View.GONE);
                     color = R.color.c_28d575;
                     statusText = "已验收";
                     break;
@@ -202,6 +230,7 @@ public class QualityCheckListAdapter extends RecyclerView.Adapter<RecyclerView.V
         LinearLayout mContentView;
         RelativeLayout mBottomPreant;
         ImageView mImageView;
+        View mBottomLineView;
 
         SheetHolder(View itemView) {
             super(itemView);
@@ -215,6 +244,7 @@ public class QualityCheckListAdapter extends RecyclerView.Adapter<RecyclerView.V
             mReviewBtn = itemView.findViewById(R.id.quality_check_list_item_sheet_review);
             mContentView = itemView.findViewById(R.id.quality_check_list_item_sheet_content);
             mBottomPreant = itemView.findViewById(R.id.quality_check_list_item_sheet_bottom_parent);
+            mBottomLineView = itemView.findViewById(R.id.quality_check_list_item_sheet_bottom_line);
         }
     }
 

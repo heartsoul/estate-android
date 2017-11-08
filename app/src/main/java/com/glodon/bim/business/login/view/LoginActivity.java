@@ -171,10 +171,10 @@ public class LoginActivity extends BaseActivity implements LoginContract.View, V
 
 //        mUsernameEt.setText("13810457782");
 //        mPasswordEt.setText("123456789.");
-        mUsernameEt.setText("15822320523");
+//        mUsernameEt.setText("15822320523");
+//        mPasswordEt.setText("123qwe");
+        mUsernameEt.setText("15001340978");
         mPasswordEt.setText("123qwe");
-//        mUsernameEt.setText("13637083713");
-//        mPasswordEt.setText("616ouyangjunwei");
     }
 
     //更改登录按钮的显示

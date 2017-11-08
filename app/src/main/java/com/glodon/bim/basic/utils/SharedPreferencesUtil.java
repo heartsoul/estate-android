@@ -22,6 +22,7 @@ public class SharedPreferencesUtil {
     private static final String PROJECT_ID = "project_id";
     private static final String PROJECT_TYPE_CODE = "project_type_code";
     private static final String PROJECT_CREATE_TYPE = "project_create_type";
+    private static final String USER_ID = "userId";
 
     /**
      * 保存字符串
@@ -92,5 +93,20 @@ public class SharedPreferencesUtil {
     public static String getCreateType(){
         SharedPreferences preferences= BaseApplication.getInstance().getSharedPreferences(NAME,Context.MODE_PRIVATE);
         return preferences.getString(PROJECT_CREATE_TYPE,"0");
+    }
+
+    //获取当前的用户id
+    public static long  getUserId() {
+        SharedPreferences preferences= BaseApplication.getInstance().getSharedPreferences(NAME,Context.MODE_PRIVATE);
+        return preferences.getLong(USER_ID,0);
+
+    }
+
+    //保存当前的用户id
+    public static void setUserId(long id) {
+        SharedPreferences preferences= BaseApplication.getInstance().getSharedPreferences(NAME,Context.MODE_PRIVATE);
+        Editor editor=preferences.edit();
+        editor.putLong(USER_ID, id);
+        editor.commit();
     }
 }

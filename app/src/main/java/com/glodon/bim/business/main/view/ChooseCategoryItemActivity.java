@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.view.Window;
 import android.widget.LinearLayout;
@@ -45,11 +46,17 @@ public class ChooseCategoryItemActivity extends BaseActivity implements ChooseCa
     protected void onResume() {
         super.onResume();
         //权限控制  是否显示新检检查单按钮
-        if(AuthorityManager.isShowCreateButton()){
-            mCreateView.setVisibility(View.VISIBLE);
-        }else{
-            mCreateView.setVisibility(View.GONE);
-        }
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if(AuthorityManager.isShowCreateButton()){
+                    mCreateView.setVisibility(View.VISIBLE);
+                }else{
+                    mCreateView.setVisibility(View.GONE);
+                }
+            }
+        },500);
+
     }
 
     private void initView() {

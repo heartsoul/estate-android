@@ -257,7 +257,7 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter{
 
                     @Override
                     public void onError(Throwable e) {
-
+                        LogUtil.e("e="+e.getMessage());
                     }
 
                     @Override

@@ -9,7 +9,7 @@ import java.io.Serializable;
  */
 
 public class UserTenant  implements Serializable {
-    public int id;
+    public long id;
     public boolean admin;//true  false
     public long tenantId;
     public String tenantName;

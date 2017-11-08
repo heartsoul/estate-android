@@ -7,11 +7,8 @@ import com.glodon.bim.basic.utils.SharedPreferencesUtil;
 import com.glodon.bim.business.greendao.provider.DaoProvider;
 import com.glodon.bim.common.config.AuthorityConfig;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -29,7 +26,7 @@ public class AuthorityManager {
 //    public static final String  Quality_Facility= "Estate_Integration_Quality_Facility";//材料设备进场验收
 //    public static final String  Quality_Rectification= "Estate_Integration_Quality_Rectification";//质量整改记录
 
-    //监理
+    //监理  Unit  施工  grant
 //    moduleCode=Estate_Integration_Quality_Check  actionRights= DeleteUnit  Print  BrowseGrant  BrowseAll  DeleteAll  ModifyUnit  DeleteGrant  BrowseUnit  Download  ModifyAll  ModifyGrant
 //    moduleCode=Estate_Integration_Quality_Accept  actionRights= DeleteUnit  Print  BrowseGrant  BrowseAll  DeleteAll  ModifyUnit  DeleteGrant  BrowseUnit  Download  ModifyAll  ModifyGrant
 //    moduleCode=Estate_Integration_Quality_Risk  actionRights= DeleteUnit  Print  BrowseGrant  BrowseAll  DeleteAll  ModifyUnit  DeleteGrant  BrowseUnit  Download  ModifyAll  ModifyGrant
@@ -55,32 +52,32 @@ public class AuthorityManager {
         }
     }
 
-//    /**
-//     * 判断是否有检查单删除功能
-//     */
-//    public static boolean isQualityCheckDelete(){
-//        if(Quality_Check_Bean!=null && Quality_Check_Bean.actionRights!=null && Quality_Check_Bean.actionRights.size()>0 &&isHasDeleteRight(Quality_Check_Bean.actionRights)){
-//            return true;
-//        }else{
-//            return false;
-//        }
-//    }
-//    /**
-//     * 判断是否有检查单编辑提交功能
-//     */
-//    public static boolean isQualityCheckModify(){
-//        if(Quality_Check_Bean!=null && Quality_Check_Bean.actionRights!=null && Quality_Check_Bean.actionRights.size()>0 &&isHasModifyRight(Quality_Check_Bean.actionRights)){
-//            return true;
-//        }else{
-//            return false;
-//        }
-//    }
+    /**
+     * 待提交 提交功能
+     */
+    public static boolean isQualityCheckSubmit(){
+        if(Quality_Check_Bean!=null && Quality_Check_Bean.actionRights!=null && Quality_Check_Bean.actionRights.size()>0 &&(Quality_Check_Bean.actionRights.contains(AuthorityConfig.ModifyUnit) ||Quality_Check_Bean.actionRights.contains(AuthorityConfig.ModifyAll) )){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    /**
+     * 待提交 删除功能
+     */
+    public static boolean isQualityCheckDelete(){
+        if(Quality_Check_Bean!=null && Quality_Check_Bean.actionRights!=null && Quality_Check_Bean.actionRights.size()>0 &&(Quality_Check_Bean.actionRights.contains(AuthorityConfig.DeleteUnit) ||Quality_Check_Bean.actionRights.contains(AuthorityConfig.DeleteAll) )){
+            return true;
+        }else{
+            return false;
+        }
+    }
 
     /**
      * 是否有新建整改单权限
      */
     public static boolean isCreateRepair(){
-        if(Quality_Rectification_Bean!=null && Quality_Rectification_Bean.actionRights!=null && Quality_Rectification_Bean.actionRights.size()>0 &&isHasModifyRight(Quality_Rectification_Bean.actionRights)){
+        if(Quality_Rectification_Bean!=null && Quality_Rectification_Bean.actionRights!=null && Quality_Rectification_Bean.actionRights.size()>0 &&Quality_Rectification_Bean.actionRights.contains(AuthorityConfig.ModifyGrant)){
             return true;
         }else{
             return false;
@@ -91,7 +88,7 @@ public class AuthorityManager {
      * 是否有新建复查单权限
      */
     public static boolean isCreateReview(){
-        if(Quality_Risk_Bean!=null && Quality_Risk_Bean.actionRights!=null && Quality_Risk_Bean.actionRights.size()>0 &&isHasModifyRight(Quality_Risk_Bean.actionRights)){
+        if(Quality_Risk_Bean!=null && Quality_Risk_Bean.actionRights!=null && Quality_Risk_Bean.actionRights.size()>0 &&(Quality_Risk_Bean.actionRights.contains(AuthorityConfig.ModifyUnit)||Quality_Risk_Bean.actionRights.contains(AuthorityConfig.ModifyAll))){
             return true;
         }else{
             return false;
@@ -99,26 +96,16 @@ public class AuthorityManager {
     }
     //是否有新增、编辑权限
     private static boolean isHasModifyRight(List<String> actionRights){
-        if (Quality_Check_Bean.actionRights.contains(AuthorityConfig.ModifyAll)) return true;
-        if (Quality_Check_Bean.actionRights.contains(AuthorityConfig.ModifyGrant)) return true;
-        if (Quality_Check_Bean.actionRights.contains(AuthorityConfig.ModifyUnit)) return true;
+        if (actionRights.contains(AuthorityConfig.ModifyAll)) return true;
+//        if (Quality_Check_Bean.actionRights.contains(AuthorityConfig.ModifyGrant)) return true;
+        if (actionRights.contains(AuthorityConfig.ModifyUnit)) return true;
         return false;
     }
 
-    //是否有删除权限
-    private static boolean isHasDeleteRight(List<String> actionRights){
-        if (Quality_Check_Bean.actionRights.contains(AuthorityConfig.DeleteAll)) return true;
-        if (Quality_Check_Bean.actionRights.contains(AuthorityConfig.DeleteGrant)) return true;
-        if (Quality_Check_Bean.actionRights.contains(AuthorityConfig.DeleteUnit)) return true;
-        return false;
-    }
 
-    //是否有查看权限
-    private static boolean isHasBrowseRight(List<String> actionRights){
-        if (Quality_Check_Bean.actionRights.contains(AuthorityConfig.BrowseAll)) return true;
-        if (Quality_Check_Bean.actionRights.contains(AuthorityConfig.BrowseGrant)) return true;
-        if (Quality_Check_Bean.actionRights.contains(AuthorityConfig.BrowseUnit)) return true;
-        return false;
+    //判断是不是我
+    public static boolean isMe(long currentId){
+        return SharedPreferencesUtil.getUserId() == currentId;
     }
 
     /**
@@ -138,7 +125,7 @@ public class AuthorityManager {
                     @Override
                     public void onResponse(Call<AuthorityBean> call, Response<AuthorityBean> response) {
                         Quality_Check_Bean = response.body();
-//                        LogUtil.e(response.body().toString());
+                        LogUtil.e(response.body().toString());
                     }
 
                     @Override
@@ -154,7 +141,7 @@ public class AuthorityManager {
                     @Override
                     public void onResponse(Call<AuthorityBean> call, Response<AuthorityBean> response) {
                         Quality_Accept_Bean = response.body();
-//                        LogUtil.e(response.body().toString());
+                        LogUtil.e(response.body().toString());
                     }
 
                     @Override
@@ -170,7 +157,7 @@ public class AuthorityManager {
                     @Override
                     public void onResponse(Call<AuthorityBean> call, Response<AuthorityBean> response) {
                         Quality_Risk_Bean = response.body();
-//                        LogUtil.e(response.body().toString());
+                        LogUtil.e(response.body().toString());
                     }
 
                     @Override
@@ -186,7 +173,7 @@ public class AuthorityManager {
                     @Override
                     public void onResponse(Call<AuthorityBean> call, Response<AuthorityBean> response) {
                         Quality_Facility_Bean = response.body();
-//                        LogUtil.e(response.body().toString());
+                        LogUtil.e(response.body().toString());
                     }
 
                     @Override
@@ -202,7 +189,7 @@ public class AuthorityManager {
                     @Override
                     public void onResponse(Call<AuthorityBean> call, Response<AuthorityBean> response) {
                         Quality_Rectification_Bean = response.body();
-//                        LogUtil.e(response.body().toString());
+                        LogUtil.e(response.body().toString());
                     }
 
                     @Override
