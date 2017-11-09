@@ -327,6 +327,11 @@ public class CreateReviewActivity extends BaseActivity implements View.OnClickLi
         mPresenter.initData(getIntent());
 
         //获取图片
+        showImages();
+
+    }
+
+    private void showImages(){
         mIsShowPhoto = getIntent().getBooleanExtra(CommonConfig.SHOW_PHOTO, true);
         if (mIsShowPhoto) {
             mPhotoParent.setVisibility(View.VISIBLE);
@@ -346,7 +351,6 @@ public class CreateReviewActivity extends BaseActivity implements View.OnClickLi
         } else {
             mPhotoParent.setVisibility(View.GONE);
         }
-
     }
 
     //检查单详情

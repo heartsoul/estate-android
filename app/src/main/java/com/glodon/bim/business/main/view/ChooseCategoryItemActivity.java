@@ -2,7 +2,10 @@ package com.glodon.bim.business.main.view;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,6 +20,7 @@ import com.glodon.bim.basic.utils.ScreenUtil;
 import com.glodon.bim.business.authority.AuthorityManager;
 import com.glodon.bim.business.main.contract.ChooseCategoryItemContract;
 import com.glodon.bim.business.main.presenter.ChooseCategoryItemPresenter;
+import com.glodon.bim.common.config.CommonConfig;
 import com.glodon.bim.customview.PhotoAlbumDialog;
 
 /**
@@ -30,6 +34,25 @@ public class ChooseCategoryItemActivity extends BaseActivity implements ChooseCa
     private LinearLayout mQualityCheckListView, mModelView, mBluePrintView, mQualityCheckModuleVIew, mCreateView;
     private PhotoAlbumDialog mPhotoAlbumDialog;//拍照相册弹出框
     private final int REQUEST_CAMERA = 1;
+    private BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            checkAuthority();
+        }
+    };
+
+    /**
+     * 判断权限  控制是否显示新增按钮
+     */
+    private void checkAuthority(){
+        if(mCreateView!=null) {
+            if (AuthorityManager.isShowCreateButton()) {
+                mCreateView.setVisibility(View.VISIBLE);
+            } else {
+                mCreateView.setVisibility(View.GONE);
+            }
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,22 +65,6 @@ public class ChooseCategoryItemActivity extends BaseActivity implements ChooseCa
 
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        //权限控制  是否显示新检检查单按钮
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if(AuthorityManager.isShowCreateButton()){
-                    mCreateView.setVisibility(View.VISIBLE);
-                }else{
-                    mCreateView.setVisibility(View.GONE);
-                }
-            }
-        },500);
-
-    }
 
     private void initView() {
         mQualityCheckListView = (LinearLayout) findViewById(R.id.choose_category_item_item_zjqd);
@@ -112,6 +119,8 @@ public class ChooseCategoryItemActivity extends BaseActivity implements ChooseCa
 
 
     private void initDataForActivity() {
+        //注册广播  监听   获取权限的变化  控制新增按钮的显示
+        registerReceiver(mReceiver,new IntentFilter(CommonConfig.ACTION_GET_AUTHORITY_CHECK));
         mPresenter = new ChooseCategoryItemPresenter(this);
         mPresenter.initData(getIntent());
 
@@ -121,6 +130,8 @@ public class ChooseCategoryItemActivity extends BaseActivity implements ChooseCa
             };
             requestPermission(PERMISSIONS_STORAGE, REQUEST_CAMERA);
         }
+
+        checkAuthority();
     }
 
     //弹出照片选择框
@@ -174,6 +185,9 @@ public class ChooseCategoryItemActivity extends BaseActivity implements ChooseCa
         if (mPresenter != null) {
             mPresenter.onDestroy();
             mPresenter = null;
+        }
+        if(mReceiver!=null) {
+            unregisterReceiver(mReceiver);
         }
     }
 }

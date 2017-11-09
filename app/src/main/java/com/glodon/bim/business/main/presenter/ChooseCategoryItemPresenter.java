@@ -64,6 +64,7 @@ public class ChooseCategoryItemPresenter implements ChooseCategoryItemContract.P
     public void openAlbum() {
         Intent intent = new Intent(mView.getActivity(), AlbumEditActivity.class);
         intent.putExtra(CommonConfig.ALBUM_FROM_TYPE,0);
+        intent.putExtra(CommonConfig.CREATE_TYPE,CommonConfig.CREATE_TYPE_CHECK);
         mView.getActivity().startActivity(intent);
     }
 

@@ -37,9 +37,11 @@ public class AppConfig {
     /**
      * 环境的url
      */
-    public static String BASE_URL = "http://192.168.72.48/";
+    public static String BASE_URL = "http://192.168.72.48/";//欧阳
     public static String BASE_UPLOAD_URL =  "https://api.glodon.com/";
 //    public static String BASE_UPLOAD_URL = "http://172.16.233.54:443/";
-//    public static String BASE_URL = "http://192.168.81.41/";
+//    public static String BASE_URL = "http://192.168.81.41/"; //开发
+//    public static String BASE_URL = "http://192.168.81.30/"; //测试
+//    public static String BASE_URL = "http://bimcop.glodon.com/"; //正式环境
 
 }

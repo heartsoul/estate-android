@@ -110,7 +110,7 @@ public interface CreateReviewContract {
         /**
          * 整改单  编辑  保存
          */
-        Observable<SaveBean> editSaveRepair(long deptId, long id, QualityRepairParams props);
+        Observable<ResponseBody> editSaveRepair(long deptId, long id, QualityRepairParams props);
 
 
         /**
@@ -121,7 +121,7 @@ public interface CreateReviewContract {
         /**
          * 整改单  编辑  提交
          */
-        Observable<SaveBean> editSubmitRepair(long deptId, long id, QualityRepairParams props);
+        Observable<ResponseBody> editSubmitRepair(long deptId, long id, QualityRepairParams props);
 
         /**
          * 整改单  删除
@@ -142,7 +142,7 @@ public interface CreateReviewContract {
         /**
          * 复查单  编辑  保存
          */
-        Observable<SaveBean> editSaveReview(long deptId, long id, QualityReviewParams props);
+        Observable<ResponseBody> editSaveReview(long deptId, long id, QualityReviewParams props);
 
         /**
          * 复查单  新增  提交
@@ -152,7 +152,7 @@ public interface CreateReviewContract {
         /**
          * 复查单  编辑  提交
          */
-        Observable<SaveBean> editSubmitReview(long deptId, long id, QualityReviewParams props);
+        Observable<ResponseBody> editSubmitReview(long deptId, long id, QualityReviewParams props);
 
 
         /**

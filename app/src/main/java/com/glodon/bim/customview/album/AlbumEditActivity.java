@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.glodon.bim.R;
 import com.glodon.bim.base.BaseActivity;
 import com.glodon.bim.basic.listener.ThrottleClickEvents;
+import com.glodon.bim.basic.utils.SharedPreferencesUtil;
 import com.glodon.bim.business.qualityManage.view.CreateCheckListActivity;
 import com.glodon.bim.business.qualityManage.view.CreateReviewActivity;
 import com.glodon.bim.common.config.CommonConfig;
@@ -139,8 +140,11 @@ public class AlbumEditActivity extends BaseActivity implements View.OnClickListe
                             Intent reviewIntent = new Intent(mActivity,CreateReviewActivity.class);
                             reviewIntent.putExtra(CommonConfig.ALBUM_DATA, mAdapter.getSelectedImages());
                             reviewIntent.putExtra(CommonConfig.CREATE_TYPE,mCreateType);
+                            reviewIntent.putExtra(CommonConfig.QUALITY_CHECK_LIST_DEPTID, SharedPreferencesUtil.getProjectId());
+                            reviewIntent.putExtra(CommonConfig.QUALITY_CHECK_LIST_ID,getIntent().getLongExtra(CommonConfig.QUALITY_CHECK_LIST_ID,-1));
                             mActivity.startActivity(reviewIntent);
                             mActivity.finish();
+
                             break;
                     }
 

@@ -87,28 +87,28 @@ public class CreateCheckListModel implements CreateCheckListContract.Model {
         return NetRequest.getInstance().getCall(AppConfig.BASE_URL,CreateCheckListApi.class).createDelete(deptId,id,new DaoProvider().getCookie());
     }
 
-    /**
-     * 上传图片  获取operationCode
-     */
-    @Override
-    public Observable<ResponseBody> getOperationCode(String containerId, String name, String digest, long length){
-        return NetRequest.getInstance().getCall(AppConfig.BASE_URL,CreateCheckListApi.class).getOperationCode(containerId, name, digest, length, new DaoProvider().getCookie());
-    }
-
-    /**
-     * 上传图片  上传文件
-     */
-    @Override
-    public  Observable<ResponseBody> uploadImage(String operationCode,RequestBody description,MultipartBody.Part file){
-        return NetRequest.getInstance().getCall(AppConfig.BASE_UPLOAD_URL,CreateCheckListApi.class).uploadImage("objects?operationCode="+operationCode,description,file);
-    }
-
-    /**
-     * 上传图片  上传文件
-     */
-    @Override
-    public  Observable<ResponseBody> uploadImage(String operationCode,MultipartBody multipartBody ){
-        return NetRequest.getInstance().getCall(AppConfig.BASE_UPLOAD_URL,CreateCheckListApi.class).uploadImage("objects?operationCode="+operationCode,multipartBody);
-    }
+//    /**
+//     * 上传图片  获取operationCode
+//     */
+//    @Override
+//    public Observable<ResponseBody> getOperationCode(String containerId, String name, String digest, long length){
+//        return NetRequest.getInstance().getCall(AppConfig.BASE_URL,CreateCheckListApi.class).getOperationCode(containerId, name, digest, length, new DaoProvider().getCookie());
+//    }
+//
+//    /**
+//     * 上传图片  上传文件
+//     */
+//    @Override
+//    public  Observable<ResponseBody> uploadImage(String operationCode,RequestBody description,MultipartBody.Part file){
+//        return NetRequest.getInstance().getCall(AppConfig.BASE_UPLOAD_URL,CreateCheckListApi.class).uploadImage("objects?operationCode="+operationCode,description,file);
+//    }
+//
+//    /**
+//     * 上传图片  上传文件
+//     */
+//    @Override
+//    public  Observable<ResponseBody> uploadImage(String operationCode,MultipartBody multipartBody ){
+//        return NetRequest.getInstance().getCall(AppConfig.BASE_UPLOAD_URL,CreateCheckListApi.class).uploadImage("objects?operationCode="+operationCode,multipartBody);
+//    }
 
 }

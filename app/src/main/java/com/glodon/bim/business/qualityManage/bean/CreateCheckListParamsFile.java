@@ -17,4 +17,6 @@ public class CreateCheckListParamsFile {
     public String uploadId;
     public String uploadTime;
     public String extData;
+
+    public String url;
 }

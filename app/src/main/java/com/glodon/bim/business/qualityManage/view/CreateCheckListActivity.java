@@ -645,6 +645,7 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
         } else {
             mCompanyStar.setVisibility(View.INVISIBLE);
         }
+//        mPersonName.setText("掌声");
         String personName = mPersonName.getText().toString().trim();
         if (TextUtils.isEmpty(personName)) {
             mPersonStar.setVisibility(View.VISIBLE);

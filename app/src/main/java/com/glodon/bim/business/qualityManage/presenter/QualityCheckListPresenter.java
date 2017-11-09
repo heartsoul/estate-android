@@ -2,7 +2,6 @@ package com.glodon.bim.business.qualityManage.presenter;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.view.View;
 
 import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.basic.utils.CameraUtil;
@@ -203,6 +202,7 @@ public class QualityCheckListPresenter implements QualityCheckListContract.Prese
             f.extData = file.extData;
             f.objectId = file.objectId;
             f.name = file.name;
+            f.url = file.url;
             fileList.add(f);
         }
         if(fileList.size()>0){
@@ -364,6 +364,7 @@ public class QualityCheckListPresenter implements QualityCheckListContract.Prese
         Intent intent = new Intent(mView.getActivity(), AlbumEditActivity.class);
         intent.putExtra(CommonConfig.ALBUM_FROM_TYPE,0);
         intent.putExtra(CommonConfig.CREATE_TYPE,mCreateType);//表示创建什么单据
+        intent.putExtra(CommonConfig.QUALITY_CHECK_LIST_ID,mList.get(mClickPosition).id);
         mView.getActivity().startActivityForResult(intent,REQUEST_CODE_OPEN_ALBUM);
     }
 
@@ -397,6 +398,7 @@ public class QualityCheckListPresenter implements QualityCheckListContract.Prese
                     Intent intent = new Intent(mView.getActivity(), PhotoEditActivity.class);
                     intent.putExtra(CommonConfig.IMAGE_PATH,mPhotoPath);
                     intent.putExtra(CommonConfig.CREATE_TYPE,mCreateType);//表示创建检查单
+                    intent.putExtra(CommonConfig.QUALITY_CHECK_LIST_ID,mList.get(mClickPosition).id);
                     int code = 0;
                     if(mCreateType.equals(CommonConfig.CREATE_TYPE_REPAIR)){
                         code = REQUEST_CODE_CREATE_REPAIR;

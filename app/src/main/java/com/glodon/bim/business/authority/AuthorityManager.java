@@ -1,11 +1,15 @@
 package com.glodon.bim.business.authority;
 
+import android.content.Intent;
+
+import com.glodon.bim.base.BaseApplication;
 import com.glodon.bim.basic.config.AppConfig;
 import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.basic.network.NetRequest;
 import com.glodon.bim.basic.utils.SharedPreferencesUtil;
 import com.glodon.bim.business.greendao.provider.DaoProvider;
 import com.glodon.bim.common.config.AuthorityConfig;
+import com.glodon.bim.common.config.CommonConfig;
 
 import java.util.List;
 
@@ -126,6 +130,9 @@ public class AuthorityManager {
                     public void onResponse(Call<AuthorityBean> call, Response<AuthorityBean> response) {
                         Quality_Check_Bean = response.body();
                         LogUtil.e(response.body().toString());
+                        Intent intent = new Intent();
+                        intent.setAction(CommonConfig.ACTION_GET_AUTHORITY_CHECK);
+                        BaseApplication.getInstance().sendBroadcast(intent);
                     }
 
                     @Override

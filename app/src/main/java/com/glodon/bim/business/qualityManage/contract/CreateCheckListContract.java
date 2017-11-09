@@ -193,15 +193,15 @@ public interface CreateCheckListContract {
          */
         Observable<ResponseBody> createDelete(long deptId, long id);
 
-        /**
-         * 上传图片  获取operationCode
-         */
-        Observable<ResponseBody> getOperationCode(String containerId, String name, String digest, long length);
-
-        /**
-         * 上传图片  上传文件
-         */
-        Observable<ResponseBody> uploadImage(String operationCode, RequestBody description, MultipartBody.Part file);
-        Observable<ResponseBody> uploadImage(String operationCode,MultipartBody multipartBody );
+//        /**
+//         * 上传图片  获取operationCode
+//         */
+//        Observable<ResponseBody> getOperationCode(String containerId, String name, String digest, long length);
+//
+//        /**
+//         * 上传图片  上传文件
+//         */
+//        Observable<ResponseBody> uploadImage(String operationCode, RequestBody description, MultipartBody.Part file);
+//        Observable<ResponseBody> uploadImage(String operationCode,MultipartBody multipartBody );
     }
 }

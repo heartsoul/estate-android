@@ -29,6 +29,7 @@ import com.glodon.bim.basic.image.OnImageLoadListener;
 import com.glodon.bim.basic.utils.CameraUtil;
 import com.glodon.bim.basic.utils.InputMethodutil;
 import com.glodon.bim.basic.utils.ScreenUtil;
+import com.glodon.bim.basic.utils.SharedPreferencesUtil;
 import com.glodon.bim.business.qualityManage.listener.OnDragTextListener;
 import com.glodon.bim.business.qualityManage.listener.OnPhotoEditChangeListener;
 import com.glodon.bim.common.config.CommonConfig;
@@ -238,6 +239,8 @@ public class PhotoEditActivity extends BaseActivity implements View.OnClickListe
                                 Intent reviewIntent = new Intent(mActivity,CreateReviewActivity.class);
                                 reviewIntent.putExtra(CommonConfig.IAMGE_SAVE_PATH, mSavePath);
                                 reviewIntent.putExtra(CommonConfig.CREATE_TYPE,mCreateType);
+                                reviewIntent.putExtra(CommonConfig.QUALITY_CHECK_LIST_DEPTID, SharedPreferencesUtil.getProjectId());
+                                reviewIntent.putExtra(CommonConfig.QUALITY_CHECK_LIST_ID,getIntent().getLongExtra(CommonConfig.QUALITY_CHECK_LIST_ID,-1));
                                 mActivity.startActivityForResult(reviewIntent, REQUEST_CODE_CREATE_CHECK_LIST);
                                 mActivity.finish();
 

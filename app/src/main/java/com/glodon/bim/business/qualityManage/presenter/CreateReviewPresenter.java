@@ -20,6 +20,7 @@ import com.glodon.bim.business.qualityManage.model.CreateReviewApi;
 import com.glodon.bim.business.qualityManage.model.CreateReviewModel;
 import com.glodon.bim.business.qualityManage.view.PhotoEditActivity;
 import com.glodon.bim.common.config.CommonConfig;
+import com.glodon.bim.customview.ToastManager;
 import com.glodon.bim.customview.album.AlbumData;
 import com.glodon.bim.customview.album.AlbumEditActivity;
 import com.glodon.bim.customview.album.TNBImageItem;
@@ -45,7 +46,7 @@ import rx.subscriptions.CompositeSubscription;
  * 邮箱：zhourf@glodon.com
  */
 
-public class CreateReviewPresenter implements CreateReviewContract.Presenter{
+public class CreateReviewPresenter implements CreateReviewContract.Presenter {
 
     private CreateReviewContract.View mView;
     private CreateReviewContract.Model mModel;
@@ -61,13 +62,12 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter{
     //图片
     private LinkedHashMap<String, TNBImageItem> mSelectedMap;
 
-    private long deptId,id;//项目id 和检查单id
+    private long deptId, id,repairId,reviewId;//项目id 和检查单id  整改单id 复查单id
 
     private String mCreateType; //创建的类型
 
     private boolean mIsEditStatus = false;//是否编辑状态
     private String mCode = "";//当前单据的code
-
 
 
     public CreateReviewPresenter(CreateReviewContract.View mView) {
@@ -97,13 +97,13 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter{
 
     @Override
     public void initData(Intent intent) {
-        deptId = intent.getLongExtra(CommonConfig.QUALITY_CHECK_LIST_DEPTID,0);
-        id = intent.getLongExtra(CommonConfig.QUALITY_CHECK_LIST_ID,0);
+        deptId = intent.getLongExtra(CommonConfig.QUALITY_CHECK_LIST_DEPTID, 0);
+        id = intent.getLongExtra(CommonConfig.QUALITY_CHECK_LIST_ID, 0);
         mCreateType = intent.getStringExtra(CommonConfig.CREATE_TYPE);
         //展示title和检查单详情
-        if(mView!=null){
+        if (mView != null) {
             mView.showTitleByType(mCreateType);
-            mView.showDetail(deptId,id);
+            mView.showDetail(deptId, id);
         }
         //查询是否存在之前保存过的数据
         getEditInfo();
@@ -111,7 +111,7 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter{
 
     //查询是否存在之前保存过的数据
     private void getEditInfo() {
-        switch (mCreateType){
+        switch (mCreateType) {
             case CommonConfig.CREATE_TYPE_REPAIR:
                 getRepairInfo();
                 break;
@@ -123,7 +123,7 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter{
 
     //查询整改单编辑数据
     private void getRepairInfo() {
-        Subscription sub = mModel.getRepairInfo(deptId,id)
+        Subscription sub = mModel.getRepairInfo(deptId, id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<QualityGetRepairInfo>() {
@@ -134,16 +134,18 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter{
 
                     @Override
                     public void onError(Throwable e) {
-
+                        LogUtil.e(e.getMessage());
                     }
 
                     @Override
                     public void onNext(QualityGetRepairInfo info) {
-                        if(info != null){
+                        if (info != null) {
                             mIsEditStatus = true;
                             mCode = info.code;
-                            if(mView!=null){
-                                mView.showDesAndImages(info.description,info.files);
+                            repairId = info.id;
+                            if (mView != null) {
+                                mView.showDesAndImages(info.description, info.files);
+                                mView.showDelete();
                             }
                         }
                     }
@@ -153,7 +155,7 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter{
 
     //查询复查单编辑数据
     private void getReviewInfo() {
-        Subscription sub = mModel.getReviewInfo(deptId,id)
+        Subscription sub = mModel.getReviewInfo(deptId, id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<QualityGetReviewInfo>() {
@@ -164,17 +166,19 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter{
 
                     @Override
                     public void onError(Throwable e) {
-
+                        LogUtil.e(e.getMessage());
                     }
 
                     @Override
                     public void onNext(QualityGetReviewInfo info) {
-                        if(info != null){
+                        if (info != null) {
                             mIsEditStatus = true;
                             mCode = info.code;
-                            if(mView!=null){
-                                mView.showDesAndImages(info.description,info.files);
-                                mView.showRectificationInfo(info.status,info.lastRectificationDate);
+                            reviewId = info.id;
+                            if (mView != null) {
+                                mView.showDesAndImages(info.description, info.files);
+                                mView.showRectificationInfo(info.status, info.lastRectificationDate);
+                                mView.showDelete();
                             }
                         }
                     }
@@ -198,19 +202,19 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter{
 
     @Override
     public void submit(String des, String mCurrentStatus, String mSelectedTime) {
-        switch (mCreateType){
+        switch (mCreateType) {
             case CommonConfig.CREATE_TYPE_REPAIR:
-                if(mIsEditStatus){
+                if (mIsEditStatus) {
                     editSubmitRepair(des);
-                }else{
+                } else {
                     createSubmitRepair(des);
                 }
                 break;
             case CommonConfig.CREATE_TYPE_REVIEW:
-                if(mIsEditStatus){
-                    editSubmitReview(des,mCurrentStatus,mSelectedTime);
-                }else{
-                    createSubmitReview(des,mCurrentStatus,mSelectedTime);
+                if (mIsEditStatus) {
+                    editSubmitReview(des, mCurrentStatus, mSelectedTime);
+                } else {
+                    createSubmitReview(des, mCurrentStatus, mSelectedTime);
                 }
                 break;
         }
@@ -218,10 +222,10 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter{
 
     private void editSubmitRepair(String des) {
         QualityRepairParams props = getRepairParams(des);
-        Subscription sub = mModel.editSubmitRepair(deptId,id,props)
+        Subscription sub = mModel.editSubmitRepair(deptId, repairId, props)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<SaveBean>() {
+                .subscribe(new Subscriber<ResponseBody>() {
                     @Override
                     public void onCompleted() {
 
@@ -229,13 +233,14 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter{
 
                     @Override
                     public void onError(Throwable e) {
-
+                        LogUtil.e(e.getMessage());
                     }
 
                     @Override
-                    public void onNext(SaveBean saveBean) {
-                        if(saveBean!=null){
-                            if(mView!=null){
+                    public void onNext(ResponseBody saveBean) {
+                        if (saveBean != null) {
+                            ToastManager.showSubmitToast();
+                            if (mView != null) {
                                 mView.getActivity().finish();
                             }
                         }
@@ -246,7 +251,7 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter{
 
     private void createSubmitRepair(String des) {
         QualityRepairParams props = getRepairParams(des);
-        Subscription sub = mModel.createSubmitRepair(deptId,props)
+        Subscription sub = mModel.createSubmitRepair(deptId, props)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<SaveBean>() {
@@ -257,33 +262,36 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter{
 
                     @Override
                     public void onError(Throwable e) {
-                        LogUtil.e("e="+e.getMessage());
+                        LogUtil.e("e=" + e.getMessage());
                     }
 
                     @Override
                     public void onNext(SaveBean saveBean) {
-                        if(saveBean!=null){
-                            if(mView!=null){
+                        if (saveBean != null) {
+                            ToastManager.showSubmitToast();
+                            if (mView != null) {
                                 mView.getActivity().finish();
                             }
                         }
                     }
                 });
         mSubscription.add(sub);
+
+
     }
 
     //组织整改单参数
-    private QualityRepairParams getRepairParams(String des){
+    private QualityRepairParams getRepairParams(String des) {
         QualityRepairParams props = new QualityRepairParams();
         props.code = mCode;
         props.description = des;
         props.inspectionId = id;
         QualityCheckListDetailBean info = mView.getDetailInfo();
-        if(info!=null && info.progressInfos!=null && info.progressInfos.size()>0){
+        if (info != null && info.progressInfos != null && info.progressInfos.size() > 0) {
             List<QualityCheckListDetailProgressInfo> list = info.progressInfos;
 //            props.flawCode = list.get(list.size()-1).code;
-            props.flawId = list.get(list.size()-1).id;
-        }else{
+            props.flawId = list.get(list.size() - 1).id;
+        } else {
 //            props.flawCode = info.inspectionInfo.code;
             props.flawId = info.inspectionInfo.id;
         }
@@ -291,11 +299,11 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter{
     }
 
     private void editSubmitReview(String des, String mCurrentStatus, String mSelectedTime) {
-        QualityReviewParams props = getReviewParams(des,mCurrentStatus,mSelectedTime);
-        Subscription sub = mModel.editSubmitReview(deptId,id,props)
+        QualityReviewParams props = getReviewParams(des, mCurrentStatus, mSelectedTime);
+        Subscription sub = mModel.editSubmitReview(deptId, reviewId, props)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<SaveBean>() {
+                .subscribe(new Subscriber<ResponseBody>() {
                     @Override
                     public void onCompleted() {
 
@@ -303,13 +311,14 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter{
 
                     @Override
                     public void onError(Throwable e) {
-
+                        LogUtil.e(e.getMessage());
                     }
 
                     @Override
-                    public void onNext(SaveBean saveBean) {
-                        if(saveBean!=null){
-                            if(mView!=null){
+                    public void onNext(ResponseBody saveBean) {
+                        if (saveBean != null) {
+                            ToastManager.showSubmitToast();
+                            if (mView != null) {
                                 mView.getActivity().finish();
                             }
                         }
@@ -319,8 +328,8 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter{
     }
 
     private void createSubmitReview(String des, String mCurrentStatus, String mSelectedTime) {
-        QualityReviewParams props = getReviewParams(des,mCurrentStatus,mSelectedTime);
-        Subscription sub = mModel.createSubmitReview(deptId,props)
+        QualityReviewParams props = getReviewParams(des, mCurrentStatus, mSelectedTime);
+        Subscription sub = mModel.createSubmitReview(deptId, props)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<SaveBean>() {
@@ -331,13 +340,14 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter{
 
                     @Override
                     public void onError(Throwable e) {
-
+                        LogUtil.e(e.getMessage());
                     }
 
                     @Override
                     public void onNext(SaveBean saveBean) {
-                        if(saveBean!=null){
-                            if(mView!=null){
+                        if (saveBean != null) {
+                            ToastManager.showSubmitToast();
+                            if (mView != null) {
                                 mView.getActivity().finish();
                             }
                         }
@@ -346,7 +356,7 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter{
         mSubscription.add(sub);
     }
 
-    private QualityReviewParams getReviewParams(String des, String mCurrentStatus, String mSelectedTime){
+    private QualityReviewParams getReviewParams(String des, String mCurrentStatus, String mSelectedTime) {
         QualityReviewParams props = new QualityReviewParams();
         props.code = mCode;
         props.description = des;
@@ -354,29 +364,29 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter{
         props.status = mCurrentStatus;
         props.lastRectificationDate = mSelectedTime;
         QualityCheckListDetailBean info = mView.getDetailInfo();
-        if(info!=null && info.progressInfos!=null && info.progressInfos.size()>0){
+        if (info != null && info.progressInfos != null && info.progressInfos.size() > 0) {
             List<QualityCheckListDetailProgressInfo> list = info.progressInfos;
 //            props.rectificationCode = list.get(list.size()-1).code;
-            props.rectificationId = list.get(list.size()-1).id;
+            props.rectificationId = list.get(list.size() - 1).id;
         }
         return props;
     }
 
     @Override
     public void save(String des, String mCurrentStatus, String mSelectedTime) {
-        switch (mCreateType){
+        switch (mCreateType) {
             case CommonConfig.CREATE_TYPE_REPAIR:
-                if(mIsEditStatus){
+                if (mIsEditStatus) {
                     editSaveRepair(des);
-                }else{
+                } else {
                     createSaveRepair(des);
                 }
                 break;
             case CommonConfig.CREATE_TYPE_REVIEW:
-                if(mIsEditStatus){
-                    editSaveReview(des,mCurrentStatus,mSelectedTime);
-                }else{
-                    createSaveReview(des,mCurrentStatus,mSelectedTime);
+                if (mIsEditStatus) {
+                    editSaveReview(des, mCurrentStatus, mSelectedTime);
+                } else {
+                    createSaveReview(des, mCurrentStatus, mSelectedTime);
                 }
                 break;
         }
@@ -384,10 +394,10 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter{
 
     private void editSaveRepair(String des) {
         QualityRepairParams props = getRepairParams(des);
-        Subscription sub = mModel.editSaveRepair(deptId,id,props)
+        Subscription sub = mModel.editSaveRepair(deptId,repairId,props)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<SaveBean>() {
+                .subscribe(new Subscriber<ResponseBody>() {
                     @Override
                     public void onCompleted() {
 
@@ -395,13 +405,13 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter{
 
                     @Override
                     public void onError(Throwable e) {
-
+                        LogUtil.e(e.getMessage());
                     }
 
                     @Override
-                    public void onNext(SaveBean saveBean) {
+                    public void onNext(ResponseBody saveBean) {
                         if(saveBean!=null){
-                            mCode = saveBean.code;
+                            ToastManager.showSaveToast();
                             if(mView!=null){
                                 mView.showDelete();
                             }
@@ -409,57 +419,28 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter{
                     }
                 });
         mSubscription.add(sub);
+
+//        NetRequest.getInstance().getCall(AppConfig.BASE_URL, CreateReviewApi.class).editSaveRepair2(deptId, repairId, props, new DaoProvider().getCookie())
+//                .enqueue(new Callback<ResponseBody>() {
+//                    @Override
+//                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+//                        try {
+//                            LogUtil.e(response.errorBody().string());
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+//                        LogUtil.e("er=" + t.getMessage());
+//                    }
+//                });
     }
 
     private void createSaveRepair(String des) {
         QualityRepairParams props = getRepairParams(des);
-//        Subscription sub = mModel.createSaveRepair(deptId,props)
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(new Subscriber<SaveBean>() {
-//                    @Override
-//                    public void onCompleted() {
-//
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//                        LogUtil.e(e.getMessage());
-//                    }
-//
-//                    @Override
-//                    public void onNext(SaveBean saveBean) {
-//                        if(saveBean!=null){
-//                            mCode = saveBean.code;
-//                            if(mView!=null){
-//                                mView.showDelete();
-//                            }
-//                        }
-//                    }
-//                });
-//        mSubscription.add(sub);
-        NetRequest.getInstance().getCall(AppConfig.BASE_URL, CreateReviewApi.class).createSaveRepair2(deptId,props,new DaoProvider().getCookie())
-        .enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    LogUtil.e(response.errorBody().string());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                LogUtil.e("er="+t.getMessage());
-            }
-        });
-
-    }
-
-    private void editSaveReview(String des, String mCurrentStatus, String mSelectedTime) {
-        QualityReviewParams props = getReviewParams(des,mCurrentStatus,mSelectedTime);
-        Subscription sub = mModel.editSaveReview(deptId,id,props)
+        Subscription sub = mModel.createSaveRepair(deptId, props)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<SaveBean>() {
@@ -470,14 +451,48 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter{
 
                     @Override
                     public void onError(Throwable e) {
-
+                        LogUtil.e(e.getMessage());
                     }
 
                     @Override
                     public void onNext(SaveBean saveBean) {
-                        if(saveBean!=null){
+                        if (saveBean != null) {
                             mCode = saveBean.code;
-                            if(mView!=null){
+                            repairId = saveBean.id;
+                            ToastManager.showSaveToast();
+                            if (mView != null) {
+                                mView.showDelete();
+                            }
+                        }
+                    }
+                });
+        mSubscription.add(sub);
+
+
+    }
+
+    private void editSaveReview(String des, String mCurrentStatus, String mSelectedTime) {
+        QualityReviewParams props = getReviewParams(des, mCurrentStatus, mSelectedTime);
+        Subscription sub = mModel.editSaveReview(deptId, reviewId, props)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<ResponseBody>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        LogUtil.e(e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(ResponseBody saveBean) {
+                        if (saveBean != null) {
+                            ToastManager.showSaveToast();
+                            mIsEditStatus = true;
+                            if (mView != null) {
                                 mView.showDelete();
                             }
                         }
@@ -487,8 +502,8 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter{
     }
 
     private void createSaveReview(String des, String mCurrentStatus, String mSelectedTime) {
-        QualityReviewParams props = getReviewParams(des,mCurrentStatus,mSelectedTime);
-        Subscription sub = mModel.createSaveReview(deptId,props)
+        QualityReviewParams props = getReviewParams(des, mCurrentStatus, mSelectedTime);
+        Subscription sub = mModel.createSaveReview(deptId, props)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<SaveBean>() {
@@ -499,14 +514,17 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter{
 
                     @Override
                     public void onError(Throwable e) {
-
+                        LogUtil.e(e.getMessage());
                     }
 
                     @Override
                     public void onNext(SaveBean saveBean) {
-                        if(saveBean!=null){
+                        if (saveBean != null) {
+                            mIsEditStatus = true;
                             mCode = saveBean.code;
-                            if(mView!=null){
+                            reviewId = saveBean.id;
+                            ToastManager.showSaveToast();
+                            if (mView != null) {
                                 mView.showDelete();
                             }
                         }
@@ -517,7 +535,7 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter{
 
     @Override
     public void delete() {
-        switch (mCreateType){
+        switch (mCreateType) {
             case CommonConfig.CREATE_TYPE_REPAIR:
                 deleteRepairInfo();
                 break;
@@ -529,7 +547,7 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter{
 
     //删除复查单
     private void deleteReviewInfo() {
-        Subscription sub = mModel.deleteReview(deptId,id)
+        Subscription sub = mModel.deleteReview(deptId, reviewId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<ResponseBody>() {
@@ -540,12 +558,12 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter{
 
                     @Override
                     public void onError(Throwable e) {
-
+                        LogUtil.e(e.getMessage());
                     }
 
                     @Override
                     public void onNext(ResponseBody responseBody) {
-                        if(mView!=null){
+                        if (mView != null) {
                             mView.getActivity().finish();
                         }
                     }
@@ -555,7 +573,7 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter{
 
     //删除整改单
     private void deleteRepairInfo() {
-        Subscription sub = mModel.deleteRepair(deptId,id)
+        Subscription sub = mModel.deleteRepair(deptId, repairId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<ResponseBody>() {
@@ -566,12 +584,12 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter{
 
                     @Override
                     public void onError(Throwable e) {
-
+                        LogUtil.e(e.getMessage());
                     }
 
                     @Override
                     public void onNext(ResponseBody responseBody) {
-                        if(mView!=null){
+                        if (mView != null) {
                             mView.getActivity().finish();
                         }
                     }
@@ -632,7 +650,7 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter{
 
     @Override
     public void onDestroy() {
-        if(mSubscription!=null){
+        if (mSubscription != null) {
             mSubscription.unsubscribe();
             mSubscription = null;
         }

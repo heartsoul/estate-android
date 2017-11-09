@@ -48,4 +48,10 @@ public class CommonConfig {
     public static final String QC_STATE_ACCEPTED = "accepted";
     public static final String CREATE_CHECK_LIST_PROPS = "createCheckListProps";
     public static final String QUALITY_CHECK_LIST_SHOW_REPAIR = "showRepair";
+
+
+    /**
+     * 广播
+     */
+    public static final String ACTION_GET_AUTHORITY_CHECK = "com.glodon.bim.action.authority.check";
 }

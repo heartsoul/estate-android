@@ -1,5 +1,7 @@
 package com.glodon.bim.customview.album;
 
+import com.glodon.bim.business.qualityManage.bean.CreateCheckListParamsFile;
+
 import java.io.Serializable;
 
 /**
@@ -24,4 +26,8 @@ public class TNBImageItem implements Serializable {
 	 * 图片的原图片路径
 	 */
 	public String imagePath;
+
+	public CreateCheckListParamsFile urlFile;
+
+	public String objectId = "-1";
 }

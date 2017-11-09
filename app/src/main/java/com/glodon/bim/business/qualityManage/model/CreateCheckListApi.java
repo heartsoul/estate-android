@@ -47,6 +47,13 @@ public interface CreateCheckListApi {
     Observable<List<PersonItem>> getPersonList(@Path("id") long id, @Path("coperationCorpId") long coperationCorpId, @Header("cookie") String cookie);
 
     /**
+     * 查询施工单位的责任人
+     */
+    @GET("pmbasic/projects/{id}/coperationCorps/{coperationCorpId}/coperationRoles")
+    Call<ResponseBody> getPersonList2(@Path("id") long id, @Path("coperationCorpId") long coperationCorpId, @Header("cookie") String cookie);
+
+
+    /**
      * 获取质检项目列表
      */
     @GET("quality/templates")
@@ -86,29 +93,5 @@ public interface CreateCheckListApi {
     @DELETE("quality/{deptId}/qualityInspection/{id}")
     Observable<ResponseBody> createDelete(@Path("deptId") long deptId, @Path("id") long id, @Header("cookie") String cookie);
 
-    /**
-     * 图片上传  获取operationCode
-     */
-    @GET("bimpm/attachment/operationCode")
-    Observable<ResponseBody> getOperationCode(@Query("containerId") String containerId, @Query("name") String name, @Query("digest") String digest, @Query("length") long length, @Header("cookie") String cookie);
 
-    @Multipart
-    @POST("nss/v1/insecure/{operationCode}")
-    Observable<ResponseBody> uploadImage(@Path("operationCode") String operationCode,@Part("description") RequestBody description,
-                                            @Part MultipartBody.Part file);
-
-    @Multipart
-    @POST("nss/v1/insecure/{operationCode}")
-    Observable<ResponseBody> uploadImage(@Path("operationCode") String operationCode,
-                                         @Part() MultipartBody.Part file);
-    @POST("nss/v1/insecure/{operationCode}")
-    Observable<ResponseBody> uploadImage(@Path("operationCode") String operationCode,
-                                         @Body MultipartBody multipartBody);
-
-//    @Multipart
-//    @POST("nss/v1/insecure/{operationCode}")
-//    Call<ResponseBody> uploadImage2(@Path("operationCode") String operationCode,@Part MultipartBody.Part file);
-@Multipart
-@POST
-Call<ResponseBody> uploadImage2(@Url String url, @Part MultipartBody.Part file);
 }
