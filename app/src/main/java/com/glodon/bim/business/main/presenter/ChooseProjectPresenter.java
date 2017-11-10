@@ -3,6 +3,7 @@ package com.glodon.bim.business.main.presenter;
 import android.content.Intent;
 
 import com.glodon.bim.basic.log.LogUtil;
+import com.glodon.bim.basic.utils.NetWorkUtils;
 import com.glodon.bim.basic.utils.SharedPreferencesUtil;
 import com.glodon.bim.business.authority.AuthorityManager;
 import com.glodon.bim.business.main.bean.ProjectListBean;
@@ -12,6 +13,7 @@ import com.glodon.bim.business.main.listener.OnProjectClickListener;
 import com.glodon.bim.business.main.model.ChooseProjectModel;
 import com.glodon.bim.business.main.view.ChooseCategoryItemActivity;
 import com.glodon.bim.common.config.CommonConfig;
+import com.glodon.bim.customview.ToastManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,69 +70,95 @@ public class ChooseProjectPresenter implements ChooseProjectContract.Presenter {
     }
     @Override
     public void initData(Intent intent) {
-        Subscription sub = mModel.getAvailableProjects(mCurrentPage,mSize)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<ProjectListBean>() {
-                    @Override
-                    public void onCompleted() {
+        if(NetWorkUtils.isNetworkAvailable(mView.getActivity())) {
+            if(mView!=null){
+                mView.showLoadingDialog();
+            }
+            Subscription sub = mModel.getAvailableProjects(mCurrentPage, mSize)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Subscriber<ProjectListBean>() {
+                        @Override
+                        public void onCompleted() {
 
-                    }
+                        }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        LogUtil.e(e.getMessage());
-                    }
-
-                    @Override
-                    public void onNext(ProjectListBean bean) {
-                        if(bean!=null && bean.content!=null && bean.content.size()>0){
-                            mDataList.addAll(bean.content);
-                            mView.setStyle(mDataList.size());
-                            mView.updateData(mDataList);
-                            if(mCurrentPage<bean.totalPages){
-                                mCurrentPage++;
-                            }
-                            //如果只有一个项目 直接进入
-                            if(mDataList.size()==1){
-                                clickProject(mDataList.get(0));
+                        @Override
+                        public void onError(Throwable e) {
+                            LogUtil.e(e.getMessage());
+                            if(mView!=null){
+                                mView.dismissLoadingDialog();
                             }
                         }
-                    }
-                });
 
-        mSubscription.add(sub);
+                        @Override
+                        public void onNext(ProjectListBean bean) {
+                            if (bean != null && bean.content != null && bean.content.size() > 0) {
+                                mDataList.addAll(bean.content);
+                                mView.setStyle(mDataList.size());
+                                mView.updateData(mDataList);
+                                if (mCurrentPage < bean.totalPages) {
+                                    mCurrentPage++;
+                                }
+                                //如果只有一个项目 直接进入
+                                if (mDataList.size() == 1) {
+                                    clickProject(mDataList.get(0));
+                                }
+                            }
+                            if(mView!=null){
+                                mView.dismissLoadingDialog();
+                            }
+                        }
+                    });
+
+            mSubscription.add(sub);
+        }else{
+            ToastManager.showNetWorkToast();
+        }
     }
 
     @Override
     public void pullUp() {
-        Subscription sub = mModel.getAvailableProjects(mCurrentPage,mSize)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<ProjectListBean>() {
-                    @Override
-                    public void onCompleted() {
+        if(NetWorkUtils.isNetworkAvailable(mView.getActivity())) {
+            if(mView!=null){
+                mView.showLoadingDialog();
+            }
+            Subscription sub = mModel.getAvailableProjects(mCurrentPage, mSize)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Subscriber<ProjectListBean>() {
+                        @Override
+                        public void onCompleted() {
 
-                    }
+                        }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        LogUtil.e(e.getMessage());
-                    }
-
-                    @Override
-                    public void onNext(ProjectListBean bean) {
-                        if(bean!=null && bean.content!=null && bean.content.size()>0){
-                            mDataList.addAll(bean.content);
-                            mView.updateData(mDataList);
-                            if(mCurrentPage<bean.totalPages){
-                                mCurrentPage++;
+                        @Override
+                        public void onError(Throwable e) {
+                            LogUtil.e(e.getMessage());
+                            if(mView!=null){
+                                mView.dismissLoadingDialog();
                             }
                         }
-                    }
-                });
 
-        mSubscription.add(sub);
+                        @Override
+                        public void onNext(ProjectListBean bean) {
+                            if (bean != null && bean.content != null && bean.content.size() > 0) {
+                                mDataList.addAll(bean.content);
+                                mView.updateData(mDataList);
+                                if (mCurrentPage < bean.totalPages) {
+                                    mCurrentPage++;
+                                }
+                            }
+                            if(mView!=null){
+                                mView.dismissLoadingDialog();
+                            }
+                        }
+                    });
+
+            mSubscription.add(sub);
+        }else{
+            ToastManager.showNetWorkToast();
+        }
     }
 
     @Override

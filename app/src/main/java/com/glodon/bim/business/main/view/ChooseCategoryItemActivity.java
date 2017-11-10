@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
 import android.view.Window;
 import android.widget.LinearLayout;
@@ -21,7 +20,7 @@ import com.glodon.bim.business.authority.AuthorityManager;
 import com.glodon.bim.business.main.contract.ChooseCategoryItemContract;
 import com.glodon.bim.business.main.presenter.ChooseCategoryItemPresenter;
 import com.glodon.bim.common.config.CommonConfig;
-import com.glodon.bim.customview.PhotoAlbumDialog;
+import com.glodon.bim.customview.dialog.PhotoAlbumDialog;
 
 /**
  * 描述：选择目录的具体事项界面

@@ -20,12 +20,13 @@ import com.glodon.bim.base.BaseActivity;
 import com.glodon.bim.basic.image.ImageLoader;
 import com.glodon.bim.basic.listener.ThrottleClickEvents;
 import com.glodon.bim.basic.utils.CameraUtil;
+import com.glodon.bim.basic.utils.DateUtil;
 import com.glodon.bim.business.qualityManage.bean.QualityCheckListBeanItemFile;
 import com.glodon.bim.business.qualityManage.bean.QualityCheckListDetailBean;
 import com.glodon.bim.business.qualityManage.contract.CreateReviewContract;
 import com.glodon.bim.business.qualityManage.presenter.CreateReviewPresenter;
 import com.glodon.bim.common.config.CommonConfig;
-import com.glodon.bim.customview.PhotoAlbumDialog;
+import com.glodon.bim.customview.dialog.PhotoAlbumDialog;
 import com.glodon.bim.customview.album.AlbumData;
 import com.glodon.bim.customview.album.TNBImageItem;
 import com.glodon.bim.customview.datepicker.TNBCustomDatePickerUtils;
@@ -409,6 +410,8 @@ public class CreateReviewActivity extends BaseActivity implements View.OnClickLi
                 mRemainParent.setVisibility(View.VISIBLE);
                 mRemainLine.setVisibility(View.VISIBLE);
                 mRemainFlag.setBackgroundResource(R.drawable.icon_flag_close);
+                mRemainName.setText(DateUtil.getNormalDate(Long.parseLong(lastRectificationDate)));
+                mSelectedTime = lastRectificationDate;
                 break;
         }
     }

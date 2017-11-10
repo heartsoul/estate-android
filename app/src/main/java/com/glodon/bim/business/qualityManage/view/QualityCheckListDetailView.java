@@ -18,6 +18,7 @@ import com.glodon.bim.business.qualityManage.bean.QualityCheckListDetailInspecti
 import com.glodon.bim.business.qualityManage.bean.QualityCheckListDetailProgressInfo;
 import com.glodon.bim.business.qualityManage.contract.QualityCheckListDetailViewContract;
 import com.glodon.bim.business.qualityManage.presenter.QualityCheckListDetailViewPresenter;
+import com.glodon.bim.customview.dialog.LoadingDialogManager;
 
 import java.util.List;
 
@@ -40,6 +41,8 @@ public class QualityCheckListDetailView implements QualityCheckListDetailViewCon
     private View view;
 
     private QualityCheckListDetailViewContract.Presenter mPresenter;
+
+    private LoadingDialogManager mLoadingDialog;
 
     public QualityCheckListDetailView(Activity mActivity, View view) {
         this.mActivity = mActivity;
@@ -234,12 +237,15 @@ public class QualityCheckListDetailView implements QualityCheckListDetailViewCon
 
     @Override
     public void showLoadingDialog() {
-
+        if (mLoadingDialog == null) {
+            mLoadingDialog = new LoadingDialogManager(getActivity());
+        }
+        mLoadingDialog.show();
     }
 
     @Override
     public void dismissLoadingDialog() {
-
+        mLoadingDialog.dismiss();
     }
 
     @Override

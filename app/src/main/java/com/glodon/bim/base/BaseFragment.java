@@ -4,7 +4,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 
-import com.glodon.bim.customview.LoadingDialog;
+import com.glodon.bim.customview.dialog.LoadingDialogManager;
 
 /**
  * 描述：Fragment基类
@@ -14,8 +14,7 @@ import com.glodon.bim.customview.LoadingDialog;
 
 public class BaseFragment extends Fragment {
 
-    private LoadingDialog mLoadingDialog;//加载进度条
-    private boolean mCancelAble;//是否可点击外面关闭进度条
+    private LoadingDialogManager mLoadingDialog;//加载进度条
 
 
     /**
@@ -24,14 +23,8 @@ public class BaseFragment extends Fragment {
     public void showLoadDialog(boolean cancelable) {
 
         if (mLoadingDialog == null) {
-            mCancelAble = cancelable;
-            mLoadingDialog = new LoadingDialog(getActivity());
-        } else {
-            if (mLoadingDialog.isShowing()) {
-                mLoadingDialog.dismiss();
-            }
+            mLoadingDialog = new LoadingDialogManager(getActivity());
         }
-        mLoadingDialog.setCancelable(mCancelAble);
         mLoadingDialog.show();
     }
 
@@ -39,13 +32,10 @@ public class BaseFragment extends Fragment {
      * 取消正在显示的dialog
      */
     public void dismissLoadDialog() {
-        mCancelAble = true;
-        if (mLoadingDialog != null && mLoadingDialog.isShowing()) {
-            mLoadingDialog.dismiss();
-        }
+        mLoadingDialog.dismiss();
     }
 
-    public View inflate(int layoutId){
-        return LayoutInflater.from(getActivity()).inflate(layoutId,null);
+    public View inflate(int layoutId) {
+        return LayoutInflater.from(getActivity()).inflate(layoutId, null);
     }
 }

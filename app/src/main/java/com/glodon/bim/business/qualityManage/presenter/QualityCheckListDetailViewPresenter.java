@@ -32,6 +32,7 @@ public class QualityCheckListDetailViewPresenter implements QualityCheckListDeta
 
     @Override
     public void getInspectInfo(long deptId, long id) {
+
         Subscription sub = mModel.getQualityCheckListDetail(deptId,id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

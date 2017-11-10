@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.text.TextUtils;
 
 import com.glodon.bim.basic.log.LogUtil;
+import com.glodon.bim.basic.utils.NetWorkUtils;
 import com.glodon.bim.basic.utils.SharedPreferencesUtil;
 import com.glodon.bim.business.login.contract.LoginContract;
 import com.glodon.bim.business.login.listener.OnLoginListener;
@@ -53,59 +54,63 @@ public class LoginPresenter implements LoginContract.Presenter {
     }
 
     private void login(final String username, final String password){
-        mView.showLoadingDialog();
-        mModel.login(username, password, new OnLoginListener() {
-            @Override
-            public void onLoginSuccess(String cookie) {
-                //更新数据库
-                mModel.updateCookieDb(cookie);
-                //保存用户信息
-                saveUserInfo(username,password);
-                //拿用户信息
-                mSubscriptions.add(mModel.getUserInfo(cookie)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Subscriber<User>() {
-                            @Override
-                            public void onCompleted() {
+        if(NetWorkUtils.isNetworkAvailable(mView.getActivity())) {
+            mView.showLoadingDialog();
+            mModel.login(username, password, new OnLoginListener() {
+                @Override
+                public void onLoginSuccess(String cookie) {
+                    //更新数据库
+                    mModel.updateCookieDb(cookie);
+                    //保存用户信息
+                    saveUserInfo(username, password);
+                    //拿用户信息
+                    mSubscriptions.add(mModel.getUserInfo(cookie)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new Subscriber<User>() {
+                                @Override
+                                public void onCompleted() {
 
-                            }
-
-                            @Override
-                            public void onError(Throwable e) {
-                                if(mView!=null){
-                                    mView.dismissLoadingDialog();
-                                }
-                            }
-
-                            @Override
-                            public void onNext(User user) {
-                                LogUtil.d(user.toString());
-                                if(mView!=null){
-                                    mView.dismissLoadingDialog();
                                 }
 
-                                Intent intent = new Intent(mView.getActivity(),ChooseTenantActivity.class);
-                                intent.putExtra("user",user);
-                                mView.getActivity().startActivity(intent);
+                                @Override
+                                public void onError(Throwable e) {
+                                    if (mView != null) {
+                                        mView.dismissLoadingDialog();
+                                    }
+                                }
+
+                                @Override
+                                public void onNext(User user) {
+                                    LogUtil.d(user.toString());
+                                    if (mView != null) {
+                                        mView.dismissLoadingDialog();
+                                    }
+
+                                    Intent intent = new Intent(mView.getActivity(), ChooseTenantActivity.class);
+                                    intent.putExtra("user", user);
+                                    mView.getActivity().startActivity(intent);
 //                                mView.getActivity().finish();
-                            }
-                        }));
-            }
+                                }
+                            }));
+                }
 
-            @Override
-            public void onLoginFailed(Call<ResponseBody> call, Throwable t) {
-                mErrorTimes++;
-                if(mView!=null){
-                    mView.dismissLoadingDialog();
+                @Override
+                public void onLoginFailed(Call<ResponseBody> call, Throwable t) {
+                    mErrorTimes++;
+                    if (mView != null) {
+                        mView.dismissLoadingDialog();
+                    }
+                    if (mErrorTimes > 3) {
+                        mView.showErrorDialog();
+                    } else {
+                        ToastManager.show("账号或密码错误！");
+                    }
                 }
-                if(mErrorTimes>3){
-                    mView.showErrorDialog();
-                }else{
-                    ToastManager.show("账号或密码错误！");
-                }
-            }
-        });
+            });
+        }else{
+            ToastManager.showNetWorkToast();
+        }
     }
 
     @Override

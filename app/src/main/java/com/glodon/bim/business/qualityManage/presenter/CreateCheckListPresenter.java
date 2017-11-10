@@ -5,6 +5,7 @@ import android.content.Intent;
 
 import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.basic.utils.CameraUtil;
+import com.glodon.bim.basic.utils.NetWorkUtils;
 import com.glodon.bim.basic.utils.SharedPreferencesUtil;
 import com.glodon.bim.business.qualityManage.bean.CompanyItem;
 import com.glodon.bim.business.qualityManage.bean.CreateCheckListParams;
@@ -79,6 +80,7 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
 
     //编辑状态下  前面传递过来的参数
     private CreateCheckListParams mEditParams;
+
     public CreateCheckListPresenter(CreateCheckListContract.View mView) {
         this.mView = mView;
         mModel = new CreateCheckListModel();
@@ -109,19 +111,19 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
 
     //初始化图片
     private void initImages() {
-        for(CreateCheckListParamsFile file :mEditParams.files){
+        for (CreateCheckListParamsFile file : mEditParams.files) {
             TNBImageItem item = new TNBImageItem();
             item.imagePath = file.url;
             item.objectId = file.objectId;
             item.urlFile = file;
-            mSelectedMap.put(item.imagePath,item);
+            mSelectedMap.put(item.imagePath, item);
             mView.showImages(mSelectedMap);
         }
     }
 
     //初始化责任人  编辑状态下
-    private void initPerson(){
-        if(mEditParams!=null){
+    private void initPerson() {
+        if (mEditParams != null) {
 
             //设置质检项目
             mModuleSelectInfo.name = mEditParams.qualityCheckpointName;
@@ -146,10 +148,10 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
                             mPersonList = personItems;
                             mPersonNameList.clear();
                             if (mPersonList != null && mPersonList.size() > 0) {
-                                for (int i = 0;i<mPersonList.size();i++) {
+                                for (int i = 0; i < mPersonList.size(); i++) {
                                     PersonItem item = mPersonList.get(i);
                                     mPersonNameList.add(item.name);
-                                    if(mEditParams.responsibleUserName.equals(item.name)){
+                                    if (mEditParams.responsibleUserName.equals(item.name)) {
                                         mPersonSelectPosition = i;
                                     }
                                 }
@@ -213,7 +215,6 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
     }
 
 
-
     //获取责任人列表
     @Override
     public void getPersonList() {
@@ -228,7 +229,7 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
 
                     @Override
                     public void onError(Throwable e) {
-                        LogUtil.e("person error="+e.getMessage());
+                        LogUtil.e("person error=" + e.getMessage());
                     }
 
                     @Override
@@ -256,38 +257,48 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
 
     @Override
     public void submit(final CreateCheckListParams params) {
-        if(mSelectedMap.size()>0) {
-            mIsShowUploadErrorToast = true;
-            new UploadManger(mSelectedMap).uploadImages(new OnUploadImageListener() {
-                @Override
-                public void onUploadFinished(List<CreateCheckListParamsFile> list) {
-                    int i = 0;
-                    for(Map.Entry<String,TNBImageItem> entry:mSelectedMap.entrySet()){
-                        TNBImageItem item = entry.getValue();
-                        item.objectId = list.get(i).objectId;
-                        item.urlFile = list.get(i);
-                        i++;
+        if (NetWorkUtils.isNetworkAvailable(mView.getActivity())) {
+            if (mView != null) {
+                mView.showLoadingDialog();
+            }
+            if (mSelectedMap.size() > 0) {
+                mIsShowUploadErrorToast = true;
+                new UploadManger(mSelectedMap).uploadImages(new OnUploadImageListener() {
+                    @Override
+                    public void onUploadFinished(List<CreateCheckListParamsFile> list) {
+                        int i = 0;
+                        for (Map.Entry<String, TNBImageItem> entry : mSelectedMap.entrySet()) {
+                            TNBImageItem item = entry.getValue();
+                            item.objectId = list.get(i).objectId;
+                            item.urlFile = list.get(i);
+                            i++;
+                        }
+                        params.files = list;
+                        toSubmit(params);
                     }
-                    params.files = list;
-                    toSubmit(params);
-                }
 
-                @Override
-                public void onUploadError(Throwable t) {
-                    if (mIsShowUploadErrorToast) {
-                        mIsShowUploadErrorToast = false;
-                        ToastManager.show("图片上传失败！");
+                    @Override
+                    public void onUploadError(Throwable t) {
+                        if (mView != null) {
+                            mView.dismissLoadingDialog();
+                        }
+                        if (mIsShowUploadErrorToast) {
+                            mIsShowUploadErrorToast = false;
+                            ToastManager.show("图片上传失败！");
+                        }
+
                     }
-                }
-            });
-        }else{
-            toSubmit(params);
+                });
+            } else {
+                toSubmit(params);
+            }
+        } else {
+            ToastManager.showNetWorkToast();
         }
-
 
     }
 
-    private void toSubmit(CreateCheckListParams params){
+    private void toSubmit(CreateCheckListParams params) {
         assembleParams(params);
         if (mInspectId == -1) {
             //新增
@@ -303,15 +314,22 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
                         @Override
                         public void onError(Throwable e) {
                             LogUtil.e("submit---response", e.getMessage());
+                            if (mView != null) {
+                                mView.dismissLoadingDialog();
+                            }
                         }
 
                         @Override
                         public void onNext(SaveBean responseBody) {
+                            if (mView != null) {
+                                mView.dismissLoadingDialog();
+                            }
                             LogUtil.e("submit---response", responseBody.id + "");
                             ToastManager.showSubmitToast();
                             if (mView != null) {
                                 mView.getActivity().finish();
                             }
+
                         }
                     });
             mSubscritption.add(sub);
@@ -329,10 +347,16 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
                         @Override
                         public void onError(Throwable e) {
                             LogUtil.e("edit submit error---response", e.getMessage());
+                            if (mView != null) {
+                                mView.dismissLoadingDialog();
+                            }
                         }
 
                         @Override
                         public void onNext(ResponseBody responseBody) {
+                            if (mView != null) {
+                                mView.dismissLoadingDialog();
+                            }
                             try {
                                 LogUtil.e("edit submit---response", responseBody.string());
                             } catch (IOException e) {
@@ -347,28 +371,40 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
             mSubscritption.add(sub);
         }
     }
+
     private boolean mIsShowUploadErrorToast = true;
+
     @Override
     public void save(final CreateCheckListParams params) {
-        if(mSelectedMap.size()>0) {
-            mIsShowUploadErrorToast = true;
-            new UploadManger(mSelectedMap).uploadImages(new OnUploadImageListener() {
-                @Override
-                public void onUploadFinished(List<CreateCheckListParamsFile> list) {
-                    params.files = list;
-                    toSave(params);
-                }
-
-                @Override
-                public void onUploadError(Throwable t) {
-                    if (mIsShowUploadErrorToast) {
-                        mIsShowUploadErrorToast = false;
-                        ToastManager.show("图片上传失败！");
+        if (NetWorkUtils.isNetworkAvailable(mView.getActivity())) {
+            if (mView != null) {
+                mView.showLoadingDialog();
+            }
+            if (mSelectedMap.size() > 0) {
+                mIsShowUploadErrorToast = true;
+                new UploadManger(mSelectedMap).uploadImages(new OnUploadImageListener() {
+                    @Override
+                    public void onUploadFinished(List<CreateCheckListParamsFile> list) {
+                        params.files = list;
+                        toSave(params);
                     }
-                }
-            });
-        }else{
-            toSave(params);
+
+                    @Override
+                    public void onUploadError(Throwable t) {
+                        if (mView != null) {
+                            mView.dismissLoadingDialog();
+                        }
+                        if (mIsShowUploadErrorToast) {
+                            mIsShowUploadErrorToast = false;
+                            ToastManager.show("图片上传失败！");
+                        }
+                    }
+                });
+            } else {
+                toSave(params);
+            }
+        } else {
+            ToastManager.showNetWorkToast();
         }
     }
 
@@ -388,10 +424,16 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
                         @Override
                         public void onError(Throwable e) {
                             LogUtil.e("save error---response", e.getMessage());
+                            if (mView != null) {
+                                mView.dismissLoadingDialog();
+                            }
                         }
 
                         @Override
                         public void onNext(SaveBean responseBody) {
+                            if (mView != null) {
+                                mView.dismissLoadingDialog();
+                            }
                             LogUtil.e("save---response", responseBody.id + "");
                             mInspectId = responseBody.id;
                             mCode = responseBody.code;
@@ -416,10 +458,16 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
                         @Override
                         public void onError(Throwable e) {
                             LogUtil.e("edit save error---response", e.getMessage());
+                            if (mView != null) {
+                                mView.dismissLoadingDialog();
+                            }
                         }
 
                         @Override
                         public void onNext(ResponseBody responseBody) {
+                            if (mView != null) {
+                                mView.dismissLoadingDialog();
+                            }
                             if (responseBody != null) {
                                 ToastManager.showSaveToast();
                             }
@@ -465,33 +513,46 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
 
     @Override
     public void deleteCheckList() {
-        Subscription sub = mModel.createDelete(mProjectId, mInspectId)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<ResponseBody>() {
-                    @Override
-                    public void onCompleted() {
+        if (NetWorkUtils.isNetworkAvailable(mView.getActivity())) {
+            if (mView != null) {
+                mView.showLoadingDialog();
+            }
+            Subscription sub = mModel.createDelete(mProjectId, mInspectId)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Subscriber<ResponseBody>() {
+                        @Override
+                        public void onCompleted() {
 
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        LogUtil.e("delete---response", e.getMessage());
-                    }
-
-                    @Override
-                    public void onNext(ResponseBody responseBody) {
-                        try {
-                            LogUtil.e("delete---response", responseBody.string());
-                        } catch (IOException e) {
-                            e.printStackTrace();
                         }
-                        if (mView != null) {
-                            mView.getActivity().finish();
+
+                        @Override
+                        public void onError(Throwable e) {
+                            LogUtil.e("delete---response", e.getMessage());
+                            if (mView != null) {
+                                mView.dismissLoadingDialog();
+                            }
                         }
-                    }
-                });
-        mSubscritption.add(sub);
+
+                        @Override
+                        public void onNext(ResponseBody responseBody) {
+                            if (mView != null) {
+                                mView.dismissLoadingDialog();
+                            }
+                            try {
+                                LogUtil.e("delete---response", responseBody.string());
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            if (mView != null) {
+                                mView.getActivity().finish();
+                            }
+                        }
+                    });
+            mSubscritption.add(sub);
+        } else {
+            ToastManager.showNetWorkToast();
+        }
     }
 
     //组织保存和提交的数据

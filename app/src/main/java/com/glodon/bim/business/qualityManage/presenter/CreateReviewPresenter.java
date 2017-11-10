@@ -3,11 +3,9 @@ package com.glodon.bim.business.qualityManage.presenter;
 import android.app.Activity;
 import android.content.Intent;
 
-import com.glodon.bim.basic.config.AppConfig;
 import com.glodon.bim.basic.log.LogUtil;
-import com.glodon.bim.basic.network.NetRequest;
 import com.glodon.bim.basic.utils.CameraUtil;
-import com.glodon.bim.business.greendao.provider.DaoProvider;
+import com.glodon.bim.basic.utils.NetWorkUtils;
 import com.glodon.bim.business.qualityManage.bean.QualityCheckListDetailBean;
 import com.glodon.bim.business.qualityManage.bean.QualityCheckListDetailProgressInfo;
 import com.glodon.bim.business.qualityManage.bean.QualityGetRepairInfo;
@@ -16,7 +14,6 @@ import com.glodon.bim.business.qualityManage.bean.QualityRepairParams;
 import com.glodon.bim.business.qualityManage.bean.QualityReviewParams;
 import com.glodon.bim.business.qualityManage.bean.SaveBean;
 import com.glodon.bim.business.qualityManage.contract.CreateReviewContract;
-import com.glodon.bim.business.qualityManage.model.CreateReviewApi;
 import com.glodon.bim.business.qualityManage.model.CreateReviewModel;
 import com.glodon.bim.business.qualityManage.view.PhotoEditActivity;
 import com.glodon.bim.common.config.CommonConfig;
@@ -26,14 +23,10 @@ import com.glodon.bim.customview.album.AlbumEditActivity;
 import com.glodon.bim.customview.album.TNBImageItem;
 import com.glodon.bim.customview.photopreview.PhotoPreviewActivity;
 
-import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.List;
 
 import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -62,7 +55,7 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter {
     //图片
     private LinkedHashMap<String, TNBImageItem> mSelectedMap;
 
-    private long deptId, id,repairId,reviewId;//项目id 和检查单id  整改单id 复查单id
+    private long deptId, id, repairId, reviewId;//项目id 和检查单id  整改单id 复查单id
 
     private String mCreateType; //创建的类型
 
@@ -123,67 +116,77 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter {
 
     //查询整改单编辑数据
     private void getRepairInfo() {
-        Subscription sub = mModel.getRepairInfo(deptId, id)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<QualityGetRepairInfo>() {
-                    @Override
-                    public void onCompleted() {
+        if (NetWorkUtils.isNetworkAvailable(mView.getActivity())) {
 
-                    }
+            Subscription sub = mModel.getRepairInfo(deptId, id)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Subscriber<QualityGetRepairInfo>() {
+                        @Override
+                        public void onCompleted() {
 
-                    @Override
-                    public void onError(Throwable e) {
-                        LogUtil.e(e.getMessage());
-                    }
+                        }
 
-                    @Override
-                    public void onNext(QualityGetRepairInfo info) {
-                        if (info != null) {
-                            mIsEditStatus = true;
-                            mCode = info.code;
-                            repairId = info.id;
-                            if (mView != null) {
-                                mView.showDesAndImages(info.description, info.files);
-                                mView.showDelete();
+                        @Override
+                        public void onError(Throwable e) {
+                            LogUtil.e(e.getMessage());
+                        }
+
+                        @Override
+                        public void onNext(QualityGetRepairInfo info) {
+                            if (info != null) {
+                                mIsEditStatus = true;
+                                mCode = info.code;
+                                repairId = info.id;
+                                if (mView != null) {
+                                    mView.showDesAndImages(info.description, info.files);
+                                    mView.showDelete();
+                                }
                             }
                         }
-                    }
-                });
-        mSubscription.add(sub);
+                    });
+            mSubscription.add(sub);
+        } else {
+            ToastManager.showNetWorkToast();
+        }
     }
 
     //查询复查单编辑数据
     private void getReviewInfo() {
-        Subscription sub = mModel.getReviewInfo(deptId, id)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<QualityGetReviewInfo>() {
-                    @Override
-                    public void onCompleted() {
+        if (NetWorkUtils.isNetworkAvailable(mView.getActivity())) {
 
-                    }
+            Subscription sub = mModel.getReviewInfo(deptId, id)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Subscriber<QualityGetReviewInfo>() {
+                        @Override
+                        public void onCompleted() {
 
-                    @Override
-                    public void onError(Throwable e) {
-                        LogUtil.e(e.getMessage());
-                    }
+                        }
 
-                    @Override
-                    public void onNext(QualityGetReviewInfo info) {
-                        if (info != null) {
-                            mIsEditStatus = true;
-                            mCode = info.code;
-                            reviewId = info.id;
-                            if (mView != null) {
-                                mView.showDesAndImages(info.description, info.files);
-                                mView.showRectificationInfo(info.status, info.lastRectificationDate);
-                                mView.showDelete();
+                        @Override
+                        public void onError(Throwable e) {
+                            LogUtil.e(e.getMessage());
+                        }
+
+                        @Override
+                        public void onNext(QualityGetReviewInfo info) {
+                            if (info != null) {
+                                mIsEditStatus = true;
+                                mCode = info.code;
+                                reviewId = info.id;
+                                if (mView != null) {
+                                    mView.showDesAndImages(info.description, info.files);
+                                    mView.showRectificationInfo(info.status, info.lastRectificationDate);
+                                    mView.showDelete();
+                                }
                             }
                         }
-                    }
-                });
-        mSubscription.add(sub);
+                    });
+            mSubscription.add(sub);
+        } else {
+            ToastManager.showNetWorkToast();
+        }
     }
 
 
@@ -202,21 +205,26 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter {
 
     @Override
     public void submit(String des, String mCurrentStatus, String mSelectedTime) {
-        switch (mCreateType) {
-            case CommonConfig.CREATE_TYPE_REPAIR:
-                if (mIsEditStatus) {
-                    editSubmitRepair(des);
-                } else {
-                    createSubmitRepair(des);
-                }
-                break;
-            case CommonConfig.CREATE_TYPE_REVIEW:
-                if (mIsEditStatus) {
-                    editSubmitReview(des, mCurrentStatus, mSelectedTime);
-                } else {
-                    createSubmitReview(des, mCurrentStatus, mSelectedTime);
-                }
-                break;
+        if (NetWorkUtils.isNetworkAvailable(mView.getActivity())) {
+
+            switch (mCreateType) {
+                case CommonConfig.CREATE_TYPE_REPAIR:
+                    if (mIsEditStatus) {
+                        editSubmitRepair(des);
+                    } else {
+                        createSubmitRepair(des);
+                    }
+                    break;
+                case CommonConfig.CREATE_TYPE_REVIEW:
+                    if (mIsEditStatus) {
+                        editSubmitReview(des, mCurrentStatus, mSelectedTime);
+                    } else {
+                        createSubmitReview(des, mCurrentStatus, mSelectedTime);
+                    }
+                    break;
+            }
+        } else {
+            ToastManager.showNetWorkToast();
         }
     }
 
@@ -374,27 +382,32 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter {
 
     @Override
     public void save(String des, String mCurrentStatus, String mSelectedTime) {
-        switch (mCreateType) {
-            case CommonConfig.CREATE_TYPE_REPAIR:
-                if (mIsEditStatus) {
-                    editSaveRepair(des);
-                } else {
-                    createSaveRepair(des);
-                }
-                break;
-            case CommonConfig.CREATE_TYPE_REVIEW:
-                if (mIsEditStatus) {
-                    editSaveReview(des, mCurrentStatus, mSelectedTime);
-                } else {
-                    createSaveReview(des, mCurrentStatus, mSelectedTime);
-                }
-                break;
+        if (NetWorkUtils.isNetworkAvailable(mView.getActivity())) {
+
+            switch (mCreateType) {
+                case CommonConfig.CREATE_TYPE_REPAIR:
+                    if (mIsEditStatus) {
+                        editSaveRepair(des);
+                    } else {
+                        createSaveRepair(des);
+                    }
+                    break;
+                case CommonConfig.CREATE_TYPE_REVIEW:
+                    if (mIsEditStatus) {
+                        editSaveReview(des, mCurrentStatus, mSelectedTime);
+                    } else {
+                        createSaveReview(des, mCurrentStatus, mSelectedTime);
+                    }
+                    break;
+            }
+        } else {
+            ToastManager.showNetWorkToast();
         }
     }
 
     private void editSaveRepair(String des) {
         QualityRepairParams props = getRepairParams(des);
-        Subscription sub = mModel.editSaveRepair(deptId,repairId,props)
+        Subscription sub = mModel.editSaveRepair(deptId, repairId, props)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<ResponseBody>() {
@@ -410,9 +423,9 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter {
 
                     @Override
                     public void onNext(ResponseBody saveBean) {
-                        if(saveBean!=null){
+                        if (saveBean != null) {
                             ToastManager.showSaveToast();
-                            if(mView!=null){
+                            if (mView != null) {
                                 mView.showDelete();
                             }
                         }
@@ -420,22 +433,7 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter {
                 });
         mSubscription.add(sub);
 
-//        NetRequest.getInstance().getCall(AppConfig.BASE_URL, CreateReviewApi.class).editSaveRepair2(deptId, repairId, props, new DaoProvider().getCookie())
-//                .enqueue(new Callback<ResponseBody>() {
-//                    @Override
-//                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-//                        try {
-//                            LogUtil.e(response.errorBody().string());
-//                        } catch (IOException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Call<ResponseBody> call, Throwable t) {
-//                        LogUtil.e("er=" + t.getMessage());
-//                    }
-//                });
+
     }
 
     private void createSaveRepair(String des) {

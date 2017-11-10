@@ -22,14 +22,13 @@ import com.glodon.bim.base.BaseActivity;
 import com.glodon.bim.base.BaseFragment;
 import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.basic.utils.ScreenUtil;
-import com.glodon.bim.basic.utils.SharedPreferencesUtil;
 import com.glodon.bim.business.authority.AuthorityManager;
 import com.glodon.bim.business.greendao.provider.DaoProvider;
 import com.glodon.bim.business.main.bean.ProjectListItem;
 import com.glodon.bim.business.qualityManage.contract.QualityMangeMainContract;
 import com.glodon.bim.business.qualityManage.presenter.QualityMangeMainPresenter;
 import com.glodon.bim.common.config.CommonConfig;
-import com.glodon.bim.customview.PhotoAlbumDialog;
+import com.glodon.bim.customview.dialog.PhotoAlbumDialog;
 
 import java.util.ArrayList;
 import java.util.HashMap;

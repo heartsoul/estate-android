@@ -7,6 +7,7 @@ import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.basic.utils.CameraUtil;
 import com.glodon.bim.basic.utils.DateUtil;
 import com.glodon.bim.basic.utils.DateUtils;
+import com.glodon.bim.basic.utils.NetWorkUtils;
 import com.glodon.bim.basic.utils.SharedPreferencesUtil;
 import com.glodon.bim.business.authority.AuthorityManager;
 import com.glodon.bim.business.main.bean.ProjectListItem;
@@ -27,6 +28,7 @@ import com.glodon.bim.business.qualityManage.view.CreateReviewActivity;
 import com.glodon.bim.business.qualityManage.view.PhotoEditActivity;
 import com.glodon.bim.business.qualityManage.view.QualityCheckListDetailActivity;
 import com.glodon.bim.common.config.CommonConfig;
+import com.glodon.bim.customview.ToastManager;
 import com.glodon.bim.customview.album.AlbumEditActivity;
 
 import java.util.ArrayList;
@@ -75,39 +77,14 @@ public class QualityCheckListPresenter implements QualityCheckListContract.Prese
 
         @Override
         public void delete(int position) {
-            Subscription sub = new CreateCheckListModel().createDelete(SharedPreferencesUtil.getProjectId(),mList.get(position).id)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Subscriber<ResponseBody>() {
-                        @Override
-                        public void onCompleted() {
-
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-
-                        }
-
-                        @Override
-                        public void onNext(ResponseBody responseBody) {
-                            if(responseBody!=null){
-                                pullDown();
-                            }
-                        }
-                    });
-            mSubscription.add(sub);
-        }
-
-        @Override
-        public void detail(int position) {
-            //排除待提交状态和权限
-            if(CommonConfig.QC_STATE_STAGED.equals(mList.get(position).qcState) &&(AuthorityManager.isQualityCheckSubmit() && AuthorityManager.isMe(mList.get(position).creatorId))){
-                //待提交时 先获取详情  然后 进入编辑
-                Subscription sub = new QualityCheckListDetailViewModel().getQualityCheckListDetail(SharedPreferencesUtil.getProjectId(),mList.get(position).id)
+            if(NetWorkUtils.isNetworkAvailable(mView.getActivity())) {
+                if (mView != null) {
+                    mView.showLoadingDialog();
+                }
+                Subscription sub = new CreateCheckListModel().createDelete(SharedPreferencesUtil.getProjectId(), mList.get(position).id)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Subscriber<QualityCheckListDetailBean>() {
+                        .subscribe(new Subscriber<ResponseBody>() {
                             @Override
                             public void onCompleted() {
 
@@ -115,21 +92,74 @@ public class QualityCheckListPresenter implements QualityCheckListContract.Prese
 
                             @Override
                             public void onError(Throwable e) {
-                                LogUtil.e("检查单详情 error =",e.getMessage());
+                                LogUtil.e(e.getMessage());
+                                if(mView!=null){
+                                    mView.dismissLoadingDialog();
+                                }
                             }
 
                             @Override
-                            public void onNext(QualityCheckListDetailBean bean) {
-                                if(bean!=null){
-                                    QualityCheckListDetailInspectionInfo info = bean.inspectionInfo;
-                                    Intent intent = new Intent(mView.getActivity(), CreateCheckListActivity.class);
-                                    intent.putExtra(CommonConfig.CREATE_CHECK_LIST_PROPS,getProps(info));
-                                    mView.getActivity().startActivityForResult(intent,REQUEST_CODE_TO_EDIT);
+                            public void onNext(ResponseBody responseBody) {
+                                if(mView!=null){
+                                    mView.dismissLoadingDialog();
                                 }
+                                if (responseBody != null) {
+                                    pullDown();
+                                }
+
                             }
                         });
-                mSubscription.add( sub);
+                mSubscription.add(sub);
+            }else{
+                ToastManager.showNetWorkToast();
+            }
+        }
 
+        @Override
+        public void detail(int position) {
+            //排除待提交状态和权限
+            if(CommonConfig.QC_STATE_STAGED.equals(mList.get(position).qcState) &&(AuthorityManager.isQualityCheckSubmit() && AuthorityManager.isMe(mList.get(position).creatorId))){
+
+                if(NetWorkUtils.isNetworkAvailable(mView.getActivity())) {
+                    if (mView != null) {
+                        mView.showLoadingDialog();
+                    }
+                    //待提交时 先获取详情  然后 进入编辑
+                    Subscription sub = new QualityCheckListDetailViewModel().getQualityCheckListDetail(SharedPreferencesUtil.getProjectId(), mList.get(position).id)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new Subscriber<QualityCheckListDetailBean>() {
+                                @Override
+                                public void onCompleted() {
+
+                                }
+
+                                @Override
+                                public void onError(Throwable e) {
+                                    LogUtil.e("检查单详情 error =", e.getMessage());
+                                    if(mView!=null){
+                                        mView.dismissLoadingDialog();
+                                    }
+                                }
+
+                                @Override
+                                public void onNext(QualityCheckListDetailBean bean) {
+                                    if(mView!=null){
+                                        mView.dismissLoadingDialog();
+                                    }
+                                    if (bean != null) {
+                                        QualityCheckListDetailInspectionInfo info = bean.inspectionInfo;
+                                        Intent intent = new Intent(mView.getActivity(), CreateCheckListActivity.class);
+                                        intent.putExtra(CommonConfig.CREATE_CHECK_LIST_PROPS, getProps(info));
+                                        mView.getActivity().startActivityForResult(intent, REQUEST_CODE_TO_EDIT);
+                                    }
+
+                                }
+                            });
+                    mSubscription.add(sub);
+                }else{
+                    ToastManager.showNetWorkToast();
+                }
             }else {
 
                 Intent intent = new Intent(mView.getActivity(), QualityCheckListDetailActivity.class);
@@ -142,30 +172,43 @@ public class QualityCheckListPresenter implements QualityCheckListContract.Prese
 
         @Override
         public void submit(final int position) {
-            Subscription sub = new QualityCheckListDetailViewModel().getQualityCheckListDetail(SharedPreferencesUtil.getProjectId(),mList.get(position).id)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Subscriber<QualityCheckListDetailBean>() {
-                        @Override
-                        public void onCompleted() {
+            if(NetWorkUtils.isNetworkAvailable(mView.getActivity())) {
+                if (mView != null) {
+                    mView.showLoadingDialog();
+                }
+                Subscription sub = new QualityCheckListDetailViewModel().getQualityCheckListDetail(SharedPreferencesUtil.getProjectId(), mList.get(position).id)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Subscriber<QualityCheckListDetailBean>() {
+                            @Override
+                            public void onCompleted() {
 
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-                            LogUtil.e("检查单详情 error =",e.getMessage());
-                        }
-
-                        @Override
-                        public void onNext(QualityCheckListDetailBean bean) {
-                            if(bean!=null){
-                                QualityCheckListDetailInspectionInfo info = bean.inspectionInfo;
-                                toSubmit(position,getProps(info));
                             }
-                        }
-                    })
-                    ;
-            mSubscription.add( sub);
+
+                            @Override
+                            public void onError(Throwable e) {
+                                LogUtil.e("检查单详情 error =", e.getMessage());
+                                if(mView!=null){
+                                    mView.dismissLoadingDialog();
+                                }
+                            }
+
+                            @Override
+                            public void onNext(QualityCheckListDetailBean bean) {
+                                if(mView!=null){
+                                    mView.dismissLoadingDialog();
+                                }
+                                if (bean != null) {
+                                    QualityCheckListDetailInspectionInfo info = bean.inspectionInfo;
+                                    toSubmit(position, getProps(info));
+                                }
+
+                            }
+                        });
+                mSubscription.add(sub);
+            }else{
+                ToastManager.showNetWorkToast();
+            }
 
 
         }
@@ -239,12 +282,14 @@ public class QualityCheckListPresenter implements QualityCheckListContract.Prese
 
                     @Override
                     public void onError(Throwable e) {
-
+                        LogUtil.e(e.getMessage());
                     }
 
                     @Override
                     public void onNext(ResponseBody responseBody) {
-
+                        if(responseBody!=null){
+                            pullDown();
+                        }
                     }
                 });
         mSubscription.add(sub);
@@ -281,36 +326,48 @@ public class QualityCheckListPresenter implements QualityCheckListContract.Prese
      * 初始化数据
      */
     private void getDataList() {
-        Subscription sub = mModel.getQualityCheckList(mProjectInfo.deptId, mQcState,mCurrentPage, mSize)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<QualityCheckListBean>() {
-                    @Override
-                    public void onCompleted() {
+        if(NetWorkUtils.isNetworkAvailable(mView.getActivity())) {
+            if (mView != null) {
+                mView.showLoadingDialog();
+            }
+            Subscription sub = mModel.getQualityCheckList(mProjectInfo.deptId, mQcState, mCurrentPage, mSize)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Subscriber<QualityCheckListBean>() {
+                        @Override
+                        public void onCompleted() {
 
-                    }
+                        }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        LogUtil.e("----",e.getMessage());
-                    }
-
-                    @Override
-                    public void onNext(QualityCheckListBean bean) {
-                        if(bean != null && bean.content!=null && bean.content.size()>0){
-                            mDataList.addAll(bean.content);
-                            if(mCurrentPage<bean.totalPages){
-                                mCurrentPage++;
+                        @Override
+                        public void onError(Throwable e) {
+                            LogUtil.e("----", e.getMessage());
+                            if(mView!=null){
+                                mView.dismissLoadingDialog();
                             }
                         }
-                        if(mView!=null) {
-                            handleDate();
-                            mView.updateData(mList);
-                        }
-                    }
-                });
-        mSubscription.add(sub);
 
+                        @Override
+                        public void onNext(QualityCheckListBean bean) {
+                            if (bean != null && bean.content != null && bean.content.size() > 0) {
+                                mDataList.addAll(bean.content);
+                                if (mCurrentPage < bean.totalPages) {
+                                    mCurrentPage++;
+                                }
+                            }
+                            if (mView != null) {
+                                handleDate();
+                                mView.updateData(mList);
+                            }
+                            if(mView!=null){
+                                mView.dismissLoadingDialog();
+                            }
+                        }
+                    });
+            mSubscription.add(sub);
+        }else{
+            ToastManager.showNetWorkToast();
+        }
     }
 
 

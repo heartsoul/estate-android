@@ -31,7 +31,7 @@ import com.glodon.bim.business.qualityManage.contract.CreateCheckListContract;
 import com.glodon.bim.business.qualityManage.listener.OnChooseListListener;
 import com.glodon.bim.business.qualityManage.presenter.CreateCheckListPresenter;
 import com.glodon.bim.common.config.CommonConfig;
-import com.glodon.bim.customview.PhotoAlbumDialog;
+import com.glodon.bim.customview.dialog.PhotoAlbumDialog;
 import com.glodon.bim.customview.album.AlbumData;
 import com.glodon.bim.customview.album.TNBImageItem;
 import com.glodon.bim.customview.datepicker.TNBCustomDatePickerUtils;

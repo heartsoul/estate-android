@@ -3,12 +3,14 @@ package com.glodon.bim.business.main.presenter;
 import android.content.Intent;
 
 import com.glodon.bim.basic.log.LogUtil;
+import com.glodon.bim.basic.utils.NetWorkUtils;
 import com.glodon.bim.basic.utils.SharedPreferencesUtil;
 import com.glodon.bim.business.main.contract.ChooseTenantContract;
 import com.glodon.bim.business.main.model.ChooseTenantModel;
 import com.glodon.bim.business.main.view.ChooseProjectActivity;
 import com.glodon.bim.common.login.User;
 import com.glodon.bim.common.login.UserTenant;
+import com.glodon.bim.customview.ToastManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,29 +58,33 @@ public class ChooseTenantPresenter implements ChooseTenantContract.Presenter {
 
     @Override
     public void clickTenant(UserTenant tenant) {
-        //保存当前的租户下的用户id
-        SharedPreferencesUtil.setUserId(tenant.id);
-        Subscription sub = mModel.setCurrentTenant(tenant.tenantId)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<ResponseBody>() {
-                    @Override
-                    public void onCompleted() {
+        if(NetWorkUtils.isNetworkAvailable(mView.getActivity())) {
+            //保存当前的租户下的用户id
+            SharedPreferencesUtil.setUserId(tenant.id);
+            Subscription sub = mModel.setCurrentTenant(tenant.tenantId)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Subscriber<ResponseBody>() {
+                        @Override
+                        public void onCompleted() {
 
-                    }
+                        }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        LogUtil.e(e.getMessage());
-                    }
+                        @Override
+                        public void onError(Throwable e) {
+                            LogUtil.e(e.getMessage());
+                        }
 
-                    @Override
-                    public void onNext(ResponseBody response) {
-                        Intent intent = new Intent(mView.getActivity(),ChooseProjectActivity.class);
-                        mView.getActivity().startActivity(intent);
-                    }
-                });
-        mSubscriptions.add(sub);
+                        @Override
+                        public void onNext(ResponseBody response) {
+                            Intent intent = new Intent(mView.getActivity(), ChooseProjectActivity.class);
+                            mView.getActivity().startActivity(intent);
+                        }
+                    });
+            mSubscriptions.add(sub);
+        }else{
+            ToastManager.showNetWorkToast();
+        }
     }
 
     @Override

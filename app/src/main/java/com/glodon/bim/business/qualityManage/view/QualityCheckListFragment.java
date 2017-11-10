@@ -23,7 +23,7 @@ import com.glodon.bim.business.qualityManage.bean.QualityCheckListBeanItem;
 import com.glodon.bim.business.qualityManage.contract.QualityCheckListContract;
 import com.glodon.bim.business.qualityManage.presenter.QualityCheckListPresenter;
 import com.glodon.bim.common.config.CommonConfig;
-import com.glodon.bim.customview.PhotoAlbumDialog;
+import com.glodon.bim.customview.dialog.PhotoAlbumDialog;
 import com.glodon.bim.customview.pullrefreshview.OnPullRefreshListener;
 import com.glodon.bim.customview.pullrefreshview.PullRefreshView;
 

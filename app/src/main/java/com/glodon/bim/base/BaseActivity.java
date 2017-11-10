@@ -3,41 +3,31 @@ package com.glodon.bim.base;
 import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.glodon.bim.R;
-import com.glodon.bim.customview.LoadingDialog;
+import com.glodon.bim.customview.dialog.LoadingDialogManager;
 
 public class BaseActivity extends AppCompatActivity {
-    private LoadingDialog mLoadingDialog;//加载进度条
-    private boolean mCancelAble;//是否可点击外面关闭进度条
     protected Activity mActivity;
+    private LoadingDialogManager mLoadingDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        setContentView(R.layout.base_activity);
         mActivity = this;
+        mLoadingDialog = new LoadingDialogManager(this);
     }
 
     /**
      * 显示加载数据进度条
      */
     public void showLoadDialog(boolean cancelable) {
-
-        if (mLoadingDialog == null) {
-            mCancelAble = cancelable;
-            mLoadingDialog = new LoadingDialog(this);
-        } else {
-            if (mLoadingDialog.isShowing()) {
-                mLoadingDialog.dismiss();
-            }
-        }
-        mLoadingDialog.setCancelable(mCancelAble);
         mLoadingDialog.show();
     }
 
@@ -45,10 +35,7 @@ public class BaseActivity extends AppCompatActivity {
      * 取消正在显示的dialog
      */
     public void dismissLoadDialog() {
-        mCancelAble = true;
-        if (mLoadingDialog != null && mLoadingDialog.isShowing()) {
-            mLoadingDialog.dismiss();
-        }
+        mLoadingDialog.dismiss();
     }
 
     public void requestPermission(String[] permissions, int requestCode) {

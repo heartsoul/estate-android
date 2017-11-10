@@ -1,4 +1,4 @@
-package com.glodon.bim.customview;
+package com.glodon.bim.customview.dialog;
 
 import android.app.Dialog;
 import android.content.Context;

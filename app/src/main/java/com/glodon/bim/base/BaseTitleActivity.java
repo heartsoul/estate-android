@@ -12,7 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.glodon.bim.R;
-import com.glodon.bim.customview.LoadingDialog;
+import com.glodon.bim.customview.dialog.LoadingDialogManager;
 
 /**
  * 描述：Activity基类
@@ -22,7 +22,7 @@ import com.glodon.bim.customview.LoadingDialog;
 
 public class BaseTitleActivity extends Activity {
 
-    private LoadingDialog mLoadingDialog;//加载进度条
+    private LoadingDialogManager mLoadingDialog;//加载进度条
     private boolean mCancelAble;//是否可点击外面关闭进度条
     private LinearLayout mRootView;
     private View mChildView;
@@ -36,6 +36,7 @@ public class BaseTitleActivity extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.base_title_activity);
         mActivity = this;
+        mLoadingDialog = new LoadingDialogManager(this);
         mRootView = findViewById(R.id.base_rootview);
         mHeaderLayout = findViewById(R.id.header_parent);
 
@@ -80,16 +81,6 @@ public class BaseTitleActivity extends Activity {
      * 显示加载数据进度条
      */
     public void showLoadDialog(boolean cancelable) {
-
-        if (mLoadingDialog == null) {
-            mCancelAble = cancelable;
-            mLoadingDialog = new LoadingDialog(this);
-        } else {
-            if (mLoadingDialog.isShowing()) {
-                mLoadingDialog.dismiss();
-            }
-        }
-        mLoadingDialog.setCancelable(mCancelAble);
         mLoadingDialog.show();
     }
 
@@ -97,10 +88,7 @@ public class BaseTitleActivity extends Activity {
      * 取消正在显示的dialog
      */
     public void dismissLoadDialog() {
-        mCancelAble = true;
-        if (mLoadingDialog != null && mLoadingDialog.isShowing()) {
-            mLoadingDialog.dismiss();
-        }
+        mLoadingDialog.dismiss();
     }
 
     public void requestPermission(String[] permissions, int requestCode) {
@@ -122,7 +110,7 @@ public class BaseTitleActivity extends Activity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
-    public View inflate(int layoutId){
-        return LayoutInflater.from(this).inflate(layoutId,null);
+    public View inflate(int layoutId) {
+        return LayoutInflater.from(this).inflate(layoutId, null);
     }
 }
