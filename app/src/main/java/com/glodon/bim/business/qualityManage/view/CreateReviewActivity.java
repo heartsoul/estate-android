@@ -19,6 +19,7 @@ import com.glodon.bim.R;
 import com.glodon.bim.base.BaseActivity;
 import com.glodon.bim.basic.image.ImageLoader;
 import com.glodon.bim.basic.listener.ThrottleClickEvents;
+import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.basic.utils.CameraUtil;
 import com.glodon.bim.basic.utils.DateUtil;
 import com.glodon.bim.business.qualityManage.bean.QualityCheckListBeanItemFile;
@@ -26,11 +27,13 @@ import com.glodon.bim.business.qualityManage.bean.QualityCheckListDetailBean;
 import com.glodon.bim.business.qualityManage.contract.CreateReviewContract;
 import com.glodon.bim.business.qualityManage.presenter.CreateReviewPresenter;
 import com.glodon.bim.common.config.CommonConfig;
+import com.glodon.bim.customview.ToastManager;
 import com.glodon.bim.customview.dialog.PhotoAlbumDialog;
 import com.glodon.bim.customview.album.AlbumData;
 import com.glodon.bim.customview.album.TNBImageItem;
 import com.glodon.bim.customview.datepicker.TNBCustomDatePickerUtils;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -88,6 +91,8 @@ public class CreateReviewActivity extends BaseActivity implements View.OnClickLi
     private SaveDeleteDialog mBackDialog;
     private SaveDeleteDialog mHintDialog;
     private SaveDeleteDialog mDeleteDialog;
+
+    private String mCreateType;//当前的单据类型
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -230,7 +235,7 @@ public class CreateReviewActivity extends BaseActivity implements View.OnClickLi
                         Date date = calendar.getTime();
                         String time = (new SimpleDateFormat("yyyy-MM-dd")).format(date);
                         mRemainName.setText(time);
-                        mSelectedTime = calendar.getTimeInMillis()+"";
+                        mSelectedTime = calendar.getTimeInMillis() + "";
                     }
                 });
                 break;
@@ -253,18 +258,16 @@ public class CreateReviewActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void submit() {
-        if(checkMustInfo()){
-            mPresenter.submit(mDesView.getText().toString().trim(),mCurrentStatus,mSelectedTime);
+        if (checkMustInfo()) {
+            mPresenter.submit(mDesView.getText().toString().trim(), mCurrentStatus, mSelectedTime);
         }
     }
 
     private void save() {
-        if(checkMustInfo()){
-            mPresenter.save(mDesView.getText().toString().trim(),mCurrentStatus,mSelectedTime);
+        if (checkMustInfo()) {
+            mPresenter.save(mDesView.getText().toString().trim(), mCurrentStatus, mSelectedTime);
         }
     }
-
-
 
 
     /**
@@ -273,12 +276,58 @@ public class CreateReviewActivity extends BaseActivity implements View.OnClickLi
      */
     private boolean checkMustInfo() {
         String desText = mDesView.getText().toString().trim();
-        if(TextUtils.isEmpty(desText)){
-            mHintDialog = new SaveDeleteDialog(mActivity);
-            mHintDialog.getHintDialog("您还未选择现场情况描述!");
-            mHintDialog.show();
+        String dateText = mRemainName.getText().toString().trim();
+        if (CommonConfig.CREATE_TYPE_REVIEW.equals(mCreateType)) {
+            if (mIsUpToStandard) {
+                if (TextUtils.isEmpty(desText)) {
+                    mHintDialog = new SaveDeleteDialog(mActivity);
+                    mHintDialog.getHintDialog("您还未选择现场情况描述!");
+                    mHintDialog.show();
+                    return false;
+                }
+            } else {
+                if (TextUtils.isEmpty(desText) && TextUtils.isEmpty(dateText)) {
+                    mHintDialog = new SaveDeleteDialog(mActivity);
+                    mHintDialog.getHintDialog("您还未选择现场情况描述和整改期限!");
+                    mHintDialog.show();
+                    return false;
+                } else if (TextUtils.isEmpty(desText)) {
+                    mHintDialog = new SaveDeleteDialog(mActivity);
+                    mHintDialog.getHintDialog("您还未选择现场情况描述!");
+                    mHintDialog.show();
+                    return false;
+                } else if (TextUtils.isEmpty(dateText)) {
+                    mHintDialog = new SaveDeleteDialog(mActivity);
+                    mHintDialog.getHintDialog("您还未选择整改期限!");
+                    mHintDialog.show();
+                    return false;
+                }
+            }
+
+            if (!TextUtils.isEmpty(dateText)) {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+                try {
+                    long millionSeconds = sdf.parse(dateText).getTime();//毫秒
+                    if (millionSeconds < System.currentTimeMillis()) {
+                        ToastManager.show("整改期限不能早于当前日期！");
+                        return false;
+                    }
+                } catch (ParseException e) {
+                    LogUtil.e(e.getMessage());
+                    return false;
+                }
+            }
         }
-        return !TextUtils.isEmpty(desText);
+        if (CommonConfig.CREATE_TYPE_REPAIR.equals(mCreateType)) {
+            if (TextUtils.isEmpty(desText)) {
+                mHintDialog = new SaveDeleteDialog(mActivity);
+                mHintDialog.getHintDialog("您还未选择现场情况描述!");
+                mHintDialog.show();
+                return false;
+            }
+        }
+        return true;
     }
 
     private void delete() {
@@ -295,7 +344,7 @@ public class CreateReviewActivity extends BaseActivity implements View.OnClickLi
 
 
     private void back() {
-        if(isShowBackDialog()){
+        if (isShowBackDialog()) {
             mBackDialog = new SaveDeleteDialog(mActivity);
             mBackDialog.getBackDialog(new View.OnClickListener() {
                 @Override
@@ -309,14 +358,14 @@ public class CreateReviewActivity extends BaseActivity implements View.OnClickLi
                 }
             });
             mBackDialog.show();
-        }else{
+        } else {
             mActivity.finish();
         }
     }
 
     private boolean isShowBackDialog() {
         String desText = mDesView.getText().toString().trim();
-        if(!TextUtils.isEmpty(desText)){
+        if (!TextUtils.isEmpty(desText)) {
             return true;
         }
         return false;
@@ -332,7 +381,7 @@ public class CreateReviewActivity extends BaseActivity implements View.OnClickLi
 
     }
 
-    private void showImages(){
+    private void showImages() {
         mIsShowPhoto = getIntent().getBooleanExtra(CommonConfig.SHOW_PHOTO, true);
         if (mIsShowPhoto) {
             mPhotoParent.setVisibility(View.VISIBLE);
@@ -360,8 +409,10 @@ public class CreateReviewActivity extends BaseActivity implements View.OnClickLi
         mDetailView.getInfo(deptId, id);
     }
 
+
     //创建的类型  整改  /复查
     public void showTitleByType(String mCreateType) {
+        this.mCreateType = mCreateType;
         if (CommonConfig.CREATE_TYPE_REPAIR.equals(mCreateType)) {
             mTitleView.setText("整改单");
             mRemain.setVisibility(View.GONE);
@@ -374,16 +425,16 @@ public class CreateReviewActivity extends BaseActivity implements View.OnClickLi
     @Override
     public void showDesAndImages(String description, List<QualityCheckListBeanItemFile> files) {
         mDesView.setText(description);
-        if(files!=null && files.size()>0){
+        if (files != null && files.size() > 0) {
             mPhotoParent.setVisibility(View.VISIBLE);
             LinkedHashMap<String, TNBImageItem> mSelectedMap = new LinkedHashMap<>();
-            for(QualityCheckListBeanItemFile file:files){
+            for (QualityCheckListBeanItemFile file : files) {
                 TNBImageItem item = new TNBImageItem();
                 item.imagePath = file.url;
-                mSelectedMap.put(file.url,item);
+                mSelectedMap.put(file.url, item);
             }
             showImages(mSelectedMap);
-        }else{
+        } else {
             mPhotoParent.setVisibility(View.GONE);
         }
     }
@@ -396,8 +447,7 @@ public class CreateReviewActivity extends BaseActivity implements View.OnClickLi
          *
          * 复查不合格  "notAccepted"
          */
-        switch (status)
-        {
+        switch (status) {
             case CommonConfig.STATUS_CLOSED://合格
                 mIsUpToStandard = true;
                 mRemainParent.setVisibility(View.GONE);

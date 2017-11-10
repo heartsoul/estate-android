@@ -11,8 +11,12 @@ import android.widget.TextView;
 
 import com.glodon.bim.R;
 import com.glodon.bim.base.BaseActivity;
-import com.glodon.bim.basic.listener.ThrottleClickEvents;
+import com.glodon.bim.basic.utils.SharedPreferencesUtil;
+import com.glodon.bim.business.authority.AuthorityManager;
+import com.glodon.bim.business.qualityManage.bean.QualityCheckListDetailBean;
+import com.glodon.bim.business.qualityManage.bean.QualityCheckListDetailInspectionInfo;
 import com.glodon.bim.business.qualityManage.contract.QualityCheckListDetailContract;
+import com.glodon.bim.business.qualityManage.listener.OnShowQualityCheckDetailListener;
 import com.glodon.bim.business.qualityManage.presenter.QualityCheckListDetailPresenter;
 import com.glodon.bim.common.config.CommonConfig;
 
@@ -23,6 +27,8 @@ import com.glodon.bim.common.config.CommonConfig;
  */
 public class QualityCheckListDetailActivity extends BaseActivity implements View.OnClickListener,QualityCheckListDetailContract.View{
 
+    private static final int REQUESTCODE_CREATE_TYPE_REPAIR = 20;
+    private static final int REQUESTCODE_CREATE_TYPE_REVIEW = 21;
     //状态
     private View mStatusView;
     //导航
@@ -36,8 +42,6 @@ public class QualityCheckListDetailActivity extends BaseActivity implements View
     private QualityCheckListDetailView mDetailView;
 
     private long deptId,id;//项目id 和检查单id
-
-    private boolean isShowRepair = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +66,6 @@ public class QualityCheckListDetailActivity extends BaseActivity implements View
 
     private void setListener() {
         mBackView.setOnClickListener(this);
-        ThrottleClickEvents.throttleClick(mRepairView,this);
     }
 
 
@@ -75,9 +78,6 @@ public class QualityCheckListDetailActivity extends BaseActivity implements View
             case R.id.quality_check_list_detail_back:
                 mActivity.finish();
                 break;
-            case R.id.quality_check_list_detail_repair:
-
-                break;
         }
     }
 
@@ -85,15 +85,59 @@ public class QualityCheckListDetailActivity extends BaseActivity implements View
         mPresenter = new QualityCheckListDetailPresenter(this);
         deptId = getIntent().getLongExtra(CommonConfig.QUALITY_CHECK_LIST_DEPTID,0);
         id = getIntent().getLongExtra(CommonConfig.QUALITY_CHECK_LIST_ID,0);
-        //是否显示新建整改单按钮
-        isShowRepair = getIntent().getBooleanExtra(CommonConfig.QUALITY_CHECK_LIST_SHOW_REPAIR,false);
-        if(isShowRepair){
-            mRepairView.setVisibility(View.VISIBLE);
-        }else{
-            mRepairView.setVisibility(View.GONE);
-        }
         mPresenter.initData(getIntent());
         mDetailView = new QualityCheckListDetailView(mActivity,mParent);
+        mDetailView.setmListener(new OnShowQualityCheckDetailListener() {
+            @Override
+            public void onDetailShow(QualityCheckListDetailBean bean) {
+                mRepairView.setVisibility(View.GONE);
+                if(bean!=null && bean.inspectionInfo!=null){
+                    QualityCheckListDetailInspectionInfo info = bean.inspectionInfo;
+                    switch (info.qcState){
+                        case CommonConfig.QC_STATE_UNRECTIFIED://待整改
+                            if(AuthorityManager.isCreateRepair()&& AuthorityManager.isMe(info.responsibleUserId)) {
+                                mRepairView.setVisibility(View.VISIBLE);
+                                mRepairView.setText("+整改单");
+                                mRepairView.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        Intent intent = new Intent(mActivity, CreateReviewActivity.class);
+                                        intent.putExtra(CommonConfig.CREATE_TYPE,CommonConfig.CREATE_TYPE_REPAIR);
+                                        intent.putExtra(CommonConfig.SHOW_PHOTO,true);
+                                        intent.putExtra(CommonConfig.QUALITY_CHECK_LIST_DEPTID, SharedPreferencesUtil.getProjectId());
+                                        intent.putExtra(CommonConfig.QUALITY_CHECK_LIST_ID,id);
+
+                                        startActivityForResult(intent,REQUESTCODE_CREATE_TYPE_REPAIR);
+                                    }
+                                });
+                            }else{
+                                mRepairView.setVisibility(View.GONE);
+                            }
+                            break;
+                        case CommonConfig.QC_STATE_UNREVIEWED://待复查
+                            if(AuthorityManager.isCreateReview()&& AuthorityManager.isMe(info.creatorId)) {
+                                mRepairView.setVisibility(View.VISIBLE);
+                                mRepairView.setText("+复查单");
+                                mRepairView.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        Intent intent = new Intent(mActivity, CreateReviewActivity.class);
+                                        intent.putExtra(CommonConfig.CREATE_TYPE,CommonConfig.CREATE_TYPE_REVIEW);
+                                        intent.putExtra(CommonConfig.SHOW_PHOTO,true);
+                                        intent.putExtra(CommonConfig.QUALITY_CHECK_LIST_DEPTID, SharedPreferencesUtil.getProjectId());
+                                        intent.putExtra(CommonConfig.QUALITY_CHECK_LIST_ID,id);
+
+                                        startActivityForResult(intent,REQUESTCODE_CREATE_TYPE_REVIEW);
+                                    }
+                                });
+                            }else{
+                                mRepairView.setVisibility(View.GONE);
+                            }
+                            break;
+                    }
+                }
+            }
+        });
         mDetailView.getInfo(deptId,id);
     }
 
@@ -101,7 +145,18 @@ public class QualityCheckListDetailActivity extends BaseActivity implements View
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
+        switch(requestCode){
+            case REQUESTCODE_CREATE_TYPE_REPAIR:
+                if(resultCode == RESULT_OK){
+                    mDetailView.updateInfo(deptId,id);
+                }
+                break;
+            case REQUESTCODE_CREATE_TYPE_REVIEW:
+                if(resultCode == RESULT_OK){
+                    mDetailView.updateInfo(deptId,id);
+                }
+                break;
+        }
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.glodon.bim.business.qualityManage.presenter;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.view.View;
 
 import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.basic.utils.CameraUtil;
@@ -27,6 +28,7 @@ import com.glodon.bim.business.qualityManage.view.CreateCheckListActivity;
 import com.glodon.bim.business.qualityManage.view.CreateReviewActivity;
 import com.glodon.bim.business.qualityManage.view.PhotoEditActivity;
 import com.glodon.bim.business.qualityManage.view.QualityCheckListDetailActivity;
+import com.glodon.bim.business.qualityManage.view.SaveDeleteDialog;
 import com.glodon.bim.common.config.CommonConfig;
 import com.glodon.bim.customview.ToastManager;
 import com.glodon.bim.customview.album.AlbumEditActivity;
@@ -76,43 +78,43 @@ public class QualityCheckListPresenter implements QualityCheckListContract.Prese
 
 
         @Override
-        public void delete(int position) {
-            if(NetWorkUtils.isNetworkAvailable(mView.getActivity())) {
-                if (mView != null) {
-                    mView.showLoadingDialog();
-                }
-                Subscription sub = new CreateCheckListModel().createDelete(SharedPreferencesUtil.getProjectId(), mList.get(position).id)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Subscriber<ResponseBody>() {
-                            @Override
-                            public void onCompleted() {
+        public void delete(final int position) {
+            new SaveDeleteDialog(mView.getActivity())
+                    .getDeleteDialog(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            if(NetWorkUtils.isNetworkAvailable(mView.getActivity())) {
+                                Subscription sub = new CreateCheckListModel().createDelete(SharedPreferencesUtil.getProjectId(), mList.get(position).id)
+                                        .subscribeOn(Schedulers.io())
+                                        .observeOn(AndroidSchedulers.mainThread())
+                                        .subscribe(new Subscriber<ResponseBody>() {
+                                            @Override
+                                            public void onCompleted() {
 
+                                            }
+
+                                            @Override
+                                            public void onError(Throwable e) {
+                                                LogUtil.e(e.getMessage());
+
+                                            }
+
+                                            @Override
+                                            public void onNext(ResponseBody responseBody) {
+
+                                                if (responseBody != null) {
+                                                    pullDown();
+                                                }
+
+                                            }
+                                        });
+                                mSubscription.add(sub);
+                            }else{
+                                ToastManager.showNetWorkToast();
                             }
+                        }
+                    }).show();
 
-                            @Override
-                            public void onError(Throwable e) {
-                                LogUtil.e(e.getMessage());
-                                if(mView!=null){
-                                    mView.dismissLoadingDialog();
-                                }
-                            }
-
-                            @Override
-                            public void onNext(ResponseBody responseBody) {
-                                if(mView!=null){
-                                    mView.dismissLoadingDialog();
-                                }
-                                if (responseBody != null) {
-                                    pullDown();
-                                }
-
-                            }
-                        });
-                mSubscription.add(sub);
-            }else{
-                ToastManager.showNetWorkToast();
-            }
         }
 
         @Override
@@ -165,7 +167,6 @@ public class QualityCheckListPresenter implements QualityCheckListContract.Prese
                 Intent intent = new Intent(mView.getActivity(), QualityCheckListDetailActivity.class);
                 intent.putExtra(CommonConfig.QUALITY_CHECK_LIST_DEPTID, SharedPreferencesUtil.getProjectId());
                 intent.putExtra(CommonConfig.QUALITY_CHECK_LIST_ID, mList.get(position).id);
-                intent.putExtra(CommonConfig.QUALITY_CHECK_LIST_SHOW_REPAIR,AuthorityManager.isCreateRepair()&& AuthorityManager.isMe(mList.get(position).responsibleUserId));
                 mView.getActivity().startActivityForResult(intent, REQUEST_CODE_DETAIL);
             }
         }
@@ -470,10 +471,14 @@ public class QualityCheckListPresenter implements QualityCheckListContract.Prese
                 pullDown();
                 break;
             case REQUEST_CODE_CREATE_REPAIR:
-                pullDown();
+                if(resultCode==Activity.RESULT_OK) {
+                    pullDown();
+                }
                 break;
             case REQUEST_CODE_CREATE_REVIEW:
-                pullDown();
+                if(resultCode==Activity.RESULT_OK) {
+                    pullDown();
+                }
                 break;
             case REQUEST_CODE_TO_EDIT:
                 pullDown();

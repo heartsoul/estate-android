@@ -17,6 +17,7 @@ import com.glodon.bim.business.qualityManage.bean.QualityCheckListDetailBean;
 import com.glodon.bim.business.qualityManage.bean.QualityCheckListDetailInspectionInfo;
 import com.glodon.bim.business.qualityManage.bean.QualityCheckListDetailProgressInfo;
 import com.glodon.bim.business.qualityManage.contract.QualityCheckListDetailViewContract;
+import com.glodon.bim.business.qualityManage.listener.OnShowQualityCheckDetailListener;
 import com.glodon.bim.business.qualityManage.presenter.QualityCheckListDetailViewPresenter;
 import com.glodon.bim.customview.dialog.LoadingDialogManager;
 
@@ -44,6 +45,12 @@ public class QualityCheckListDetailView implements QualityCheckListDetailViewCon
 
     private LoadingDialogManager mLoadingDialog;
 
+    private OnShowQualityCheckDetailListener mListener;
+
+    public void setmListener(OnShowQualityCheckDetailListener mListener) {
+        this.mListener = mListener;
+    }
+
     public QualityCheckListDetailView(Activity mActivity, View view) {
         this.mActivity = mActivity;
         this.view = view;
@@ -52,7 +59,7 @@ public class QualityCheckListDetailView implements QualityCheckListDetailViewCon
 
 
     private  void initView() {
-        mParent = (LinearLayout) view;
+        mParent = view.findViewById(R.id.quality_check_list_detail_list);
         mModuleBenchMarkView =view.findViewById(R.id.quality_check_list_detail_benchmark);
         mCompanyView = view.findViewById(R.id.quality_check_list_detail_company);
         mPersonView = view.findViewById(R.id.quality_check_list_detail_person);
@@ -69,16 +76,24 @@ public class QualityCheckListDetailView implements QualityCheckListDetailViewCon
         mPresenter.getInspectInfo(deptId,id);
     }
 
+    public void updateInfo(long deptId,long id){
+        mPresenter.getInspectInfo(deptId,id);
+    }
     @Override
     public void updateData(QualityCheckListDetailBean bean) {
         mBean = bean;
+        mParent.removeAllViews();
         addBasicInfo();
         addCheckDescription();
         List<QualityCheckListDetailProgressInfo> list = mBean.progressInfos;
         if(list!=null && list.size()>0){
-            for(QualityCheckListDetailProgressInfo info :list){
+            for(int i=list.size()-1;i>=0;i--){
+                QualityCheckListDetailProgressInfo info = list.get(i);
                 addHistoryDescription(info);
             }
+        }
+        if(mListener!=null){
+            mListener.onDetailShow(bean);
         }
     }
 
@@ -114,7 +129,8 @@ public class QualityCheckListDetailView implements QualityCheckListDetailViewCon
         QualityCheckListDetailInspectionInfo info = mBean.inspectionInfo;
 
         //头像
-        ImageLoader.showHeadIcon(mActivity,"",headIcon);
+
+        ImageLoader.showHeadIcon(mActivity,R.drawable.icon_default_boy,headIcon);
         //创建者
         nameView.setText(info.creatorName+ (TextUtils.isEmpty(info.inspectionUserTitle)?"":"-"+info.inspectionUserTitle));
         //状态

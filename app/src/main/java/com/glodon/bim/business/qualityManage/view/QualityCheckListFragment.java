@@ -87,8 +87,8 @@ public class QualityCheckListFragment extends BaseFragment implements QualityChe
     }
 
     private void initRecyclerView() {
-        mPullRefreshView.setPullDownEnable(false);
-        mPullRefreshView.setPullUpEnable(false);
+        mPullRefreshView.setPullDownEnable(true);
+        mPullRefreshView.setPullUpEnable(true);
         mPullRefreshView.setOnPullRefreshListener(new OnPullRefreshListener() {
             @Override
             public void onPullDown() {

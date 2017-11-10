@@ -103,8 +103,7 @@ public class QualityCheckListAdapter extends RecyclerView.Adapter<RecyclerView.V
                     sHolder.mBottomLineView.setVisibility(View.GONE);
                     sHolder.mSubmitBtn.setVisibility(View.GONE);
                     sHolder.mDeleteBtn.setVisibility(View.GONE);
-                    if(AuthorityManager.isCreateRepair()) {
-//                        if(AuthorityManager.isCreateRepair()&& AuthorityManager.isMe(item.responsibleUserId)) {
+                    if(AuthorityManager.isCreateRepair()&& AuthorityManager.isMe(item.responsibleUserId)) {
                         sHolder.mRepairBtn.setVisibility(View.VISIBLE);
                         sHolder.mBottomPreant.setVisibility(View.VISIBLE);
                         sHolder.mBottomLineView.setVisibility(View.VISIBLE);
@@ -189,6 +188,25 @@ public class QualityCheckListAdapter extends RecyclerView.Adapter<RecyclerView.V
                     if(mListener!=null)
                     {
                         mListener.review(position);
+                    }
+                }
+            });
+            sHolder.mDeleteBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(mListener!=null)
+                    {
+                        mListener.delete(position);
+                    }
+                }
+            });
+
+            sHolder.mSubmitBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(mListener!=null)
+                    {
+                        mListener.submit(position);
                     }
                 }
             });

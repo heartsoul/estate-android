@@ -369,6 +369,14 @@
                             android:text="整改期限"
                             android:textColor="@color/black"
                             android:textSize="@dimen/dimen_16" />
+                        <ImageView
+                            android:id="@+id/create_check_list_remain_star"
+                            android:layout_width="@dimen/dimen_08"
+                            android:layout_height="@dimen/dimen_08"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="@dimen/dimen_07"
+                            android:background="@drawable/icon_create_check_list_star"
+                            android:visibility="invisible" />
 
                         <ImageView
                             android:id="@+id/create_check_list_remain_arrow"

@@ -87,6 +87,16 @@ public class ImageLoader {
     }
 
     /**
+     * 展示头像 圆形
+     */
+    public static void showHeadIcon(Context context, int resourceId, ImageView view) {
+        Glide.with(context)
+                .load(resourceId)
+                .bitmapTransform(new CropCircleTransformation(context))
+                .into(view);
+    }
+
+    /**
      * 根据url获取bitmap
      */
     public static void loadUrl(Context context, String url, final OnImageLoadListener listener) {

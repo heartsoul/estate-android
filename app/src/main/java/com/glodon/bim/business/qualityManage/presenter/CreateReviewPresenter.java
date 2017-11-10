@@ -3,9 +3,12 @@ package com.glodon.bim.business.qualityManage.presenter;
 import android.app.Activity;
 import android.content.Intent;
 
+import com.glodon.bim.basic.config.AppConfig;
 import com.glodon.bim.basic.log.LogUtil;
+import com.glodon.bim.basic.network.NetRequest;
 import com.glodon.bim.basic.utils.CameraUtil;
 import com.glodon.bim.basic.utils.NetWorkUtils;
+import com.glodon.bim.business.greendao.provider.DaoProvider;
 import com.glodon.bim.business.qualityManage.bean.QualityCheckListDetailBean;
 import com.glodon.bim.business.qualityManage.bean.QualityCheckListDetailProgressInfo;
 import com.glodon.bim.business.qualityManage.bean.QualityGetRepairInfo;
@@ -14,6 +17,7 @@ import com.glodon.bim.business.qualityManage.bean.QualityRepairParams;
 import com.glodon.bim.business.qualityManage.bean.QualityReviewParams;
 import com.glodon.bim.business.qualityManage.bean.SaveBean;
 import com.glodon.bim.business.qualityManage.contract.CreateReviewContract;
+import com.glodon.bim.business.qualityManage.model.CreateReviewApi;
 import com.glodon.bim.business.qualityManage.model.CreateReviewModel;
 import com.glodon.bim.business.qualityManage.view.PhotoEditActivity;
 import com.glodon.bim.common.config.CommonConfig;
@@ -23,10 +27,14 @@ import com.glodon.bim.customview.album.AlbumEditActivity;
 import com.glodon.bim.customview.album.TNBImageItem;
 import com.glodon.bim.customview.photopreview.PhotoPreviewActivity;
 
+import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.List;
 
 import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -249,6 +257,7 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter {
                         if (saveBean != null) {
                             ToastManager.showSubmitToast();
                             if (mView != null) {
+                                mView.getActivity().setResult(Activity.RESULT_OK);
                                 mView.getActivity().finish();
                             }
                         }
@@ -278,6 +287,7 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter {
                         if (saveBean != null) {
                             ToastManager.showSubmitToast();
                             if (mView != null) {
+                                mView.getActivity().setResult(Activity.RESULT_OK);
                                 mView.getActivity().finish();
                             }
                         }
@@ -298,7 +308,7 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter {
         if (info != null && info.progressInfos != null && info.progressInfos.size() > 0) {
             List<QualityCheckListDetailProgressInfo> list = info.progressInfos;
 //            props.flawCode = list.get(list.size()-1).code;
-            props.flawId = list.get(list.size() - 1).id;
+            props.flawId = list.get(0).id;
         } else {
 //            props.flawCode = info.inspectionInfo.code;
             props.flawId = info.inspectionInfo.id;
@@ -327,6 +337,7 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter {
                         if (saveBean != null) {
                             ToastManager.showSubmitToast();
                             if (mView != null) {
+                                mView.getActivity().setResult(Activity.RESULT_OK);
                                 mView.getActivity().finish();
                             }
                         }
@@ -337,6 +348,22 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter {
 
     private void createSubmitReview(String des, String mCurrentStatus, String mSelectedTime) {
         QualityReviewParams props = getReviewParams(des, mCurrentStatus, mSelectedTime);
+//        NetRequest.getInstance().getCall(AppConfig.BASE_URL, CreateReviewApi.class).createSubmitReview2(deptId,props,new DaoProvider().getCookie())
+//                .enqueue(new Callback<ResponseBody>() {
+//                    @Override
+//                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+//                        try {
+//                            LogUtil.e("ssss="+response.toString());
+//                        } catch (Exception e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+//                        LogUtil.e(t.getMessage());
+//                    }
+//                });
         Subscription sub = mModel.createSubmitReview(deptId, props)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -356,6 +383,7 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter {
                         if (saveBean != null) {
                             ToastManager.showSubmitToast();
                             if (mView != null) {
+                                mView.getActivity().setResult(Activity.RESULT_OK);
                                 mView.getActivity().finish();
                             }
                         }
@@ -375,7 +403,7 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter {
         if (info != null && info.progressInfos != null && info.progressInfos.size() > 0) {
             List<QualityCheckListDetailProgressInfo> list = info.progressInfos;
 //            props.rectificationCode = list.get(list.size()-1).code;
-            props.rectificationId = list.get(list.size() - 1).id;
+            props.rectificationId = list.get(0).id;
         }
         return props;
     }
@@ -455,6 +483,7 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter {
                     @Override
                     public void onNext(SaveBean saveBean) {
                         if (saveBean != null) {
+                            mIsEditStatus = true;
                             mCode = saveBean.code;
                             repairId = saveBean.id;
                             ToastManager.showSaveToast();

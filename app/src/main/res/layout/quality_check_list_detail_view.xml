@@ -88,7 +88,9 @@
                 android:layout_height="@dimen/dimen_15"
                 android:layout_marginLeft="@dimen/dimen_08"
                 android:layout_toRightOf="@id/quality_check_list_detail_module"
-                android:background="@drawable/icon_benchmark" />
+                android:background="@drawable/icon_benchmark"
+                android:layout_centerVertical="true"
+                android:visibility="invisible"/>
         </RelativeLayout>
 
         <RelativeLayout
@@ -211,5 +213,13 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_20"
         android:background="@color/white" />
+    <LinearLayout
+        android:id="@+id/quality_check_list_detail_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/white">
+
+    </LinearLayout>
 </LinearLayout>
 

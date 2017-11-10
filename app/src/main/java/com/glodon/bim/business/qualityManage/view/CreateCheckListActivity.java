@@ -22,6 +22,7 @@ import com.glodon.bim.R;
 import com.glodon.bim.base.BaseActivity;
 import com.glodon.bim.basic.image.ImageLoader;
 import com.glodon.bim.basic.listener.ThrottleClickEvents;
+import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.basic.utils.CameraUtil;
 import com.glodon.bim.basic.utils.DateUtil;
 import com.glodon.bim.business.qualityManage.bean.CompanyItem;
@@ -31,11 +32,13 @@ import com.glodon.bim.business.qualityManage.contract.CreateCheckListContract;
 import com.glodon.bim.business.qualityManage.listener.OnChooseListListener;
 import com.glodon.bim.business.qualityManage.presenter.CreateCheckListPresenter;
 import com.glodon.bim.common.config.CommonConfig;
+import com.glodon.bim.customview.ToastManager;
 import com.glodon.bim.customview.dialog.PhotoAlbumDialog;
 import com.glodon.bim.customview.album.AlbumData;
 import com.glodon.bim.customview.album.TNBImageItem;
 import com.glodon.bim.customview.datepicker.TNBCustomDatePickerUtils;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -88,6 +91,7 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
     private ImageView mRemainFlag;
     private RelativeLayout mRemainParent;
     private TextView mRemainName;
+    private ImageView mRemainStar;
 
     private boolean mRemainFlagState = true;
     //质检项目
@@ -178,6 +182,7 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
         mRemainFlag = (ImageView) findViewById(R.id.create_check_list_remain_flag);
         mRemainParent = (RelativeLayout) findViewById(R.id.create_check_list_remain);
         mRemainName = (TextView) findViewById(R.id.create_check_list_remain_name);
+        mRemainStar = (ImageView) findViewById(R.id.create_check_list_remain_star);
         //质检项目
         mModuleParent = (RelativeLayout) findViewById(R.id.create_check_list_module);
         mModuleStar = (ImageView) findViewById(R.id.create_check_list_module_star);
@@ -667,6 +672,16 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
         } else {
             mModuleStar.setVisibility(View.INVISIBLE);
         }
+
+        if(mRemainFlagState){
+            String dateText = mRemainName.getText().toString().trim();
+            if (TextUtils.isEmpty(dateText)) {
+                mRemainStar.setVisibility(View.VISIBLE);
+                temp.add("整改期限");
+            } else {
+                mRemainStar.setVisibility(View.INVISIBLE);
+            }
+        }
         int size = temp.size();
         if (size > 0) {
             String content = "";
@@ -683,13 +698,33 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
             if (size == 4) {
                 content = "您还未选择" + temp.get(0) + "、" + temp.get(1) + "、" + temp.get(2) + "和" + temp.get(3) + "!";
             }
+            if (size == 5) {
+                content = "您还未选择" + temp.get(0) + "、" + temp.get(1) + "、" + temp.get(2) + temp.get(3) + "和"+temp.get(4) + "!";
+            }
             mHintDialog = new SaveDeleteDialog(mActivity);
             mHintDialog.getHintDialog(content);
             mHintDialog.show();
             return false;
-        } else {
-            return true;
         }
+
+        if(mRemainFlagState) {
+            String dateText = mRemainName.getText().toString().trim();
+            if (!TextUtils.isEmpty(dateText)) {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                try {
+                    long millionSeconds = sdf.parse(dateText).getTime();//毫秒
+                    if (millionSeconds < System.currentTimeMillis()) {
+                        ToastManager.show("整改期限不能早于当前日期！");
+                        return false;
+                    }
+                } catch (ParseException e) {
+                    LogUtil.e(e.getMessage());
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 
     /**
