@@ -95,6 +95,11 @@ public interface CreateCheckListContract {
          * 设置为编辑状态
          */
         void setEditState(CreateCheckListParams mParams);
+
+        /**
+         * 是否保存了
+         */
+        boolean isChange();
     }
 
     interface View extends IBaseView {

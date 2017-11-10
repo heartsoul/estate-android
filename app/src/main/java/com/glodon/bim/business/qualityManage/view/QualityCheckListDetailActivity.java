@@ -43,6 +43,8 @@ public class QualityCheckListDetailActivity extends BaseActivity implements View
 
     private long deptId,id;//项目id 和检查单id
 
+    private boolean mIsChange = false;//判断当前页面是否发生了变化
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,8 +78,22 @@ public class QualityCheckListDetailActivity extends BaseActivity implements View
         switch (id)
         {
             case R.id.quality_check_list_detail_back:
-                mActivity.finish();
+                back();
                 break;
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        back();
+    }
+
+    private void back(){
+        if(mIsChange){
+            setResult(RESULT_OK);
+            mActivity.finish();
+        }else {
+            mActivity.finish();
         }
     }
 
@@ -148,11 +164,13 @@ public class QualityCheckListDetailActivity extends BaseActivity implements View
         switch(requestCode){
             case REQUESTCODE_CREATE_TYPE_REPAIR:
                 if(resultCode == RESULT_OK){
+                    mIsChange = true;
                     mDetailView.updateInfo(deptId,id);
                 }
                 break;
             case REQUESTCODE_CREATE_TYPE_REVIEW:
                 if(resultCode == RESULT_OK){
+                    mIsChange = true;
                     mDetailView.updateInfo(deptId,id);
                 }
                 break;

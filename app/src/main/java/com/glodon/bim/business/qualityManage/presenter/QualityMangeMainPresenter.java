@@ -64,7 +64,7 @@ public class QualityMangeMainPresenter implements QualityMangeMainContract.Prese
     public void toCreate() {
         Intent intent = new Intent(mView.getActivity(), CreateCheckListActivity.class);
         intent.putExtra(CommonConfig.SHOW_PHOTO,false);
-        mView.getActivity().startActivity(intent);
+        mView.getActivity().startActivityForResult(intent,REQUEST_CODE_CREATE_CHECK_LIST);
     }
 
     @Override
@@ -90,8 +90,6 @@ public class QualityMangeMainPresenter implements QualityMangeMainContract.Prese
                     intent.putExtra(CommonConfig.CREATE_TYPE,CommonConfig.CREATE_TYPE_CHECK);//表示创建检查单
                     mView.getActivity().startActivityForResult(intent,REQUEST_CODE_CREATE_CHECK_LIST);
 
-                } else if (resultCode == Activity.RESULT_CANCELED) {
-                    //返回键返回
                 }
                 break;
             case REQUEST_CODE_OPEN_ALBUM://打开相册

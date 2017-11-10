@@ -50,7 +50,8 @@ import rx.subscriptions.CompositeSubscription;
  */
 
 public class QualityCheckListPresenter implements QualityCheckListContract.Presenter {
-    public static final int REQUEST_CODE_DETAIL = 10;
+    private final int REQUEST_CODE_CREATE_CHECK_LIST = 2;
+    public  final int REQUEST_CODE_DETAIL = 10;
     private final int REQUEST_CODE_TAKE_PHOTO = 11;
     private final int REQUEST_CODE_OPEN_ALBUM = 12;
     private final int REQUEST_CODE_CREATE_REVIEW = 13;
@@ -447,8 +448,15 @@ public class QualityCheckListPresenter implements QualityCheckListContract.Prese
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode)
         {
+            case REQUEST_CODE_CREATE_CHECK_LIST:
+                if(resultCode==Activity.RESULT_OK) {
+                    pullDown();
+                }
+                break;
             case REQUEST_CODE_DETAIL://检查单详情
-
+                if(resultCode==Activity.RESULT_OK) {
+                    pullDown();
+                }
                 break;
             case REQUEST_CODE_TAKE_PHOTO:
                 if (resultCode == Activity.RESULT_OK) {

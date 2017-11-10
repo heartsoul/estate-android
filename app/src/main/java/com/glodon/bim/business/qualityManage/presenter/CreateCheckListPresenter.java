@@ -81,6 +81,13 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
     //编辑状态下  前面传递过来的参数
     private CreateCheckListParams mEditParams;
 
+    private boolean mIsChange = false;//是否保存了
+
+    @Override
+    public boolean isChange() {
+        return mIsChange;
+    }
+
     public CreateCheckListPresenter(CreateCheckListContract.View mView) {
         this.mView = mView;
         mModel = new CreateCheckListModel();
@@ -327,6 +334,7 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
                             LogUtil.e("submit---response", responseBody.id + "");
                             ToastManager.showSubmitToast();
                             if (mView != null) {
+                                mView.getActivity().setResult(Activity.RESULT_OK);
                                 mView.getActivity().finish();
                             }
 
@@ -364,6 +372,7 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
                             }
                             ToastManager.showSubmitToast();
                             if (mView != null) {
+                                mView.getActivity().setResult(Activity.RESULT_OK);
                                 mView.getActivity().finish();
                             }
                         }
@@ -434,7 +443,7 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
                             if (mView != null) {
                                 mView.dismissLoadingDialog();
                             }
-                            LogUtil.e("save---response", responseBody.id + "");
+                            mIsChange=true;
                             mInspectId = responseBody.id;
                             mCode = responseBody.code;
                             ToastManager.showSaveToast();
@@ -468,6 +477,7 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
                             if (mView != null) {
                                 mView.dismissLoadingDialog();
                             }
+                            mIsChange=true;
                             if (responseBody != null) {
                                 ToastManager.showSaveToast();
                             }

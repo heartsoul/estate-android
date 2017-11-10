@@ -602,6 +602,9 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
             mBackDialog.getBackDialog(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    if(mPresenter.isChange()){
+                        setResult(RESULT_OK);
+                    }
                     mActivity.finish();
                 }
             }, new View.OnClickListener() {
@@ -612,6 +615,9 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
             });
             mBackDialog.show();
         }else{
+            if(mPresenter.isChange()){
+                setResult(RESULT_OK);
+            }
             mActivity.finish();
         }
     }
