@@ -77,6 +77,8 @@
     <dimen name="dimen_120">120dp</dimen>
     <dimen name="dimen_150">150dp</dimen>
     <dimen name="dimen_174">174dp</dimen>
+    <dimen name="dimen_196">196dp</dimen>
+    <dimen name="dimen_201">201dp</dimen>
     <dimen name="dimen_220">220dp</dimen>
     <dimen name="dimen_240">240dp</dimen>
     <dimen name="dimen_252">252dp</dimen>

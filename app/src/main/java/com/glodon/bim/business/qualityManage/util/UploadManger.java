@@ -30,7 +30,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * 描述：
+ * 描述：图片上传
  * 作者：zhourf on 2017/11/9
  * 邮箱：zhourf@glodon.com
  */

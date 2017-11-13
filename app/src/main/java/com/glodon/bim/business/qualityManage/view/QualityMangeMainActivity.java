@@ -250,7 +250,9 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
 
     //初始化drawer数据
     private void initDrawer() {
-        mProjectNameView.setText(mProjectInfo.name);
+        if(mProjectInfo!=null) {
+            mProjectNameView.setText(mProjectInfo.name);
+        }
 
         mProjectNameView.setOnClickListener(this);
         mQualityManagerView.setOnClickListener(this);

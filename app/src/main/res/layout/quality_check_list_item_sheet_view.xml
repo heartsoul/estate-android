@@ -1,23 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="@dimen/dimen_201"
+    android:paddingLeft="@dimen/dimen_14"
+    android:paddingRight="@dimen/dimen_14"
+    android:background="@color/white"
+    android:paddingTop="@dimen/dimen_05"
+    >
+    <com.glodon.bim.customview.CustomShadow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/dimen_10"
-        android:layout_marginRight="@dimen/dimen_10"
-        android:paddingLeft="@dimen/dimen_10"
-        android:paddingRight="@dimen/dimen_10"
-        android:paddingBottom="@dimen/dimen_23"
-        android:background="@drawable/icon_choose_project_bg_normal"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_margin="@dimen/dimen_07"
+        >
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dimen_46"
-            android:layout_marginTop="@dimen/dimen_20">
+            android:layout_height="@dimen/dimen_45"
+            android:background="@color/white">
 
             <ImageView
                 android:id="@+id/quality_check_list_item_sheet_time_icon"
@@ -61,12 +65,15 @@
         <LinearLayout
             android:id="@+id/quality_check_list_item_sheet_content"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dimen_94"
+            android:layout_height="@dimen/dimen_0"
+            android:layout_weight="1"
             android:orientation="horizontal"
             android:paddingLeft="@dimen/dimen_14"
             android:paddingRight="@dimen/dimen_17"
             android:paddingTop="@dimen/dimen_12"
-            android:paddingBottom="@dimen/dimen_14">
+            android:paddingBottom="@dimen/dimen_14"
+            android:background="@color/c_fafafa"
+            >
 
             <ImageView
                 android:id="@+id/quality_check_list_item_sheet_image"
@@ -96,7 +103,8 @@
         <RelativeLayout
             android:id="@+id/quality_check_list_item_sheet_bottom_parent"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dimen_45">
+            android:layout_height="@dimen/dimen_45"
+            android:background="@color/white">
 
             <TextView
                 android:id="@+id/quality_check_list_item_sheet_submit"
@@ -165,4 +173,4 @@
                 android:visibility="gone" />
         </RelativeLayout>
     </LinearLayout>
-</RelativeLayout>
+</FrameLayout>

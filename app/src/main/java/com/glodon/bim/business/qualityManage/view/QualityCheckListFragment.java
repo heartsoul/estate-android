@@ -17,6 +17,7 @@ import com.glodon.bim.basic.listener.ThrottleClickEvents;
 import com.glodon.bim.business.main.bean.ProjectListItem;
 import com.glodon.bim.business.qualityManage.OnClassifyItemClickListener;
 import com.glodon.bim.business.qualityManage.adapter.QualityCheckListAdapter;
+import com.glodon.bim.business.qualityManage.adapter.QualityCheckListAdapter2;
 import com.glodon.bim.business.qualityManage.adapter.QualityCheckListClassifyAdapter;
 import com.glodon.bim.business.qualityManage.bean.ClassifyItem;
 import com.glodon.bim.business.qualityManage.bean.QualityCheckListBeanItem;
@@ -140,6 +141,16 @@ public class QualityCheckListFragment extends BaseFragment implements QualityChe
         mAdapter = new QualityCheckListAdapter(getContext(), mPresenter.getListener());
         mRecyclerView.setAdapter(mAdapter);
         mPresenter.initData(mProjectInfo);
+
+//        QualityCheckListAdapter2 adapter = new QualityCheckListAdapter2(getActivity(),null);
+//        mRecyclerView.setAdapter(adapter);
+//        List<QualityCheckListBeanItem> list = new ArrayList<>();
+//        for(int i = 0;i<15;i++){
+//            QualityCheckListBeanItem item = new QualityCheckListBeanItem();
+//            item.showType = 1;
+//            list.add(item);
+//        }
+//        adapter.updateList(list);
     }
 
 
