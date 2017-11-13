@@ -1,5 +1,7 @@
 package com.glodon.bim.business.main.bean;
 
+import com.glodon.bim.business.qualityManage.bean.QualityCheckListBeanSort;
+
 import java.util.List;
 
 /**
@@ -15,7 +17,7 @@ public class ProjectListBean {
     public int number;
     public int numberOfElements;
     public int size;
-    public List<String> sort;
+    public List<QualityCheckListBeanSort> sort;
     public int totalElements;
     public int totalPages;
 }

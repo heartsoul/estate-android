@@ -4,6 +4,7 @@ import com.glodon.bim.business.main.bean.ParamSetCurrentTenant;
 import com.glodon.bim.business.main.bean.ProjectListBean;
 
 import okhttp3.ResponseBody;
+import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
@@ -25,9 +26,8 @@ public interface ChooseTenantApi {
     @PUT("user/currentTenant")
     Observable<ResponseBody> currentTenant(@Body ParamSetCurrentTenant param, @Header("cookie") String cookie);
 
-//    @FormUrlEncoded
     @GET("pmbasic/projects/available")
-    Observable<ProjectListBean> getAvailableProjects(@Query("page") int page, @Query("size") int size, @Header("cookie") String cookie);
-//    @GET("projects/available")
-//    Observable<ProjectListBean> getAvailableProjects(@Body ParamGetProjectList param, @Header("cookie") String cookie);
+    Observable<ProjectListBean> getAvailableProjects(@Query("page") int page, @Query("size") int size, @Query("sort") String[] sort, @Header("cookie") String cookie);
+
+
 }

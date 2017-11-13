@@ -26,6 +26,12 @@ public interface UploadImageApi {
     @GET("bimpm/attachment/operationCode")
     Call<ResponseBody> getOperationCode(@Query("containerId") String containerId, @Query("name") String name, @Query("digest") String digest, @Query("length") long length, @Header("cookie") String cookie);
 
+    /**
+     * 图片上传  获取operationCode
+     */
+    @GET("v1/operationCodes")
+    Call<ResponseBody> getOperationCode2(@Query("containerId") String containerId, @Query("name") String name, @Query("digest") String digest, @Query("length") long length, @Header("cookie") String cookie);
+
     @Multipart
     @POST
     Call<UploadImageBean> uploadImage2(@Url String url, @Part MultipartBody.Part file);

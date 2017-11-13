@@ -351,6 +351,11 @@ public class QualityCheckListPresenter implements QualityCheckListContract.Prese
 
                         @Override
                         public void onNext(QualityCheckListBean bean) {
+                            LogUtil.e("bean==null?"+(bean==null));
+                            LogUtil.e("bean.content==null?"+(bean.content==null));
+                            if(bean.content!=null){
+                                LogUtil.e("size-="+bean.content.size());
+                            }
                             if (bean != null && bean.content != null && bean.content.size() > 0) {
                                 mDataList.addAll(bean.content);
                                 if (mCurrentPage < bean.totalPages) {

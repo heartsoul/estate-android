@@ -75,19 +75,24 @@ public class UploadManger {
         final String name = file.getName();
         String digest = name;
         long length = file.length();
-        LogUtil.e("length=", length + "");
+        //http://172.16.233.183:8093/v1/operationCodes
         NetRequest.getInstance().getCall(AppConfig.BASE_URL, UploadImageApi.class).getOperationCode(containerId,name,digest,length,new DaoProvider().getCookie())
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         String operationCode = null;
                         try {
-                            operationCode = response.body().string();
+                            if(response.body()!=null) {
+                                operationCode = response.body().string();
+                                LogUtil.e("code = ", operationCode);
+                                uploadImage(operationCode, file,imagePath);
+                            }else if(response.errorBody()!=null){
+                                LogUtil.e("erro="+response.errorBody().string());
+                            }
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-                        LogUtil.e("code = ", operationCode);
-                        uploadImage(operationCode, file,imagePath);
+
                     }
 
                     @Override
@@ -113,6 +118,13 @@ public class UploadManger {
             @Override
             public void onResponse(Call<UploadImageBean> call, Response<UploadImageBean> response) {
                 count++;
+                if(response.errorBody()!=null){
+                    try {
+                        LogUtil.e("error="+response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
                 if(response!=null && response.body()!=null && "success".equals(response.body().message)){
                     UploadImageBeanData data = response.body().data;
                     CreateCheckListParamsFile param = new CreateCheckListParamsFile();

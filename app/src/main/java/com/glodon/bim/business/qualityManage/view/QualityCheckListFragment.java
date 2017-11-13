@@ -17,7 +17,6 @@ import com.glodon.bim.basic.listener.ThrottleClickEvents;
 import com.glodon.bim.business.main.bean.ProjectListItem;
 import com.glodon.bim.business.qualityManage.OnClassifyItemClickListener;
 import com.glodon.bim.business.qualityManage.adapter.QualityCheckListAdapter;
-import com.glodon.bim.business.qualityManage.adapter.QualityCheckListAdapter2;
 import com.glodon.bim.business.qualityManage.adapter.QualityCheckListClassifyAdapter;
 import com.glodon.bim.business.qualityManage.bean.ClassifyItem;
 import com.glodon.bim.business.qualityManage.bean.QualityCheckListBeanItem;
