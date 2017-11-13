@@ -225,35 +225,39 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
     //获取责任人列表
     @Override
     public void getPersonList() {
-        Subscription sub = mModel.gePersonList(mProjectId, mCompanyList.get(mCompanySelectPosition).coperationId)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<List<PersonItem>>() {
-                    @Override
-                    public void onCompleted() {
+        if(mCompanyList!=null && mCompanySelectPosition<mCompanyList.size()) {
+            Subscription sub = mModel.gePersonList(mProjectId, mCompanyList.get(mCompanySelectPosition).coperationId)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Subscriber<List<PersonItem>>() {
+                        @Override
+                        public void onCompleted() {
 
-                    }
+                        }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        LogUtil.e("person error=" + e.getMessage());
-                    }
+                        @Override
+                        public void onError(Throwable e) {
+                            LogUtil.e("person error=" + e.getMessage());
+                        }
 
-                    @Override
-                    public void onNext(List<PersonItem> personItems) {
-                        mPersonList = personItems;
-                        mPersonNameList.clear();
-                        if (mPersonList != null && mPersonList.size() > 0) {
-                            for (PersonItem item : mPersonList) {
-                                mPersonNameList.add(item.name);
-                            }
-                            if (mView != null) {
-                                mView.showPersonList(mPersonNameList, mPersonSelectPosition);
+                        @Override
+                        public void onNext(List<PersonItem> personItems) {
+                            mPersonList = personItems;
+                            mPersonNameList.clear();
+                            if (mPersonList != null && mPersonList.size() > 0) {
+                                for (PersonItem item : mPersonList) {
+                                    mPersonNameList.add(item.name);
+                                }
+                                if (mView != null) {
+                                    mView.showPersonList(mPersonNameList, mPersonSelectPosition);
+                                }
                             }
                         }
-                    }
-                });
-        mSubscritption.add(sub);
+                    });
+            mSubscritption.add(sub);
+        }else{
+            ToastManager.show("请先选择施工单位!");
+        }
     }
 
     @Override

@@ -91,7 +91,7 @@
         <ImageView
             android:id="@+id/quality_check_list_detail_item_image_one"
             android:layout_width="@dimen/dimen_174"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/dimen_232"
             android:scaleType="centerCrop"
             android:layout_marginTop="@dimen/dimen_10"
             />

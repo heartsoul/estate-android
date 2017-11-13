@@ -3,12 +3,10 @@ package com.glodon.bim.business.qualityManage.presenter;
 import android.app.Activity;
 import android.content.Intent;
 
-import com.glodon.bim.basic.config.AppConfig;
 import com.glodon.bim.basic.log.LogUtil;
-import com.glodon.bim.basic.network.NetRequest;
 import com.glodon.bim.basic.utils.CameraUtil;
 import com.glodon.bim.basic.utils.NetWorkUtils;
-import com.glodon.bim.business.greendao.provider.DaoProvider;
+import com.glodon.bim.business.qualityManage.bean.CreateCheckListParamsFile;
 import com.glodon.bim.business.qualityManage.bean.QualityCheckListDetailBean;
 import com.glodon.bim.business.qualityManage.bean.QualityCheckListDetailProgressInfo;
 import com.glodon.bim.business.qualityManage.bean.QualityGetRepairInfo;
@@ -17,8 +15,9 @@ import com.glodon.bim.business.qualityManage.bean.QualityRepairParams;
 import com.glodon.bim.business.qualityManage.bean.QualityReviewParams;
 import com.glodon.bim.business.qualityManage.bean.SaveBean;
 import com.glodon.bim.business.qualityManage.contract.CreateReviewContract;
-import com.glodon.bim.business.qualityManage.model.CreateReviewApi;
+import com.glodon.bim.business.qualityManage.listener.OnUploadImageListener;
 import com.glodon.bim.business.qualityManage.model.CreateReviewModel;
+import com.glodon.bim.business.qualityManage.util.UploadManger;
 import com.glodon.bim.business.qualityManage.view.PhotoEditActivity;
 import com.glodon.bim.common.config.CommonConfig;
 import com.glodon.bim.customview.ToastManager;
@@ -27,14 +26,11 @@ import com.glodon.bim.customview.album.AlbumEditActivity;
 import com.glodon.bim.customview.album.TNBImageItem;
 import com.glodon.bim.customview.photopreview.PhotoPreviewActivity;
 
-import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -211,28 +207,66 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter {
         mView.getActivity().startActivityForResult(intent, REQUEST_CODE_PHOTO_PREVIEW);
     }
 
+    private boolean mIsShowUploadErrorToast = true;
+    private List<CreateCheckListParamsFile> mImageList;
     @Override
-    public void submit(String des, String mCurrentStatus, String mSelectedTime) {
+    public void submit(final String des, final String mCurrentStatus, final String mSelectedTime) {
         if (NetWorkUtils.isNetworkAvailable(mView.getActivity())) {
+            if (mSelectedMap.size() > 0) {
+                mIsShowUploadErrorToast = true;
+                new UploadManger(mSelectedMap).uploadImages(new OnUploadImageListener() {
+                    @Override
+                    public void onUploadFinished(List<CreateCheckListParamsFile> list) {
 
-            switch (mCreateType) {
-                case CommonConfig.CREATE_TYPE_REPAIR:
-                    if (mIsEditStatus) {
-                        editSubmitRepair(des);
-                    } else {
-                        createSubmitRepair(des);
+                        int i = 0;
+                        for (Map.Entry<String, TNBImageItem> entry : mSelectedMap.entrySet()) {
+                            TNBImageItem item = entry.getValue();
+                            item.objectId = list.get(i).objectId;
+                            item.urlFile = list.get(i);
+                            i++;
+                        }
+                        mImageList = list;
+                        toSubmit(des,mCurrentStatus,mSelectedTime);
                     }
-                    break;
-                case CommonConfig.CREATE_TYPE_REVIEW:
-                    if (mIsEditStatus) {
-                        editSubmitReview(des, mCurrentStatus, mSelectedTime);
-                    } else {
-                        createSubmitReview(des, mCurrentStatus, mSelectedTime);
+
+                    @Override
+                    public void onUploadError(Throwable t) {
+                        if (mView != null) {
+                            mView.dismissLoadingDialog();
+                        }
+                        if (mIsShowUploadErrorToast) {
+                            mIsShowUploadErrorToast = false;
+                            ToastManager.show("图片上传失败！");
+                        }
+
                     }
-                    break;
+                });
+            } else {
+                mImageList = null;
+                toSubmit(des,mCurrentStatus,mSelectedTime);
             }
+
         } else {
             ToastManager.showNetWorkToast();
+        }
+    }
+
+    private void toSubmit(String des, String mCurrentStatus, String mSelectedTime){
+        switch (mCreateType) {
+            case CommonConfig.CREATE_TYPE_REPAIR:
+                if (mIsEditStatus) {
+                    editSubmitRepair(des);
+                } else {
+                    createSubmitRepair(des);
+                }
+                break;
+            case CommonConfig.CREATE_TYPE_REVIEW:
+                if (mIsEditStatus) {
+                    editSubmitReview(des, mCurrentStatus, mSelectedTime);
+                } else {
+                    createSubmitReview(des, mCurrentStatus, mSelectedTime);
+                }
+                break;
         }
     }
 
@@ -313,6 +347,9 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter {
 //            props.flawCode = info.inspectionInfo.code;
             props.flawId = info.inspectionInfo.id;
         }
+        if(mImageList!=null && mImageList.size()>0){
+            props.files = mImageList;
+        }
         return props;
     }
 
@@ -348,22 +385,6 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter {
 
     private void createSubmitReview(String des, String mCurrentStatus, String mSelectedTime) {
         QualityReviewParams props = getReviewParams(des, mCurrentStatus, mSelectedTime);
-//        NetRequest.getInstance().getCall(AppConfig.BASE_URL, CreateReviewApi.class).createSubmitReview2(deptId,props,new DaoProvider().getCookie())
-//                .enqueue(new Callback<ResponseBody>() {
-//                    @Override
-//                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-//                        try {
-//                            LogUtil.e("ssss="+response.toString());
-//                        } catch (Exception e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Call<ResponseBody> call, Throwable t) {
-//                        LogUtil.e(t.getMessage());
-//                    }
-//                });
         Subscription sub = mModel.createSubmitReview(deptId, props)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -405,31 +426,70 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter {
 //            props.rectificationCode = list.get(list.size()-1).code;
             props.rectificationId = list.get(0).id;
         }
+        if(mImageList!=null && mImageList.size()>0){
+            props.files = mImageList;
+        }
         return props;
     }
 
     @Override
-    public void save(String des, String mCurrentStatus, String mSelectedTime) {
+    public void save(final String des, final String mCurrentStatus, final String mSelectedTime) {
         if (NetWorkUtils.isNetworkAvailable(mView.getActivity())) {
 
-            switch (mCreateType) {
-                case CommonConfig.CREATE_TYPE_REPAIR:
-                    if (mIsEditStatus) {
-                        editSaveRepair(des);
-                    } else {
-                        createSaveRepair(des);
+            if (mSelectedMap.size() > 0) {
+                mIsShowUploadErrorToast = true;
+                new UploadManger(mSelectedMap).uploadImages(new OnUploadImageListener() {
+                    @Override
+                    public void onUploadFinished(List<CreateCheckListParamsFile> list) {
+
+                        int i = 0;
+                        for (Map.Entry<String, TNBImageItem> entry : mSelectedMap.entrySet()) {
+                            TNBImageItem item = entry.getValue();
+                            item.objectId = list.get(i).objectId;
+                            item.urlFile = list.get(i);
+                            i++;
+                        }
+                        mImageList = list;
+                        toSave(des,mCurrentStatus,mSelectedTime);
                     }
-                    break;
-                case CommonConfig.CREATE_TYPE_REVIEW:
-                    if (mIsEditStatus) {
-                        editSaveReview(des, mCurrentStatus, mSelectedTime);
-                    } else {
-                        createSaveReview(des, mCurrentStatus, mSelectedTime);
+
+                    @Override
+                    public void onUploadError(Throwable t) {
+                        if (mView != null) {
+                            mView.dismissLoadingDialog();
+                        }
+                        if (mIsShowUploadErrorToast) {
+                            mIsShowUploadErrorToast = false;
+                            ToastManager.show("图片上传失败！");
+                        }
+
                     }
-                    break;
+                });
+            } else {
+                mImageList = null;
+                toSave(des,mCurrentStatus,mSelectedTime);
             }
         } else {
             ToastManager.showNetWorkToast();
+        }
+    }
+
+    private void toSave(String des, String mCurrentStatus, String mSelectedTime){
+        switch (mCreateType) {
+            case CommonConfig.CREATE_TYPE_REPAIR:
+                if (mIsEditStatus) {
+                    editSaveRepair(des);
+                } else {
+                    createSaveRepair(des);
+                }
+                break;
+            case CommonConfig.CREATE_TYPE_REVIEW:
+                if (mIsEditStatus) {
+                    editSaveReview(des, mCurrentStatus, mSelectedTime);
+                } else {
+                    createSaveReview(des, mCurrentStatus, mSelectedTime);
+                }
+                break;
         }
     }
 

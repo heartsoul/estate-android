@@ -1,12 +1,14 @@
 package com.glodon.bim.business.qualityManage.bean;
 
+import java.io.Serializable;
+
 /**
  * 描述：创建检查单的入参
  * 作者：zhourf on 2017/10/27
  * 邮箱：zhourf@glodon.com
  */
 
-public class CreateCheckListParamsFile {
+public class CreateCheckListParamsFile implements Serializable{
     public String objectId;
     public String name;
     public String extension;

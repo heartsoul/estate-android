@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.glodon.bim.R;
 import com.glodon.bim.base.BaseActivity;
@@ -28,7 +29,8 @@ import java.util.List;
 public class ChooseTenantActivity extends BaseActivity implements View.OnClickListener ,ChooseTenantContract.View{
 
     private View mStatusView;
-    private ImageView mBackView,mSearchView;
+    private RelativeLayout mBackView;
+    private ImageView mSearchView;
 
     private RecyclerView mRecyclerView;
     private ChooseTenantAdapter mAdapter;
@@ -49,7 +51,7 @@ public class ChooseTenantActivity extends BaseActivity implements View.OnClickLi
 
     private void initView() {
         mStatusView = findViewById(R.id.choose_tenant_header_top);
-        mBackView = (ImageView) findViewById(R.id.choose_tenant_header_back);
+        mBackView = (RelativeLayout) findViewById(R.id.choose_tenant_header_back);
         mSearchView = (ImageView) findViewById(R.id.choose_tenant_header_search);
         mRecyclerView = (RecyclerView) findViewById(R.id.choose_tenant_recyclerview);
         initRecyclerView();

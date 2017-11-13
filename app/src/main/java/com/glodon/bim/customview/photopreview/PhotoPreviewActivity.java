@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.glodon.bim.R;
@@ -28,13 +29,14 @@ import java.util.Map;
  */
 public class PhotoPreviewActivity extends BaseActivity implements View.OnClickListener {
 
-    private ImageView mBackView;
-    private ImageView mDeleteView;
+    private RelativeLayout mBackView;
+    private RelativeLayout mDeleteView;
     private TextView mTitleView;
     private ViewPager mPagerView;
     private List<TNBImageItem> mDataList;
     private PhotoPreviewAdapter mAdapter;
     private int mSelectedPosition ;
+    private boolean mIsShowDelete=true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +58,8 @@ public class PhotoPreviewActivity extends BaseActivity implements View.OnClickLi
         mDataList = new ArrayList<>();
         mSelectedPosition = getIntent().getIntExtra(CommonConfig.ALBUM_POSITION,0);
         AlbumData mAlbumData = (AlbumData) getIntent().getSerializableExtra(CommonConfig.ALBUM_DATA);
+        mIsShowDelete = getIntent().getBooleanExtra(CommonConfig.ALBUM_SHOW_DELETE,true);
+        mDeleteView.setVisibility(mIsShowDelete?View.VISIBLE:View.GONE);
         if(mAlbumData!=null && mAlbumData.map!=null && mAlbumData.map.size()>0)
         {
             for(Map.Entry<String,TNBImageItem> entry:mAlbumData.map.entrySet()){
@@ -70,8 +74,8 @@ public class PhotoPreviewActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void initView() {
-        mBackView = (ImageView) findViewById(R.id.photo_preview_back);
-        mDeleteView = (ImageView) findViewById(R.id.photo_preview_delete);
+        mBackView = (RelativeLayout) findViewById(R.id.photo_preview_back);
+        mDeleteView = (RelativeLayout) findViewById(R.id.photo_preview_delete);
         mTitleView = (TextView) findViewById(R.id.photo_preview_title);
         mPagerView = (ViewPager) findViewById(R.id.photo_preview_viewpager);
     }

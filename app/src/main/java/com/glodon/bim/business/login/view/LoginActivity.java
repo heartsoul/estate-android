@@ -25,8 +25,10 @@ import com.glodon.bim.R;
 import com.glodon.bim.base.BaseActivity;
 import com.glodon.bim.basic.listener.ThrottleClickEvents;
 import com.glodon.bim.basic.utils.ScreenUtil;
+import com.glodon.bim.basic.utils.SharedPreferencesUtil;
 import com.glodon.bim.business.login.contract.LoginContract;
 import com.glodon.bim.business.login.presenter.LoginPresenter;
+import com.glodon.bim.common.config.CommonConfig;
 import com.glodon.bim.customview.ToastManager;
 
 /**
@@ -169,10 +171,12 @@ public class LoginActivity extends BaseActivity implements LoginContract.View, V
         ThrottleClickEvents.throttleClick(mLoginBtn, this);
         ThrottleClickEvents.throttleClick(mForgetPassword, this);
 
-//        mUsernameEt.setText("13810457782");
-//        mPasswordEt.setText("123456789.");
-        mUsernameEt.setText("15822320523");
-        mPasswordEt.setText("123qwe");
+        String username = SharedPreferencesUtil.getString(CommonConfig.USERNAME,"");
+        String password = SharedPreferencesUtil.getString(CommonConfig.PASSWORD,"");
+        mUsernameEt.setText(username);
+        mPasswordEt.setText(password);
+//        mUsernameEt.setText("15822320523");
+//        mPasswordEt.setText("123qwe");
 //        mUsernameEt.setText("15001340978");
 //        mPasswordEt.setText("123qwe");
     }

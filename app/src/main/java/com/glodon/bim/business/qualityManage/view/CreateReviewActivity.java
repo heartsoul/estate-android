@@ -22,16 +22,17 @@ import com.glodon.bim.basic.listener.ThrottleClickEvents;
 import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.basic.utils.CameraUtil;
 import com.glodon.bim.basic.utils.DateUtil;
+import com.glodon.bim.business.qualityManage.bean.CreateCheckListParamsFile;
 import com.glodon.bim.business.qualityManage.bean.QualityCheckListBeanItemFile;
 import com.glodon.bim.business.qualityManage.bean.QualityCheckListDetailBean;
 import com.glodon.bim.business.qualityManage.contract.CreateReviewContract;
 import com.glodon.bim.business.qualityManage.presenter.CreateReviewPresenter;
 import com.glodon.bim.common.config.CommonConfig;
 import com.glodon.bim.customview.ToastManager;
-import com.glodon.bim.customview.dialog.PhotoAlbumDialog;
 import com.glodon.bim.customview.album.AlbumData;
 import com.glodon.bim.customview.album.TNBImageItem;
 import com.glodon.bim.customview.datepicker.TNBCustomDatePickerUtils;
+import com.glodon.bim.customview.dialog.PhotoAlbumDialog;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -52,7 +53,8 @@ public class CreateReviewActivity extends BaseActivity implements View.OnClickLi
     //状态
     private View mStatusView;
     //导航
-    private TextView mCancelView, mTitleView, mSubmitView;
+    private RelativeLayout mCancelView, mSubmitView;
+    private TextView mTitleView;
     //描述
     private EditText mDesView;
     private TextView mDesNumView;
@@ -109,9 +111,9 @@ public class CreateReviewActivity extends BaseActivity implements View.OnClickLi
     private void initView() {
         mStatusView = findViewById(R.id.create_review_status);
         //导航
-        mCancelView = (TextView) findViewById(R.id.create_review_nav_cancel);
+        mCancelView = (RelativeLayout) findViewById(R.id.create_review_nav_cancel);
         mTitleView = (TextView) findViewById(R.id.create_review_nav_title);
-        mSubmitView = (TextView) findViewById(R.id.create_review_nav_submit);
+        mSubmitView = (RelativeLayout) findViewById(R.id.create_review_nav_submit);
         //描述
         mDesView = (EditText) findViewById(R.id.create_review_description);
         mDesStar = (ImageView) findViewById(R.id.create_review_description_star);
@@ -431,9 +433,17 @@ public class CreateReviewActivity extends BaseActivity implements View.OnClickLi
             for (QualityCheckListBeanItemFile file : files) {
                 TNBImageItem item = new TNBImageItem();
                 item.imagePath = file.url;
+                item.objectId = file.objectId;
+                CreateCheckListParamsFile paramFile = new CreateCheckListParamsFile();
+                paramFile.name = file.name;
+                paramFile.extData = file.extData;
+                paramFile.objectId = file.objectId;
+//                paramFile.url = file.url;
+                item.urlFile = paramFile;
                 mSelectedMap.put(file.url, item);
             }
             showImages(mSelectedMap);
+            mPresenter.setSelectedImages(mSelectedMap);
         } else {
             mPhotoParent.setVisibility(View.GONE);
         }

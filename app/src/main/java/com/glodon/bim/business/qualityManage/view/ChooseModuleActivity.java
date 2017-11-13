@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.glodon.bim.R;
 import com.glodon.bim.base.BaseActivity;
@@ -33,7 +34,7 @@ public class ChooseModuleActivity extends BaseActivity implements View.OnClickLi
 
     private LinearLayout mStatusView;//状态栏
     //导航栏
-    private ImageView mNavBack,mNavSearch;
+    private RelativeLayout mNavBack,mNavSearch;
 
     private PullRefreshView mPullRefreshView;
     private RecyclerView mRecyclerView;
@@ -56,8 +57,8 @@ public class ChooseModuleActivity extends BaseActivity implements View.OnClickLi
     private void initView() {
         mStatusView = (LinearLayout) findViewById(R.id.choose_module_list_status);
         //导航栏
-        mNavBack = (ImageView) findViewById(R.id.choose_module_list_nav_back);
-        mNavSearch = (ImageView) findViewById(R.id.choose_module_list_nav_search);
+        mNavBack = (RelativeLayout) findViewById(R.id.choose_module_list_nav_back);
+        mNavSearch = (RelativeLayout) findViewById(R.id.choose_module_list_nav_search);
         mPullRefreshView = (PullRefreshView) findViewById(R.id.choose_module_list_recyclerview);
         initStatusBar(mStatusView);
         initRecyclerView();

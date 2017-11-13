@@ -55,7 +55,7 @@ public class PhotoEditActivity extends BaseActivity implements View.OnClickListe
     private PhotoEditView mPhotoEditView;
     private EditText mEditText;
     private List<DragTextView> mDragTextList;
-    private TextView mTopCancel, mTopFinish;
+    private RelativeLayout mTopCancel, mTopFinish;
     private LinearLayout mBottomContent;
     private LinearLayout mBottomDelete;
     private LinearLayout mBottomDrawFunction;
@@ -102,8 +102,8 @@ public class PhotoEditActivity extends BaseActivity implements View.OnClickListe
         mColorValueList = new ArrayList<>();
         mEditText = (EditText) findViewById(R.id.photo_edit_et);
 
-        mTopCancel = (TextView) findViewById(R.id.photo_edit_top_cancel);
-        mTopFinish = (TextView) findViewById(R.id.photo_edit_top_finish);
+        mTopCancel = (RelativeLayout) findViewById(R.id.photo_edit_top_cancel);
+        mTopFinish = (RelativeLayout) findViewById(R.id.photo_edit_top_finish);
 
         mBottomContent = (LinearLayout) findViewById(R.id.photo_edit_bottom_content);
         mBottomDelete = (LinearLayout) findViewById(R.id.photo_edit_bottom_delete);

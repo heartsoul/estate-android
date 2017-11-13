@@ -61,7 +61,7 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
     private String mImagePath;//前面传递过来的图片路径
     private LinearLayout mStatusView;//状态栏
     //导航栏
-    private ImageView mNavBack;
+    private RelativeLayout mNavBack;
     private TextView mNavSubmit, mNavCheckLeftTitle, mNavCheckRightTitle;
     private View mNavLeftLine, mNavRightLine;
     //内容
@@ -153,7 +153,7 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
         mStatusView = (LinearLayout) findViewById(R.id.create_check_list_status);
         rootLayout = (LinearLayout) findViewById(R.id.create_check_list_root);
         //导航栏
-        mNavBack = (ImageView) findViewById(R.id.create_check_list_nav_back);
+        mNavBack = (RelativeLayout) findViewById(R.id.create_check_list_nav_back);
         mNavSubmit = (TextView) findViewById(R.id.create_check_list_nav_submit);
         mNavCheckLeftTitle = (TextView) findViewById(R.id.create_check_list_nav_check_left_title);
         mNavCheckRightTitle = (TextView) findViewById(R.id.create_check_list_nav_check_right_title);

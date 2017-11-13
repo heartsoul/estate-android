@@ -54,4 +54,5 @@ public class CommonConfig {
      * 广播
      */
     public static final String ACTION_GET_AUTHORITY_CHECK = "com.glodon.bim.action.authority.check";
+    public static final String ALBUM_SHOW_DELETE = "albumShowDelete";
 }

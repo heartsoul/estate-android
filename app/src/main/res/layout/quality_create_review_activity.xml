@@ -17,15 +17,21 @@
         android:layout_height="@dimen/dimen_43"
         android:background="@color/c_00baf3">
 
-        <TextView
+        <RelativeLayout
             android:id="@+id/create_review_nav_cancel"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:text="取消"
-            android:textColor="@color/white"
-            android:textSize="@dimen/dimen_15"
-            android:layout_marginLeft="@dimen/dimen_10"/>
+            android:layout_height="match_parent">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="取消"
+                android:textColor="@color/white"
+                android:textSize="@dimen/dimen_15"
+                android:layout_marginLeft="@dimen/dimen_10"
+                android:layout_marginRight="@dimen/dimen_10"/>
+        </RelativeLayout>
+
 
         <TextView
             android:id="@+id/create_review_nav_title"
@@ -35,17 +41,23 @@
             android:text="复查单"
             android:textColor="@color/white"
             android:textSize="@dimen/dimen_17" />
-        <TextView
+        <RelativeLayout
             android:id="@+id/create_review_nav_submit"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/dimen_11"
-            android:text="提交"
-            android:textColor="@color/white"
-            android:textSize="@dimen/dimen_15"
-            />
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/dimen_11"
+                android:layout_marginLeft="@dimen/dimen_10"
+                android:text="提交"
+                android:textColor="@color/white"
+                android:textSize="@dimen/dimen_15"
+                />
+        </RelativeLayout>
+
 
     </RelativeLayout>
 

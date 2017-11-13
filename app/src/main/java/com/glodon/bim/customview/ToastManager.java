@@ -25,7 +25,7 @@ public class ToastManager {
     public static void show(String text) {
         Context context = BaseApplication.getInstance();
         Toast toast = new Toast(context);
-        toast.setDuration(Toast.LENGTH_LONG);
+        toast.setDuration(Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.CENTER, 0, 0);
         View view = LayoutInflater.from(context).inflate(R.layout.toast_show_text_view, null);
         TextView tv = view.findViewById(R.id.toast_show_view_text);
@@ -40,7 +40,7 @@ public class ToastManager {
     public static void show(String text,int imgId) {
         Context context = BaseApplication.getInstance();
         Toast toast = new Toast(context);
-        toast.setDuration(Toast.LENGTH_LONG);
+        toast.setDuration(Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.CENTER, 0, 0);
         View view = LayoutInflater.from(context).inflate(R.layout.toast_show_text_icon_view, null);
         TextView tv = view.findViewById(R.id.toast_show_icon_view_text);

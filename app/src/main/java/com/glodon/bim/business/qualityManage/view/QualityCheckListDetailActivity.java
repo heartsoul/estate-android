@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.glodon.bim.R;
@@ -32,7 +33,7 @@ public class QualityCheckListDetailActivity extends BaseActivity implements View
     //状态
     private View mStatusView;
     //导航
-    private ImageView mBackView;
+    private RelativeLayout mBackView;
     private TextView mRepairView;
     //检查单问题
     private LinearLayout mParent;
@@ -59,7 +60,7 @@ public class QualityCheckListDetailActivity extends BaseActivity implements View
 
     private void initView() {
         mStatusView = findViewById(R.id.quality_check_list_detail_status);
-        mBackView = (ImageView) findViewById(R.id.quality_check_list_detail_back);
+        mBackView = (RelativeLayout) findViewById(R.id.quality_check_list_detail_back);
         mParent = (LinearLayout) findViewById(R.id.quality_check_list_detail_content);
         mRepairView = (TextView) findViewById(R.id.quality_check_list_detail_repair);
 

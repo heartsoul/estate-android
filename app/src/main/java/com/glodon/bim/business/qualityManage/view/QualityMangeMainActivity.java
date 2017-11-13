@@ -57,7 +57,8 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
     //content
     private LinearLayout mContentView;
 
-    private ImageView mBackView, mMenuView, mSearchView, mCreateView;
+    private RelativeLayout  mBackView,mMenuView;
+    private ImageView  mSearchView, mCreateView;
 
     private boolean mIsDrawerOpen = false;
 
@@ -115,8 +116,8 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
         contentParams.width = ScreenUtil.getScreenInfo()[0];
         mContentView.setLayoutParams(contentParams);
 
-        mBackView = (ImageView) findViewById(R.id.main_header_back_icon);
-        mMenuView = (ImageView) findViewById(R.id.main_header_menu_icon);
+        mBackView = (RelativeLayout) findViewById(R.id.main_header_back_icon);
+        mMenuView = (RelativeLayout) findViewById(R.id.main_header_menu_icon);
         mSearchView = (ImageView) findViewById(R.id.main_header_search_icon);
         mCreateView = (ImageView) findViewById(R.id.main_header_new_icon);
 

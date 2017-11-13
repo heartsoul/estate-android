@@ -11,28 +11,42 @@
         android:layout_height="match_parent"
         android:scaleType="fitXY" />
 
-    <TextView
+    <RelativeLayout
         android:id="@+id/photo_edit_top_cancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/dimen_11"
-        android:layout_marginTop="@dimen/dimen_20"
-        android:text="取消"
-        android:visibility="gone"
-        android:textColor="@color/white"
-        android:textSize="@dimen/dimen_16"/>
+        android:paddingRight="@dimen/dimen_10"
+        android:paddingBottom="@dimen/dimen_10"
+        android:visibility="gone">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dimen_11"
+            android:layout_marginTop="@dimen/dimen_20"
+            android:text="取消"
+            android:textColor="@color/white"
+            android:textSize="@dimen/dimen_16"/>
+    </RelativeLayout>
 
-    <TextView
+    <RelativeLayout
         android:id="@+id/photo_edit_top_finish"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="@dimen/dimen_11"
-        android:layout_marginTop="@dimen/dimen_20"
-        android:text="完成"
-        android:textColor="@color/c_02ff00"
+        android:paddingBottom="@dimen/dimen_10"
+        android:paddingLeft="@dimen/dimen_10"
         android:visibility="gone"
-        android:textSize="@dimen/dimen_17"/>
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/dimen_11"
+            android:layout_marginTop="@dimen/dimen_20"
+            android:text="完成"
+            android:textColor="@color/c_02ff00"
+            android:textSize="@dimen/dimen_17"/>
+    </RelativeLayout>
+
 
     <!--<com.glodon.bim.business.qualityManage.view.DragTextView-->
         <!--android:id="@+id/photo_edit_show_text"-->

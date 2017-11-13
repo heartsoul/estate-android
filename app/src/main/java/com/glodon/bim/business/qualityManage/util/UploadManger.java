@@ -111,7 +111,8 @@ public class UploadManger {
 
         MultipartBody.Part body =
                 MultipartBody.Part.createFormData("uploaded_file", file.getName(), requestFile);
-        String temp = "nss/v1/insecure/objects?operationCode=" + operationCode;
+        String temp = "v1/insecure/objects?operationCode=" + operationCode;//使用ip时  用这个
+//        String temp = "nss/v1/insecure/objects?operationCode=" + operationCode;//使用域名时用这个
         Call<UploadImageBean> resultCall = service.uploadImage2(temp, body);
 
         resultCall.enqueue(new Callback<UploadImageBean>() {

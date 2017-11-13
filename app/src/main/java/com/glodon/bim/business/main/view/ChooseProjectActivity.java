@@ -31,7 +31,8 @@ import java.util.List;
 public class ChooseProjectActivity extends BaseActivity implements View.OnClickListener ,ChooseProjectContract.View{
 
     private View mStatusView;
-    private ImageView mBackView,mSearchView;
+    private RelativeLayout mBackView;
+    private ImageView mSearchView;
 
     private RelativeLayout mContentParent;
     private PullRefreshView mPullRefreshView;
@@ -55,7 +56,7 @@ public class ChooseProjectActivity extends BaseActivity implements View.OnClickL
 
     private void initView() {
         mStatusView = findViewById(R.id.choose_project_header_top);
-        mBackView = (ImageView) findViewById(R.id.choose_project_header_back);
+        mBackView = (RelativeLayout) findViewById(R.id.choose_project_header_back);
         mSearchView = (ImageView) findViewById(R.id.choose_project_header_search);
         mContentParent = (RelativeLayout) findViewById(R.id.choose_project_content);
         mPullRefreshView = (PullRefreshView) findViewById(R.id.choose_project_recyclerview);

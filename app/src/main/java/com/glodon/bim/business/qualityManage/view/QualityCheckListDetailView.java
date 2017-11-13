@@ -1,6 +1,7 @@
 package com.glodon.bim.business.qualityManage.view;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,8 +20,13 @@ import com.glodon.bim.business.qualityManage.bean.QualityCheckListDetailProgress
 import com.glodon.bim.business.qualityManage.contract.QualityCheckListDetailViewContract;
 import com.glodon.bim.business.qualityManage.listener.OnShowQualityCheckDetailListener;
 import com.glodon.bim.business.qualityManage.presenter.QualityCheckListDetailViewPresenter;
+import com.glodon.bim.common.config.CommonConfig;
+import com.glodon.bim.customview.album.AlbumData;
+import com.glodon.bim.customview.album.TNBImageItem;
 import com.glodon.bim.customview.dialog.LoadingDialogManager;
+import com.glodon.bim.customview.photopreview.PhotoPreviewActivity;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -145,14 +151,33 @@ public class QualityCheckListDetailView implements QualityCheckListDetailViewCon
         //整改期限
         timeLimitView.setText("整改期："+DateUtil.getNormalDate(Long.parseLong(info.lastRectificationDate)));
         //图片
-        List<QualityCheckListBeanItemFile> files  = mBean.inspectionInfo.files;
+        List<QualityCheckListBeanItemFile> files  = info.files;
         if(files!=null && files.size()!=0){
+            final LinkedHashMap<String,TNBImageItem> mSelectedMap = new LinkedHashMap<>();
             int size = files.size();
+            for(QualityCheckListBeanItemFile imageFile:files){
+                TNBImageItem imageItem = new TNBImageItem();
+                imageItem.imagePath = imageFile.url;
+                mSelectedMap.put(imageFile.url,imageItem);
+            }
             if(size == 1){
                 oneImageView.setVisibility(View.VISIBLE);
                 imageParent.setVisibility(View.GONE);
                 ImageLoader.showImageNormal(mActivity,files.get(0).url,oneImageView);
+
+                oneImageView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(getActivity(), PhotoPreviewActivity.class);
+                        intent.putExtra(CommonConfig.ALBUM_DATA, new AlbumData(mSelectedMap));
+                        intent.putExtra(CommonConfig.ALBUM_POSITION, 0);
+                        intent.putExtra(CommonConfig.ALBUM_SHOW_DELETE,false);
+                        getActivity().startActivity(intent);
+                    }
+                });
             }else{
+                oneImageView.setVisibility(View.GONE);
+                imageParent.setVisibility(View.VISIBLE);
                 int w = (ScreenUtil.getScreenInfo()[0]-ScreenUtil.dp2px(56))/3;
                 image0.setVisibility(View.VISIBLE);
                 image0.getLayoutParams().width = w;
@@ -168,8 +193,38 @@ public class QualityCheckListDetailView implements QualityCheckListDetailViewCon
                     image2.setVisibility(View.VISIBLE);
                     image2.getLayoutParams().width = w;
                     image2.getLayoutParams().height = w;
-                    ImageLoader.showImageNormal(mActivity,files.get(1).url,image2);
+                    ImageLoader.showImageNormal(mActivity,files.get(2).url,image2);
                 }
+                image0.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(getActivity(), PhotoPreviewActivity.class);
+                        intent.putExtra(CommonConfig.ALBUM_DATA, new AlbumData(mSelectedMap));
+                        intent.putExtra(CommonConfig.ALBUM_POSITION, 0);
+                        intent.putExtra(CommonConfig.ALBUM_SHOW_DELETE,false);
+                        getActivity().startActivity(intent);
+                    }
+                });
+                image1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(getActivity(), PhotoPreviewActivity.class);
+                        intent.putExtra(CommonConfig.ALBUM_DATA, new AlbumData(mSelectedMap));
+                        intent.putExtra(CommonConfig.ALBUM_POSITION, 1);
+                        intent.putExtra(CommonConfig.ALBUM_SHOW_DELETE,false);
+                        getActivity().startActivity(intent);
+                    }
+                });
+                image2.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(getActivity(), PhotoPreviewActivity.class);
+                        intent.putExtra(CommonConfig.ALBUM_DATA, new AlbumData(mSelectedMap));
+                        intent.putExtra(CommonConfig.ALBUM_POSITION, 2);
+                        intent.putExtra(CommonConfig.ALBUM_SHOW_DELETE,false);
+                        getActivity().startActivity(intent);
+                    }
+                });
             }
         }else{
             oneImageView.setVisibility(View.GONE);
@@ -217,14 +272,33 @@ public class QualityCheckListDetailView implements QualityCheckListDetailViewCon
         //描述
         desView.setText(info.description);
         //图片
-        List<QualityCheckListBeanItemFile> files  = mBean.inspectionInfo.files;
+        List<QualityCheckListBeanItemFile> files  = info.files;
         if(files!=null && files.size()!=0){
+            final LinkedHashMap<String,TNBImageItem> mSelectedMap = new LinkedHashMap<>();
             int size = files.size();
+            for(QualityCheckListBeanItemFile imageFile:files){
+                TNBImageItem imageItem = new TNBImageItem();
+                imageItem.imagePath = imageFile.url;
+                mSelectedMap.put(imageFile.url,imageItem);
+            }
             if(size == 1){
                 oneImageView.setVisibility(View.VISIBLE);
                 imageParent.setVisibility(View.GONE);
                 ImageLoader.showImageNormal(mActivity,files.get(0).url,oneImageView);
+
+                oneImageView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(getActivity(), PhotoPreviewActivity.class);
+                        intent.putExtra(CommonConfig.ALBUM_DATA, new AlbumData(mSelectedMap));
+                        intent.putExtra(CommonConfig.ALBUM_POSITION, 0);
+                        intent.putExtra(CommonConfig.ALBUM_SHOW_DELETE,false);
+                        getActivity().startActivity(intent);
+                    }
+                });
             }else{
+                oneImageView.setVisibility(View.GONE);
+                imageParent.setVisibility(View.VISIBLE);
                 int w = (ScreenUtil.getScreenInfo()[0]-ScreenUtil.dp2px(56))/3;
                 image0.setVisibility(View.VISIBLE);
                 image0.getLayoutParams().width = w;
@@ -240,8 +314,38 @@ public class QualityCheckListDetailView implements QualityCheckListDetailViewCon
                     image2.setVisibility(View.VISIBLE);
                     image2.getLayoutParams().width = w;
                     image2.getLayoutParams().height = w;
-                    ImageLoader.showImageNormal(mActivity,files.get(1).url,image2);
+                    ImageLoader.showImageNormal(mActivity,files.get(2).url,image2);
                 }
+                image0.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(getActivity(), PhotoPreviewActivity.class);
+                        intent.putExtra(CommonConfig.ALBUM_DATA, new AlbumData(mSelectedMap));
+                        intent.putExtra(CommonConfig.ALBUM_POSITION, 0);
+                        intent.putExtra(CommonConfig.ALBUM_SHOW_DELETE,false);
+                        getActivity().startActivity(intent);
+                    }
+                });
+                image1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(getActivity(), PhotoPreviewActivity.class);
+                        intent.putExtra(CommonConfig.ALBUM_DATA, new AlbumData(mSelectedMap));
+                        intent.putExtra(CommonConfig.ALBUM_POSITION, 1);
+                        intent.putExtra(CommonConfig.ALBUM_SHOW_DELETE,false);
+                        getActivity().startActivity(intent);
+                    }
+                });
+                image2.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(getActivity(), PhotoPreviewActivity.class);
+                        intent.putExtra(CommonConfig.ALBUM_DATA, new AlbumData(mSelectedMap));
+                        intent.putExtra(CommonConfig.ALBUM_POSITION, 2);
+                        intent.putExtra(CommonConfig.ALBUM_SHOW_DELETE,false);
+                        getActivity().startActivity(intent);
+                    }
+                });
             }
         }else{
             oneImageView.setVisibility(View.GONE);
