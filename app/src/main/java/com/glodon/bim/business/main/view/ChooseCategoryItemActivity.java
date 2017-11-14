@@ -56,7 +56,7 @@ public class ChooseCategoryItemActivity extends BaseActivity implements ChooseCa
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.main_choose_category_item_activity);
         initView();
         setListener();

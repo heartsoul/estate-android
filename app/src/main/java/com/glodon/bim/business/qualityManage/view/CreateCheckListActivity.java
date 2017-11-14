@@ -263,16 +263,11 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//                if(!TextUtils.isEmpty(charSequence) && charSequence.length()>255){
-//                    mSiteDescription.setText(charSequence.toString().substring(0,255));
-//                    mSiteDescription.setSelection(mSiteDescription.getText().toString().trim().length());
-//                }
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
-//                mLeftNumber.setText((255-mSiteDescription.getText().toString().trim().length())+"");
-                String text = mSiteDescription.getText().toString().trim();
+                String text = mSiteDescription.getText().toString();
                 int num ;
                 if(TextUtils.isEmpty(text)){
                     num = 255;
@@ -638,7 +633,7 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
     }
     //收集页面数据
     private void assembleData(){
-        mParams.description = mSiteDescription.getText().toString().trim();
+        mParams.description = mSiteDescription.getText().toString();
         mParams.needRectification = mRemainFlagState;
         mParams.files = mPhotoList;
     }
@@ -664,7 +659,7 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
         } else {
             mPersonStar.setVisibility(View.INVISIBLE);
         }
-        String siteContent = mSiteDescription.getText().toString().trim();
+        String siteContent = mSiteDescription.getText().toString();
         if (TextUtils.isEmpty(siteContent)) {
             mSiteStar.setVisibility(View.VISIBLE);
             temp.add("现场描述");
@@ -745,7 +740,7 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
         if(!TextUtils.isEmpty(temp)){
             return true;
         }
-        temp = mSiteDescription.getText().toString().trim();
+        temp = mSiteDescription.getText().toString();
         if(!TextUtils.isEmpty(temp)){
             return true;
         }

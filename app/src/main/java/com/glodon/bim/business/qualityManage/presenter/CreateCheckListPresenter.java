@@ -118,13 +118,15 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
 
     //初始化图片
     private void initImages() {
-        for (CreateCheckListParamsFile file : mEditParams.files) {
-            TNBImageItem item = new TNBImageItem();
-            item.imagePath = file.url;
-            item.objectId = file.objectId;
-            item.urlFile = file;
-            mSelectedMap.put(item.imagePath, item);
-            mView.showImages(mSelectedMap);
+        if(mEditParams!=null && mEditParams.files!=null && mEditParams.files.size()>0) {
+            for (CreateCheckListParamsFile file : mEditParams.files) {
+                TNBImageItem item = new TNBImageItem();
+                item.imagePath = file.url;
+                item.objectId = file.objectId;
+                item.urlFile = file;
+                mSelectedMap.put(item.imagePath, item);
+                mView.showImages(mSelectedMap);
+            }
         }
     }
 

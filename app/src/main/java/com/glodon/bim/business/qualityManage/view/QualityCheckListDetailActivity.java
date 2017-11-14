@@ -49,7 +49,7 @@ public class QualityCheckListDetailActivity extends BaseActivity implements View
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.quality_check_list_detail_activity);
 
         initView();

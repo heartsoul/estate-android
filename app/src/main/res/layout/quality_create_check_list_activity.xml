@@ -169,7 +169,7 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dimen_01"
+                    android:layout_height="@dimen/dimen_0.5"
                     android:layout_marginLeft="@dimen/dimen_19"
                     android:background="@color/c_a3cccccc" />
                 <!--责任人-->
@@ -226,7 +226,7 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dimen_01"
+                    android:layout_height="@dimen/dimen_0.5"
                     android:layout_marginLeft="@dimen/dimen_19"
                     android:background="@color/c_a3cccccc" />
                 <!--现场描述-->
@@ -265,7 +265,7 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dimen_01"
+                    android:layout_height="@dimen/dimen_0.5"
                     android:layout_marginLeft="@dimen/dimen_19"
                     android:background="@color/c_a3cccccc"
                     android:visibility="gone" />
@@ -360,7 +360,11 @@
                             android:layout_centerVertical="true"
                             android:background="@drawable/icon_flag_open" />
                     </RelativeLayout>
-
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dimen_0.5"
+                        android:layout_marginLeft="@dimen/dimen_19"
+                        android:background="@color/c_a3cccccc" />
                     <RelativeLayout
                         android:id="@+id/create_check_list_remain"
                         android:layout_width="match_parent"
@@ -501,7 +505,7 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dimen_01"
+                    android:layout_height="@dimen/dimen_0.5"
                     android:layout_marginLeft="@dimen/dimen_19"
                     android:background="@color/c_a3cccccc" />
                 <!--关联图纸-->
@@ -549,7 +553,7 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dimen_01"
+                    android:layout_height="@dimen/dimen_0.5"
                     android:layout_marginLeft="@dimen/dimen_19"
                     android:background="@color/c_a3cccccc" />
                 <!--关联模型-->

@@ -88,7 +88,7 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.main_activity);
         mActivity = this;
         mPresenter = new QualityMangeMainPresenter(this);

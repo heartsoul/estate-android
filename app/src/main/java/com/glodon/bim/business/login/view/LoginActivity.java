@@ -52,7 +52,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View, V
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.login_main_activity);
         initView();
         setListener();
