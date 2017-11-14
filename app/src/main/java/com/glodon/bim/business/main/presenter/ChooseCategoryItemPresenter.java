@@ -90,7 +90,8 @@ public class ChooseCategoryItemPresenter implements ChooseCategoryItemContract.P
                 if (resultCode == Activity.RESULT_OK) {
                     //正常返回
                     Intent intent = new Intent(mView.getActivity(), PhotoEditActivity.class);
-                    intent.putExtra("imagePath",mPhotoPath);
+                    intent.putExtra(CommonConfig.IMAGE_PATH,mPhotoPath);
+                    intent.putExtra(CommonConfig.CREATE_TYPE,CommonConfig.CREATE_TYPE_CHECK);//表示创建检查单
                     mView.getActivity().startActivityForResult(intent,REQUEST_CODE_CREATE_CHECK_LIST);
 
                 } else if (resultCode == Activity.RESULT_CANCELED) {

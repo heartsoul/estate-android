@@ -37,10 +37,10 @@ import java.util.List;
 public class TNBDateView extends View {
 
 	/** Top and bottom shadows colors */
-	private int[] SHADOWS_COLORS = new int[] { 0xaa0000,
-			0x00AA00, 0x0000aa };
-//	private int[] SHADOWS_COLORS = new int[] { 0xefE9E9E9,
-//			0xcfE9E9E9, 0x3fE9E9E9 };
+//	private int[] SHADOWS_COLORS = new int[] { 0xaa0000,
+//			0x00AA00, 0x0000aa };
+	private int[] SHADOWS_COLORS = new int[] { 0xefE9E9E9,
+			0xcfE9E9E9, 0x3fE9E9E9 };
 
 	/** Top and bottom items offset (to hide that) */
 	private static final int ITEM_OFFSET_PERCENT = 0;
@@ -495,7 +495,8 @@ public class TNBDateView extends View {
 		}
 
 //		setBackgroundResource(wheelBackground);
-		setBackgroundColor(Color.parseColor("#C7C7C7"));
+//		setBackgroundColor(Color.parseColor("#C7C7C7"));
+		setBackgroundColor(Color.parseColor("#ffffff"));
 	}
 
 	/**
