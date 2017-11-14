@@ -27,10 +27,10 @@ public interface UploadImageApi {
     Call<ResponseBody> getOperationCode(@Query("containerId") String containerId, @Query("name") String name, @Query("digest") String digest, @Query("length") long length, @Header("cookie") String cookie);
 
     /**
-     * 图片上传  获取operationCode
+     * 根据objectid 获取图片原地址
      */
-    @GET("v1/operationCodes")
-    Call<ResponseBody> getOperationCode2(@Query("containerId") String containerId, @Query("name") String name, @Query("digest") String digest, @Query("length") long length, @Header("cookie") String cookie);
+    @GET("bimpm/attachment/attachment/url")
+    Call<ResponseBody> getOriginalUrl(@Query("objectId") String objectId, @Query("thumbnail") boolean name, @Header("cookie") String cookie);
 
     @Multipart
     @POST

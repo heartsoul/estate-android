@@ -21,6 +21,7 @@ import com.glodon.bim.R;
 import com.glodon.bim.base.BaseActivity;
 import com.glodon.bim.basic.image.ImageLoader;
 import com.glodon.bim.basic.image.OnImageLoadListener;
+import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.basic.utils.CameraUtil;
 import com.glodon.bim.basic.utils.InputMethodutil;
 import com.glodon.bim.basic.utils.ScreenUtil;
@@ -463,6 +464,8 @@ public class PhotoEditActivity extends BaseActivity implements View.OnClickListe
         }
     }
 
+    private int mInitHeight = 0;
+    private boolean mIsInit = true;
     /**
      * 输入法高度
      */
@@ -476,14 +479,19 @@ public class PhotoEditActivity extends BaseActivity implements View.OnClickListe
 
                 int screenHeight = rootLayout.getRootView().getHeight();
                 softHeight = screenHeight - (r.bottom - r.top);
-
+                LogUtil.e("softheight="+softHeight);
+                if(mIsInit){
+                    mInitHeight = softHeight;
+                    mIsInit = false;
+                }
                 //更改颜色框位置
-                if (softHeight > 0) {
-                    mColorBottomView.getLayoutParams().height = softHeight;
+                if (softHeight > screenHeight/3) {
+                    mColorBottomView.getLayoutParams().height = softHeight-mInitHeight;
                     mColorBottomView.setVisibility(View.VISIBLE);
                 } else {
                     mColorBottomView.setVisibility(View.GONE);
                 }
+
             }
         });
     }

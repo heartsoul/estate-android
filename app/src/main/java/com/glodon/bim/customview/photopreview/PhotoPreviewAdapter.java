@@ -9,6 +9,7 @@ import android.widget.ImageView;
 
 import com.glodon.bim.R;
 import com.glodon.bim.basic.image.ImageLoader;
+import com.glodon.bim.business.qualityManage.util.UploadManger;
 import com.glodon.bim.customview.album.TNBImageItem;
 
 import java.util.List;
@@ -49,7 +50,13 @@ public class PhotoPreviewAdapter extends PagerAdapter {
     public Object instantiateItem(ViewGroup container, int position) {
         View view = LayoutInflater.from(mActivity).inflate(R.layout.quality_photo_preview_item_view,null);
         ImageView imageview = view.findViewById(R.id.photo_preview_item_view_iv);
-        ImageLoader.showImageNormal(mActivity,mDataList.get(position).imagePath,imageview);
+        String url = mDataList.get(position).imagePath;
+        if(url.startsWith("http")){
+            UploadManger.loadOriginalUrl(mActivity,mDataList.get(position).objectId,imageview);
+        }else{
+            ImageLoader.showImageNormal(mActivity,url,imageview);
+        }
+
         container.addView(view);
         return view;
     }

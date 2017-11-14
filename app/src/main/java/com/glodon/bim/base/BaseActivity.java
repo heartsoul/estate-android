@@ -1,5 +1,6 @@
 package com.glodon.bim.base;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -19,9 +20,18 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.base_activity);
         mActivity = this;
         mLoadingDialog = new LoadingDialogManager(this);
+        highApiEffects();
+    }
+
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    private void highApiEffects() {
+        getWindow().getDecorView().setFitsSystemWindows(true);
+        //透明状态栏 @顶部
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        //透明导航栏 @底部    这一句不要加，目的是防止沉浸式状态栏和部分底部自带虚拟按键的手机（比如华为）发生冲突，注释掉就好了
+//        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
     }
 
     /**

@@ -5,6 +5,8 @@ import android.graphics.BlurMaskFilter;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
@@ -53,13 +55,13 @@ public class CustomShadow extends View {
 
 
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         canvas.drawColor(Color.WHITE);
-        canvas.drawRoundRect(left,top,getWidth()-padding,getHeight()-padding,radius,radius, mPaintShadow);
-        canvas.drawRoundRect(left,top,getWidth()-padding,getHeight()-padding,radius,radius, mPaintCenter);
+        RectF rect = new RectF(left,top,getWidth()-padding,getHeight()-padding);
+        canvas.drawRoundRect(rect,radius,radius, mPaintShadow);
+        canvas.drawRoundRect(rect,radius,radius, mPaintCenter);
     }
 
 }

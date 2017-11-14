@@ -2,13 +2,18 @@ package com.glodon.bim.basic.image;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.Transformation;
+import com.bumptech.glide.request.Request;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.target.SizeReadyCallback;
+import com.bumptech.glide.request.target.Target;
 import com.glodon.bim.basic.config.AppConfig;
+import com.glodon.bim.basic.log.LogUtil;
 
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 import jp.wasabeef.glide.transformations.CropSquareTransformation;
@@ -74,6 +79,27 @@ public class ImageLoader {
                 .crossFade(200)
                 .centerCrop()
                 .into(view);
+    }
+
+    /**
+     * 展示一般图片
+     */
+    public static void showPreviewImage(Context context, String url, ImageView view) {
+        Glide.with(context)
+                .load(url)
+                .crossFade(200)
+                .into(view);
+    }
+
+    public static void setImage(Context context, String url, final ImageView imageView) {
+        Glide.with(context).load(url).asBitmap()
+                .into(new SimpleTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                        LogUtil.e("width="+resource.getWidth()+" height="+resource.getHeight());
+                        imageView.setImageBitmap(resource);
+                    }
+                });
     }
 
     /**

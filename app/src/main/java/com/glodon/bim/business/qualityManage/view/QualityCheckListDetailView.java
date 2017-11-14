@@ -158,6 +158,7 @@ public class QualityCheckListDetailView implements QualityCheckListDetailViewCon
             for(QualityCheckListBeanItemFile imageFile:files){
                 TNBImageItem imageItem = new TNBImageItem();
                 imageItem.imagePath = imageFile.url;
+                imageItem.objectId = imageFile.objectId;
                 mSelectedMap.put(imageFile.url,imageItem);
             }
             if(size == 1){

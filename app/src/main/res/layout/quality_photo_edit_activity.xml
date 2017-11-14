@@ -3,7 +3,9 @@
     android:id="@+id/photo_edit_root_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/dimen_0">
+    android:padding="@dimen/dimen_0"
+    android:fitsSystemWindows="true"
+    >
 
     <com.glodon.bim.business.qualityManage.view.PhotoEditView
         android:id="@+id/photo_edit_background"
@@ -47,15 +49,6 @@
             android:textSize="@dimen/dimen_17"/>
     </RelativeLayout>
 
-
-    <!--<com.glodon.bim.business.qualityManage.view.DragTextView-->
-        <!--android:id="@+id/photo_edit_show_text"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginTop="@dimen/dimen_78"-->
-        <!--android:background="@color/transparent"-->
-        <!--android:textSize="@dimen/dimen_18"-->
-        <!--android:visibility="gone" />-->
 
     <EditText
         android:id="@+id/photo_edit_et"
@@ -248,7 +241,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimen_0"
                 android:layout_below="@id/photo_edit_bottom_color_parent"
-                android:background="@color/c_f33d3d"
+                android:background="@color/transparent"
                 />
         </RelativeLayout>
     </LinearLayout>

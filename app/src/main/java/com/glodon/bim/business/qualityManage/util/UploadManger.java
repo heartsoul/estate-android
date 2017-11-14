@@ -1,8 +1,11 @@
 package com.glodon.bim.business.qualityManage.util;
 
+import android.content.Context;
 import android.os.SystemClock;
+import android.widget.ImageView;
 
 import com.glodon.bim.basic.config.AppConfig;
+import com.glodon.bim.basic.image.ImageLoader;
 import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.basic.network.NetRequest;
 import com.glodon.bim.business.greendao.provider.DaoProvider;
@@ -163,5 +166,25 @@ public class UploadManger {
                 }
             }
         });
+    }
+
+    public static void loadOriginalUrl(final Context context, String objectId, final ImageView view){
+        NetRequest.getInstance().getCall(AppConfig.BASE_URL,UploadImageApi.class).getOriginalUrl(objectId,false,new DaoProvider().getCookie())
+                .enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        try {
+                            String url = response.body().string();
+                            ImageLoader.showImageNormal(context,url,view);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        LogUtil.e(t.getMessage());
+                    }
+                });
     }
 }

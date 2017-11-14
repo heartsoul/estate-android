@@ -14,9 +14,9 @@
         <item name="android:windowTranslucentNavigation">true</item>
     </style>
 
- <!--   <style name="AppBaseTheme" parent="android:Theme.Holo.Light.DarkActionBar">
-        &lt;!&ndash; Customize your theme here. &ndash;&gt;
+
+    <style name="CustomTheme" parent="@style/BaseAppTheme">
         <item name="android:windowTranslucentStatus">true</item>
-        <item name="android:windowTranslucentNavigation">true</item>
-    </style>-->
+        <item name="android:windowTranslucentNavigation">false</item>
+    </style>
 </resources>
