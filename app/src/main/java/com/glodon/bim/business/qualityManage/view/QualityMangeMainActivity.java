@@ -189,19 +189,18 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
                 showFragmentById(mQualityCheckListFragmentId);
                 break;
             case R.id.main_drawer_quality_blueprint://点击图纸
-//                setSelect(1);
-                mPresenter.toBluePrint();
+//                mPresenter.toBluePrint();
                 break;
             case R.id.main_drawer_quality_model://点击模型
 //                setSelect(2);
-                mPresenter.toModel();
+//                mPresenter.toModel();
                 break;
             case R.id.main_drawer_quality_module://点击质检项目
-                setSelect(3);
-                showFragmentById(mQualityCheckModuleFragmentId);
+//                setSelect(3);
+//                showFragmentById(mQualityCheckModuleFragmentId);
                 break;
             case R.id.main_drawer_setting:
-                mPresenter.toSetting(mProjectInfo);
+//                mPresenter.toSetting(mProjectInfo);
                 break;
 
         }

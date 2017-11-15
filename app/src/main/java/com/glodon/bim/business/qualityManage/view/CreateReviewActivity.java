@@ -166,7 +166,7 @@ public class CreateReviewActivity extends BaseActivity implements View.OnClickLi
             @Override
             public void afterTextChanged(Editable editable) {
 
-                String text = mDesView.getText().toString().trim();
+                String text = mDesView.getText().toString();
                 int num;
                 if (TextUtils.isEmpty(text)) {
                     num = 255;
@@ -261,13 +261,13 @@ public class CreateReviewActivity extends BaseActivity implements View.OnClickLi
 
     private void submit() {
         if (checkMustInfo()) {
-            mPresenter.submit(mDesView.getText().toString().trim(), mCurrentStatus, mSelectedTime);
+            mPresenter.submit(mDesView.getText().toString(), mCurrentStatus, mSelectedTime);
         }
     }
 
     private void save() {
         if (checkMustInfo()) {
-            mPresenter.save(mDesView.getText().toString().trim(), mCurrentStatus, mSelectedTime);
+            mPresenter.save(mDesView.getText().toString(), mCurrentStatus, mSelectedTime);
         }
     }
 
@@ -277,7 +277,7 @@ public class CreateReviewActivity extends BaseActivity implements View.OnClickLi
      * return  true  所有必填项都已填写   false 有必填项没有填写
      */
     private boolean checkMustInfo() {
-        String desText = mDesView.getText().toString().trim();
+        String desText = mDesView.getText().toString();
         String dateText = mRemainName.getText().toString().trim();
         if (CommonConfig.CREATE_TYPE_REVIEW.equals(mCreateType)) {
             if (mIsUpToStandard) {
@@ -311,7 +311,12 @@ public class CreateReviewActivity extends BaseActivity implements View.OnClickLi
 
                 try {
                     long millionSeconds = sdf.parse(dateText).getTime();//毫秒
-                    if (millionSeconds < System.currentTimeMillis()) {
+                    Calendar calendar = Calendar.getInstance();
+                    int YY = calendar.get(Calendar.YEAR) ;
+                    int MM = calendar.get(Calendar.MONTH)+1;
+                    int DD = calendar.get(Calendar.DATE);
+                    long today = sdf.parse(YY+"-"+MM+"-"+DD).getTime();
+                    if (millionSeconds < today) {
                         ToastManager.show("整改期限不能早于当前日期！");
                         return false;
                     }
@@ -345,8 +350,13 @@ public class CreateReviewActivity extends BaseActivity implements View.OnClickLi
     }
 
 
+    @Override
+    public void onBackPressed() {
+        back();
+    }
+
     private void back() {
-        if (isShowBackDialog()) {
+        if (!isShowBackDialog()) {
             mBackDialog = new SaveDeleteDialog(mActivity);
             mBackDialog.getBackDialog(new View.OnClickListener() {
                 @Override
@@ -366,11 +376,8 @@ public class CreateReviewActivity extends BaseActivity implements View.OnClickLi
     }
 
     private boolean isShowBackDialog() {
-        String desText = mDesView.getText().toString().trim();
-        if (!TextUtils.isEmpty(desText)) {
-            return true;
-        }
-        return false;
+        String desText = mDesView.getText().toString();
+        return mPresenter.isEqual(desText,mIsUpToStandard,mSelectedTime);
     }
 
 

@@ -100,6 +100,11 @@ public interface CreateCheckListContract {
          * 是否保存了
          */
         boolean isChange();
+
+        /**
+         * 页面数据变化了吗
+         */
+        boolean isDifferent(CreateCheckListParams currentParams);
     }
 
     interface View extends IBaseView {

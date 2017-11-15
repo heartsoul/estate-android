@@ -2,11 +2,14 @@ package com.glodon.bim.business.qualityManage.presenter;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.text.TextUtils;
 
 import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.basic.utils.CameraUtil;
 import com.glodon.bim.basic.utils.NetWorkUtils;
 import com.glodon.bim.business.qualityManage.bean.CreateCheckListParamsFile;
+import com.glodon.bim.business.qualityManage.bean.CreateReviewData;
+import com.glodon.bim.business.qualityManage.bean.QualityCheckListBeanItemFile;
 import com.glodon.bim.business.qualityManage.bean.QualityCheckListDetailBean;
 import com.glodon.bim.business.qualityManage.bean.QualityCheckListDetailProgressInfo;
 import com.glodon.bim.business.qualityManage.bean.QualityGetRepairInfo;
@@ -26,6 +29,7 @@ import com.glodon.bim.customview.album.AlbumEditActivity;
 import com.glodon.bim.customview.album.TNBImageItem;
 import com.glodon.bim.customview.photopreview.PhotoPreviewActivity;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,6 +62,8 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter {
 
     //图片
     private LinkedHashMap<String, TNBImageItem> mSelectedMap;
+    //初始的图片 用于判断点击返回键时是否弹出提示框
+    private CreateReviewData mInitData;
 
     private long deptId, id, repairId, reviewId;//项目id 和检查单id  整改单id 复查单id
 
@@ -71,6 +77,68 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter {
         this.mView = mView;
         mModel = new CreateReviewModel();
         mSubscription = new CompositeSubscription();
+        mInitData = new CreateReviewData();
+    }
+
+    @Override
+    public boolean isEqual(String des,boolean flag,String time){
+        switch (mCreateType) {
+            case CommonConfig.CREATE_TYPE_REPAIR:
+                return isPhotoEqual() && isEqual(des,mInitData.des);
+            case CommonConfig.CREATE_TYPE_REVIEW:
+                if(flag){
+                    return isPhotoEqual() && isEqual(des,mInitData.des) &&mInitData.flag;
+                }else{
+                    return isPhotoEqual() && isEqual(des,mInitData.des) &&!mInitData.flag&&isEqual(time,mInitData.time);
+                }
+        }
+        return true;
+    }
+
+    private boolean isEqual(String a, String b) {
+        if (TextUtils.isEmpty(a) && TextUtils.isEmpty(b)) {
+            return true;
+        }
+        if (!TextUtils.isEmpty(a) && !TextUtils.isEmpty(b) && a.equals(b)) {
+            return true;
+        }
+        return false;
+    }
+
+    //判断图片是否相同
+    public boolean isPhotoEqual(){
+        LinkedHashMap<String, TNBImageItem> mInitMap = mInitData.mInitMap;
+        if(mSelectedMap == null && mInitMap == null){
+            return true;
+        }
+        if(mSelectedMap!=null && mInitMap!=null && mSelectedMap.size()==mInitMap.size()){
+            List<String> mSelectKey = new ArrayList<>();
+            List<TNBImageItem> mSelectValue = new ArrayList<>();
+            for(Map.Entry<String,TNBImageItem> entry:mSelectedMap.entrySet()){
+                mSelectKey.add(entry.getKey());
+                mSelectValue.add(entry.getValue());
+            }
+            List<String> mInitKey = new ArrayList<>();
+            List<TNBImageItem> mInitValue = new ArrayList<>();
+            for(Map.Entry<String,TNBImageItem> entry:mInitMap.entrySet()){
+                mInitKey.add(entry.getKey());
+                mInitValue.add(entry.getValue());
+            }
+
+            for(int i = 0;i<mInitKey.size();i++){
+                if(!mSelectKey.get(i).equals(mInitKey.get(i))){
+                    return false;
+                }else{
+                    TNBImageItem selectItem = mSelectValue.get(i);
+                    TNBImageItem initItem = mInitValue.get(i);
+                    if(!selectItem.imagePath.equals(initItem.imagePath)){
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -146,6 +214,16 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter {
                                     mView.showDesAndImages(info.description, info.files);
                                     mView.showDelete();
                                 }
+                                mInitData.des = info.description;
+                                if(info.files!=null && info.files.size()>0){
+                                    mInitData.mInitMap = new LinkedHashMap<>();
+                                    for(QualityCheckListBeanItemFile file:info.files){
+                                        TNBImageItem item = new TNBImageItem();
+                                        item.imagePath = file.url;
+                                        item.objectId = file.objectId;
+                                        mInitData.mInitMap.put(item.imagePath,item);
+                                    }
+                                }
                             }
                         }
                     });
@@ -184,6 +262,27 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter {
                                     mView.showRectificationInfo(info.status, info.lastRectificationDate);
                                     mView.showDelete();
                                 }
+
+                                mInitData.des = info.description;
+                                if(info.files!=null && info.files.size()>0){
+                                    mInitData.mInitMap = new LinkedHashMap<>();
+                                    for(QualityCheckListBeanItemFile file:info.files){
+                                        TNBImageItem item = new TNBImageItem();
+                                        item.imagePath = file.url;
+                                        item.objectId = file.objectId;
+                                        mInitData.mInitMap.put(item.imagePath,item);
+                                    }
+                                }
+                                mInitData.time = info.lastRectificationDate;
+                                switch (info.status) {
+                                    case CommonConfig.STATUS_CLOSED://合格
+                                        mInitData.flag = true;
+                                        break;
+                                    case CommonConfig.STATUS_NOT_ACCEPTED://不合格
+                                        mInitData.flag = false;
+                                        break;
+                                }
+
                             }
                         }
                     });
@@ -522,7 +621,7 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter {
         }
     }
 
-    private void editSaveRepair(String des) {
+    private void editSaveRepair(final String des) {
         QualityRepairParams props = getRepairParams(des);
         Subscription sub = mModel.editSaveRepair(deptId, repairId, props)
                 .subscribeOn(Schedulers.io())
@@ -551,15 +650,33 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter {
                             if (mView != null) {
                                 mView.showDelete();
                             }
+                            resetRepairInitData(des);
                         }
                     }
                 });
         mSubscription.add(sub);
-
-
     }
 
-    private void createSaveRepair(String des) {
+    private void resetRepairInitData(String des){
+        mInitData.des = des;
+        mInitData.mInitMap = mSelectedMap;
+    }
+
+    private void resetReviewInitData(String des,String status,String time){
+        mInitData.des = des;
+        mInitData.mInitMap = mSelectedMap;
+        switch (status) {
+            case CommonConfig.STATUS_CLOSED://合格
+                mInitData.flag = true;
+                break;
+            case CommonConfig.STATUS_NOT_ACCEPTED://不合格
+                mInitData.flag = false;
+                break;
+        }
+        mInitData.time = time;
+    }
+
+    private void createSaveRepair(final String des) {
         QualityRepairParams props = getRepairParams(des);
         Subscription sub = mModel.createSaveRepair(deptId, props)
                 .subscribeOn(Schedulers.io())
@@ -591,6 +708,7 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter {
                             if (mView != null) {
                                 mView.showDelete();
                             }
+                            resetRepairInitData(des);
                         }
                     }
                 });
@@ -599,7 +717,7 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter {
 
     }
 
-    private void editSaveReview(String des, String mCurrentStatus, String mSelectedTime) {
+    private void editSaveReview(final String des, final String mCurrentStatus, final String mSelectedTime) {
         QualityReviewParams props = getReviewParams(des, mCurrentStatus, mSelectedTime);
         Subscription sub = mModel.editSaveReview(deptId, reviewId, props)
                 .subscribeOn(Schedulers.io())
@@ -629,13 +747,14 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter {
                             if (mView != null) {
                                 mView.showDelete();
                             }
+                            resetReviewInitData(des, mCurrentStatus, mSelectedTime);
                         }
                     }
                 });
         mSubscription.add(sub);
     }
 
-    private void createSaveReview(String des, String mCurrentStatus, String mSelectedTime) {
+    private void createSaveReview(final String des, final String mCurrentStatus, final String mSelectedTime) {
         QualityReviewParams props = getReviewParams(des, mCurrentStatus, mSelectedTime);
         Subscription sub = mModel.createSaveReview(deptId, props)
                 .subscribeOn(Schedulers.io())
@@ -667,6 +786,7 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter {
                             if (mView != null) {
                                 mView.showDelete();
                             }
+                            resetReviewInitData(des, mCurrentStatus, mSelectedTime);
                         }
                     }
                 });

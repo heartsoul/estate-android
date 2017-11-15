@@ -714,7 +714,12 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                 try {
                     long millionSeconds = sdf.parse(dateText).getTime();//毫秒
-                    if (millionSeconds < System.currentTimeMillis()) {
+                    Calendar calendar = Calendar.getInstance();
+                    int YY = calendar.get(Calendar.YEAR) ;
+                    int MM = calendar.get(Calendar.MONTH)+1;
+                    int DD = calendar.get(Calendar.DATE);
+                    long today = sdf.parse(YY+"-"+MM+"-"+DD).getTime();
+                    if (millionSeconds < today) {
                         ToastManager.show("整改期限不能早于当前日期！");
                         return false;
                     }
@@ -732,45 +737,43 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
      * 是否显示退出的提示
      */
     private boolean isShowBackDialog(){
-        String temp = mCompanyName.getText().toString().trim();
-        if(!TextUtils.isEmpty(temp)){
-            return true;
-        }
-        temp = mPersonName.getText().toString().trim();
-        if(!TextUtils.isEmpty(temp)){
-            return true;
-        }
-        temp = mSiteDescription.getText().toString();
-        if(!TextUtils.isEmpty(temp)){
-            return true;
-        }
-//        temp = mPhotoDescription.getText().toString().trim();
+        assembleData();
+        return mPresenter.isDifferent(mParams);
+//        String temp = mCompanyName.getText().toString().trim();
 //        if(!TextUtils.isEmpty(temp)){
 //            return true;
 //        }
-
-        if(mPhotoList!=null && mPhotoList.size()>0){
-            return true;
-        }
-
-        if(mRemainFlagState){
-            temp = mRemainName.getText().toString().trim();
-            if(!TextUtils.isEmpty(temp)){
-                return true;
-            }
-        }
-        temp = mModelName.getText().toString().trim();
-        if(!TextUtils.isEmpty(temp)){
-            return true;
-        }
-        temp = mBluePrintName.getText().toString().trim();
-        if(!TextUtils.isEmpty(temp)){
-            return true;
-        }
-        temp = mModelName.getText().toString().trim();
-        if(!TextUtils.isEmpty(temp)){
-            return true;
-        }
-        return false;
+//        temp = mPersonName.getText().toString().trim();
+//        if(!TextUtils.isEmpty(temp)){
+//            return true;
+//        }
+//        temp = mSiteDescription.getText().toString();
+//        if(!TextUtils.isEmpty(temp)){
+//            return true;
+//        }
+//
+//        if(mPhotoList!=null && mPhotoList.size()>0){
+//            return true;
+//        }
+//
+//        if(mRemainFlagState){
+//            temp = mRemainName.getText().toString().trim();
+//            if(!TextUtils.isEmpty(temp)){
+//                return true;
+//            }
+//        }
+//        temp = mModelName.getText().toString().trim();
+//        if(!TextUtils.isEmpty(temp)){
+//            return true;
+//        }
+//        temp = mBluePrintName.getText().toString().trim();
+//        if(!TextUtils.isEmpty(temp)){
+//            return true;
+//        }
+//        temp = mModelName.getText().toString().trim();
+//        if(!TextUtils.isEmpty(temp)){
+//            return true;
+//        }
+//        return false;
     }
 }

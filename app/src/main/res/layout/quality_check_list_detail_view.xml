@@ -30,7 +30,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dimen_80"
-                android:text="城建集团"
                 android:textColor="@color/black"
                 android:textSize="@dimen/dimen_14" />
 
@@ -53,7 +52,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dimen_80"
-                android:text="张大大"
                 android:textColor="@color/black"
                 android:textSize="@dimen/dimen_14" />
 
@@ -78,7 +76,6 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/dimen_80"
-                android:text="结构柱"
                 android:textColor="@color/black"
                 android:textSize="@dimen/dimen_14" />
 
@@ -110,7 +107,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dimen_80"
-                android:text="现场描述现场描述现场描述现场描述现场描述现场描述现场描述现场描述现场描述现场描述"
                 android:textColor="@color/black"
                 android:textSize="@dimen/dimen_14" />
 
@@ -133,7 +129,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dimen_80"
-                android:text="2017-10-17 "
                 android:textColor="@color/black"
                 android:textSize="@dimen/dimen_14" />
 
@@ -156,7 +151,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dimen_80"
-                android:text="2017-10-17"
                 android:textColor="@color/black"
                 android:textSize="@dimen/dimen_14" />
 
@@ -179,7 +173,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dimen_80"
-                android:text=" JPGR-DD"
                 android:textColor="@color/c_00b5f2"
                 android:textSize="@dimen/dimen_14" />
 
@@ -202,7 +195,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dimen_80"
-                android:text="构建 JPGR-DD"
                 android:textColor="@color/c_00b5f2"
                 android:textSize="@dimen/dimen_14" />
 

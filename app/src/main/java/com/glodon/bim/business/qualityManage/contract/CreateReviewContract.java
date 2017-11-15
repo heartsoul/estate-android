@@ -62,6 +62,12 @@ public interface CreateReviewContract {
          * 点击删除
          */
         void delete();
+
+        /**
+         * 判断选中的图片是否相同
+         * @return
+         */
+        boolean isEqual(String des,boolean flag,String time);
     }
 
     interface View extends IBaseView {
