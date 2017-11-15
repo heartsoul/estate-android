@@ -176,7 +176,13 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
             }
 
         }
-        if (a != null && b != null && a.size() == b.size() && a.size() > 0) {
+        if(a==null && b.size()==0){
+            return true;
+        }
+        if(a!=null && a.size()==0 &&b.size() ==0){
+            return true;
+        }
+        if ((a != null) && (b != null) && (a.size() == b.size()) && (a.size() > 0)) {
             for (int i = 0; i < a.size(); i++) {
                 if (!isEqual(a.get(i).objectId, b.get(i).objectId)) {
                     return false;
