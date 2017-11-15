@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.glodon.bim.R;
 import com.glodon.bim.basic.listener.ThrottleClickEvents;
+import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.basic.utils.ScreenUtil;
 import com.glodon.bim.business.qualityManage.OnClassifyItemClickListener;
 import com.glodon.bim.business.qualityManage.bean.ClassifyItem;
@@ -40,6 +41,14 @@ public class QualityCheckListClassifyAdapter extends RecyclerView.Adapter<Recycl
         this.mListener = listener;
     }
 
+    /**
+     * 更新分类数量
+     */
+    public void updateNums(List<ClassifyItem> list){
+        mDataList = list;
+        notifyDataSetChanged();
+    }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new ClassifyHolder(LayoutInflater.from(mContext).inflate(R.layout.quality_check_list_classify_item_view,null));
@@ -49,7 +58,18 @@ public class QualityCheckListClassifyAdapter extends RecyclerView.Adapter<Recycl
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
         if(holder instanceof ClassifyHolder){
             final ClassifyHolder cHolder = (ClassifyHolder) holder;
-            cHolder.mNameView.setText(mDataList.get(position).name);
+            ClassifyItem item = mDataList.get(position);
+            cHolder.mNameView.setText(item.name);
+            if(item.count<=0){
+                cHolder.mNumView.setVisibility(View.GONE);
+            }else{
+                cHolder.mNumView.setVisibility(View.VISIBLE);
+                if(item.count>99){
+                    cHolder.mNumView.setText("99+");
+                }else{
+                    cHolder.mNumView.setText(item.count+"");
+                }
+            }
             mPaint = cHolder.mNameView.getPaint();
             if(position==0){
                 cHolder.mParent.setPadding(ScreenUtil.dp2px(20),0,0,0);
@@ -97,11 +117,11 @@ public class QualityCheckListClassifyAdapter extends RecyclerView.Adapter<Recycl
     }
 
     class ClassifyHolder extends RecyclerView.ViewHolder{
-        public TextView mNameView;
-        public ImageView mLineView;
-        public TextView mNumView;
-        public RelativeLayout mParent;
-        public ClassifyHolder(View itemView) {
+         TextView mNameView;
+         ImageView mLineView;
+         TextView mNumView;
+         RelativeLayout mParent;
+         ClassifyHolder(View itemView) {
             super(itemView);
             mNameView = itemView.findViewById(R.id.quality_check_list_classify_item_name);
             mNumView = itemView.findViewById(R.id.quality_check_list_classify_item_num);

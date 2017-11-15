@@ -25,7 +25,7 @@ public class ChooseProjectModel implements ChooseProjectContract.Model {
 
     @Override
     public Observable<ProjectListBean> getAvailableProjects(int page, int size){
-        String[] sort = {"updateTime,desc"};
+        String[] sort = {"createTime,desc"};
         return NetRequest.getInstance().getCall(AppConfig.BASE_URL,ChooseTenantApi.class).getAvailableProjects(page,size,sort,new DaoProvider().getCookie());
     }
 }

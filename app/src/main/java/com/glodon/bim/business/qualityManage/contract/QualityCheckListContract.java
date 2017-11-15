@@ -3,6 +3,7 @@ package com.glodon.bim.business.qualityManage.contract;
 import com.glodon.bim.base.IBasePresenter;
 import com.glodon.bim.base.IBaseView;
 import com.glodon.bim.business.main.bean.ProjectListItem;
+import com.glodon.bim.business.qualityManage.bean.ClassifyNum;
 import com.glodon.bim.business.qualityManage.bean.QualityCheckListBean;
 import com.glodon.bim.business.qualityManage.bean.QualityCheckListBeanItem;
 import com.glodon.bim.business.qualityManage.listener.OnOperateSheetListener;
@@ -77,6 +78,11 @@ public interface QualityCheckListContract {
          * 打开相册手机
          */
         void create();
+
+        /**
+         * 更新分类数量
+         */
+        void updateClassifyCount(List<ClassifyNum> list);
     }
 
     interface Model {
@@ -87,5 +93,11 @@ public interface QualityCheckListContract {
          * @param size 每页数量
          */
         Observable<QualityCheckListBean> getQualityCheckList(long deptId,String qcState,int page, int size);
+
+        /**
+         * 获取各状态数量
+         * @param deptId  项目id
+         */
+        Observable<List<ClassifyNum>> getStatusNum(long deptId);
     }
 }

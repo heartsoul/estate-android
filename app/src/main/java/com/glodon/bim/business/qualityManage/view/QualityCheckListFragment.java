@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,11 +15,13 @@ import android.widget.ImageView;
 import com.glodon.bim.R;
 import com.glodon.bim.base.BaseFragment;
 import com.glodon.bim.basic.listener.ThrottleClickEvents;
+import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.business.main.bean.ProjectListItem;
 import com.glodon.bim.business.qualityManage.OnClassifyItemClickListener;
 import com.glodon.bim.business.qualityManage.adapter.QualityCheckListAdapter;
 import com.glodon.bim.business.qualityManage.adapter.QualityCheckListClassifyAdapter;
 import com.glodon.bim.business.qualityManage.bean.ClassifyItem;
+import com.glodon.bim.business.qualityManage.bean.ClassifyNum;
 import com.glodon.bim.business.qualityManage.bean.QualityCheckListBeanItem;
 import com.glodon.bim.business.qualityManage.contract.QualityCheckListContract;
 import com.glodon.bim.business.qualityManage.presenter.QualityCheckListPresenter;
@@ -28,7 +31,9 @@ import com.glodon.bim.customview.pullrefreshview.OnPullRefreshListener;
 import com.glodon.bim.customview.pullrefreshview.PullRefreshView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 描述：质检清单
@@ -119,6 +124,7 @@ public class QualityCheckListFragment extends BaseFragment implements QualityChe
         for(int i = 0;i<8;i++){
             ClassifyItem item = new ClassifyItem();
             item.name = CommonConfig.CLASSIFY_NAMES[i];
+            item.qcState = CommonConfig.CLASSIFY_STATES[i];
             mDataList.add(item);
         }
         mCalssifyAdapter = new QualityCheckListClassifyAdapter(getActivity(), mDataList, new OnClassifyItemClickListener() {
@@ -133,6 +139,43 @@ public class QualityCheckListFragment extends BaseFragment implements QualityChe
         LinearLayoutManager llm = new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false);
         mClassifesView.setLayoutManager(llm);
         mClassifesView.setAdapter(mCalssifyAdapter);
+    }
+
+    @Override
+    public void updateClassifyCount(List<ClassifyNum> list){
+        if(list!=null && list.size()>0){
+            Map<String,Integer> map = new HashMap<>();
+            List<String> keyList = new ArrayList<>();
+            keyList.add(CommonConfig.QC_STATE_STAGED);
+            keyList.add(CommonConfig.QC_STATE_UNRECTIFIED);
+            keyList.add(CommonConfig.QC_STATE_UNREVIEWED);
+            keyList.add(CommonConfig.QC_STATE_DELAYED);
+
+            for(ClassifyNum item : list){
+//                {"全部","待提交",  "待整改",      "待复查",    "已检查",    "已复查",  "已延迟",  "已验收"};
+//                {"",   "staged",  "unrectified","unreviewed","inspected","reviewed","delayed","accepted"};
+                if(keyList.contains(item.qcState)) {
+                    map.put(item.qcState, item.count);
+                }
+            }
+            if(mDataList!=null && mDataList.size()>0){
+                List<ClassifyItem> tempList = new ArrayList<>();
+                for(ClassifyItem item :mDataList){
+                    ClassifyItem temp = new ClassifyItem();
+                    temp.name = item.name;
+                    temp.qcState = item.qcState;
+                    Integer tempCount = map.get(item.qcState);
+                    if(tempCount==null){
+                        temp.count = 0;
+                    }else{
+                        temp.count = tempCount.intValue();
+                    }
+                    tempList.add(temp);
+                }
+                mDataList=tempList;
+                mCalssifyAdapter.updateNums(mDataList);
+            }
+        }
     }
 
     private void initData() {
@@ -190,6 +233,14 @@ public class QualityCheckListFragment extends BaseFragment implements QualityChe
     @Override
     public void updateData(List<QualityCheckListBeanItem> mDataList) {
         mAdapter.updateList(mDataList);
+//        List<ClassifyNum> list = new ArrayList<>();
+//        for(int i = 1;i<8;i++){
+//            ClassifyNum num = new ClassifyNum();
+//            num.count = i*(i+39);
+//            num.qcState = CommonConfig.CLASSIFY_STATES[i];
+//            list.add(num);
+//        }
+//        updateClassifyCount(list);
     }
 
     @Override

@@ -32,8 +32,8 @@
         android:layout_marginTop="@dimen/dimen_07"
         android:text="23"
         android:background="@drawable/corner_red_point"
-        android:paddingRight="@dimen/dimen_03"
-        android:paddingLeft="@dimen/dimen_03"
-        android:visibility="gone"
+        android:paddingRight="@dimen/dimen_05"
+        android:paddingLeft="@dimen/dimen_05"
+        android:gravity="center"
         />
 </RelativeLayout>

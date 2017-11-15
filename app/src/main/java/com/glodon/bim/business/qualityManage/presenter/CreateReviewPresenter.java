@@ -212,7 +212,10 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter {
     @Override
     public void submit(final String des, final String mCurrentStatus, final String mSelectedTime) {
         if (NetWorkUtils.isNetworkAvailable(mView.getActivity())) {
-            if (mSelectedMap.size() > 0) {
+            if(mView!=null){
+                mView.showLoadingDialog();
+            }
+            if (mSelectedMap!=null && mSelectedMap.size() > 0) {
                 mIsShowUploadErrorToast = true;
                 new UploadManger(mSelectedMap).uploadImages(new OnUploadImageListener() {
                     @Override
@@ -284,10 +287,16 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter {
                     @Override
                     public void onError(Throwable e) {
                         LogUtil.e(e.getMessage());
+                        if (mView != null) {
+                            mView.dismissLoadingDialog();
+                        }
                     }
 
                     @Override
                     public void onNext(ResponseBody saveBean) {
+                        if (mView != null) {
+                            mView.dismissLoadingDialog();
+                        }
                         if (saveBean != null) {
                             ToastManager.showSubmitToast();
                             if (mView != null) {
@@ -314,10 +323,16 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter {
                     @Override
                     public void onError(Throwable e) {
                         LogUtil.e("e=" + e.getMessage());
+                        if (mView != null) {
+                            mView.dismissLoadingDialog();
+                        }
                     }
 
                     @Override
                     public void onNext(SaveBean saveBean) {
+                        if (mView != null) {
+                            mView.dismissLoadingDialog();
+                        }
                         if (saveBean != null) {
                             ToastManager.showSubmitToast();
                             if (mView != null) {
@@ -367,10 +382,16 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter {
                     @Override
                     public void onError(Throwable e) {
                         LogUtil.e(e.getMessage());
+                        if (mView != null) {
+                            mView.dismissLoadingDialog();
+                        }
                     }
 
                     @Override
                     public void onNext(ResponseBody saveBean) {
+                        if (mView != null) {
+                            mView.dismissLoadingDialog();
+                        }
                         if (saveBean != null) {
                             ToastManager.showSubmitToast();
                             if (mView != null) {
@@ -397,10 +418,16 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter {
                     @Override
                     public void onError(Throwable e) {
                         LogUtil.e(e.getMessage());
+                        if (mView != null) {
+                            mView.dismissLoadingDialog();
+                        }
                     }
 
                     @Override
                     public void onNext(SaveBean saveBean) {
+                        if (mView != null) {
+                            mView.dismissLoadingDialog();
+                        }
                         if (saveBean != null) {
                             ToastManager.showSubmitToast();
                             if (mView != null) {
@@ -435,8 +462,10 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter {
     @Override
     public void save(final String des, final String mCurrentStatus, final String mSelectedTime) {
         if (NetWorkUtils.isNetworkAvailable(mView.getActivity())) {
-
-            if (mSelectedMap.size() > 0) {
+            if(mView!=null) {
+                mView.showLoadingDialog();
+            }
+            if (mSelectedMap!=null && mSelectedMap.size() > 0) {
                 mIsShowUploadErrorToast = true;
                 new UploadManger(mSelectedMap).uploadImages(new OnUploadImageListener() {
                     @Override
@@ -507,10 +536,16 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter {
                     @Override
                     public void onError(Throwable e) {
                         LogUtil.e(e.getMessage());
+                        if (mView != null) {
+                            mView.dismissLoadingDialog();
+                        }
                     }
 
                     @Override
                     public void onNext(ResponseBody saveBean) {
+                        if (mView != null) {
+                            mView.dismissLoadingDialog();
+                        }
                         if (saveBean != null) {
                             ToastManager.showSaveToast();
                             if (mView != null) {
@@ -538,10 +573,16 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter {
                     @Override
                     public void onError(Throwable e) {
                         LogUtil.e(e.getMessage());
+                        if (mView != null) {
+                            mView.dismissLoadingDialog();
+                        }
                     }
 
                     @Override
                     public void onNext(SaveBean saveBean) {
+                        if (mView != null) {
+                            mView.dismissLoadingDialog();
+                        }
                         if (saveBean != null) {
                             mIsEditStatus = true;
                             mCode = saveBean.code;
@@ -572,10 +613,16 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter {
                     @Override
                     public void onError(Throwable e) {
                         LogUtil.e(e.getMessage());
+                        if (mView != null) {
+                            mView.dismissLoadingDialog();
+                        }
                     }
 
                     @Override
                     public void onNext(ResponseBody saveBean) {
+                        if (mView != null) {
+                            mView.dismissLoadingDialog();
+                        }
                         if (saveBean != null) {
                             ToastManager.showSaveToast();
                             mIsEditStatus = true;
@@ -602,10 +649,16 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter {
                     @Override
                     public void onError(Throwable e) {
                         LogUtil.e(e.getMessage());
+                        if (mView != null) {
+                            mView.dismissLoadingDialog();
+                        }
                     }
 
                     @Override
                     public void onNext(SaveBean saveBean) {
+                        if (mView != null) {
+                            mView.dismissLoadingDialog();
+                        }
                         if (saveBean != null) {
                             mIsEditStatus = true;
                             mCode = saveBean.code;
@@ -622,13 +675,20 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter {
 
     @Override
     public void delete() {
-        switch (mCreateType) {
-            case CommonConfig.CREATE_TYPE_REPAIR:
-                deleteRepairInfo();
-                break;
-            case CommonConfig.CREATE_TYPE_REVIEW:
-                deleteReviewInfo();
-                break;
+        if(NetWorkUtils.isNetworkAvailable(mView.getActivity())) {
+            if(mView!=null){
+                mView.showLoadingDialog();
+            }
+            switch (mCreateType) {
+                case CommonConfig.CREATE_TYPE_REPAIR:
+                    deleteRepairInfo();
+                    break;
+                case CommonConfig.CREATE_TYPE_REVIEW:
+                    deleteReviewInfo();
+                    break;
+            }
+        }else{
+            ToastManager.showNetWorkToast();
         }
     }
 
@@ -646,10 +706,16 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter {
                     @Override
                     public void onError(Throwable e) {
                         LogUtil.e(e.getMessage());
+                        if (mView != null) {
+                            mView.dismissLoadingDialog();
+                        }
                     }
 
                     @Override
                     public void onNext(ResponseBody responseBody) {
+                        if (mView != null) {
+                            mView.dismissLoadingDialog();
+                        }
                         if (mView != null) {
                             mView.getActivity().finish();
                         }
@@ -672,10 +738,16 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter {
                     @Override
                     public void onError(Throwable e) {
                         LogUtil.e(e.getMessage());
+                        if (mView != null) {
+                            mView.dismissLoadingDialog();
+                        }
                     }
 
                     @Override
                     public void onNext(ResponseBody responseBody) {
+                        if (mView != null) {
+                            mView.dismissLoadingDialog();
+                        }
                         if (mView != null) {
                             mView.getActivity().finish();
                         }

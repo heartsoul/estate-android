@@ -340,6 +340,7 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
                             LogUtil.e("submit---response", responseBody.id + "");
                             ToastManager.showSubmitToast();
                             if (mView != null) {
+//                                sendBrushBroadcast();
                                 mView.getActivity().setResult(Activity.RESULT_OK);
                                 mView.getActivity().finish();
                             }
@@ -379,6 +380,7 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
                             ToastManager.showSubmitToast();
                             if (mView != null) {
                                 mView.getActivity().setResult(Activity.RESULT_OK);
+//                                sendBrushBroadcast();
                                 mView.getActivity().finish();
                             }
                         }
@@ -561,6 +563,7 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
                                 e.printStackTrace();
                             }
                             if (mView != null) {
+//                                sendBrushBroadcast();
                                 mView.getActivity().finish();
                             }
                         }
@@ -689,5 +692,11 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
     @Override
     public void setCompanySelectedPosition(int position) {
         this.mCompanySelectPosition = position;
+    }
+
+    //发送刷新数据的广播
+    private void sendBrushBroadcast(){
+        Intent data = new Intent(CommonConfig.ACTION_BRUSH_CHECK_LIST);
+        mView.getActivity().sendBroadcast(data);
     }
 }

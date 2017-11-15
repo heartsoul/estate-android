@@ -14,6 +14,9 @@ import com.glodon.bim.business.main.model.ChooseProjectModel;
 import com.glodon.bim.business.main.view.ChooseCategoryItemActivity;
 import com.glodon.bim.common.config.CommonConfig;
 import com.glodon.bim.customview.ToastManager;
+import com.google.gson.GsonBuilder;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -93,6 +96,7 @@ public class ChooseProjectPresenter implements ChooseProjectContract.Presenter {
 
                         @Override
                         public void onNext(ProjectListBean bean) {
+
                             if (bean != null && bean.content != null && bean.content.size() > 0) {
                                 mDataList.addAll(bean.content);
                                 mView.setStyle(mDataList.size());

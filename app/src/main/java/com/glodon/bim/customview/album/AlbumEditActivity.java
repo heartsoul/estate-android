@@ -29,6 +29,7 @@ import java.util.List;
 public class AlbumEditActivity extends BaseActivity implements View.OnClickListener {
 
     private static final int REQUEST_CODE_PHOTO_PREVIEW = 0;
+    private static final int REQUEST_CODE_CREATE_CHECK_LIST = 1;
     private TextView mNavCancel,mNavFinish;
     private View mStatusView;
     private RecyclerView mRecyclerView;
@@ -132,7 +133,7 @@ public class AlbumEditActivity extends BaseActivity implements View.OnClickListe
                         case CommonConfig.CREATE_TYPE_CHECK:
                             Intent intent = new Intent(mActivity, CreateCheckListActivity.class);
                             intent.putExtra(CommonConfig.ALBUM_DATA, mAdapter.getSelectedImages());
-                            startActivity(intent);
+                            startActivityForResult(intent,REQUEST_CODE_CREATE_CHECK_LIST);
                             finish();
                             break;
                         case CommonConfig.CREATE_TYPE_REPAIR:
@@ -142,7 +143,7 @@ public class AlbumEditActivity extends BaseActivity implements View.OnClickListe
                             reviewIntent.putExtra(CommonConfig.CREATE_TYPE,mCreateType);
                             reviewIntent.putExtra(CommonConfig.QUALITY_CHECK_LIST_DEPTID, SharedPreferencesUtil.getProjectId());
                             reviewIntent.putExtra(CommonConfig.QUALITY_CHECK_LIST_ID,getIntent().getLongExtra(CommonConfig.QUALITY_CHECK_LIST_ID,-1));
-                            mActivity.startActivity(reviewIntent);
+                            mActivity.startActivityForResult(reviewIntent,REQUEST_CODE_CREATE_CHECK_LIST);
                             mActivity.finish();
 
                             break;
@@ -188,6 +189,10 @@ public class AlbumEditActivity extends BaseActivity implements View.OnClickListe
                         }
                     }
                 }
+                break;
+            case REQUEST_CODE_CREATE_CHECK_LIST:
+                setResult(RESULT_OK);
+                finish();
                 break;
         }
     }

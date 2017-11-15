@@ -64,6 +64,11 @@ public class ChooseCategoryItemActivity extends BaseActivity implements ChooseCa
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        checkAuthority();
+    }
 
     private void initView() {
         mQualityCheckListView = (LinearLayout) findViewById(R.id.choose_category_item_item_zjqd);

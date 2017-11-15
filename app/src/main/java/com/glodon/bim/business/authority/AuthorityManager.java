@@ -60,6 +60,7 @@ public class AuthorityManager {
      * 待提交 提交功能
      */
     public static boolean isQualityCheckSubmit(){
+        Quality_Check_Bean = SharedPreferencesUtil.getQualityCheckBean();
         if(Quality_Check_Bean!=null && Quality_Check_Bean.actionRights!=null && Quality_Check_Bean.actionRights.size()>0 &&(Quality_Check_Bean.actionRights.contains(AuthorityConfig.ModifyUnit) ||Quality_Check_Bean.actionRights.contains(AuthorityConfig.ModifyAll) )){
             return true;
         }else{
@@ -70,6 +71,7 @@ public class AuthorityManager {
      * 待提交 删除功能
      */
     public static boolean isQualityCheckDelete(){
+        Quality_Check_Bean = SharedPreferencesUtil.getQualityCheckBean();
         if(Quality_Check_Bean!=null && Quality_Check_Bean.actionRights!=null && Quality_Check_Bean.actionRights.size()>0 &&(Quality_Check_Bean.actionRights.contains(AuthorityConfig.DeleteUnit) ||Quality_Check_Bean.actionRights.contains(AuthorityConfig.DeleteAll) )){
             return true;
         }else{
@@ -81,6 +83,7 @@ public class AuthorityManager {
      * 是否有新建整改单权限
      */
     public static boolean isCreateRepair(){
+        Quality_Rectification_Bean = SharedPreferencesUtil.getQualityRectificationBean();
         if(Quality_Rectification_Bean!=null && Quality_Rectification_Bean.actionRights!=null && Quality_Rectification_Bean.actionRights.size()>0 &&Quality_Rectification_Bean.actionRights.contains(AuthorityConfig.ModifyGrant)){
             return true;
         }else{
@@ -92,6 +95,7 @@ public class AuthorityManager {
      * 是否有新建复查单权限
      */
     public static boolean isCreateReview(){
+        Quality_Risk_Bean = SharedPreferencesUtil.getQualityRiskBean();
         if(Quality_Risk_Bean!=null && Quality_Risk_Bean.actionRights!=null && Quality_Risk_Bean.actionRights.size()>0 &&(Quality_Risk_Bean.actionRights.contains(AuthorityConfig.ModifyUnit)||Quality_Risk_Bean.actionRights.contains(AuthorityConfig.ModifyAll))){
             return true;
         }else{
@@ -129,7 +133,7 @@ public class AuthorityManager {
                     @Override
                     public void onResponse(Call<AuthorityBean> call, Response<AuthorityBean> response) {
                         Quality_Check_Bean = response.body();
-                        LogUtil.e(response.body().toString());
+                        SharedPreferencesUtil.setQualityCheckBean(Quality_Check_Bean);
                         Intent intent = new Intent();
                         intent.setAction(CommonConfig.ACTION_GET_AUTHORITY_CHECK);
                         BaseApplication.getInstance().sendBroadcast(intent);
@@ -148,7 +152,7 @@ public class AuthorityManager {
                     @Override
                     public void onResponse(Call<AuthorityBean> call, Response<AuthorityBean> response) {
                         Quality_Accept_Bean = response.body();
-                        LogUtil.e(response.body().toString());
+                        SharedPreferencesUtil.setQualityAcceptBean(Quality_Accept_Bean);
                     }
 
                     @Override
@@ -164,7 +168,7 @@ public class AuthorityManager {
                     @Override
                     public void onResponse(Call<AuthorityBean> call, Response<AuthorityBean> response) {
                         Quality_Risk_Bean = response.body();
-                        LogUtil.e(response.body().toString());
+                        SharedPreferencesUtil.setQualityRiskBean(Quality_Risk_Bean);
                     }
 
                     @Override
@@ -180,7 +184,7 @@ public class AuthorityManager {
                     @Override
                     public void onResponse(Call<AuthorityBean> call, Response<AuthorityBean> response) {
                         Quality_Facility_Bean = response.body();
-                        LogUtil.e(response.body().toString());
+                        SharedPreferencesUtil.setQualityFacilityBean(Quality_Facility_Bean);
                     }
 
                     @Override
@@ -196,7 +200,7 @@ public class AuthorityManager {
                     @Override
                     public void onResponse(Call<AuthorityBean> call, Response<AuthorityBean> response) {
                         Quality_Rectification_Bean = response.body();
-                        LogUtil.e(response.body().toString());
+                        SharedPreferencesUtil.setQualityRectificationBean(Quality_Rectification_Bean);
                     }
 
                     @Override

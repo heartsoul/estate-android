@@ -30,23 +30,5 @@ public class QualityCheckListDetailViewModel implements QualityCheckListDetailVi
         return NetRequest.getInstance().getCall(AppConfig.BASE_URL,QualityCheckListApi.class).getQualityCheckListDetail(deptId,id,new DaoProvider().getCookie());
     }
 
-    public void getQualityDetail(long deptId,long id){
-        LogUtil.e("deptid="+deptId+"  id="+id);
-        NetRequest.getInstance().getCall(AppConfig.BASE_URL,QualityCheckListApi.class).getQualityCheckListDetail_(deptId,id,new DaoProvider().getCookie())
-                .enqueue(new Callback<ResponseBody>() {
-                    @Override
-                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                        try {
-                            LogUtil.e(response.errorBody().string());
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
 
-                    @Override
-                    public void onFailure(Call<ResponseBody> call, Throwable t) {
-                        LogUtil.e(t.getMessage());
-                    }
-                });
-    }
 }

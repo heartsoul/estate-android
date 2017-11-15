@@ -1,5 +1,6 @@
 package com.glodon.bim.business.qualityManage.model;
 
+import com.glodon.bim.business.qualityManage.bean.ClassifyNum;
 import com.glodon.bim.business.qualityManage.bean.QualityCheckListBean;
 import com.glodon.bim.business.qualityManage.bean.QualityCheckListDetailBean;
 import com.glodon.bim.common.login.User;
@@ -44,9 +45,8 @@ public interface QualityCheckListApi {
     /**
      * 获取检查单详情
      */
-    @GET("quality/{deptId}/qualityInspection/{id}/detail")
-    Call<ResponseBody> getQualityCheckListDetail_(@Path("deptId") long deptId, @Path("id") long id, @Header("cookie") String cookie);
-
+    @GET("quality/{deptId}/qualityInspection/all/qcState/summary")
+    Observable<List<ClassifyNum>> getStatusNum(@Path("deptId") long deptId, @Header("cookie") String cookie);
 
 
 }
