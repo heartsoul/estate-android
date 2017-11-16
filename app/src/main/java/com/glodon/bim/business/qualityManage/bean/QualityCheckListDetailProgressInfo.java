@@ -21,4 +21,5 @@ public class QualityCheckListDetailProgressInfo {
     public long id;
     public String lastRectificationDate;//整改期限
     public String updateTime;//最新时间
+    public long commitTime;
 }

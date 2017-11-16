@@ -3,8 +3,10 @@ package com.glodon.bim.business.qualityManage.model;
 import com.glodon.bim.basic.config.AppConfig;
 import com.glodon.bim.basic.network.NetRequest;
 import com.glodon.bim.business.greendao.provider.DaoProvider;
-import com.glodon.bim.business.qualityManage.bean.ModuleListBean;
+import com.glodon.bim.business.qualityManage.bean.ModuleListBeanItem;
 import com.glodon.bim.business.qualityManage.contract.ChooseModuleContract;
+
+import java.util.List;
 
 import rx.Observable;
 
@@ -17,7 +19,7 @@ import rx.Observable;
 public class ChooseModuleModel implements ChooseModuleContract.Model {
 
     @Override
-    public Observable<ModuleListBean> getModuleList(String projectType, int  page, int size){
-        return NetRequest.getInstance().getCall(AppConfig.BASE_URL,CreateCheckListApi.class).getModuleList(projectType,page,size,new DaoProvider().getCookie());
+    public Observable<List<ModuleListBeanItem>> getModuleList(long deptId,long projectId){
+        return NetRequest.getInstance().getCall(AppConfig.BASE_URL,CreateCheckListApi.class).getModuleList(deptId,projectId,new DaoProvider().getCookie());
     }
 }

@@ -6,7 +6,6 @@ import android.content.Intent;
 import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.basic.utils.NetWorkUtils;
 import com.glodon.bim.basic.utils.SharedPreferencesUtil;
-import com.glodon.bim.business.qualityManage.bean.ModuleListBean;
 import com.glodon.bim.business.qualityManage.bean.ModuleListBeanItem;
 import com.glodon.bim.business.qualityManage.contract.ChooseModuleContract;
 import com.glodon.bim.business.qualityManage.listener.OnChooseModuleListener;
@@ -35,14 +34,12 @@ public class ChooseModulePresenter implements ChooseModuleContract.Presenter {
     private List<ModuleListBeanItem> mDataList;
     private CompositeSubscription mSubscription;
     private long mSelectId = -1;
-    private int mCurrentPage = 0;
-    private int mSize = 35;
+    private long mDeptId;//项目id
     private OnChooseModuleListener mListener = new OnChooseModuleListener() {
         @Override
         public void onSelect(ModuleListBeanItem item, long position) {
             Intent data = new Intent();
             data.putExtra(CommonConfig.MODULE_LIST_NAME, item);
-//            data.putExtra(CommonConfig.MODULE_LIST_POSITION,position);
             mView.getActivity().setResult(Activity.RESULT_OK, data);
             mView.getActivity().finish();
         }
@@ -58,6 +55,7 @@ public class ChooseModulePresenter implements ChooseModuleContract.Presenter {
         mModel = new ChooseModuleModel();
         mDataList = new ArrayList<>();
         mSubscription = new CompositeSubscription();
+        mDeptId = SharedPreferencesUtil.getProjectId();
     }
 
     @Override
@@ -67,10 +65,10 @@ public class ChooseModulePresenter implements ChooseModuleContract.Presenter {
             if (mView != null) {
                 mView.showLoadingDialog();
             }
-            Subscription sub = mModel.getModuleList(SharedPreferencesUtil.getProjectTypeCode(), mCurrentPage, mSize)
+            Subscription sub = mModel.getModuleList(mDeptId,mDeptId)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Subscriber<ModuleListBean>() {
+                    .subscribe(new Subscriber<List<ModuleListBeanItem>>() {
                         @Override
                         public void onCompleted() {
 
@@ -85,16 +83,13 @@ public class ChooseModulePresenter implements ChooseModuleContract.Presenter {
                         }
 
                         @Override
-                        public void onNext(ModuleListBean bean) {
-                            if (bean != null && bean.content != null && bean.content.size() > 0) {
-                                mDataList.clear();
-                                mDataList.addAll(bean.content);
+                        public void onNext(List<ModuleListBeanItem> list) {
+                            if (list != null && list.size()>0) {
+                                mDataList.addAll(list);
                                 if (mView != null) {
                                     mView.initListView(mDataList, mSelectId);
                                 }
-                                if (mCurrentPage < bean.totalPages) {
-                                    mCurrentPage++;
-                                }
+
                             }
                             if (mView != null) {
                                 mView.dismissLoadingDialog();
@@ -111,48 +106,7 @@ public class ChooseModulePresenter implements ChooseModuleContract.Presenter {
 
     @Override
     public void pullUp() {
-        if (NetWorkUtils.isNetworkAvailable(mView.getActivity())) {
-            if (mView != null) {
-                mView.showLoadingDialog();
-            }
-            Subscription sub = mModel.getModuleList(SharedPreferencesUtil.getProjectTypeCode(), mCurrentPage, mSize)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Subscriber<ModuleListBean>() {
-                        @Override
-                        public void onCompleted() {
 
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-                            LogUtil.e("----", e.getMessage());
-                            if (mView != null) {
-                                mView.dismissLoadingDialog();
-                            }
-                        }
-
-                        @Override
-                        public void onNext(ModuleListBean bean) {
-                            if (bean != null && bean.content != null && bean.content.size() > 0) {
-                                mDataList.addAll(bean.content);
-                                if (mView != null) {
-                                    mView.updateListView(mDataList);
-                                }
-                                if (mCurrentPage < bean.totalPages) {
-                                    mCurrentPage++;
-                                }
-                            }
-                            if (mView != null) {
-                                mView.dismissLoadingDialog();
-                            }
-
-                        }
-                    });
-            mSubscription.add(sub);
-        } else {
-            ToastManager.showNetWorkToast();
-        }
     }
 
     @Override

@@ -2,28 +2,21 @@ package com.glodon.bim.business.qualityManage.model;
 
 import com.glodon.bim.business.qualityManage.bean.CompanyItem;
 import com.glodon.bim.business.qualityManage.bean.CreateCheckListParams;
-import com.glodon.bim.business.qualityManage.bean.ImageUploadBean;
-import com.glodon.bim.business.qualityManage.bean.ModuleListBean;
+import com.glodon.bim.business.qualityManage.bean.ModuleListBeanItem;
 import com.glodon.bim.business.qualityManage.bean.PersonItem;
 import com.glodon.bim.business.qualityManage.bean.SaveBean;
 
 import java.util.List;
 
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
-import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
-import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
-import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
-import retrofit2.http.Url;
 import rx.Observable;
 
 /**
@@ -44,20 +37,14 @@ public interface CreateCheckListApi {
      * 查询施工单位的责任人
      */
     @GET("pmbasic/projects/{id}/coperationCorps/{coperationCorpId}/coperationRoles")
-    Observable<List<PersonItem>> getPersonList(@Path("id") long id, @Path("coperationCorpId") long coperationCorpId, @Header("cookie") String cookie);
-
-    /**
-     * 查询施工单位的责任人
-     */
-    @GET("pmbasic/projects/{id}/coperationCorps/{coperationCorpId}/coperationRoles")
-    Call<ResponseBody> getPersonList2(@Path("id") long id, @Path("coperationCorpId") long coperationCorpId, @Header("cookie") String cookie);
+    Observable<List<PersonItem>> getPersonList(@Path("id") long id, @Path("coperationCorpId") long coperationCorpId, @Query("active") boolean active,@Header("cookie") String cookie);
 
 
     /**
      * 获取质检项目列表
      */
-    @GET("quality/templates")
-    Observable<ModuleListBean> getModuleList(@Query("projectType") String projectType, @Query("page") int page, @Query("size") int size, @Header("cookie") String cookie);
+    @GET("quality/{deptId}/quality/checkpoints/project/{projectId}")
+    Observable<List<ModuleListBeanItem>> getModuleList(@Path("deptId") long deptId,@Path("projectId") long projectId,@Header("cookie") String cookie);
 
 
     /**

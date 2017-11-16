@@ -2,7 +2,6 @@ package com.glodon.bim.business.qualityManage.contract;
 
 import com.glodon.bim.base.IBasePresenter;
 import com.glodon.bim.base.IBaseView;
-import com.glodon.bim.business.qualityManage.bean.ModuleListBean;
 import com.glodon.bim.business.qualityManage.bean.ModuleListBeanItem;
 import com.glodon.bim.business.qualityManage.listener.OnChooseModuleListener;
 
@@ -56,10 +55,7 @@ public interface ChooseModuleContract {
 
         /**
          * 获取质检项目列表
-         * @param projectType  项目类型
-         * @param page 分页
-         * @param size 每页数量
          */
-        Observable<ModuleListBean> getModuleList(String projectType, int  page, int size);
+        Observable<List<ModuleListBeanItem>> getModuleList(long deptId,long projectId);
     }
 }

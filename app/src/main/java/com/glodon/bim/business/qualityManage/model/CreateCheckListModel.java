@@ -41,7 +41,7 @@ public class CreateCheckListModel implements CreateCheckListContract.Model {
      */
     @Override
     public Observable<List<PersonItem>> gePersonList(long id, long coperationCorpId){
-        return NetRequest.getInstance().getCall(AppConfig.BASE_URL,CreateCheckListApi.class).getPersonList(id,coperationCorpId,new DaoProvider().getCookie());
+        return NetRequest.getInstance().getCall(AppConfig.BASE_URL,CreateCheckListApi.class).getPersonList(id,coperationCorpId,true,new DaoProvider().getCookie());
     }
 
     /**

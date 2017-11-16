@@ -74,6 +74,7 @@ public class CreateReviewActivity extends BaseActivity implements View.OnClickLi
     private RelativeLayout mDetail;
     private ImageView mDetailIcon;
     private LinearLayout mDetailContent;
+    private View mDetailContentLine;
 
     //保存删除
     private Button mSaveView, mDeleteView;
@@ -133,6 +134,7 @@ public class CreateReviewActivity extends BaseActivity implements View.OnClickLi
         mDetail = (RelativeLayout) findViewById(R.id.create_review_detail);
         mDetailIcon = (ImageView) findViewById(R.id.create_review_detail_icon);
         mDetailContent = (LinearLayout) findViewById(R.id.create_review_detail_content);
+        mDetailContentLine = findViewById(R.id.create_review_detail_content_line);
         //保存删除
         mSaveView = (Button) findViewById(R.id.create_review__save);
         mDeleteView = (Button) findViewById(R.id.create_review_delete);
@@ -244,9 +246,11 @@ public class CreateReviewActivity extends BaseActivity implements View.OnClickLi
             case R.id.create_review_detail:
                 if (mDetailContent.getVisibility() == View.VISIBLE) {
                     mDetailContent.setVisibility(View.GONE);
+                    mDetailContentLine.setVisibility(View.GONE);
                     mDetailIcon.setBackgroundResource(R.drawable.icon_drawer_arrow_down);
                 } else {
                     mDetailContent.setVisibility(View.VISIBLE);
+                    mDetailContentLine.setVisibility(View.VISIBLE);
                     mDetailIcon.setBackgroundResource(R.drawable.icon_draw_arrow_up);
                 }
                 break;
@@ -306,23 +310,25 @@ public class CreateReviewActivity extends BaseActivity implements View.OnClickLi
                 }
             }
 
-            if (!TextUtils.isEmpty(dateText)) {
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            if(!mIsUpToStandard) {
+                if (!TextUtils.isEmpty(dateText)) {
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-                try {
-                    long millionSeconds = sdf.parse(dateText).getTime();//毫秒
-                    Calendar calendar = Calendar.getInstance();
-                    int YY = calendar.get(Calendar.YEAR) ;
-                    int MM = calendar.get(Calendar.MONTH)+1;
-                    int DD = calendar.get(Calendar.DATE);
-                    long today = sdf.parse(YY+"-"+MM+"-"+DD).getTime();
-                    if (millionSeconds < today) {
-                        ToastManager.show("整改期限不能早于当前日期！");
+                    try {
+                        long millionSeconds = sdf.parse(dateText).getTime();//毫秒
+                        Calendar calendar = Calendar.getInstance();
+                        int YY = calendar.get(Calendar.YEAR);
+                        int MM = calendar.get(Calendar.MONTH) + 1;
+                        int DD = calendar.get(Calendar.DATE);
+                        long today = sdf.parse(YY + "-" + MM + "-" + DD).getTime();
+                        if (millionSeconds < today) {
+                            ToastManager.show("整改期限不能早于当前日期！");
+                            return false;
+                        }
+                    } catch (ParseException e) {
+                        LogUtil.e(e.getMessage());
                         return false;
                     }
-                } catch (ParseException e) {
-                    LogUtil.e(e.getMessage());
-                    return false;
                 }
             }
         }

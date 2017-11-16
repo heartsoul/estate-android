@@ -49,5 +49,6 @@ public class QualityCheckListDetailInspectionInfo {
     public String responsibleUserName;
     public String responsibleUserTitle;
     //提交时间
-    public String updateTime;
+    public String updateTime;//过期
+    public long commitTime;
 }

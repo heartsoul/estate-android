@@ -107,13 +107,13 @@ public class ChooseCategoryItemActivity extends BaseActivity implements ChooseCa
                 mPresenter.toQualityChickList(0);
                 break;
             case R.id.choose_category_item_item_mx://点击模型
-                mPresenter.toModel();
+//                mPresenter.toModel();
                 break;
             case R.id.choose_category_item_item_tz://点击图纸
-                mPresenter.toBluePrint();
+//                mPresenter.toBluePrint();
                 break;
             case R.id.choose_category_item_item_zjxm://点击质检项目
-                mPresenter.toQualityChickList(1);
+//                mPresenter.toQualityChickList(1);
                 break;
             case R.id.choose_category_item_item_create://点击新建
                 create();

@@ -12,12 +12,13 @@ import java.util.List;
 public class ModuleListBeanItem implements Serializable {
 
     public String code;
-    public List<ModuleListBeanItemElementType> elementTypes;
-    public long id =-1;
+    public long id=-1;
     public String name;
+    public long parentId;
     public String projectType;
     public String requirement;
     public long specialtyId;
     public String specialtyName;
+    public String treePath;
 
 }

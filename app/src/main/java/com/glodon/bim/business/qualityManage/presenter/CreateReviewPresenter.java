@@ -456,7 +456,7 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter {
         if (info != null && info.progressInfos != null && info.progressInfos.size() > 0) {
             List<QualityCheckListDetailProgressInfo> list = info.progressInfos;
 //            props.flawCode = list.get(list.size()-1).code;
-            props.flawId = list.get(0).id;
+            props.flawId = list.get(list.size()-1).id;
         } else {
 //            props.flawCode = info.inspectionInfo.code;
             props.flawId = info.inspectionInfo.id;
@@ -550,7 +550,7 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter {
         if (info != null && info.progressInfos != null && info.progressInfos.size() > 0) {
             List<QualityCheckListDetailProgressInfo> list = info.progressInfos;
 //            props.rectificationCode = list.get(list.size()-1).code;
-            props.rectificationId = list.get(0).id;
+            props.rectificationId = list.get(list.size()-1).id;
         }
         if(mImageList!=null && mImageList.size()>0){
             props.files = mImageList;

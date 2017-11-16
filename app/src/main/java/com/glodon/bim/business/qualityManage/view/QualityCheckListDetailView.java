@@ -93,7 +93,7 @@ public class QualityCheckListDetailView implements QualityCheckListDetailViewCon
         addCheckDescription();
         List<QualityCheckListDetailProgressInfo> list = mBean.progressInfos;
         if(list!=null && list.size()>0){
-            for(int i=list.size()-1;i>=0;i--){
+            for(int i=0;i<list.size();i++){
                 QualityCheckListDetailProgressInfo info = list.get(i);
                 addHistoryDescription(info);
             }
@@ -111,7 +111,9 @@ public class QualityCheckListDetailView implements QualityCheckListDetailViewCon
         mModuleView.setText(info.qualityCheckpointName);
         mSiteDescription.setText(info.description);
         mSaveTimeView.setText(DateUtil.getNormalTime(Long.parseLong(info.createTime)));
-        mSubmitTimeView.setText(DateUtil.getNormalTime(Long.parseLong(info.updateTime)));
+        if(info.commitTime>0) {
+            mSubmitTimeView.setText(DateUtil.getNormalTime(info.commitTime));
+        }
         mBluePrintView.setText("");
         mModelView.setText(info.elementName);
     }
@@ -136,7 +138,7 @@ public class QualityCheckListDetailView implements QualityCheckListDetailViewCon
 
         //头像
 
-        ImageLoader.showHeadIcon(mActivity,R.drawable.icon_default_boy,headIcon);
+//        ImageLoader.showHeadIcon(mActivity,R.drawable.icon_default_boy,headIcon);
         //创建者
         nameView.setText(info.creatorName+ (TextUtils.isEmpty(info.inspectionUserTitle)?"":"-"+info.inspectionUserTitle));
         //状态
@@ -144,7 +146,9 @@ public class QualityCheckListDetailView implements QualityCheckListDetailViewCon
         statusView.setTextColor(mActivity.getResources().getColor(R.color.c_00b5f2));
         statusView.setText("inspection".equals(info.inspectionType)?"检查":"验收");
         //时间
-        timeView.setText(DateUtil.getNormalTime(Long.parseLong(info.updateTime)));
+        if(info.commitTime>0) {
+            timeView.setText(DateUtil.getNormalTime(info.commitTime));
+        }
         //描述，无
         desView.setVisibility(View.GONE);
 
@@ -251,11 +255,13 @@ public class QualityCheckListDetailView implements QualityCheckListDetailViewCon
         ImageView image2 = view.findViewById(R.id.quality_check_list_detail_item_image_2);
 
         //头像
-        ImageLoader.showHeadIcon(mActivity,"",headIcon);
+//        ImageLoader.showHeadIcon(mActivity,"",headIcon);
         //创建者
         nameView.setText(info.handlerName+(TextUtils.isEmpty(info.handlerTitle)?"":"-"+info.handlerTitle));
         //最新时间
-        timeView.setText(DateUtil.getNormalTime(Long.parseLong(info.updateTime)));
+        if(info.commitTime>0) {
+            timeView.setText(DateUtil.getNormalTime(info.commitTime));
+        }
         //状态
         String billType = info.billType;
         statusView.setText(billType);
