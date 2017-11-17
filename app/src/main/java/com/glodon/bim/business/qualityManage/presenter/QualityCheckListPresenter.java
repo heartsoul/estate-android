@@ -271,10 +271,12 @@ public class QualityCheckListPresenter implements QualityCheckListContract.Prese
         props.buildingName = info.buildingName;
         props.constructionCompanyId = info.constructionCompanyId;
         props.constructionCompanyName = info.constructionCompanyName;
+        props.inspectionCompanyId = info.inspectionCompanyId;
+        props.inspectionCompanyName = info.inspectionCompanyName;
         props.description = info.description;
         props.elementId = info.elementId;
         props.elementName = info.elementName;
-        props.lastRectificationDate = info.lastRectificationDate;
+        props.lastRectificationDate = info.lastRectificationDate+"";
         props.needRectification = info.needRectification;
         props.projectId  = info.projectId;
         props.projectName = info.projectName;

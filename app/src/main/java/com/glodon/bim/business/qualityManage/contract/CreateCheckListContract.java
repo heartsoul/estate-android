@@ -5,6 +5,7 @@ import com.glodon.bim.base.IBaseView;
 import com.glodon.bim.business.qualityManage.bean.CompanyItem;
 import com.glodon.bim.business.qualityManage.bean.CreateCheckListParams;
 import com.glodon.bim.business.qualityManage.bean.ImageUploadBean;
+import com.glodon.bim.business.qualityManage.bean.InspectionCompanyItem;
 import com.glodon.bim.business.qualityManage.bean.PersonItem;
 import com.glodon.bim.business.qualityManage.bean.SaveBean;
 import com.glodon.bim.customview.album.TNBImageItem;
@@ -105,6 +106,23 @@ public interface CreateCheckListContract {
          * 页面数据变化了吗
          */
         boolean isDifferent(CreateCheckListParams currentParams);
+
+        /**
+         * 设置单据类型
+         */
+        void setInspectionType(String typeInspection);
+
+        /**
+         * 设置选中的施工单位
+         * @param position
+         */
+        void setInspectionCompanySelectedPosition(int position);
+
+        /**
+         * 显示检查单位
+         */
+        void showInspectionCompanyList();
+
     }
 
     interface View extends IBaseView {
@@ -115,12 +133,24 @@ public interface CreateCheckListContract {
         void showCompany(CompanyItem companyItem);
 
         /**
+         * 显示检查单位
+         */
+        void showInspectionCompany(InspectionCompanyItem companyItem);
+
+        /**
          * 展示施工单位列表
          *
          * @param mCompanyNameList       列表集合
          * @param mCompanySelectPosition 被选中的position
          */
         void showCompanyList(List<String> mCompanyNameList, int mCompanySelectPosition);
+
+        /**
+         * 展示检查单位列表
+         * @param mInspectionCompanyNameList  列表
+         * @param mInspectionCompanySelectPosition  选中的position
+         */
+        void showInspectionCompanyList(final List<String> mInspectionCompanyNameList, final int mInspectionCompanySelectPosition);
 
         /**
          * 展示责任人列表
@@ -146,6 +176,12 @@ public interface CreateCheckListContract {
          * @param mSelectedMap
          */
         void showImages(LinkedHashMap<String, TNBImageItem> mSelectedMap);
+
+        /**
+         * 设置检查单和验收单的title
+         * @param mInspectionType
+         */
+        void setTitle(String mInspectionType);
     }
 
     interface Model {
@@ -203,15 +239,80 @@ public interface CreateCheckListContract {
          */
         Observable<ResponseBody> createDelete(long deptId, long id);
 
-//        /**
-//         * 上传图片  获取operationCode
-//         */
-//        Observable<ResponseBody> getOperationCode(String containerId, String name, String digest, long length);
-//
-//        /**
-//         * 上传图片  上传文件
-//         */
-//        Observable<ResponseBody> uploadImage(String operationCode, RequestBody description, MultipartBody.Part file);
-//        Observable<ResponseBody> uploadImage(String operationCode,MultipartBody multipartBody );
+        /**
+         * 新建检查单 提交
+         *
+         * @param deptId 项目id
+         */
+        Observable<SaveBean> createSubmitInspection(long deptId, CreateCheckListParams props);
+
+        /**
+         * 编辑检查单 提交
+         *
+         * @param deptId 项目id
+         * @param id     检查单id
+         */
+        Observable<ResponseBody> editSubmitInspection(long deptId, long id, CreateCheckListParams props);
+
+        /**
+         * 新建检查单 保存
+         *
+         * @param deptId 项目id
+         */
+        Observable<SaveBean> createSaveInspection(long deptId, CreateCheckListParams props);
+
+        /**
+         * 编辑检查单 保存
+         *
+         * @param deptId 项目id
+         * @param id     检查单id
+         */
+        Observable<ResponseBody> editSaveInspection(long deptId, long id, CreateCheckListParams props);
+
+        /**
+         * 删除检查单
+         *
+         * @param deptId 项目id
+         * @param id     检查单id
+         */
+        Observable<ResponseBody> createDeleteInspection(long deptId, long id);
+
+        /**
+         * 验收单 新增   提交
+         */
+        Observable<SaveBean> createSubmitAcceptance(long deptId, CreateCheckListParams props);
+
+        /**
+         * 验收单 新增   保存
+         */
+        Observable<SaveBean> createSaveAcceptance(long deptId,  CreateCheckListParams props);
+
+        /**
+         * 验收单 编辑   提交
+         */
+        Observable<ResponseBody> editSubmitAcceptance(long deptId, long id, CreateCheckListParams props);
+
+
+        /**
+         * 验收单 编辑   保存
+         */
+        Observable<ResponseBody> editSaveAcceptance(long deptIdlong ,long id,CreateCheckListParams props);
+
+
+        /**
+         * 验收单 删除
+         */
+        Observable<ResponseBody> createDeleteAcceptance(long deptId, long id);
+
+        /**
+         * 设置当前单据类型是检查单还是验收单
+         * @param typeInspection
+         */
+        void setInspectionType(String typeInspection);
+
+        /**
+         * 获取项目下检查单位列表
+         */
+        Observable<List<InspectionCompanyItem>> getInspectionCompanies(long deptId);
     }
 }

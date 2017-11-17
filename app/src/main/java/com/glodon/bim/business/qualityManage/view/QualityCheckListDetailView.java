@@ -38,7 +38,7 @@ public class QualityCheckListDetailView implements QualityCheckListDetailViewCon
 
     //检查单问题
     private LinearLayout mParent;
-    private TextView mCompanyView,mPersonView,mModuleView,mSiteDescription,mSaveTimeView,mSubmitTimeView,mBluePrintView,mModelView;
+    private TextView mInspectionCompanyView,mCompanyView,mPersonView,mModuleView,mSiteDescription,mSaveTimeView,mSubmitTimeView,mBluePrintView,mModelView;
     private ImageView mModuleBenchMarkView;
 
     private QualityCheckListDetailBean mBean;
@@ -67,6 +67,7 @@ public class QualityCheckListDetailView implements QualityCheckListDetailViewCon
     private  void initView() {
         mParent = view.findViewById(R.id.quality_check_list_detail_list);
         mModuleBenchMarkView =view.findViewById(R.id.quality_check_list_detail_benchmark);
+        mInspectionCompanyView = view.findViewById(R.id.quality_check_list_detail_inspection_company);
         mCompanyView = view.findViewById(R.id.quality_check_list_detail_company);
         mPersonView = view.findViewById(R.id.quality_check_list_detail_person);
         mModuleView = view.findViewById(R.id.quality_check_list_detail_module);
@@ -106,6 +107,7 @@ public class QualityCheckListDetailView implements QualityCheckListDetailViewCon
     //添加基本信息
     private void addBasicInfo() {
         QualityCheckListDetailInspectionInfo info = mBean.inspectionInfo;
+        mInspectionCompanyView.setText(info.inspectionCompanyName);
         mCompanyView.setText(info.constructionCompanyName);
         mPersonView.setText(info.responsibleUserName);
         mModuleView.setText(info.qualityCheckpointName);
@@ -149,11 +151,13 @@ public class QualityCheckListDetailView implements QualityCheckListDetailViewCon
         if(info.commitTime>0) {
             timeView.setText(DateUtil.getNormalTime(info.commitTime));
         }
-        //描述，无
+        //描述，无,在上面的信息中已经有描述了
         desView.setVisibility(View.GONE);
 
         //整改期限
-        timeLimitView.setText("整改期："+DateUtil.getNormalDate(Long.parseLong(info.lastRectificationDate)));
+        if(info.lastRectificationDate>0) {
+            timeLimitView.setText("整改期：" + DateUtil.getNormalDate(info.lastRectificationDate));
+        }
         //图片
         List<QualityCheckListBeanItemFile> files  = info.files;
         if(files!=null && files.size()!=0){

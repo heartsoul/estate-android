@@ -34,7 +34,7 @@ public class QualityCheckListDetailActivity extends BaseActivity implements View
     private View mStatusView;
     //导航
     private RelativeLayout mBackView;
-    private TextView mRepairView;
+    private TextView mTitleView, mRepairView;
     //检查单问题
     private LinearLayout mParent;
 
@@ -63,7 +63,7 @@ public class QualityCheckListDetailActivity extends BaseActivity implements View
         mBackView = (RelativeLayout) findViewById(R.id.quality_check_list_detail_back);
         mParent = (LinearLayout) findViewById(R.id.quality_check_list_detail_content);
         mRepairView = (TextView) findViewById(R.id.quality_check_list_detail_repair);
-
+        mTitleView = (TextView) findViewById(R.id.quality_check_list_detail_title);
     }
 
 
@@ -107,9 +107,20 @@ public class QualityCheckListDetailActivity extends BaseActivity implements View
         mDetailView.setmListener(new OnShowQualityCheckDetailListener() {
             @Override
             public void onDetailShow(QualityCheckListDetailBean bean) {
+
                 mRepairView.setVisibility(View.GONE);
                 if(bean!=null && bean.inspectionInfo!=null){
                     QualityCheckListDetailInspectionInfo info = bean.inspectionInfo;
+                    //设置title
+                    switch (info.inspectionType){
+                        case CommonConfig.TYPE_INSPECTION:
+                            mTitleView.setText("检查单");
+                            break;
+                        case CommonConfig.TYPE_ACCEPTANCE:
+                            mTitleView.setText("验收单");
+                            break;
+                    }
+                    //设置整改单还是复查单按钮
                     switch (info.qcState){
                         case CommonConfig.QC_STATE_UNRECTIFIED://待整改
                             if(AuthorityManager.isCreateRepair()&& AuthorityManager.isMe(info.responsibleUserId)) {

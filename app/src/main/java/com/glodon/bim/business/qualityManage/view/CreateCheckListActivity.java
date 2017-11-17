@@ -28,15 +28,16 @@ import com.glodon.bim.basic.utils.DateUtil;
 import com.glodon.bim.business.qualityManage.bean.CompanyItem;
 import com.glodon.bim.business.qualityManage.bean.CreateCheckListParams;
 import com.glodon.bim.business.qualityManage.bean.CreateCheckListParamsFile;
+import com.glodon.bim.business.qualityManage.bean.InspectionCompanyItem;
 import com.glodon.bim.business.qualityManage.contract.CreateCheckListContract;
 import com.glodon.bim.business.qualityManage.listener.OnChooseListListener;
 import com.glodon.bim.business.qualityManage.presenter.CreateCheckListPresenter;
 import com.glodon.bim.common.config.CommonConfig;
 import com.glodon.bim.customview.ToastManager;
-import com.glodon.bim.customview.dialog.PhotoAlbumDialog;
 import com.glodon.bim.customview.album.AlbumData;
 import com.glodon.bim.customview.album.TNBImageItem;
 import com.glodon.bim.customview.datepicker.TNBCustomDatePickerUtils;
+import com.glodon.bim.customview.dialog.PhotoAlbumDialog;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -64,8 +65,11 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
     private RelativeLayout mNavBack;
     private TextView mNavSubmit, mNavCheckLeftTitle, mNavCheckRightTitle;
     private View mNavLeftLine, mNavRightLine;
-    //内容
-
+    //检查单位
+    private RelativeLayout mInspectionCompanyParent;
+    private ImageView mInspectionCompanyStar;
+    private TextView mInspectionCompanyName;
+    private ChooseListDialog mInspectionCompanyListDialog;
     //施工单位
     private RelativeLayout mCompanyParent;
     private ImageView mCompanyStar;
@@ -130,7 +134,7 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
     private boolean mIsShowPhoto = true;
 
     //待提交时，从列表传递过来的参数
-    private CreateCheckListParams mParams ;
+    private CreateCheckListParams mParams;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -160,6 +164,10 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
         mNavLeftLine = findViewById(R.id.create_check_list_nav_check_left_line);
         mNavRightLine = findViewById(R.id.create_check_list_nav_check_right_line);
 
+        //检查单位
+        mInspectionCompanyParent = (RelativeLayout) findViewById(R.id.create_check_list_inspection_company);
+        mInspectionCompanyName = (TextView) findViewById(R.id.create_check_list_inspection_company_name);
+        mInspectionCompanyStar = (ImageView) findViewById(R.id.create_check_list_inspection_company_star);
         //施工单位
         mCompanyParent = (RelativeLayout) findViewById(R.id.create_check_list_company);
         mCompanyName = (TextView) findViewById(R.id.create_check_list_company_name);
@@ -210,16 +218,17 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
 
     //如果前面传递过来数据了   则直接设置上
     private void setPropsInfo() {
-        if(mParams!=null){
+        if (mParams != null) {
+            mInspectionCompanyName.setText(mParams.inspectionCompanyName);
             mCompanyName.setText(mParams.constructionCompanyName);
             mPersonName.setText(mParams.responsibleUserName);
             mSiteDescription.setText(mParams.description);
-            if(mParams.needRectification){
+            if (mParams.needRectification) {
                 mRemainFlag.setBackgroundResource(R.drawable.icon_flag_open);
                 mRemainFlagState = true;
                 mRemainName.setText(DateUtil.getNormalDate(Long.parseLong(mParams.lastRectificationDate)));
                 mRemainParent.setVisibility(View.VISIBLE);
-            }else{
+            } else {
                 mRemainParent.setVisibility(View.GONE);
                 mRemainFlagState = false;
                 mRemainFlag.setBackgroundResource(R.drawable.icon_flag_close);
@@ -227,7 +236,7 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
             mModuleName.setText(mParams.qualityCheckpointName);
             showDeleteButton();
             mPresenter.setEditState(mParams);
-        }else{
+        } else {
             mParams = new CreateCheckListParams();
         }
     }
@@ -239,6 +248,7 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
         ThrottleClickEvents.throttleClick(mNavCheckLeftTitle, this, 1);
         ThrottleClickEvents.throttleClick(mNavCheckRightTitle, this, 1);
 
+        ThrottleClickEvents.throttleClick(mInspectionCompanyParent, this, 1);
         ThrottleClickEvents.throttleClick(mCompanyParent, this, 1);
         ThrottleClickEvents.throttleClick(mPersonParent, this, 1);
         ThrottleClickEvents.throttleClick(mPhoto0, this, 1);
@@ -268,13 +278,13 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
             @Override
             public void afterTextChanged(Editable editable) {
                 String text = mSiteDescription.getText().toString();
-                int num ;
-                if(TextUtils.isEmpty(text)){
+                int num;
+                if (TextUtils.isEmpty(text)) {
                     num = 255;
-                }else{
-                    num = 255-text.length();
+                } else {
+                    num = 255 - text.length();
                 }
-                mLeftNumber.setText(num+"");
+                mLeftNumber.setText(num + "");
             }
         });
     }
@@ -283,11 +293,13 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
         mPresenter = new CreateCheckListPresenter(this);
         setPropsInfo();
         mPresenter.initData(getIntent());
+        //设置初始单据类型为检查单
+        mPresenter.setInspectionType(CommonConfig.TYPE_INSPECTION);
         //状态栏
         initStatusBar(mStatusView);
 
         //判断图片
-        mIsShowPhoto = getIntent().getBooleanExtra(CommonConfig.SHOW_PHOTO,true);
+        mIsShowPhoto = getIntent().getBooleanExtra(CommonConfig.SHOW_PHOTO, true);
 
         if (!mIsShowPhoto) {
             mPhotoParent.setVisibility(View.GONE);
@@ -296,13 +308,13 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
             mImagePath = getIntent().getStringExtra(CommonConfig.IAMGE_SAVE_PATH);
             AlbumData data = (AlbumData) getIntent().getSerializableExtra(CommonConfig.ALBUM_DATA);
 
-            LinkedHashMap<String,TNBImageItem> map = new LinkedHashMap<>();
-            if(!TextUtils.isEmpty(mImagePath)){
+            LinkedHashMap<String, TNBImageItem> map = new LinkedHashMap<>();
+            if (!TextUtils.isEmpty(mImagePath)) {
                 TNBImageItem item = new TNBImageItem();
                 item.imagePath = mImagePath;
-                map.put(mImagePath,item);
+                map.put(mImagePath, item);
             }
-            if(data!=null && data.map!=null){
+            if (data != null && data.map != null) {
                 map = data.map;
             }
             showImages(map);
@@ -339,8 +351,8 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
                 softHeight = screenHeight - (r.bottom - r.top);
 
                 //更改颜色框位置
-                if (softHeight > screenHeight/3) {
-                    mInputBottomView.getLayoutParams().height = softHeight-initHeight;
+                if (softHeight > screenHeight / 3) {
+                    mInputBottomView.getLayoutParams().height = softHeight - initHeight;
                     mInputParent.setVisibility(View.VISIBLE);
                 } else {
                     initHeight = softHeight;
@@ -358,22 +370,17 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
                 back();
                 break;
             case R.id.create_check_list_nav_check_left_title://检查单
-                mNavLeftLine.setVisibility(View.VISIBLE);
-                mNavCheckLeftTitle.setTextSize(17);
-                mNavRightLine.setVisibility(View.INVISIBLE);
-                mNavCheckRightTitle.setTextSize(15);
-                mParams.inspectionType = CommonConfig.TYPE_INSPECTION;
+                clickLeftTitle();
                 break;
             case R.id.create_check_list_nav_check_right_title://验收单
-                mNavLeftLine.setVisibility(View.INVISIBLE);
-                mNavCheckLeftTitle.setTextSize(15);
-                mNavRightLine.setVisibility(View.VISIBLE);
-                mNavCheckRightTitle.setTextSize(17);
-                mParams.inspectionType = CommonConfig.TYPE_ACCEPTANCE;
+                clickRightTitle();
                 break;
             case R.id.create_check_list_nav_submit://提交
                 //必填  施工单位   责任人  现场描述  质检项目
                 submit();
+                break;
+            case R.id.create_check_list_inspection_company://选择检查单位
+                mPresenter.showInspectionCompanyList();
                 break;
             case R.id.create_check_list_company://选择施工单位
                 mPresenter.showCompanyList();
@@ -426,7 +433,7 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
                         Date date = calendar.getTime();
                         String time = (new SimpleDateFormat("yyyy-MM-dd")).format(date);
                         mRemainName.setText(time);
-                        mParams.lastRectificationDate = calendar.getTimeInMillis()+"";
+                        mParams.lastRectificationDate = calendar.getTimeInMillis() + "";
                     }
                 });
                 break;
@@ -459,6 +466,23 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
         }
     }
 
+    private void clickRightTitle() {
+        mNavLeftLine.setVisibility(View.INVISIBLE);
+        mNavCheckLeftTitle.setTextSize(15);
+        mNavRightLine.setVisibility(View.VISIBLE);
+        mNavCheckRightTitle.setTextSize(17);
+        mParams.inspectionType = CommonConfig.TYPE_ACCEPTANCE;
+        mPresenter.setInspectionType(CommonConfig.TYPE_ACCEPTANCE);
+    }
+
+    private void clickLeftTitle() {
+        mNavLeftLine.setVisibility(View.VISIBLE);
+        mNavCheckLeftTitle.setTextSize(17);
+        mNavRightLine.setVisibility(View.INVISIBLE);
+        mNavCheckRightTitle.setTextSize(15);
+        mParams.inspectionType = CommonConfig.TYPE_INSPECTION;
+        mPresenter.setInspectionType(CommonConfig.TYPE_INSPECTION);
+    }
 
     @Override
     public void onBackPressed() {
@@ -502,6 +526,12 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
     }
 
     @Override
+    public void showInspectionCompany(InspectionCompanyItem companyItem) {
+        mInspectionCompanyName.setText(companyItem.name);
+    }
+
+
+    @Override
     public void showCompanyList(final List<String> mCompanyNameList, final int mCompanySelectPosition) {
         mChooseCompanyListDialog = new ChooseListDialog(mActivity, mCompanySelectPosition, "选择施工单位");
         mChooseCompanyListDialog.builder(new OnChooseListListener() {
@@ -517,6 +547,20 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
             }
         }, mCompanyNameList);
         mChooseCompanyListDialog.show();
+    }
+
+    @Override
+    public void showInspectionCompanyList(final List<String> mInspectionCompanyNameList, final int mInspectionCompanySelectPosition) {
+        mInspectionCompanyListDialog = new ChooseListDialog(mActivity, mInspectionCompanySelectPosition, "选择检查单位");
+        mInspectionCompanyListDialog.builder(new OnChooseListListener() {
+            @Override
+            public void onSelect(int position) {
+                mInspectionCompanyName.setText(mInspectionCompanyNameList.get(position));
+                mPresenter.setInspectionCompanySelectedPosition(position);
+
+            }
+        }, mInspectionCompanyNameList);
+        mInspectionCompanyListDialog.show();
     }
 
     @Override
@@ -552,35 +596,35 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
         list.add(mPhoto1);
         list.add(mPhoto2);
         int position = 0;
-        for(Map.Entry<String,TNBImageItem> entry:mSelectedMap.entrySet()){
+        for (Map.Entry<String, TNBImageItem> entry : mSelectedMap.entrySet()) {
             TNBImageItem item = entry.getValue();
             String url = item.thumbnailPath;
-            if(TextUtils.isEmpty(url)){
+            if (TextUtils.isEmpty(url)) {
                 url = item.imagePath;
             }
-            ImageLoader.showImageCenterCrop(mActivity,url,list.get(position),R.drawable.icon_default_image);
+            ImageLoader.showImageCenterCrop(mActivity, url, list.get(position), R.drawable.icon_default_image);
             position++;
-            CameraUtil.frushStyemDCIM(mActivity,item.imagePath);
+            CameraUtil.frushStyemDCIM(mActivity, item.imagePath);
         }
-        if(size==0){
+        if (size == 0) {
             mPhoto0.setVisibility(View.GONE);
             mPhoto1.setVisibility(View.GONE);
             mPhoto2.setVisibility(View.GONE);
             mPhoto3.setVisibility(View.VISIBLE);
         }
-        if(size==1){
+        if (size == 1) {
             mPhoto0.setVisibility(View.VISIBLE);
             mPhoto1.setVisibility(View.GONE);
             mPhoto2.setVisibility(View.GONE);
             mPhoto3.setVisibility(View.VISIBLE);
         }
-        if(size==2){
+        if (size == 2) {
             mPhoto0.setVisibility(View.VISIBLE);
             mPhoto1.setVisibility(View.VISIBLE);
             mPhoto2.setVisibility(View.GONE);
             mPhoto3.setVisibility(View.VISIBLE);
         }
-        if(size==3){
+        if (size == 3) {
             mPhoto0.setVisibility(View.VISIBLE);
             mPhoto1.setVisibility(View.VISIBLE);
             mPhoto2.setVisibility(View.VISIBLE);
@@ -588,16 +632,27 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
         }
     }
 
+    @Override
+    public void setTitle(String mInspectionType) {
+        switch (mInspectionType) {
+            case CommonConfig.TYPE_INSPECTION:
+                clickLeftTitle();
+                break;
+            case CommonConfig.TYPE_ACCEPTANCE:
+                clickRightTitle();
+                break;
+        }
+    }
 
 
     //点击返回按钮
-    private void back(){
-        if(isShowBackDialog()){
+    private void back() {
+        if (isShowBackDialog()) {
             mBackDialog = new SaveDeleteDialog(mActivity);
             mBackDialog.getBackDialog(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(mPresenter.isChange()){
+                    if (mPresenter.isChange()) {
                         setResult(RESULT_OK);
                     }
                     mActivity.finish();
@@ -609,8 +664,8 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
                 }
             });
             mBackDialog.show();
-        }else{
-            if(mPresenter.isChange()){
+        } else {
+            if (mPresenter.isChange()) {
                 setResult(RESULT_OK);
             }
             mActivity.finish();
@@ -618,21 +673,23 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
     }
 
     //点击保存
-    private void  save(){
-        if(checkMustInfo()){
+    private void save() {
+        if (checkMustInfo()) {
             assembleData();
             mPresenter.save(mParams);
         }
     }
+
     //点击提交
-    private void submit(){
-        if(checkMustInfo()) {
+    private void submit() {
+        if (checkMustInfo()) {
             assembleData();
             mPresenter.submit(mParams);
         }
     }
+
     //收集页面数据
-    private void assembleData(){
+    private void assembleData() {
         mParams.description = mSiteDescription.getText().toString();
         mParams.needRectification = mRemainFlagState;
         mParams.files = mPhotoList;
@@ -644,6 +701,13 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
      */
     private boolean checkMustInfo() {
         List<String> temp = new ArrayList<>();
+        String inspectionCompanyName = mInspectionCompanyName.getText().toString().trim();
+        if (TextUtils.isEmpty(inspectionCompanyName)) {
+            mInspectionCompanyStar.setVisibility(View.VISIBLE);
+            temp.add("检查单位");
+        } else {
+            mInspectionCompanyStar.setVisibility(View.INVISIBLE);
+        }
         String companyName = mCompanyName.getText().toString().trim();
         if (TextUtils.isEmpty(companyName)) {
             mCompanyStar.setVisibility(View.VISIBLE);
@@ -651,7 +715,6 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
         } else {
             mCompanyStar.setVisibility(View.INVISIBLE);
         }
-//        mPersonName.setText("掌声");
         String personName = mPersonName.getText().toString().trim();
         if (TextUtils.isEmpty(personName)) {
             mPersonStar.setVisibility(View.VISIBLE);
@@ -674,7 +737,7 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
             mModuleStar.setVisibility(View.INVISIBLE);
         }
 
-        if(mRemainFlagState){
+        if (mRemainFlagState) {
             String dateText = mRemainName.getText().toString().trim();
             if (TextUtils.isEmpty(dateText)) {
                 mRemainStar.setVisibility(View.VISIBLE);
@@ -700,7 +763,10 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
                 content = "您还未选择" + temp.get(0) + "、" + temp.get(1) + "、" + temp.get(2) + "和" + temp.get(3) + "!";
             }
             if (size == 5) {
-                content = "您还未选择" + temp.get(0) + "、" + temp.get(1) + "、" + temp.get(2) + temp.get(3) + "和"+temp.get(4) + "!";
+                content = "您还未选择" + temp.get(0) + "、" + temp.get(1) + "、" + temp.get(2) + "、" + temp.get(3) + "和" + temp.get(4) + "!";
+            }
+            if (size == 6) {
+                content = "您还未选择" + temp.get(0) + "、" + temp.get(1) + "、" + temp.get(2) + "、" + temp.get(3) + "、" + temp.get(4) + "和" + temp.get(5) + "!";
             }
             mHintDialog = new SaveDeleteDialog(mActivity);
             mHintDialog.getHintDialog(content);
@@ -708,17 +774,17 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
             return false;
         }
 
-        if(mRemainFlagState) {
+        if (mRemainFlagState) {
             String dateText = mRemainName.getText().toString().trim();
             if (!TextUtils.isEmpty(dateText)) {
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                 try {
                     long millionSeconds = sdf.parse(dateText).getTime();//毫秒
                     Calendar calendar = Calendar.getInstance();
-                    int YY = calendar.get(Calendar.YEAR) ;
-                    int MM = calendar.get(Calendar.MONTH)+1;
+                    int YY = calendar.get(Calendar.YEAR);
+                    int MM = calendar.get(Calendar.MONTH) + 1;
                     int DD = calendar.get(Calendar.DATE);
-                    long today = sdf.parse(YY+"-"+MM+"-"+DD).getTime();
+                    long today = sdf.parse(YY + "-" + MM + "-" + DD).getTime();
                     if (millionSeconds < today) {
                         ToastManager.show("整改期限不能早于当前日期！");
                         return false;
@@ -736,44 +802,8 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
     /**
      * 是否显示退出的提示
      */
-    private boolean isShowBackDialog(){
+    private boolean isShowBackDialog() {
         assembleData();
         return mPresenter.isDifferent(mParams);
-//        String temp = mCompanyName.getText().toString().trim();
-//        if(!TextUtils.isEmpty(temp)){
-//            return true;
-//        }
-//        temp = mPersonName.getText().toString().trim();
-//        if(!TextUtils.isEmpty(temp)){
-//            return true;
-//        }
-//        temp = mSiteDescription.getText().toString();
-//        if(!TextUtils.isEmpty(temp)){
-//            return true;
-//        }
-//
-//        if(mPhotoList!=null && mPhotoList.size()>0){
-//            return true;
-//        }
-//
-//        if(mRemainFlagState){
-//            temp = mRemainName.getText().toString().trim();
-//            if(!TextUtils.isEmpty(temp)){
-//                return true;
-//            }
-//        }
-//        temp = mModelName.getText().toString().trim();
-//        if(!TextUtils.isEmpty(temp)){
-//            return true;
-//        }
-//        temp = mBluePrintName.getText().toString().trim();
-//        if(!TextUtils.isEmpty(temp)){
-//            return true;
-//        }
-//        temp = mModelName.getText().toString().trim();
-//        if(!TextUtils.isEmpty(temp)){
-//            return true;
-//        }
-//        return false;
     }
 }

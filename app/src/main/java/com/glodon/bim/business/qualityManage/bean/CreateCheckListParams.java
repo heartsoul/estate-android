@@ -16,9 +16,9 @@ public class CreateCheckListParams implements Serializable {
     public long projectId;
     //项目名称
     public String projectName;
-//    public String inspectionDate;
     //检查单位
-//    public long inspectionCompanyId;//该账户所在单位
+    public long inspectionCompanyId;//该账户所在单位
+    public String inspectionCompanyName;//该账户所在单位
     //质检项目id
     public long qualityCheckpointId;
     //质检项目名称

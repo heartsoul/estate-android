@@ -35,7 +35,7 @@ public class QualityCheckListDetailInspectionInfo {
     //岗位
     public String inspectionUserTitle;
 
-    public String lastRectificationDate;   //整改期限
+    public long lastRectificationDate;   //整改期限
     public boolean needRectification;  //是否需要整改
 
     public int projectId;

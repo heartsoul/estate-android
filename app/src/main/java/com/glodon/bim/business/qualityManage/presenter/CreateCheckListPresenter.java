@@ -11,6 +11,7 @@ import com.glodon.bim.basic.utils.SharedPreferencesUtil;
 import com.glodon.bim.business.qualityManage.bean.CompanyItem;
 import com.glodon.bim.business.qualityManage.bean.CreateCheckListParams;
 import com.glodon.bim.business.qualityManage.bean.CreateCheckListParamsFile;
+import com.glodon.bim.business.qualityManage.bean.InspectionCompanyItem;
 import com.glodon.bim.business.qualityManage.bean.ModuleListBeanItem;
 import com.glodon.bim.business.qualityManage.bean.PersonItem;
 import com.glodon.bim.business.qualityManage.bean.SaveBean;
@@ -59,6 +60,10 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
 
     private long mProjectId;//项目id
     private long mInspectId = -1;//检查单id，新增时没有   编辑时有值
+    //检查单位列表
+    private List<InspectionCompanyItem> mInspectionCompanyList;
+    private List<String> mInspectionCompanyNameList;
+    private int mInspectionCompanySelectPosition = 0;
     //施工单位列表
     private List<CompanyItem> mCompanyList;
     private List<String> mCompanyNameList;
@@ -70,7 +75,6 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
     //图片
     private LinkedHashMap<String, TNBImageItem> mSelectedMap;
     //质检项目
-//    private int mModuleSelectPosition = -1;
     private ModuleListBeanItem mModuleSelectInfo;
 
     //新建检查单参数
@@ -86,6 +90,8 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
     private CreateCheckListParams mInitParams;
     private boolean mIsChange = false;//是否保存了
 
+    private String mInspectionType;
+
     @Override
     public boolean isChange() {
         return mIsChange;
@@ -96,6 +102,7 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
         mModel = new CreateCheckListModel();
         mSubscritption = new CompositeSubscription();
         mCompanyNameList = new ArrayList<>();
+        mInspectionCompanyNameList = new ArrayList<>();
         mPersonNameList = new ArrayList<>();
         mProjectId = SharedPreferencesUtil.getProjectId();
         mInput = new CreateCheckListParams();
@@ -151,6 +158,24 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
         return false;
     }
 
+    @Override
+    public void setInspectionType(String typeInspection) {
+        mInspectionType = typeInspection;
+        mModel.setInspectionType(typeInspection);
+    }
+
+    @Override
+    public void setInspectionCompanySelectedPosition(int position) {
+        mInspectionCompanySelectPosition = position;
+    }
+
+    @Override
+    public void showInspectionCompanyList() {
+        if (mView != null) {
+            mView.showInspectionCompanyList(mInspectionCompanyNameList, mInspectionCompanySelectPosition);
+        }
+    }
+
     //保存后将值付给初始值  以便下一次比较
     private void resetInitParams() {
 //        mInitParams.code = mInput.code;
@@ -158,6 +183,7 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
         mInitParams.projectName = mInput.projectName;
         mInitParams.qualityCheckpointId = mInput.qualityCheckpointId;
         mInitParams.constructionCompanyId = mInput.constructionCompanyId;
+        mInitParams.inspectionCompanyId = mInput.inspectionCompanyId;
         mInitParams.needRectification = mInput.needRectification;
         mInitParams.lastRectificationDate = mInput.lastRectificationDate;
         mInitParams.description = mInput.description;
@@ -168,18 +194,18 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
 
     private boolean isEqual(List<CreateCheckListParamsFile> a, List<CreateCheckListParamsFile> inputList) {
         List<CreateCheckListParamsFile> b = new ArrayList<>();
-        if(mSelectedMap!=null && mSelectedMap.size()>0){
-            for(Map.Entry<String,TNBImageItem> entry:mSelectedMap.entrySet()){
+        if (mSelectedMap != null && mSelectedMap.size() > 0) {
+            for (Map.Entry<String, TNBImageItem> entry : mSelectedMap.entrySet()) {
                 CreateCheckListParamsFile file = new CreateCheckListParamsFile();
                 file.objectId = entry.getValue().objectId;
                 b.add(file);
             }
 
         }
-        if(a==null && b.size()==0){
+        if (a == null && b.size() == 0) {
             return true;
         }
-        if(a!=null && a.size()==0 &&b.size() ==0){
+        if (a != null && a.size() == 0 && b.size() == 0) {
             return true;
         }
         if ((a != null) && (b != null) && (a.size() == b.size()) && (a.size() > 0)) {
@@ -188,7 +214,7 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
                     return false;
                 }
             }
-        }else{
+        } else {
             return false;
         }
         return true;
@@ -228,6 +254,7 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
             mInitParams.projectId = mEditParams.projectId;
             mInitParams.projectName = mEditParams.projectName;
             mInitParams.qualityCheckpointId = mEditParams.qualityCheckpointId;
+            mInitParams.inspectionCompanyId = mEditParams.inspectionCompanyId;
             mInitParams.constructionCompanyId = mEditParams.constructionCompanyId;
             mInitParams.needRectification = mEditParams.needRectification;
             mInitParams.lastRectificationDate = mEditParams.lastRectificationDate;
@@ -235,7 +262,11 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
             mInitParams.inspectionType = mEditParams.inspectionType;
             mInitParams.responsibleUserId = mEditParams.responsibleUserId;
             mInitParams.files = mEditParams.files;
+
+            mInspectionType = mEditParams.inspectionType;
+            mView.setTitle(mInspectionType);
         }
+        initInspectionCompany(mEditParams);
         getCompanyList(mEditParams);
 
     }
@@ -252,6 +283,53 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
             }
             mView.showImages(mSelectedMap);
         }
+    }
+
+    //获取检查单位
+    private void initInspectionCompany(final CreateCheckListParams mParams) {
+        Subscription sub = mModel.getInspectionCompanies(mProjectId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<List<InspectionCompanyItem>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        LogUtil.e(e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(List<InspectionCompanyItem> inspectionCompanyItems) {
+                        mInspectionCompanyList = inspectionCompanyItems;
+                        mInspectionCompanyNameList.clear();
+                        if (inspectionCompanyItems != null && inspectionCompanyItems.size() > 0) {
+
+                            for (InspectionCompanyItem item : mInspectionCompanyList) {
+                                mInspectionCompanyNameList.add(item.name);
+                            }
+
+                            //设置编辑状态的施工单位
+                            if (mParams != null) {
+                                InspectionCompanyItem item = new InspectionCompanyItem();
+                                item.id = mParams.inspectionCompanyId;
+                                item.name = mParams.inspectionCompanyName;
+                                mView.showInspectionCompany(item);
+                                for (int i = 0; i < mInspectionCompanyList.size(); i++) {
+                                    if (item.id == mInspectionCompanyList.get(i).id) {
+                                        mInspectionCompanySelectPosition = i;
+                                        break;
+                                    }
+                                }
+                            } else {
+                                mView.showInspectionCompany(mInspectionCompanyList.get(0));
+                            }
+                        }
+                    }
+                });
+        mSubscritption.add(sub);
     }
 
     //初始化责任人  编辑状态下
@@ -528,8 +606,8 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
                     public void onUploadFinished(List<CreateCheckListParamsFile> list) {
                         params.files = list;
                         int i = 0;
-                        for(Map.Entry<String,TNBImageItem> entry:mSelectedMap.entrySet()){
-                            TNBImageItem item  = entry.getValue();
+                        for (Map.Entry<String, TNBImageItem> entry : mSelectedMap.entrySet()) {
+                            TNBImageItem item = entry.getValue();
                             item.objectId = list.get(i).objectId;
                             item.urlFile = list.get(i);
                             i++;
@@ -712,7 +790,11 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
 
     //组织保存和提交的数据
     private void assembleParams(CreateCheckListParams params) {
-
+        //检查单位
+        if (mInspectionCompanyList != null && mInspectionCompanyList.size() > 0) {
+            mInput.inspectionCompanyId = mInspectionCompanyList.get(mInspectionCompanySelectPosition).id;
+            mInput.inspectionCompanyName = mInspectionCompanyList.get(mInspectionCompanySelectPosition).name;
+        }
         //施工单位
         if (mCompanyList != null && mCompanyList.size() > 0) {
             mInput.constructionCompanyId = mCompanyList.get(mCompanySelectPosition).id;
