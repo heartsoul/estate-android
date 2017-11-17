@@ -1,0 +1,779 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/create_check_list_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/create_check_list_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/c_00baf3"
+        android:orientation="vertical"></LinearLayout>
+    <!--导航栏-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_44"
+        android:background="@color/c_00baf3">
+
+        <RelativeLayout
+            android:id="@+id/create_check_list_nav_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+            <ImageView
+                android:layout_width="@dimen/dimen_09"
+                android:layout_height="@dimen/dimen_20"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/dimen_10"
+                android:layout_marginRight="@dimen/dimen_10"
+                android:background="@drawable/icon_back_white" />
+        </RelativeLayout>
+
+
+        <TextView
+            android:id="@+id/create_check_list_nav_submit"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/dimen_10"
+            android:gravity="center_vertical"
+            android:text="提交"
+            android:textColor="@color/white"
+            android:textSize="@dimen/dimen_14" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/create_check_list_nav_check_left_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="检查单"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/dimen_17" />
+
+                <View
+                    android:id="@+id/create_check_list_nav_check_left_line"
+                    android:layout_width="@dimen/dimen_26"
+                    android:layout_height="@dimen/dimen_02"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="@dimen/dimen_04"
+                    android:background="@color/white" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/dimen_15">
+
+                <TextView
+                    android:id="@+id/create_check_list_nav_check_right_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="验收单"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/dimen_15" />
+
+                <View
+                    android:id="@+id/create_check_list_nav_check_right_line"
+                    android:layout_width="@dimen/dimen_26"
+                    android:layout_height="@dimen/dimen_02"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="@dimen/dimen_04"
+                    android:background="@color/white"
+                    android:visibility="gone" />
+            </RelativeLayout>
+        </LinearLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/c_f9f9f9"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:orientation="vertical">
+                <!--检查单位-->
+                <RelativeLayout
+                    android:id="@+id/create_check_list_inspection_company"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_56"
+                    android:background="@color/white">
+
+                    <TextView
+                        android:id="@+id/create_check_list_inspection_company_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/dimen_20"
+                        android:text="检查单位"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dimen_16" />
+
+                    <ImageView
+                        android:id="@+id/create_check_list_inspection_company_arrow"
+                        android:layout_width="@dimen/dimen_05"
+                        android:layout_height="@dimen/dimen_12"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/dimen_21"
+                        android:background="@drawable/icon_arrow_right_gray" />
+
+                    <ImageView
+                        android:id="@+id/create_check_list_inspection_company_star"
+                        android:layout_width="@dimen/dimen_08"
+                        android:layout_height="@dimen/dimen_08"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/dimen_07"
+                        android:background="@drawable/icon_create_check_list_star"
+                        android:visibility="invisible" />
+
+                    <TextView
+                        android:id="@+id/create_check_list_inspection_company_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/dimen_10"
+                        android:layout_marginRight="@dimen/dimen_10"
+                        android:layout_toLeftOf="@id/create_check_list_inspection_company_arrow"
+                        android:layout_toRightOf="@id/create_check_list_inspection_company_title"
+                        android:ellipsize="end"
+                        android:gravity="right"
+                        android:maxLines="1"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dimen_16" />
+
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_0.5"
+                    android:layout_marginLeft="@dimen/dimen_19"
+                    android:background="@color/c_a3cccccc" />
+                <!--施工单位-->
+                <RelativeLayout
+                    android:id="@+id/create_check_list_company"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_56"
+                    android:background="@color/white">
+
+                    <TextView
+                        android:id="@+id/create_check_list_company_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/dimen_20"
+                        android:text="施工单位"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dimen_16" />
+
+                    <ImageView
+                        android:id="@+id/create_check_list_company_arrow"
+                        android:layout_width="@dimen/dimen_05"
+                        android:layout_height="@dimen/dimen_12"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/dimen_21"
+                        android:background="@drawable/icon_arrow_right_gray" />
+
+                    <ImageView
+                        android:id="@+id/create_check_list_company_star"
+                        android:layout_width="@dimen/dimen_08"
+                        android:layout_height="@dimen/dimen_08"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/dimen_07"
+                        android:background="@drawable/icon_create_check_list_star"
+                        android:visibility="invisible" />
+
+                    <TextView
+                        android:id="@+id/create_check_list_company_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/dimen_10"
+                        android:layout_marginRight="@dimen/dimen_10"
+                        android:layout_toLeftOf="@id/create_check_list_company_arrow"
+                        android:layout_toRightOf="@id/create_check_list_company_title"
+                        android:ellipsize="end"
+                        android:gravity="right"
+                        android:maxLines="1"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dimen_16" />
+
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_0.5"
+                    android:layout_marginLeft="@dimen/dimen_19"
+                    android:background="@color/c_a3cccccc" />
+                <!--责任人-->
+                <RelativeLayout
+                    android:id="@+id/create_check_list_person"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_52"
+                    android:background="@color/white">
+
+                    <TextView
+                        android:id="@+id/create_check_list_person_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/dimen_20"
+                        android:text="责任人"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dimen_16" />
+
+                    <ImageView
+                        android:id="@+id/create_check_list_person_arrow"
+                        android:layout_width="@dimen/dimen_05"
+                        android:layout_height="@dimen/dimen_12"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/dimen_21"
+                        android:background="@drawable/icon_arrow_right_gray" />
+
+                    <ImageView
+                        android:id="@+id/create_check_list_person_star"
+                        android:layout_width="@dimen/dimen_08"
+                        android:layout_height="@dimen/dimen_08"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/dimen_07"
+                        android:background="@drawable/icon_create_check_list_star"
+                        android:visibility="invisible" />
+
+                    <TextView
+                        android:id="@+id/create_check_list_person_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/dimen_10"
+                        android:layout_marginRight="@dimen/dimen_10"
+                        android:layout_toLeftOf="@id/create_check_list_person_arrow"
+                        android:layout_toRightOf="@id/create_check_list_person_title"
+                        android:ellipsize="end"
+                        android:gravity="right"
+                        android:maxLines="1"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dimen_16" />
+
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_0.5"
+                    android:layout_marginLeft="@dimen/dimen_19"
+                    android:background="@color/c_a3cccccc" />
+                <!--现场描述-->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white">
+
+                    <EditText
+                        android:id="@+id/create_check_list_site_desription"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dimen_105"
+                        android:background="@color/white"
+                        android:gravity="top"
+                        android:hint="现场情况描述...."
+                        android:paddingBottom="@dimen/dimen_13"
+                        android:paddingLeft="@dimen/dimen_20"
+                        android:paddingRight="@dimen/dimen_20"
+                        android:paddingTop="@dimen/dimen_12"
+                        android:scrollbarSize="@dimen/dimen_02"
+                        android:scrollbars="vertical"
+                        android:textColorHint="@color/c_acacac"
+                        android:textCursorDrawable="@drawable/edit_cursor_color"
+                        android:textSize="@dimen/dimen_14"
+                        android:maxLength="255"/>
+
+                    <ImageView
+                        android:id="@+id/create_check_list_site_desription_star"
+                        android:layout_width="@dimen/dimen_08"
+                        android:layout_height="@dimen/dimen_08"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/dimen_07"
+                        android:background="@drawable/icon_create_check_list_star"
+                        android:visibility="invisible" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_0.5"
+                    android:layout_marginLeft="@dimen/dimen_19"
+                    android:background="@color/c_a3cccccc"
+                    android:visibility="gone" />
+                <!--图片描述-->
+                <EditText
+                    android:id="@+id/create_check_list_photo_desription"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_105"
+                    android:background="@color/white"
+                    android:gravity="top"
+                    android:hint="图片描述...."
+                    android:paddingBottom="@dimen/dimen_13"
+                    android:paddingLeft="@dimen/dimen_20"
+                    android:paddingRight="@dimen/dimen_20"
+                    android:paddingTop="@dimen/dimen_12"
+                    android:scrollbarSize="@dimen/dimen_02"
+                    android:scrollbars="vertical"
+                    android:textColorHint="@color/c_acacac"
+                    android:textCursorDrawable="@drawable/edit_cursor_color"
+                    android:textSize="@dimen/dimen_14"
+                    android:visibility="gone" />
+
+
+                <LinearLayout
+                    android:id="@+id/create_check_list_photo_parent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/dimen_23"
+                    android:paddingLeft="@dimen/dimen_20">
+
+                    <ImageView
+                        android:id="@+id/create_check_list_photo_0"
+                        android:layout_width="@dimen/dimen_80"
+                        android:layout_height="@dimen/dimen_80"
+                        android:layout_marginRight="@dimen/dimen_10"
+                        android:visibility="gone" />
+
+                    <ImageView
+                        android:id="@+id/create_check_list_photo_1"
+                        android:layout_width="@dimen/dimen_80"
+                        android:layout_height="@dimen/dimen_80"
+                        android:layout_marginRight="@dimen/dimen_10"
+                        android:visibility="gone" />
+
+                    <ImageView
+                        android:id="@+id/create_check_list_photo_2"
+                        android:layout_width="@dimen/dimen_80"
+                        android:layout_height="@dimen/dimen_80"
+                        android:layout_marginRight="@dimen/dimen_10"
+                        android:visibility="gone" />
+
+                    <ImageView
+                        android:id="@+id/create_check_list_photo_3"
+                        android:layout_width="@dimen/dimen_80"
+                        android:layout_height="@dimen/dimen_80"
+                        android:background="@drawable/icon_add_picture" />
+
+                </LinearLayout>
+                <!--需整改期限-->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_20"
+                    android:background="@color/c_f9f9f9" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dimen_57"
+                        android:paddingLeft="@dimen/dimen_20"
+                        android:paddingRight="@dimen/dimen_20">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:text="需要整改"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/dimen_16" />
+
+                        <ImageView
+                            android:id="@+id/create_check_list_remain_flag"
+                            android:layout_width="@dimen/dimen_51"
+                            android:layout_height="@dimen/dimen_31"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:background="@drawable/icon_flag_open" />
+                    </RelativeLayout>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dimen_0.5"
+                        android:layout_marginLeft="@dimen/dimen_19"
+                        android:background="@color/c_a3cccccc" />
+                    <RelativeLayout
+                        android:id="@+id/create_check_list_remain"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dimen_56">
+
+                        <TextView
+                            android:id="@+id/create_check_list_remain_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="@dimen/dimen_20"
+                            android:text="整改期限"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/dimen_16" />
+                        <ImageView
+                            android:id="@+id/create_check_list_remain_star"
+                            android:layout_width="@dimen/dimen_08"
+                            android:layout_height="@dimen/dimen_08"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="@dimen/dimen_07"
+                            android:background="@drawable/icon_create_check_list_star"
+                            android:visibility="invisible" />
+
+                        <ImageView
+                            android:id="@+id/create_check_list_remain_arrow"
+                            android:layout_width="@dimen/dimen_05"
+                            android:layout_height="@dimen/dimen_12"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="@dimen/dimen_21"
+                            android:background="@drawable/icon_arrow_right_gray" />
+
+                        <TextView
+                            android:id="@+id/create_check_list_remain_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="@dimen/dimen_10"
+                            android:layout_marginRight="@dimen/dimen_10"
+                            android:layout_toLeftOf="@id/create_check_list_remain_arrow"
+                            android:layout_toRightOf="@id/create_check_list_remain_title"
+                            android:ellipsize="end"
+                            android:gravity="right"
+                            android:maxLines="1"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/dimen_16" />
+
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_11"
+                    android:background="@color/c_f9f9f9" />
+                <!--质检项目-->
+                <RelativeLayout
+                    android:id="@+id/create_check_list_module"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_52"
+                    android:background="@color/white">
+
+                    <TextView
+                        android:id="@+id/create_check_list_module_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/dimen_20"
+                        android:text="质检项目"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dimen_16" />
+
+                    <ImageView
+                        android:id="@+id/create_check_list_module_arrow"
+                        android:layout_width="@dimen/dimen_05"
+                        android:layout_height="@dimen/dimen_12"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/dimen_21"
+                        android:background="@drawable/icon_arrow_right_gray" />
+
+                    <ImageView
+                        android:id="@+id/create_check_list_module_star"
+                        android:layout_width="@dimen/dimen_08"
+                        android:layout_height="@dimen/dimen_08"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/dimen_07"
+                        android:background="@drawable/icon_create_check_list_star"
+                        android:visibility="invisible" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/dimen_10"
+                        android:layout_marginRight="@dimen/dimen_10"
+                        android:layout_toLeftOf="@id/create_check_list_module_arrow"
+                        android:layout_toRightOf="@id/create_check_list_module_title">
+
+                        <!-- <EditText
+                             android:id="@+id/create_check_list_module_name"
+                             android:layout_width="@dimen/dimen_0"
+                             android:layout_height="wrap_content"
+                             android:layout_gravity="center_vertical"
+                             android:layout_weight="1"
+                             android:background="@color/white"
+                             android:ellipsize="end"
+                             android:gravity="right"
+                             android:maxLines="1"
+                             android:textColor="@color/black"
+                             android:textSize="@dimen/dimen_16"
+                             android:textCursorDrawable="@drawable/edit_cursor_color"
+                             />-->
+                        <TextView
+                            android:id="@+id/create_check_list_module_name"
+                            android:layout_width="@dimen/dimen_0"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1"
+                            android:background="@color/white"
+                            android:ellipsize="end"
+                            android:gravity="right"
+                            android:maxLines="1"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/dimen_16" />
+
+                        <ImageView
+                            android:id="@+id/create_check_list_module_benchmark"
+                            android:layout_width="@dimen/dimen_15"
+                            android:layout_height="@dimen/dimen_15"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="@dimen/dimen_05"
+                            android:layout_marginRight="@dimen/dimen_24"
+                            android:background="@drawable/icon_benchmark"
+                            android:visibility="gone" />
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_0.5"
+                    android:layout_marginLeft="@dimen/dimen_19"
+                    android:background="@color/c_a3cccccc" />
+                <!--关联图纸-->
+                <RelativeLayout
+                    android:id="@+id/create_check_list_blueprint"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_52"
+                    android:background="@color/white">
+
+                    <TextView
+                        android:id="@+id/create_check_list_blueprint_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/dimen_20"
+                        android:text="关联图纸"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dimen_16" />
+
+                    <ImageView
+                        android:id="@+id/create_check_list_blueprint_arrow"
+                        android:layout_width="@dimen/dimen_05"
+                        android:layout_height="@dimen/dimen_12"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/dimen_21"
+                        android:background="@drawable/icon_arrow_right_gray" />
+
+                    <TextView
+                        android:id="@+id/create_check_list_blueprint_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/dimen_10"
+                        android:layout_marginRight="@dimen/dimen_10"
+                        android:layout_toLeftOf="@id/create_check_list_blueprint_arrow"
+                        android:layout_toRightOf="@id/create_check_list_blueprint_title"
+                        android:ellipsize="end"
+                        android:gravity="right"
+                        android:maxLines="1"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dimen_16" />
+
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_0.5"
+                    android:layout_marginLeft="@dimen/dimen_19"
+                    android:background="@color/c_a3cccccc" />
+                <!--关联模型-->
+                <RelativeLayout
+                    android:id="@+id/create_check_list_model"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_52"
+                    android:background="@color/white">
+
+                    <TextView
+                        android:id="@+id/create_check_list_model_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/dimen_20"
+                        android:text="关联模型"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dimen_16" />
+
+                    <ImageView
+                        android:id="@+id/create_check_list_model_arrow"
+                        android:layout_width="@dimen/dimen_05"
+                        android:layout_height="@dimen/dimen_12"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/dimen_21"
+                        android:background="@drawable/icon_arrow_right_gray" />
+
+                    <TextView
+                        android:id="@+id/create_check_list_model_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/dimen_10"
+                        android:layout_marginRight="@dimen/dimen_10"
+                        android:layout_toLeftOf="@id/create_check_list_model_arrow"
+                        android:layout_toRightOf="@id/create_check_list_model_title"
+                        android:ellipsize="end"
+                        android:gravity="right"
+                        android:maxLines="1"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dimen_16" />
+
+                </RelativeLayout>
+
+                <!--保存删除-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/c_f9f9f9"
+                    android:orientation="vertical"
+                    android:paddingBottom="@dimen/dimen_30">
+
+                    <Button
+                        android:id="@+id/create_check_list_save"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dimen_40"
+                        android:layout_marginLeft="@dimen/dimen_38"
+                        android:layout_marginRight="@dimen/dimen_38"
+                        android:layout_marginTop="@dimen/dimen_30"
+                        android:background="@drawable/corner_radius_33_blue_bg"
+                        android:text="保存"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/dimen_16" />
+
+                    <Button
+                        android:id="@+id/create_check_list_delete"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dimen_40"
+                        android:layout_marginLeft="@dimen/dimen_38"
+                        android:layout_marginRight="@dimen/dimen_38"
+                        android:layout_marginTop="@dimen/dimen_20"
+                        android:background="@drawable/corner_radius_33_gray_bg"
+                        android:text="删除"
+                        android:textColor="@color/c_5b5b5b"
+                        android:textSize="@dimen/dimen_16"
+                        android:visibility="gone" />
+                </LinearLayout>
+
+
+            </LinearLayout>
+        </ScrollView>
+        <!--现场描述和图片描述  输入法弹出-->
+
+        <LinearLayout
+            android:id="@+id/create_check_list_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_0.5"
+                android:background="@color/c_a3cccccc" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/dimen_06"
+                android:background="@color/white"
+                android:paddingTop="@dimen/dimen_06">
+
+                <TextView
+                    android:id="@+id/create_check_list_input_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dimen_15"
+                    android:text="现场情况描述"
+                    android:textColor="@color/c_5d5d5d"
+                    android:textSize="@dimen/dimen_12" />
+
+                <TextView
+                    android:id="@+id/create_check_list_input_num_all"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/dimen_18"
+                    android:text="/255"
+                    android:textColor="@color/c_00baf3"
+                    android:textSize="@dimen/dimen_12" />
+
+                <TextView
+                    android:id="@+id/create_check_list_input_num_left"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@id/create_check_list_input_num_all"
+                    android:text="255"
+                    android:textColor="@color/c_e75452"
+                    android:textSize="@dimen/dimen_12" />
+            </RelativeLayout>
+            <View
+                android:id="@+id/create_check_list_input_bottom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/transparent"/>
+        </LinearLayout>
+        <!--图片删除-->
+        <LinearLayout
+            android:id="@+id/create_check_list_photo_delete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@color/c_e75452"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/dimen_08"
+            android:paddingTop="@dimen/dimen_10"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="@dimen/dimen_24"
+                android:layout_height="@dimen/dimen_24"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/icon_bottom_delete" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/dimen_02"
+                android:text="拖动到此处删除"
+                android:textColor="@color/white"
+                android:textSize="@dimen/dimen_12" />
+
+        </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>

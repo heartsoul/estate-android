@@ -143,7 +143,7 @@ public class QualityCheckListAdapter extends RecyclerView.Adapter<RecyclerView.V
                 case CommonConfig.QC_STATE_DELAYED:
                     sHolder.mBottomPreant.setVisibility(View.GONE);
                     sHolder.mBottomLineView.setVisibility(View.GONE);
-                    color = R.color.c_28d575;
+                    color = R.color.c_f33d3d;
                     statusText = "已延迟";
                     break;
                 case CommonConfig.QC_STATE_ACCEPTED:

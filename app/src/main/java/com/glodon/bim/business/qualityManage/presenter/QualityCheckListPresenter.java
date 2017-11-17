@@ -99,7 +99,9 @@ public class QualityCheckListPresenter implements QualityCheckListContract.Prese
                         @Override
                         public void onClick(View view) {
                             if(NetWorkUtils.isNetworkAvailable(mView.getActivity())) {
-                                Subscription sub = new CreateCheckListModel().createDelete(SharedPreferencesUtil.getProjectId(), mList.get(position).id)
+                                CreateCheckListModel model = new CreateCheckListModel();
+                                model.setInspectionType(mList.get(position).inspectionType);
+                                Subscription sub = model.createDelete(SharedPreferencesUtil.getProjectId(), mList.get(position).id)
                                         .subscribeOn(Schedulers.io())
                                         .observeOn(AndroidSchedulers.mainThread())
                                         .subscribe(new Subscriber<ResponseBody>() {
@@ -289,7 +291,9 @@ public class QualityCheckListPresenter implements QualityCheckListContract.Prese
 
     //提交
     private void toSubmit(int position,CreateCheckListParams props){
-        Subscription sub = new CreateCheckListModel().editSubmit(SharedPreferencesUtil.getProjectId(),mList.get(position).id,props)
+        CreateCheckListModel model = new CreateCheckListModel();
+        model.setInspectionType(mList.get(position).inspectionType);
+        Subscription sub = model.editSubmit(SharedPreferencesUtil.getProjectId(),mList.get(position).id,props)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<ResponseBody>() {
