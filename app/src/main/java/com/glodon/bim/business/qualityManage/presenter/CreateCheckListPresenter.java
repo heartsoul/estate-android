@@ -76,6 +76,9 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
     private LinkedHashMap<String, TNBImageItem> mSelectedMap;
     //质检项目
     private ModuleListBeanItem mModuleSelectInfo;
+    private String mCurrentModuleName;//当前的质检项目名称
+    private Long mCurrentModuleId;//当前的质检项目id
+
 
     //新建检查单参数
     private CreateCheckListParams mInput;
@@ -110,6 +113,7 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
         mSelectedMap = new LinkedHashMap<>();
         mModuleSelectInfo = new ModuleListBeanItem();
         mInitParams = new CreateCheckListParams();
+        mCurrentModuleId = new Long(-1);
     }
 
     @Override
@@ -126,7 +130,7 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
             if (!isEqual(mInitParams.projectName, mInput.projectName)) {
                 return true;
             }
-            if (!isEqual(mInitParams.qualityCheckpointId, mInput.qualityCheckpointId)) {
+            if (!isEqual(mInitParams.qualityCheckpointName, mInput.qualityCheckpointName)) {
                 return true;
             }
             if (!isEqual(mInitParams.constructionCompanyId, mInput.constructionCompanyId)) {
@@ -176,12 +180,29 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
         }
     }
 
+
+    @Override
+    public void setCurrentModuleName(String name) {
+        this.mCurrentModuleName = name;
+
+    }
+
+    @Override
+    public void moduleNameChanged(String text) {
+        if(!TextUtils.isEmpty(text) && text.equals(mCurrentModuleName) && mCurrentModuleId!=null && mCurrentModuleId.longValue()>0){
+            mView.showModuleBenchMark(true,mCurrentModuleId.longValue());
+        }else{
+            mView.showModuleBenchMark(false,-1);
+        }
+    }
+
     //保存后将值付给初始值  以便下一次比较
     private void resetInitParams() {
 //        mInitParams.code = mInput.code;
         mInitParams.projectId = mInput.projectId;
         mInitParams.projectName = mInput.projectName;
         mInitParams.qualityCheckpointId = mInput.qualityCheckpointId;
+        mInitParams.qualityCheckpointName = mInput.qualityCheckpointName;
         mInitParams.constructionCompanyId = mInput.constructionCompanyId;
         mInitParams.inspectionCompanyId = mInput.inspectionCompanyId;
         mInitParams.needRectification = mInput.needRectification;
@@ -254,6 +275,7 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
             mInitParams.projectId = mEditParams.projectId;
             mInitParams.projectName = mEditParams.projectName;
             mInitParams.qualityCheckpointId = mEditParams.qualityCheckpointId;
+            mInitParams.qualityCheckpointName = mEditParams.qualityCheckpointName;
             mInitParams.inspectionCompanyId = mEditParams.inspectionCompanyId;
             mInitParams.constructionCompanyId = mEditParams.constructionCompanyId;
             mInitParams.needRectification = mEditParams.needRectification;
@@ -339,6 +361,8 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
             //设置质检项目
             mModuleSelectInfo.name = mEditParams.qualityCheckpointName;
             mModuleSelectInfo.id = mEditParams.qualityCheckpointId;
+            mCurrentModuleName =mModuleSelectInfo.name;
+            mCurrentModuleId = mModuleSelectInfo.id;
             //设置责任人
             Subscription sub = mModel.gePersonList(mProjectId, mCompanyList.get(mCompanySelectPosition).coperationId)
                     .subscribeOn(Schedulers.io())
@@ -796,12 +820,12 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
             mInput.inspectionCompanyName = mInspectionCompanyList.get(mInspectionCompanySelectPosition).name;
         }
         //施工单位
-        if (mCompanyList != null && mCompanyList.size() > 0) {
+        if (mCompanyList != null && mCompanyList.size() > 0 && mCompanySelectPosition<mCompanyList.size()) {
             mInput.constructionCompanyId = mCompanyList.get(mCompanySelectPosition).id;
             mInput.constructionCompanyName = mCompanyList.get(mCompanySelectPosition).name;
         }
         //责任人
-        if (mPersonList != null && mPersonList.size() > 0) {
+        if (mPersonList != null && mPersonList.size() > 0 &&mPersonSelectPosition<mPersonList.size()) {
             mInput.responsibleUserId = mPersonList.get(mPersonSelectPosition).userId;
             mInput.responsibleUserName = mPersonList.get(mPersonSelectPosition).name;
             mInput.responsibleUserTitle = mPersonList.get(mPersonSelectPosition).title;
@@ -817,8 +841,13 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
         }
         //质检项目
         if (mModuleSelectInfo != null) {
-            mInput.qualityCheckpointName = mModuleSelectInfo.name;
-            mInput.qualityCheckpointId = mModuleSelectInfo.id;
+            if(mCurrentModuleName.equals(mModuleSelectInfo.name)) {
+                mInput.qualityCheckpointName = mModuleSelectInfo.name;
+                mInput.qualityCheckpointId = mModuleSelectInfo.id;
+            }else{
+                mInput.qualityCheckpointName = mCurrentModuleName;
+                mInput.qualityCheckpointId = null;
+            }
         }
 
         //项目名称
@@ -830,7 +859,12 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
     @Override
     public void toModuleList() {
         Intent intent = new Intent(mView.getActivity(), ChooseModuleActivity.class);
-        intent.putExtra(CommonConfig.MODULE_LIST_POSITION, mModuleSelectInfo.id);
+        if(!TextUtils.isEmpty(mCurrentModuleName) && !TextUtils.isEmpty(mModuleSelectInfo.name) && mModuleSelectInfo.id!=null){
+            mCurrentModuleName = mView.getModuleName();
+            if(mCurrentModuleName.equals(mModuleSelectInfo.name)){
+                intent.putExtra(CommonConfig.MODULE_LIST_POSITION, mModuleSelectInfo.id);
+            }
+        }
         mView.getActivity().startActivityForResult(intent, REQUEST_CODE_CHOOSE_MODULE);
     }
 
@@ -840,10 +874,11 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
         switch (requestCode) {
             case REQUEST_CODE_CHOOSE_MODULE:
                 if (resultCode == Activity.RESULT_OK && data != null) {
-//                    mModuleSelectPosition = data.getIntExtra(CommonConfig.MODULE_LIST_POSITION, -1);
                     mModuleSelectInfo = (ModuleListBeanItem) data.getSerializableExtra(CommonConfig.MODULE_LIST_NAME);
+                    mCurrentModuleName = mModuleSelectInfo.name;
+                    mCurrentModuleId = mModuleSelectInfo.id;
                     if (mView != null && mModuleSelectInfo != null) {
-                        mView.showModuleName(mModuleSelectInfo.name);
+                        mView.showModuleName(mModuleSelectInfo.name,mModuleSelectInfo.id.longValue());
                     }
                 }
                 break;

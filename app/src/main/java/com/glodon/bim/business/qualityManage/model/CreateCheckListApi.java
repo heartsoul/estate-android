@@ -4,6 +4,7 @@ import com.glodon.bim.business.qualityManage.bean.CompanyItem;
 import com.glodon.bim.business.qualityManage.bean.CreateCheckListParams;
 import com.glodon.bim.business.qualityManage.bean.InspectionCompanyItem;
 import com.glodon.bim.business.qualityManage.bean.ModuleListBeanItem;
+import com.glodon.bim.business.qualityManage.bean.ModuleStandardItem;
 import com.glodon.bim.business.qualityManage.bean.PersonItem;
 import com.glodon.bim.business.qualityManage.bean.SaveBean;
 
@@ -46,6 +47,12 @@ public interface CreateCheckListApi {
      */
     @GET("quality/{deptId}/quality/checkpoints/project/{projectId}")
     Observable<List<ModuleListBeanItem>> getModuleList(@Path("deptId") long deptId,@Path("projectId") long projectId,@Header("cookie") String cookie);
+
+    /**
+     * 获取质检项目标准
+     */
+    @GET("quality/acceptanceStandard/templates/{templateId}/standards/items")
+    Observable<List<ModuleStandardItem>> getModuleStandard(@Path("templateId") long templateId, @Header("cookie") String cookie);
 
 
     /**

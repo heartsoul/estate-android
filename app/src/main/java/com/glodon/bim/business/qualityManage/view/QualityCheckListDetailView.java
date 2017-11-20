@@ -20,6 +20,7 @@ import com.glodon.bim.business.qualityManage.bean.QualityCheckListDetailProgress
 import com.glodon.bim.business.qualityManage.contract.QualityCheckListDetailViewContract;
 import com.glodon.bim.business.qualityManage.listener.OnShowQualityCheckDetailListener;
 import com.glodon.bim.business.qualityManage.presenter.QualityCheckListDetailViewPresenter;
+import com.glodon.bim.business.qualityManage.util.IntentManager;
 import com.glodon.bim.common.config.CommonConfig;
 import com.glodon.bim.customview.album.AlbumData;
 import com.glodon.bim.customview.album.TNBImageItem;
@@ -106,11 +107,22 @@ public class QualityCheckListDetailView implements QualityCheckListDetailViewCon
 
     //添加基本信息
     private void addBasicInfo() {
-        QualityCheckListDetailInspectionInfo info = mBean.inspectionInfo;
+        final QualityCheckListDetailInspectionInfo info = mBean.inspectionInfo;
         mInspectionCompanyView.setText(info.inspectionCompanyName);
         mCompanyView.setText(info.constructionCompanyName);
         mPersonView.setText(info.responsibleUserName);
         mModuleView.setText(info.qualityCheckpointName);
+        if(info.qualityCheckpointId!=null && info.qualityCheckpointId>0){
+            mModuleBenchMarkView.setVisibility(View.VISIBLE);
+            mModuleBenchMarkView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    IntentManager.toModuleStandard(getActivity(),info.qualityCheckpointId.longValue());
+                }
+            });
+        }else{
+            mModuleBenchMarkView.setVisibility(View.GONE);
+        }
         mSiteDescription.setText(info.description);
         mSaveTimeView.setText(DateUtil.getNormalTime(Long.parseLong(info.createTime)));
         if(info.commitTime>0) {

@@ -12,7 +12,7 @@ import java.util.List;
 public class ModuleListBeanItem implements Serializable {
 
     public String code;
-    public long id=-1;
+    public Long id;
     public String name;
     public long parentId;
     public String projectType;

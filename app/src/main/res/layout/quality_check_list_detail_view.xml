@@ -109,7 +109,7 @@
                 android:layout_toRightOf="@id/quality_check_list_detail_module"
                 android:background="@drawable/icon_benchmark"
                 android:layout_centerVertical="true"
-                android:visibility="invisible"/>
+                />
         </RelativeLayout>
 
         <RelativeLayout

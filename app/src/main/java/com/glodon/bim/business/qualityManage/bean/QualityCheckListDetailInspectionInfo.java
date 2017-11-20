@@ -42,7 +42,7 @@ public class QualityCheckListDetailInspectionInfo {
     public String projectName;
     public String qcState;
     //质检项目
-    public long qualityCheckpointId;
+    public Long qualityCheckpointId;
     public String qualityCheckpointName;
     //责任人
     public long responsibleUserId;

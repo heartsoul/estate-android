@@ -241,6 +241,9 @@
         <activity
             android:name=".business.qualityManage.view.ChooseModuleActivity"
             android:screenOrientation="portrait" />
+        <!-- 质检标准 -->
+        <activity android:name="com.glodon.bim.business.qualityManage.view.ModuleStandardActivity"
+            android:screenOrientation="portrait"/>
         <!-- 设置 -->
         <activity
             android:name=".business.setting.view.SettingActivity"

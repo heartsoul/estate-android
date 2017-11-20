@@ -56,4 +56,5 @@ public class CommonConfig {
     public static final String ACTION_GET_AUTHORITY_CHECK = "com.glodon.bim.action.authority.check";//权限获取完毕
     public static final String ACTION_BRUSH_CHECK_LIST = "com.glodon.bim.action.brush.check.list";
     public static final String ALBUM_SHOW_DELETE = "albumShowDelete";
+    public static final String MODULE_TEMPLATEID = "module_templateid";
 }

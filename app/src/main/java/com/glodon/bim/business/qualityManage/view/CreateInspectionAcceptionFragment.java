@@ -31,6 +31,7 @@ import com.glodon.bim.business.qualityManage.bean.InspectionCompanyItem;
 import com.glodon.bim.business.qualityManage.contract.CreateCheckListContract;
 import com.glodon.bim.business.qualityManage.listener.OnChooseListListener;
 import com.glodon.bim.business.qualityManage.presenter.CreateCheckListPresenter;
+import com.glodon.bim.business.qualityManage.util.IntentManager;
 import com.glodon.bim.common.config.CommonConfig;
 import com.glodon.bim.customview.ToastManager;
 import com.glodon.bim.customview.album.AlbumData;
@@ -89,7 +90,7 @@ public class CreateInspectionAcceptionFragment extends BaseFragment implements V
     //质检项目
     private RelativeLayout mModuleParent;
     private ImageView mModuleStar;
-    private TextView mModuleName;
+    private EditText mModuleName;
     private ImageView mModuleBenchmark;
     //关联图纸
     private RelativeLayout mBluePrintParent;
@@ -189,7 +190,6 @@ public class CreateInspectionAcceptionFragment extends BaseFragment implements V
         ThrottleClickEvents.throttleClick(mRemainFlag, this, 1);
         ThrottleClickEvents.throttleClick(mRemainParent, this, 1);
         ThrottleClickEvents.throttleClick(mModuleParent, this, 1);
-        ThrottleClickEvents.throttleClick(mModuleBenchmark, this, 1);
         ThrottleClickEvents.throttleClick(mBluePrintParent, this, 1);
         ThrottleClickEvents.throttleClick(mModelParent, this, 1);
         ThrottleClickEvents.throttleClick(mSaveBtn, this, 1);
@@ -216,6 +216,23 @@ public class CreateInspectionAcceptionFragment extends BaseFragment implements V
                     num = 255 - text.length();
                 }
                 mLeftNumber.setText(num + "");
+            }
+        });
+
+        mModuleName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                mPresenter.moduleNameChanged(mModuleName.getText().toString().trim());
             }
         });
     }
@@ -285,6 +302,17 @@ public class CreateInspectionAcceptionFragment extends BaseFragment implements V
                 mRemainFlag.setBackgroundResource(R.drawable.icon_flag_close);
             }
             mModuleName.setText(mParams.qualityCheckpointName);
+            if(mParams.qualityCheckpointId!=null && mParams.qualityCheckpointId.longValue()>0){
+                mModuleBenchmark.setVisibility(View.VISIBLE);
+                mModuleBenchmark.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        IntentManager.toModuleStandard(getActivity(),mParams.qualityCheckpointId.longValue());
+                    }
+                });
+            }else{
+                mModuleBenchmark.setVisibility(View.GONE);
+            }
             showDeleteButton();
             mPresenter.setEditState(mParams);
         } else {
@@ -357,9 +385,6 @@ public class CreateInspectionAcceptionFragment extends BaseFragment implements V
                 break;
             case R.id.create_check_list_module://选择质检项目
                 mPresenter.toModuleList();
-                break;
-            case R.id.create_check_list_module_benchmark://质检项目标准
-
                 break;
             case R.id.create_check_list_blueprint://关联图纸
 
@@ -481,8 +506,15 @@ public class CreateInspectionAcceptionFragment extends BaseFragment implements V
     }
 
     @Override
-    public void showModuleName(String name) {
+    public void showModuleName(String name, final long id) {
         mModuleName.setText(name);
+        mModuleBenchmark.setVisibility(View.VISIBLE);
+        mModuleBenchmark.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                IntentManager.toModuleStandard(getActivity(),id);
+            }
+        });
     }
 
     @Override
@@ -546,6 +578,28 @@ public class CreateInspectionAcceptionFragment extends BaseFragment implements V
         }
     }
 
+    @Override
+    public String getModuleName() {
+        return mModuleName.getText().toString().trim();
+    }
+
+    @Override
+    public void showModuleBenchMark(boolean isshow, final long templateId) {
+        if(isshow)
+        {
+            mModuleBenchmark.setVisibility(View.VISIBLE);
+            mModuleBenchmark.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    IntentManager.toModuleStandard(getActivity(),templateId);
+                }
+            });
+
+        }else{
+            mModuleBenchmark.setVisibility(View.GONE);
+        }
+    }
+
 
     //点击返回按钮
     public void back() {
@@ -594,6 +648,7 @@ public class CreateInspectionAcceptionFragment extends BaseFragment implements V
     private void assembleData() {
         mParams.description = mSiteDescription.getText().toString();
         mParams.needRectification = mRemainFlagState;
+        mPresenter.setCurrentModuleName(mModuleName.getText().toString().trim());
     }
 
     /**

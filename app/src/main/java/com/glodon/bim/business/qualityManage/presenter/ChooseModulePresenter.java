@@ -33,7 +33,7 @@ public class ChooseModulePresenter implements ChooseModuleContract.Presenter {
     private ChooseModuleContract.Model mModel;
     private List<ModuleListBeanItem> mDataList;
     private CompositeSubscription mSubscription;
-    private long mSelectId = -1;
+    private Long mSelectId;
     private long mDeptId;//项目id
     private OnChooseModuleListener mListener = new OnChooseModuleListener() {
         @Override

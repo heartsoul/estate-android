@@ -123,6 +123,15 @@ public interface CreateCheckListContract {
          */
         void showInspectionCompanyList();
 
+        /**
+         * 当前的质检项目名称
+         */
+        void setCurrentModuleName(String name);
+
+        /**
+         * 输入质检项目的变化
+         */
+        void moduleNameChanged(String text);
     }
 
     interface View extends IBaseView {
@@ -163,7 +172,7 @@ public interface CreateCheckListContract {
         /**
          * 显示选中的质检项目
          */
-        void showModuleName(String name);
+        void showModuleName(String name,long id);
 
         /**
          * 保存成功后显示删除按钮
@@ -182,6 +191,16 @@ public interface CreateCheckListContract {
          * @param mInspectionType
          */
         void setTitle(String mInspectionType);
+
+        /**
+         * 获取当前质检项目名称
+         */
+        String getModuleName();
+
+        /**
+         * 是否展示质检标准icon
+         */
+        void showModuleBenchMark(boolean isshow, long templateId);
     }
 
     interface Model {

@@ -7,44 +7,42 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.glodon.bim.R;
 import com.glodon.bim.base.BaseActivity;
 import com.glodon.bim.basic.listener.ThrottleClickEvents;
-import com.glodon.bim.business.qualityManage.adapter.ChooseModuleAdapter;
-import com.glodon.bim.business.qualityManage.bean.ModuleListBeanItem;
-import com.glodon.bim.business.qualityManage.contract.ChooseModuleContract;
-import com.glodon.bim.business.qualityManage.presenter.ChooseModulePresenter;
-import com.glodon.bim.customview.pullrefreshview.OnPullRefreshListener;
+import com.glodon.bim.business.qualityManage.adapter.ModuleStandardAdapter;
+import com.glodon.bim.business.qualityManage.bean.ModuleStandardItem;
+import com.glodon.bim.business.qualityManage.contract.ModuleStandardContract;
+import com.glodon.bim.business.qualityManage.presenter.ModuleStandardPresenter;
 import com.glodon.bim.customview.pullrefreshview.PullRefreshView;
 
 import java.util.List;
 
 /**
- * 描述：选择质检项目
+ * 描述：质检标准
  * 作者：zhourf on 2017/9/8
  * 邮箱：zhourf@glodon.com
  */
-public class ChooseModuleActivity extends BaseActivity implements View.OnClickListener, ChooseModuleContract.View {
+public class ModuleStandardActivity extends BaseActivity implements View.OnClickListener, ModuleStandardContract.View {
 
-    private ChooseModuleContract.Presenter mPresenter;
+    private ModuleStandardContract.Presenter mPresenter;
 
     private LinearLayout mStatusView;//状态栏
     //导航栏
-    private RelativeLayout mNavBack,mNavSearch;
+    private RelativeLayout mNavBack;
 
     private PullRefreshView mPullRefreshView;
     private RecyclerView mRecyclerView;
 
-    private ChooseModuleAdapter mAdapter;
+    private ModuleStandardAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.quality_choose_module_activity);
+        setContentView(R.layout.quality_module_standard_activity);
 
         initView();
 
@@ -55,51 +53,30 @@ public class ChooseModuleActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void initView() {
-        mStatusView = (LinearLayout) findViewById(R.id.choose_module_list_status);
+        mStatusView = (LinearLayout) findViewById(R.id.module_standard_status);
         //导航栏
-        mNavBack = (RelativeLayout) findViewById(R.id.choose_module_list_nav_back);
-        mNavSearch = (RelativeLayout) findViewById(R.id.choose_module_list_nav_search);
-        mPullRefreshView = (PullRefreshView) findViewById(R.id.choose_module_list_recyclerview);
+        mNavBack = (RelativeLayout) findViewById(R.id.module_standard_nav_back);
+        mPullRefreshView = (PullRefreshView) findViewById(R.id.module_standard_recyclerview);
         initStatusBar(mStatusView);
         initRecyclerView();
     }
 
     private void initRecyclerView(){
         mPullRefreshView.setPullDownEnable(false);
-        mPullRefreshView.setPullUpEnable(true);
-        mPullRefreshView.setOnPullRefreshListener(new OnPullRefreshListener() {
-            @Override
-            public void onPullDown() {
-                mPresenter.pullDown();
-                mPullRefreshView.onPullDownComplete();
-            }
-
-            @Override
-            public void onPullUp() {
-                mPresenter.pullUp();
-                mPullRefreshView.onPullUpComplete();
-            }
-        });
+        mPullRefreshView.setPullUpEnable(false);
         mRecyclerView = mPullRefreshView.getmRecyclerView();
 
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setVerticalScrollBarEnabled(true);
         final LinearLayoutManager manager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(manager);
-
-    }
-
-
-    @Override
-    public void initListView(List<ModuleListBeanItem> list, Long selectId) {
-
-        mAdapter = new ChooseModuleAdapter(mActivity,list,selectId);
-        mAdapter.setmListener(mPresenter.getmListener());
+        mAdapter = new ModuleStandardAdapter(this);
         mRecyclerView.setAdapter(mAdapter);
     }
 
+
     @Override
-    public void updateListView(List<ModuleListBeanItem> mDataList) {
+    public void updateListView(List<ModuleStandardItem> mDataList) {
         mAdapter.updateList(mDataList);
 
     }
@@ -107,11 +84,10 @@ public class ChooseModuleActivity extends BaseActivity implements View.OnClickLi
     private void setListener() {
         //导航栏
         ThrottleClickEvents.throttleClick(mNavBack, this);
-        ThrottleClickEvents.throttleClick(mNavSearch, this,1);
     }
 
     private void initData() {
-        mPresenter = new ChooseModulePresenter(this);
+        mPresenter = new ModuleStandardPresenter(this);
         mPresenter.initData(getIntent());
     }
 
@@ -121,9 +97,6 @@ public class ChooseModuleActivity extends BaseActivity implements View.OnClickLi
         switch (id) {
             case R.id.choose_module_list_nav_back://返回按钮
                 mActivity.finish();
-                break;
-            case R.id.choose_module_list_nav_search://搜索
-
                 break;
 
         }
@@ -149,6 +122,7 @@ public class ChooseModuleActivity extends BaseActivity implements View.OnClickLi
         super.onDestroy();
         if (mPresenter != null) {
             mPresenter.onDestroy();
+            mPresenter = null;
         }
     }
 

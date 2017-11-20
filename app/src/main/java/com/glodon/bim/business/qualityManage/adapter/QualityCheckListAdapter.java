@@ -159,6 +159,7 @@ public class QualityCheckListAdapter extends RecyclerView.Adapter<RecyclerView.V
             if(item.files!=null && item.files.size()>0){
                 ImageLoader.showImageCenterCrop(mContext,item.files.get(0).url,sHolder.mImageView,R.drawable.icon_default_image);
             }else{
+                sHolder.mImageView.setImageBitmap(null);
                 sHolder.mImageView.setBackgroundResource(R.drawable.icon_default_image);
             }
             sHolder.mDesView.setText(item.description);
