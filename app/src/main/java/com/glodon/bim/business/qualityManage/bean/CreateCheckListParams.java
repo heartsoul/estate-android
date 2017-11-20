@@ -27,7 +27,7 @@ public class CreateCheckListParams implements Serializable {
     public long constructionCompanyId;
     public String constructionCompanyName;
     //整改期限
-    public boolean needRectification;
+    public boolean needRectification = true;
     public String lastRectificationDate;
     //现场描述
     public String description;

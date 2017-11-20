@@ -201,6 +201,16 @@ public interface CreateCheckListContract {
          * 是否展示质检标准icon
          */
         void showModuleBenchMark(boolean isshow, long templateId);
+
+        /**
+         * 施工单位为空处理
+         */
+        void showEmptyCompany();
+
+        /**
+         * 责任人为空
+         */
+        void showPersonEmpty();
     }
 
     interface Model {

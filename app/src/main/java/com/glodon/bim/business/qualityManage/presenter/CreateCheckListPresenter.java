@@ -95,6 +95,9 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
 
     private String mInspectionType;
 
+//    private String mCompanyEmptyText = "您需要去PC端添加施工单位数据";
+//    private String mPersonEmptyText = "您需要去PC端添加责任人数据";
+
     @Override
     public boolean isChange() {
         return mIsChange;
@@ -116,148 +119,7 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
         mCurrentModuleId = new Long(-1);
     }
 
-    @Override
-    public boolean isDifferent(CreateCheckListParams currentParams) {
-        assembleParams(currentParams);
 
-        if (mInitParams != null && mInput != null) {
-            if (!isEqual(mInitParams.code, mInput.code)) {
-                return true;
-            }
-            if (!isEqual(mInitParams.projectId, mInput.projectId)) {
-                return true;
-            }
-            if (!isEqual(mInitParams.projectName, mInput.projectName)) {
-                return true;
-            }
-            if (!isEqual(mInitParams.qualityCheckpointName, mInput.qualityCheckpointName)) {
-                return true;
-            }
-            if (!isEqual(mInitParams.constructionCompanyId, mInput.constructionCompanyId)) {
-                return true;
-            }
-            if (!isEqual(mInitParams.needRectification, mInput.needRectification)) {
-                return true;
-            }
-            if (mInitParams.needRectification && mInput.needRectification) {
-                if (!isEqual(mInitParams.lastRectificationDate, mInput.lastRectificationDate)) {
-                    return true;
-                }
-            }
-            if (!isEqual(mInitParams.description, mInput.description)) {
-                return true;
-            }
-            if (!isEqual(mInitParams.inspectionType, mInput.inspectionType)) {
-                return true;
-            }
-            if (!isEqual(mInitParams.responsibleUserId, mInput.responsibleUserId)) {
-                return true;
-            }
-
-            if (!isEqual(mInitParams.files, mInput.files)) {
-                return true;
-            }
-
-        }
-        return false;
-    }
-
-    @Override
-    public void setInspectionType(String typeInspection) {
-        mInspectionType = typeInspection;
-        mModel.setInspectionType(typeInspection);
-    }
-
-    @Override
-    public void setInspectionCompanySelectedPosition(int position) {
-        mInspectionCompanySelectPosition = position;
-    }
-
-    @Override
-    public void showInspectionCompanyList() {
-        if (mView != null) {
-            mView.showInspectionCompanyList(mInspectionCompanyNameList, mInspectionCompanySelectPosition);
-        }
-    }
-
-
-    @Override
-    public void setCurrentModuleName(String name) {
-        this.mCurrentModuleName = name;
-
-    }
-
-    @Override
-    public void moduleNameChanged(String text) {
-        if(!TextUtils.isEmpty(text) && text.equals(mCurrentModuleName) && mCurrentModuleId!=null && mCurrentModuleId.longValue()>0){
-            mView.showModuleBenchMark(true,mCurrentModuleId.longValue());
-        }else{
-            mView.showModuleBenchMark(false,-1);
-        }
-    }
-
-    //保存后将值付给初始值  以便下一次比较
-    private void resetInitParams() {
-//        mInitParams.code = mInput.code;
-        mInitParams.projectId = mInput.projectId;
-        mInitParams.projectName = mInput.projectName;
-        mInitParams.qualityCheckpointId = mInput.qualityCheckpointId;
-        mInitParams.qualityCheckpointName = mInput.qualityCheckpointName;
-        mInitParams.constructionCompanyId = mInput.constructionCompanyId;
-        mInitParams.inspectionCompanyId = mInput.inspectionCompanyId;
-        mInitParams.needRectification = mInput.needRectification;
-        mInitParams.lastRectificationDate = mInput.lastRectificationDate;
-        mInitParams.description = mInput.description;
-        mInitParams.inspectionType = mInput.inspectionType;
-        mInitParams.responsibleUserId = mInput.responsibleUserId;
-        mInitParams.files = mInput.files;
-    }
-
-    private boolean isEqual(List<CreateCheckListParamsFile> a, List<CreateCheckListParamsFile> inputList) {
-        List<CreateCheckListParamsFile> b = new ArrayList<>();
-        if (mSelectedMap != null && mSelectedMap.size() > 0) {
-            for (Map.Entry<String, TNBImageItem> entry : mSelectedMap.entrySet()) {
-                CreateCheckListParamsFile file = new CreateCheckListParamsFile();
-                file.objectId = entry.getValue().objectId;
-                b.add(file);
-            }
-
-        }
-        if (a == null && b.size() == 0) {
-            return true;
-        }
-        if (a != null && a.size() == 0 && b.size() == 0) {
-            return true;
-        }
-        if ((a != null) && (b != null) && (a.size() == b.size()) && (a.size() > 0)) {
-            for (int i = 0; i < a.size(); i++) {
-                if (!isEqual(a.get(i).objectId, b.get(i).objectId)) {
-                    return false;
-                }
-            }
-        } else {
-            return false;
-        }
-        return true;
-    }
-
-    private boolean isEqual(boolean a, boolean b) {
-        return a == b;
-    }
-
-    private boolean isEqual(long a, long b) {
-        return a == b;
-    }
-
-    private boolean isEqual(String a, String b) {
-        if (TextUtils.isEmpty(a) && TextUtils.isEmpty(b)) {
-            return true;
-        }
-        if (!TextUtils.isEmpty(a) && !TextUtils.isEmpty(b) && a.equals(b)) {
-            return true;
-        }
-        return false;
-    }
 
 
     @Override
@@ -347,6 +209,8 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
                                 }
                             } else {
                                 mView.showInspectionCompany(mInspectionCompanyList.get(0));
+                                mInitParams.inspectionCompanyId = mInspectionCompanyList.get(0).id;
+                                mInitParams.inspectionCompanyName = mInspectionCompanyList.get(0).name;
                             }
                         }
                     }
@@ -442,7 +306,12 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
                                 initImages();
                             } else {
                                 mView.showCompany(mCompanyList.get(0));
+                                mInitParams.constructionCompanyName = mCompanyList.get(0).name;
+                                mInitParams.constructionCompanyId = mCompanyList.get(0).id;
                             }
+                        }else{
+                            //施工单位为空  则特殊处理
+                            mView.showEmptyCompany();
                         }
                     }
                 });
@@ -479,6 +348,8 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
                                 if (mView != null) {
                                     mView.showPersonList(mPersonNameList, mPersonSelectPosition);
                                 }
+                            }else{
+                                mView.showPersonEmpty();
                             }
                         }
                     });
@@ -954,5 +825,151 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
     private void sendBrushBroadcast() {
         Intent data = new Intent(CommonConfig.ACTION_BRUSH_CHECK_LIST);
         mView.getActivity().sendBroadcast(data);
+    }
+
+    @Override
+    public boolean isDifferent(CreateCheckListParams currentParams) {
+        assembleParams(currentParams);
+
+        if (mInitParams != null && mInput != null) {
+            if (!isEqual(mInitParams.code, mInput.code)) {
+                return true;
+            }
+//            if (!isEqual(mInitParams.projectId, mInput.projectId)) {
+//                return true;
+//            }
+//            if (!isEqual(mInitParams.projectName, mInput.projectName)) {
+//                return true;
+//            }
+            if (!isEqual(mInitParams.qualityCheckpointName, mInput.qualityCheckpointName)) {
+                return true;
+            }
+            if (!isEqual(mInitParams.inspectionCompanyId, mInput.inspectionCompanyId)) {
+                return true;
+            }
+            if (!isEqual(mInitParams.constructionCompanyId, mInput.constructionCompanyId)) {
+                return true;
+            }
+            if (!isEqual(mInitParams.needRectification, mInput.needRectification)) {
+                return true;
+            }
+            if (mInitParams.needRectification && mInput.needRectification) {
+                if (!isEqual(mInitParams.lastRectificationDate, mInput.lastRectificationDate)) {
+                    return true;
+                }
+            }
+            if (!isEqual(mInitParams.description, mInput.description)) {
+                return true;
+            }
+//            if (!isEqual(mInitParams.inspectionType, mInput.inspectionType)) {
+//                return true;
+//            }
+            if (!isEqual(mInitParams.responsibleUserId, mInput.responsibleUserId)) {
+                return true;
+            }
+
+            if (!isEqual(mInitParams.files, mInput.files)) {
+                return true;
+            }
+
+        }
+        return false;
+    }
+
+    @Override
+    public void setInspectionType(String typeInspection) {
+        mInspectionType = typeInspection;
+        mModel.setInspectionType(typeInspection);
+    }
+
+    @Override
+    public void setInspectionCompanySelectedPosition(int position) {
+        mInspectionCompanySelectPosition = position;
+    }
+
+    @Override
+    public void showInspectionCompanyList() {
+        if (mView != null) {
+            mView.showInspectionCompanyList(mInspectionCompanyNameList, mInspectionCompanySelectPosition);
+        }
+    }
+
+
+    @Override
+    public void setCurrentModuleName(String name) {
+        this.mCurrentModuleName = name;
+
+    }
+
+    @Override
+    public void moduleNameChanged(String text) {
+        if(!TextUtils.isEmpty(text) && text.equals(mCurrentModuleName) && mCurrentModuleId!=null && mCurrentModuleId.longValue()>0){
+            mView.showModuleBenchMark(true,mCurrentModuleId.longValue());
+        }else{
+            mView.showModuleBenchMark(false,-1);
+        }
+    }
+
+    //保存后将值付给初始值  以便下一次比较
+    private void resetInitParams() {
+//        mInitParams.code = mInput.code;
+        mInitParams.projectId = mInput.projectId;
+        mInitParams.projectName = mInput.projectName;
+        mInitParams.qualityCheckpointId = mInput.qualityCheckpointId;
+        mInitParams.qualityCheckpointName = mInput.qualityCheckpointName;
+        mInitParams.constructionCompanyId = mInput.constructionCompanyId;
+        mInitParams.inspectionCompanyId = mInput.inspectionCompanyId;
+        mInitParams.needRectification = mInput.needRectification;
+        mInitParams.lastRectificationDate = mInput.lastRectificationDate;
+        mInitParams.description = mInput.description;
+        mInitParams.inspectionType = mInput.inspectionType;
+        mInitParams.responsibleUserId = mInput.responsibleUserId;
+        mInitParams.files = mInput.files;
+    }
+
+    private boolean isEqual(List<CreateCheckListParamsFile> a, List<CreateCheckListParamsFile> inputList) {
+        List<CreateCheckListParamsFile> b = new ArrayList<>();
+        if (mSelectedMap != null && mSelectedMap.size() > 0) {
+            for (Map.Entry<String, TNBImageItem> entry : mSelectedMap.entrySet()) {
+                CreateCheckListParamsFile file = new CreateCheckListParamsFile();
+                file.objectId = entry.getValue().objectId;
+                b.add(file);
+            }
+
+        }
+        if (a == null && b.size() == 0) {
+            return true;
+        }
+        if (a != null && a.size() == 0 && b.size() == 0) {
+            return true;
+        }
+        if ((a != null) && (b != null) && (a.size() == b.size()) && (a.size() > 0)) {
+            for (int i = 0; i < a.size(); i++) {
+                if (!isEqual(a.get(i).objectId, b.get(i).objectId)) {
+                    return false;
+                }
+            }
+        } else {
+            return false;
+        }
+        return true;
+    }
+
+    private boolean isEqual(boolean a, boolean b) {
+        return a == b;
+    }
+
+    private boolean isEqual(long a, long b) {
+        return a == b;
+    }
+
+    private boolean isEqual(String a, String b) {
+        if (TextUtils.isEmpty(a) && TextUtils.isEmpty(b)) {
+            return true;
+        }
+        if (!TextUtils.isEmpty(a) && !TextUtils.isEmpty(b) && a.equals(b)) {
+            return true;
+        }
+        return false;
     }
 }

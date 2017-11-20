@@ -116,6 +116,12 @@ public class CreateInspectionAcceptionFragment extends BaseFragment implements V
     private Intent intent;
     private String mInspetionType;
 
+    //当施工单位和责任人为空时处理
+    private String mCompanyEmptyText = "您需要去PC端添加施工单位数据";
+    private String mPersonEmptyText = "您需要去PC端添加责任人数据";
+    private boolean mIsCompanyAble = true;//是否可用
+    private boolean mIsPersonAble = true;//是否可用
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -329,10 +335,14 @@ public class CreateInspectionAcceptionFragment extends BaseFragment implements V
                 mPresenter.showInspectionCompanyList();
                 break;
             case R.id.create_check_list_company://选择施工单位
-                mPresenter.showCompanyList();
+                if(mIsCompanyAble) {
+                    mPresenter.showCompanyList();
+                }
                 break;
             case R.id.create_check_list_person://选择责任人
-                mPresenter.getPersonList();
+                if(mIsPersonAble) {
+                    mPresenter.getPersonList();
+                }
                 break;
             case R.id.create_check_list_photo_0:
                 mPresenter.toPreview(0);
@@ -601,6 +611,20 @@ public class CreateInspectionAcceptionFragment extends BaseFragment implements V
     }
 
 
+    @Override
+    public void showEmptyCompany() {
+        mCompanyName.setText(mCompanyEmptyText);
+        mPersonName.setText(mPersonEmptyText);
+        mIsCompanyAble = false;
+        mIsPersonAble = false;
+    }
+
+    @Override
+    public void showPersonEmpty() {
+        mPersonName.setText(mPersonEmptyText);
+    }
+
+
     //点击返回按钮
     public void back() {
         if (isShowBackDialog()) {
@@ -665,6 +689,9 @@ public class CreateInspectionAcceptionFragment extends BaseFragment implements V
             mInspectionCompanyStar.setVisibility(View.INVISIBLE);
         }
         String companyName = mCompanyName.getText().toString().trim();
+        if(mCompanyEmptyText.equals(companyName)){
+            companyName = "";
+        }
         if (TextUtils.isEmpty(companyName)) {
             mCompanyStar.setVisibility(View.VISIBLE);
             temp.add("施工单位");
@@ -672,6 +699,9 @@ public class CreateInspectionAcceptionFragment extends BaseFragment implements V
             mCompanyStar.setVisibility(View.INVISIBLE);
         }
         String personName = mPersonName.getText().toString().trim();
+        if(mPersonEmptyText.equals(personName)){
+            personName = "";
+        }
         if (TextUtils.isEmpty(personName)) {
             mPersonStar.setVisibility(View.VISIBLE);
             temp.add("责任人");
