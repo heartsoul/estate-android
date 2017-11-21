@@ -55,10 +55,6 @@
         </RelativeLayout>
 
     </RelativeLayout>
-    <include layout="@layout/view_pullrefresh_view"
-        android:id="@+id/choose_module_list_recyclerview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-         />
+    <include layout="@layout/quality_catalog_module_view" />
 
 </LinearLayout>

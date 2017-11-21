@@ -3,7 +3,10 @@ package com.glodon.bim.business.qualityManage.contract;
 import com.glodon.bim.base.IBasePresenter;
 import com.glodon.bim.base.IBaseView;
 import com.glodon.bim.business.qualityManage.bean.ModuleListBeanItem;
-import com.glodon.bim.business.qualityManage.listener.OnChooseModuleListener;
+import com.glodon.bim.business.qualityManage.listener.OnChooseModuleCataListener;
+import com.glodon.bim.business.qualityManage.listener.OnChooseModuleObjListener;
+import com.glodon.bim.business.qualityManage.listener.OnModuleCatalogClickListener;
+import com.glodon.bim.business.qualityManage.listener.OnModuleHintClickListener;
 
 import java.util.List;
 
@@ -20,19 +23,24 @@ public interface ChooseModuleContract {
     interface Presenter extends IBasePresenter {
 
         /**
-         * 下拉刷新
+         * 获取选择项目监听
          */
-        void pullDown();
+        OnChooseModuleObjListener getmObjListener();
 
         /**
-         * 上拉加载
+         * 获取选择目录监听
          */
-        void pullUp();
+        OnChooseModuleCataListener getmCataListener();
 
         /**
-         * 获取监听
+         * 横向目录点击监听
          */
-        OnChooseModuleListener getmListener();
+        OnModuleCatalogClickListener getmCataClickListener();
+
+        /**
+         * 点击目录切换的监听
+         */
+        OnModuleHintClickListener getmHintClickListener();
 
     }
 
@@ -43,12 +51,23 @@ public interface ChooseModuleContract {
          * 初始化列表
          * @param selectId 选中的id
          */
-        void initListView(List<ModuleListBeanItem> list, Long selectId);
+        void updateContentListView(List<ModuleListBeanItem> list, Long selectId);
 
         /**
-         * 更新列表
+         * 更新顶部目录
          */
-        void updateListView(List<ModuleListBeanItem> mDataList);
+        void updateCataListView(List<ModuleListBeanItem> mCatalogList);
+
+        /**
+         * 更新被选中的目录的view
+         */
+        void updateHintListView(List<ModuleListBeanItem> mHintList, ModuleListBeanItem item);
+
+        /**
+         * 关闭切换目录
+         */
+        void closeHint();
+
     }
 
     interface Model {

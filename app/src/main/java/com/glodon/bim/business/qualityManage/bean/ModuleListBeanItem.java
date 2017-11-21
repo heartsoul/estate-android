@@ -21,4 +21,19 @@ public class ModuleListBeanItem implements Serializable {
     public String specialtyName;
     public String treePath;
 
+    public int viewType = 1;//0目录，1具体的项
+    @Override
+    public String toString() {
+        return "ModuleListBeanItem{" +
+                "code='" + code + '\'' +
+                ", id=" + id +
+                ", name='" + name + '\'' +
+                ", parentId=" + parentId +
+                ", projectType='" + projectType + '\'' +
+                ", requirement='" + requirement + '\'' +
+                ", specialtyId=" + specialtyId +
+                ", specialtyName='" + specialtyName + '\'' +
+                ", treePath='" + treePath + '\'' +
+                '}';
+    }
 }

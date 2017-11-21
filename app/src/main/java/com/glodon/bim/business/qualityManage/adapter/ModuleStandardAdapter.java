@@ -10,9 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.glodon.bim.R;
-import com.glodon.bim.business.qualityManage.bean.ModuleListBeanItem;
 import com.glodon.bim.business.qualityManage.bean.ModuleStandardItem;
-import com.glodon.bim.business.qualityManage.listener.OnChooseModuleListener;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -2,9 +2,7 @@ package com.glodon.bim.business.qualityManage.contract;
 
 import com.glodon.bim.base.IBasePresenter;
 import com.glodon.bim.base.IBaseView;
-import com.glodon.bim.business.qualityManage.bean.ModuleListBeanItem;
 import com.glodon.bim.business.qualityManage.bean.ModuleStandardItem;
-import com.glodon.bim.business.qualityManage.listener.OnChooseModuleListener;
 
 import java.util.List;
 

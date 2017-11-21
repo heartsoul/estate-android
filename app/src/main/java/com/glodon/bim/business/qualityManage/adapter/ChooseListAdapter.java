@@ -43,7 +43,7 @@ public class ChooseListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ListHolder(LayoutInflater.from(mActivity).inflate(R.layout.quality_create_check_list_choose_list,parent,false));
+        return new ListHolder(LayoutInflater.from(mActivity).inflate(R.layout.quality_create_choose_company_view,parent,false));
     }
 
     @Override

@@ -10,56 +10,55 @@ import android.widget.TextView;
 
 import com.glodon.bim.R;
 import com.glodon.bim.business.qualityManage.bean.ModuleListBeanItem;
-import com.glodon.bim.business.qualityManage.listener.OnChooseModuleListener;
+import com.glodon.bim.business.qualityManage.listener.OnChooseModuleObjListener;
+import com.glodon.bim.business.qualityManage.listener.OnModuleHintClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 描述：选择质检项目
+ * 描述：质检项目  目录切换
  * 作者：zhourf on 2017/10/26
  * 邮箱：zhourf@glodon.com
  */
 
-public class ChooseModuleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class ModuleHintAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Activity mActivity;
     private List<ModuleListBeanItem> mDataList;
     private ImageView mLastView;
     private TextView mLastTextView;
-    private OnChooseModuleListener mListener;
+    private OnModuleHintClickListener mListener;
     private long mSelectId = 0;
 
-    public ChooseModuleAdapter(Activity mActivity, List<ModuleListBeanItem> dataList, long selectId) {
+    public ModuleHintAdapter(Activity mActivity) {
         this.mActivity = mActivity;
-        if(dataList==null){
-            dataList = new ArrayList<>();
-        }
-        this.mDataList = dataList;
-        this.mSelectId = selectId;
+        mDataList = new ArrayList<>();
     }
 
-    public void updateList(List<ModuleListBeanItem> dataList){
-        mDataList=dataList;
+    public void updateList(List<ModuleListBeanItem> dataList, long selectId) {
+        mDataList = dataList;
+        this.mSelectId = selectId;
         notifyDataSetChanged();
     }
 
-    public void setmListener(OnChooseModuleListener mListener) {
+    public void setmListener(OnModuleHintClickListener mListener) {
         this.mListener = mListener;
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ListHolder(LayoutInflater.from(mActivity).inflate(R.layout.quality_create_check_list_choose_list,parent,false));
+        return new ListHolder(LayoutInflater.from(mActivity).inflate(R.layout.quality_module_hint_item_view, parent, false));
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         final ListHolder lHolder = (ListHolder) holder;
-        lHolder.mNameView.setText(mDataList.get(position).name);
-        lHolder.mNameView.setOnClickListener(new View.OnClickListener() {
+        final ModuleListBeanItem item = mDataList.get(position);
+        lHolder.mNameView.setText(item.name);
+        lHolder.mParentView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(mLastView!=null){
+                if (mLastView != null) {
                     mLastView.setVisibility(View.INVISIBLE);
                     mLastTextView.setTextColor(mActivity.getResources().getColor(R.color.c_333333));
                 }
@@ -68,19 +67,18 @@ public class ChooseModuleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 mLastView = lHolder.mSelectView;
                 mLastTextView = lHolder.mNameView;
                 mSelectId = position;
-                if(mListener!=null)
-                {
-                    mListener.onSelect(mDataList.get(position),mSelectId);
+                if (mListener != null) {
+                    mListener.onSelect(item);
                 }
             }
         });
 
-        if(mDataList.get(position)!=null && mSelectId == mDataList.get(position).id){
+        if (item != null && mSelectId == item.id.longValue()) {
             lHolder.mSelectView.setVisibility(View.VISIBLE);
             lHolder.mNameView.setTextColor(mActivity.getResources().getColor(R.color.c_00baf3));
             mLastView = lHolder.mSelectView;
             mLastTextView = lHolder.mNameView;
-        }else{
+        } else {
             lHolder.mSelectView.setVisibility(View.INVISIBLE);
             lHolder.mNameView.setTextColor(mActivity.getResources().getColor(R.color.c_333333));
         }
@@ -91,14 +89,16 @@ public class ChooseModuleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         return mDataList.size();
     }
 
-    class ListHolder extends RecyclerView.ViewHolder{
+    class ListHolder extends RecyclerView.ViewHolder {
 
         TextView mNameView;
         ImageView mSelectView;
+        View mParentView;
         public ListHolder(View itemView) {
             super(itemView);
-            mNameView = itemView.findViewById(R.id.quality_create_check_list_choose_list_name);
-            mSelectView = itemView.findViewById(R.id.quality_create_check_list_choose_list_select);
+            mParentView = itemView;
+            mNameView = itemView.findViewById(R.id.quality_module_hint_item_name);
+            mSelectView = itemView.findViewById(R.id.quality_module_hint_item_select);
         }
     }
 }

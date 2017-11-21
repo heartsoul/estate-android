@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="@dimen/dimen_48"
+    android:background="@color/c_f9f9f9"
+    android:orientation="horizontal"
+    android:paddingLeft="@dimen/dimen_10"
+    android:paddingRight="@dimen/dimen_10"
+    >
+
+    <TextView
+        android:id="@+id/quality_module_catalog_item_name"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        android:text="首开"
+        android:textColor="@color/c_b5b5b5"
+        android:textSize="@dimen/dimen_14" />
+
+
+    <TextView
+        android:id="@+id/quality_module_catalog_item_icon_normal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:text="->"
+        android:layout_marginLeft="@dimen/dimen_08"
+        android:textColor="@color/c_b5b5b5"
+        android:textSize="@dimen/dimen_14"
+        />
+    <ImageView
+        android:id="@+id/quality_module_catalog_item_icon_updown"
+        android:layout_width="@dimen/dimen_11"
+        android:layout_height="@dimen/dimen_05"
+        android:background="@drawable/icon_drawer_arrow_down"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="@dimen/dimen_08"
+        />
+
+</LinearLayout>

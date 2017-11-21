@@ -7,19 +7,19 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.glodon.bim.R;
 import com.glodon.bim.base.BaseActivity;
 import com.glodon.bim.basic.listener.ThrottleClickEvents;
-import com.glodon.bim.business.qualityManage.adapter.ChooseModuleAdapter;
+import com.glodon.bim.business.qualityManage.adapter.ModuleCatalogAdapter;
+import com.glodon.bim.business.qualityManage.adapter.ModuleContentAdapter;
+import com.glodon.bim.business.qualityManage.adapter.ModuleHintAdapter;
 import com.glodon.bim.business.qualityManage.bean.ModuleListBeanItem;
 import com.glodon.bim.business.qualityManage.contract.ChooseModuleContract;
+import com.glodon.bim.business.qualityManage.listener.OnModuleHintClickListener;
 import com.glodon.bim.business.qualityManage.presenter.ChooseModulePresenter;
-import com.glodon.bim.customview.pullrefreshview.OnPullRefreshListener;
-import com.glodon.bim.customview.pullrefreshview.PullRefreshView;
 
 import java.util.List;
 
@@ -36,10 +36,13 @@ public class ChooseModuleActivity extends BaseActivity implements View.OnClickLi
     //导航栏
     private RelativeLayout mNavBack,mNavSearch;
 
-    private PullRefreshView mPullRefreshView;
-    private RecyclerView mRecyclerView;
+    //横向目录的view   展示目录的View   切换目录的view
+    private RecyclerView mCatalogView,mContentView,mHintView;
+    private LinearLayout mHintParent;
 
-    private ChooseModuleAdapter mAdapter;
+    private ModuleContentAdapter mContentAdapter;
+    private ModuleCatalogAdapter mCatalogAdapter;
+    private ModuleHintAdapter mHintAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,49 +62,69 @@ public class ChooseModuleActivity extends BaseActivity implements View.OnClickLi
         //导航栏
         mNavBack = (RelativeLayout) findViewById(R.id.choose_module_list_nav_back);
         mNavSearch = (RelativeLayout) findViewById(R.id.choose_module_list_nav_search);
-        mPullRefreshView = (PullRefreshView) findViewById(R.id.choose_module_list_recyclerview);
+        mCatalogView = (RecyclerView) findViewById(R.id.catalog_module_catalog_recyclerview);
+        mContentView = (RecyclerView) findViewById(R.id.catalog_module_content_recyclerview);
+        mHintView = (RecyclerView) findViewById(R.id.catalog_module_hint_recyclerview);
+        mHintParent = (LinearLayout) findViewById(R.id.catalog_module_hint);
+
         initStatusBar(mStatusView);
-        initRecyclerView();
+
+        mHintParent.setVisibility(View.GONE);
+        mCatalogView.setVisibility(View.GONE);
     }
 
-    private void initRecyclerView(){
-        mPullRefreshView.setPullDownEnable(false);
-        mPullRefreshView.setPullUpEnable(true);
-        mPullRefreshView.setOnPullRefreshListener(new OnPullRefreshListener() {
+    private void initCatalog(){
+        mCatalogView.setItemAnimator(new DefaultItemAnimator());
+         LinearLayoutManager manager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
+        mCatalogView.setLayoutManager(manager);
+        mCatalogAdapter = new ModuleCatalogAdapter(this);
+        mCatalogAdapter.setListener(mPresenter.getmCataClickListener());
+        mCatalogView.setAdapter(mCatalogAdapter);
+    }
+    private void initContent(){
+        mContentView.setItemAnimator(new DefaultItemAnimator());
+         LinearLayoutManager manager = new LinearLayoutManager(this);
+        mContentView.setLayoutManager(manager);
+        mContentAdapter = new ModuleContentAdapter(this);
+        mContentAdapter.setListener(mPresenter.getmObjListener(),mPresenter.getmCataListener());
+        mContentView.setAdapter(mContentAdapter);
+    }
+    private void initHint(){
+        mHintView.setItemAnimator(new DefaultItemAnimator());
+         LinearLayoutManager manager = new LinearLayoutManager(this);
+        mHintView.setLayoutManager(manager);
+        mHintAdapter = new ModuleHintAdapter(this);
+        mHintAdapter.setmListener(new OnModuleHintClickListener() {
             @Override
-            public void onPullDown() {
-                mPresenter.pullDown();
-                mPullRefreshView.onPullDownComplete();
-            }
-
-            @Override
-            public void onPullUp() {
-                mPresenter.pullUp();
-                mPullRefreshView.onPullUpComplete();
+            public void onSelect(ModuleListBeanItem item) {
+                mHintParent.setVisibility(View.GONE);
+                mPresenter.getmHintClickListener().onSelect(item);
             }
         });
-        mRecyclerView = mPullRefreshView.getmRecyclerView();
-
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mRecyclerView.setVerticalScrollBarEnabled(true);
-        final LinearLayoutManager manager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(manager);
-
+        mHintView.setAdapter(mHintAdapter);
     }
 
 
     @Override
-    public void initListView(List<ModuleListBeanItem> list, Long selectId) {
-
-        mAdapter = new ChooseModuleAdapter(mActivity,list,selectId);
-        mAdapter.setmListener(mPresenter.getmListener());
-        mRecyclerView.setAdapter(mAdapter);
+    public void updateContentListView(List<ModuleListBeanItem> list, Long selectId) {
+        mContentAdapter.updateList(list,selectId);
     }
 
     @Override
-    public void updateListView(List<ModuleListBeanItem> mDataList) {
-        mAdapter.updateList(mDataList);
+    public void updateCataListView(List<ModuleListBeanItem> mCatalogList) {
+        mCatalogView.setVisibility(View.VISIBLE);
+        mCatalogAdapter.updateList(mCatalogList);
+    }
 
+    @Override
+    public void updateHintListView(List<ModuleListBeanItem> mHintList, ModuleListBeanItem item) {
+        mHintParent.setVisibility(View.VISIBLE);
+        mHintAdapter.updateList(mHintList,item.id.longValue());
+    }
+
+    @Override
+    public void closeHint() {
+        mHintParent.setVisibility(View.GONE);
     }
 
     private void setListener() {
@@ -112,6 +135,9 @@ public class ChooseModuleActivity extends BaseActivity implements View.OnClickLi
 
     private void initData() {
         mPresenter = new ChooseModulePresenter(this);
+        initCatalog();
+        initContent();
+        initHint();
         mPresenter.initData(getIntent());
     }
 
@@ -159,6 +185,5 @@ public class ChooseModuleActivity extends BaseActivity implements View.OnClickLi
             mPresenter.onActivityResult(requestCode, resultCode, data);
         }
     }
-
 
 }

@@ -51,7 +51,6 @@ public class LoginActivity extends BaseActivity implements LoginContract.View, V
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.login_main_activity);
         initView();
         setListener();
@@ -174,8 +173,8 @@ public class LoginActivity extends BaseActivity implements LoginContract.View, V
         String password = SharedPreferencesUtil.getString(CommonConfig.PASSWORD,"");
         mUsernameEt.setText(username);
         mPasswordEt.setText(password);
-//        mUsernameEt.setText("15822320523");//徐园
-//        mPasswordEt.setText("123qwe");
+        mUsernameEt.setText("15822320523");//徐园
+        mPasswordEt.setText("123qwe");
 //        mUsernameEt.setText("15001340978");
 //        mPasswordEt.setText("123qwe");
 //        mUsernameEt.setText("15733178348");//贾光花
