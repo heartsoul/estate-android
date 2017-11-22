@@ -1,9 +1,188 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.glodon.bim.business.qualityManage.view.ModelActivity">
+    android:background="@color/white"
+    android:orientation="vertical">
 
-</android.support.constraint.ConstraintLayout>
+    <LinearLayout
+        android:id="@+id/model_list_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/c_00baf3"
+        android:orientation="vertical"></LinearLayout>
+    <!--导航栏-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_44"
+        android:background="@color/c_00baf3">
+
+        <RelativeLayout
+            android:id="@+id/model_list_nav_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="@dimen/dimen_09"
+                android:layout_height="@dimen/dimen_20"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/dimen_10"
+                android:layout_marginRight="@dimen/dimen_10"
+                android:background="@drawable/icon_back_white" />
+        </RelativeLayout>
+
+
+        <TextView
+            android:id="@+id/model_list_nav_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="模型"
+            android:textColor="@color/white"
+            android:textSize="@dimen/dimen_17" />
+
+        <RelativeLayout
+            android:id="@+id/model_list_nav_search"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true">
+
+            <ImageView
+                android:layout_width="@dimen/dimen_24"
+                android:layout_height="@dimen/dimen_24"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/dimen_10"
+                android:layout_marginRight="@dimen/dimen_10"
+                android:background="@drawable/icon_search_white" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_44"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="@dimen/dimen_0"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/model_special_trangle"
+                android:layout_width="@dimen/dimen_13"
+                android:layout_height="@dimen/dimen_07"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/dimen_29"
+                android:background="@drawable/icon_gray_trangle_down" />
+
+            <TextView
+                android:id="@+id/model_special_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/dimen_06"
+                android:layout_toLeftOf="@id/model_special_trangle"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="专业"
+                android:textColor="@color/black"
+                android:textSize="@dimen/dimen_14" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="@dimen/dimen_0"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/model_single_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/dimen_29"
+                android:layout_marginRight="@dimen/dimen_06"
+                android:ellipsize="end"
+                android:maxLength="4"
+                android:text="单体"
+                android:textColor="@color/black"
+                android:textSize="@dimen/dimen_14" />
+
+            <ImageView
+                android:id="@+id/model_single_trangle"
+                android:layout_width="@dimen/dimen_13"
+                android:layout_height="@dimen/dimen_07"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/model_single_name"
+                android:background="@drawable/icon_gray_trangle_down" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_0.5"
+        android:background="@color/c_e6e6e6" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <LinearLayout
+            android:id="@+id/model_bg_default"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/dimen_94"
+                android:background="@drawable/icon_model_empty_bg" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/dimen_16"
+                android:text="请先选择具体专业和单体进行删选"
+                android:textColor="@color/c_999992"
+                android:textSize="@dimen/dimen_12" />
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/model_bg_content_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white">
+
+        </android.support.v7.widget.RecyclerView>
+
+        <RelativeLayout
+            android:id="@+id/model_bg_hint"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/c_80000000">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/model_bg_hint_special_list"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_192"
+                android:background="@color/white">
+
+            </android.support.v7.widget.RecyclerView>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/model_bg_hint_single_list"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_192"
+                android:padding="@dimen/dimen_06"
+                android:background="@color/white">
+
+            </android.support.v7.widget.RecyclerView>
+        </RelativeLayout>
+    </RelativeLayout>
+</LinearLayout>
+

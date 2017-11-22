@@ -22,6 +22,7 @@ import com.glodon.bim.business.qualityManage.model.CreateCheckListModel;
 import com.glodon.bim.business.qualityManage.util.UploadManger;
 import com.glodon.bim.business.qualityManage.view.BluePrintActivity;
 import com.glodon.bim.business.qualityManage.view.ChooseModuleActivity;
+import com.glodon.bim.business.qualityManage.view.ModelActivity;
 import com.glodon.bim.business.qualityManage.view.PhotoEditActivity;
 import com.glodon.bim.common.config.CommonConfig;
 import com.glodon.bim.customview.ToastManager;
@@ -57,6 +58,7 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
     private final int REQUEST_CODE_PHOTO_EDIT = 3;
     private static final int REQUEST_CODE_PHOTO_PREVIEW = 4;//图片预览
     private final int REQUEST_CODE_CHOOSE_BLUE_PRINT = 5;//跳转到选择图纸
+    private final int REQUEST_CODE_CHOOSE_MODEL = 6;//跳转到选择模型
     private CreateCheckListContract.Model mModel;
     private CreateCheckListContract.View mView;
     private CompositeSubscription mSubscritption;
@@ -762,7 +764,14 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
 
     @Override
     public void toModelList() {
-        
+        Intent intent = new Intent(mView.getActivity(), ModelActivity.class);
+//        if(!TextUtils.isEmpty(mCurrentBluePrintName) && !TextUtils.isEmpty(mBluePrintSelectInfo.name) && mBluePrintSelectInfo.id!=null){
+//            mCurrentBluePrintName = mView.getBluePrintName();
+//            if(mCurrentBluePrintName.equals(mBluePrintSelectInfo.name)){
+//                intent.putExtra(CommonConfig.MODULE_LIST_POSITION, mBluePrintSelectInfo.id);
+//            }
+//        }
+        mView.getActivity().startActivityForResult(intent, REQUEST_CODE_CHOOSE_MODEL);
     }
 
     @Override
@@ -787,6 +796,9 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
                         mView.showBluePrintName(mBluePrintSelectInfo.name,mBluePrintSelectInfo.id.longValue());
                     }
                 }
+                break;
+            case REQUEST_CODE_CHOOSE_MODEL:
+
                 break;
             case REQUEST_CODE_OPEN_ALBUM:
                 if (resultCode == Activity.RESULT_OK && data != null) {
