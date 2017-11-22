@@ -136,13 +136,13 @@ public class ModuleContentAdapter extends RecyclerView.Adapter<RecyclerView.View
 
         TextView mNameView;
         ImageView mSelectView;
-        LinearLayout mParentView;
+        View mParentView;
         RelativeLayout mBenchMarkView;
         public ObjHolder(View itemView) {
             super(itemView);
             mNameView = itemView.findViewById(R.id.quality_module_content_item_obj_name);
             mSelectView = itemView.findViewById(R.id.quality_module_content_item_obj_select);
-            mParentView = itemView.findViewById(R.id.quality_module_content_item_obj_parent);
+            mParentView = itemView;
             mBenchMarkView = itemView.findViewById(R.id.quality_module_content_item_obj_benchmark);
         }
     }

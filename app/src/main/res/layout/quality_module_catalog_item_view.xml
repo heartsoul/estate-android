@@ -4,8 +4,6 @@
     android:layout_height="@dimen/dimen_48"
     android:background="@color/c_f9f9f9"
     android:orientation="horizontal"
-    android:paddingLeft="@dimen/dimen_10"
-    android:paddingRight="@dimen/dimen_10"
     >
 
     <TextView
@@ -17,7 +15,8 @@
         android:maxLines="1"
         android:text="首开"
         android:textColor="@color/c_b5b5b5"
-        android:textSize="@dimen/dimen_14" />
+        android:textSize="@dimen/dimen_14"
+        android:layout_marginRight="@dimen/dimen_08"/>
 
 
     <TextView
@@ -26,17 +25,16 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:text="->"
-        android:layout_marginLeft="@dimen/dimen_08"
         android:textColor="@color/c_b5b5b5"
         android:textSize="@dimen/dimen_14"
+        android:layout_marginRight="@dimen/dimen_08"
         />
     <ImageView
         android:id="@+id/quality_module_catalog_item_icon_updown"
         android:layout_width="@dimen/dimen_11"
         android:layout_height="@dimen/dimen_05"
-        android:background="@drawable/icon_drawer_arrow_down"
+        android:background="@drawable/icon_blue_arrow_down"
         android:layout_gravity="center_vertical"
-        android:layout_marginLeft="@dimen/dimen_08"
         />
 
 </LinearLayout>

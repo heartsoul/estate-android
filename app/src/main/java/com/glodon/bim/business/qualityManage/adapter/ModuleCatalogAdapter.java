@@ -79,9 +79,12 @@ public class ModuleCatalogAdapter extends RecyclerView.Adapter<RecyclerView.View
                         //点的同一个
                         mListener.onSelect(item,false);
                         mLastPosition = -1;
+                        lHolder.mIconUpdown.setBackgroundResource(R.drawable.icon_blue_arrow_down);
                     }else{
                         mLastPosition = position;
                         mListener.onSelect(item,true);
+                        lHolder.mIconUpdown.setBackgroundResource(R.drawable.icon_blue_arrow_up);
+
                     }
 
                 }

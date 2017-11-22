@@ -158,7 +158,7 @@ public class ChooseModulePresenter implements ChooseModuleContract.Presenter {
 //                                for(ModuleListBeanItem item:list) {
 //                                    LogUtil.e("item=" +item.toString());
 //                                }
-                                list = getList();
+//                                list = getList();
                                 mDataList.addAll(list);
                                 mContentList = getListByParentId(0);//获取一级目录的item
                                 if (mView != null) {
