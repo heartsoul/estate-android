@@ -397,10 +397,10 @@ public class CreateInspectionAcceptionFragment extends BaseFragment implements V
                 mPresenter.toModuleList();
                 break;
             case R.id.create_check_list_blueprint://关联图纸
-
+//                mPresenter.toBluePrint();
                 break;
-            case R.id.create_check_list_model://管理模型
-
+            case R.id.create_check_list_model://关联模型
+                mPresenter.toModelList();
                 break;
             case R.id.create_check_list_save://保存
                 save();
@@ -528,6 +528,16 @@ public class CreateInspectionAcceptionFragment extends BaseFragment implements V
     }
 
     @Override
+    public String getBluePrintName() {
+        return mBluePrintName.getText().toString().trim();
+    }
+
+    @Override
+    public void showBluePrintName(String name, long id) {
+        mBluePrintName.setText(name);
+    }
+
+    @Override
     public void showDeleteButton() {
         mDeleteBtn.setVisibility(View.VISIBLE);
     }
@@ -623,6 +633,8 @@ public class CreateInspectionAcceptionFragment extends BaseFragment implements V
     public void showPersonEmpty() {
         mPersonName.setText(mPersonEmptyText);
     }
+
+
 
 
     //点击返回按钮

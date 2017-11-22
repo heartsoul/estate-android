@@ -132,6 +132,16 @@ public interface CreateCheckListContract {
          * 输入质检项目的变化
          */
         void moduleNameChanged(String text);
+
+        /**
+         * 跳转到图纸列表
+         */
+        void toBluePrint();
+
+        /**
+         * 跳转到模型列表
+         */
+        void toModelList();
     }
 
     interface View extends IBaseView {
@@ -211,6 +221,16 @@ public interface CreateCheckListContract {
          * 责任人为空
          */
         void showPersonEmpty();
+
+        /**
+         * 获取当前的图纸名称
+         */
+        String getBluePrintName();
+
+        /**
+         * 展示图纸
+         */
+        void showBluePrintName(String name, long id);
     }
 
     interface Model {

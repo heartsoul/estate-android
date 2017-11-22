@@ -8,6 +8,7 @@ import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.basic.utils.CameraUtil;
 import com.glodon.bim.basic.utils.NetWorkUtils;
 import com.glodon.bim.basic.utils.SharedPreferencesUtil;
+import com.glodon.bim.business.qualityManage.bean.BlueprintListBeanItem;
 import com.glodon.bim.business.qualityManage.bean.CompanyItem;
 import com.glodon.bim.business.qualityManage.bean.CreateCheckListParams;
 import com.glodon.bim.business.qualityManage.bean.CreateCheckListParamsFile;
@@ -19,6 +20,7 @@ import com.glodon.bim.business.qualityManage.contract.CreateCheckListContract;
 import com.glodon.bim.business.qualityManage.listener.OnUploadImageListener;
 import com.glodon.bim.business.qualityManage.model.CreateCheckListModel;
 import com.glodon.bim.business.qualityManage.util.UploadManger;
+import com.glodon.bim.business.qualityManage.view.BluePrintActivity;
 import com.glodon.bim.business.qualityManage.view.ChooseModuleActivity;
 import com.glodon.bim.business.qualityManage.view.PhotoEditActivity;
 import com.glodon.bim.common.config.CommonConfig;
@@ -54,6 +56,7 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
     private final int REQUEST_CODE_TAKE_PHOTO = 2;
     private final int REQUEST_CODE_PHOTO_EDIT = 3;
     private static final int REQUEST_CODE_PHOTO_PREVIEW = 4;//图片预览
+    private final int REQUEST_CODE_CHOOSE_BLUE_PRINT = 5;//跳转到选择图纸
     private CreateCheckListContract.Model mModel;
     private CreateCheckListContract.View mView;
     private CompositeSubscription mSubscritption;
@@ -79,6 +82,10 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
     private String mCurrentModuleName;//当前的质检项目名称
     private Long mCurrentModuleId;//当前的质检项目id
 
+    //图纸
+    private BlueprintListBeanItem mBluePrintSelectInfo;
+    private String mCurrentBluePrintName;//当前的质检项目名称
+    private Long mCurrentBluePrintId;//当前的质检项目id
 
     //新建检查单参数
     private CreateCheckListParams mInput;
@@ -115,8 +122,10 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
         mInput.projectId = mProjectId;
         mSelectedMap = new LinkedHashMap<>();
         mModuleSelectInfo = new ModuleListBeanItem();
+        mBluePrintSelectInfo = new BlueprintListBeanItem();
         mInitParams = new CreateCheckListParams();
         mCurrentModuleId = new Long(-1);
+        mCurrentBluePrintId = new Long(-1);
     }
 
 
@@ -739,6 +748,22 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
         mView.getActivity().startActivityForResult(intent, REQUEST_CODE_CHOOSE_MODULE);
     }
 
+    @Override
+    public void toBluePrint() {
+        Intent intent = new Intent(mView.getActivity(), BluePrintActivity.class);
+        if(!TextUtils.isEmpty(mCurrentBluePrintName) && !TextUtils.isEmpty(mBluePrintSelectInfo.name) && mBluePrintSelectInfo.id!=null){
+            mCurrentBluePrintName = mView.getBluePrintName();
+            if(mCurrentBluePrintName.equals(mBluePrintSelectInfo.name)){
+                intent.putExtra(CommonConfig.MODULE_LIST_POSITION, mBluePrintSelectInfo.id);
+            }
+        }
+        mView.getActivity().startActivityForResult(intent, REQUEST_CODE_CHOOSE_BLUE_PRINT);
+    }
+
+    @Override
+    public void toModelList() {
+        
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -750,6 +775,16 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
                     mCurrentModuleId = mModuleSelectInfo.id;
                     if (mView != null && mModuleSelectInfo != null) {
                         mView.showModuleName(mModuleSelectInfo.name,mModuleSelectInfo.id.longValue());
+                    }
+                }
+                break;
+            case REQUEST_CODE_CHOOSE_BLUE_PRINT:
+                if (resultCode == Activity.RESULT_OK && data != null) {
+                    mBluePrintSelectInfo = (BlueprintListBeanItem) data.getSerializableExtra(CommonConfig.MODULE_LIST_NAME);
+                    mCurrentBluePrintName = mBluePrintSelectInfo.name;
+                    mCurrentBluePrintId= mBluePrintSelectInfo.id;
+                    if (mView != null && mBluePrintSelectInfo != null) {
+                        mView.showBluePrintName(mBluePrintSelectInfo.name,mBluePrintSelectInfo.id.longValue());
                     }
                 }
                 break;
@@ -909,6 +944,8 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
             mView.showModuleBenchMark(false,-1);
         }
     }
+
+
 
     //保存后将值付给初始值  以便下一次比较
     private void resetInitParams() {
