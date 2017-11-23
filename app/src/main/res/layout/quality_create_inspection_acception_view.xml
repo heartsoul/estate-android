@@ -196,7 +196,8 @@
                 <EditText
                     android:id="@+id/create_check_list_site_desription"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dimen_105"
+                    android:layout_height="wrap_content"
+                    android:minLines="4"
                     android:background="@color/white"
                     android:gravity="top"
                     android:hint="现场情况描述...."
@@ -425,42 +426,38 @@
                     android:layout_toRightOf="@id/create_check_list_module_title"
                     android:background="@color/white">
 
-                     <EditText
-                         android:id="@+id/create_check_list_module_name"
-                         android:layout_width="@dimen/dimen_0"
-                         android:layout_height="wrap_content"
-                         android:layout_gravity="center_vertical"
-                         android:layout_weight="1"
-                         android:background="@color/white"
-                         android:ellipsize="end"
-                         android:gravity="right"
-                         android:maxLines="1"
-                         android:textColor="@color/black"
-                         android:textSize="@dimen/dimen_16"
-                         android:textCursorDrawable="@drawable/edit_cursor_color"
-                         />
-                    <!--<TextView-->
-                        <!--android:id="@+id/create_check_list_module_name"-->
-                        <!--android:layout_width="@dimen/dimen_0"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_gravity="center_vertical"-->
-                        <!--android:layout_weight="1"-->
-                        <!--android:background="@color/white"-->
-                        <!--android:ellipsize="end"-->
-                        <!--android:gravity="right"-->
-                        <!--android:maxLines="1"-->
-                        <!--android:textColor="@color/black"-->
-                        <!--android:textSize="@dimen/dimen_16" />-->
-
-                    <ImageView
-                        android:id="@+id/create_check_list_module_benchmark"
-                        android:layout_width="@dimen/dimen_15"
-                        android:layout_height="@dimen/dimen_15"
+                    <EditText
+                        android:id="@+id/create_check_list_module_name"
+                        android:layout_width="@dimen/dimen_0"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="@dimen/dimen_05"
-                        android:layout_marginRight="@dimen/dimen_24"
-                        android:background="@drawable/icon_benchmark"
-                        android:visibility="gone" />
+                        android:layout_weight="1"
+                        android:background="@color/white"
+                        android:ellipsize="end"
+                        android:gravity="right"
+                        android:maxLines="1"
+                        android:textColor="@color/black"
+                        android:textCursorDrawable="@drawable/edit_cursor_color"
+                        android:textSize="@dimen/dimen_16" />
+
+
+                    <RelativeLayout
+                        android:id="@+id/create_check_list_module_benchmark"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:visibility="gone"
+                        android:background="@color/white"
+                        >
+
+                        <ImageView
+                            android:layout_width="@dimen/dimen_15"
+                            android:layout_height="@dimen/dimen_15"
+                            android:layout_marginLeft="@dimen/dimen_05"
+                            android:layout_marginRight="@dimen/dimen_24"
+                            android:background="@drawable/icon_benchmark"
+                            android:layout_centerVertical="true"/>
+                    </RelativeLayout>
+
                 </LinearLayout>
 
             </RelativeLayout>

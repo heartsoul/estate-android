@@ -27,8 +27,8 @@ public class BluePrintFragment extends BaseFragment {
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onDestroyView() {
+        super.onDestroyView();
         if(mBluePrintView!=null)
         {
             mBluePrintView.onDestroy();

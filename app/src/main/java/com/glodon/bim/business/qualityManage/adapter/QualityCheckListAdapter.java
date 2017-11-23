@@ -144,6 +144,13 @@ public class QualityCheckListAdapter extends RecyclerView.Adapter<RecyclerView.V
                     sHolder.mBottomPreant.setVisibility(View.GONE);
                     sHolder.mBottomLineView.setVisibility(View.GONE);
                     color = R.color.c_f33d3d;
+                    if(AuthorityManager.isCreateRepair()&& AuthorityManager.isMe(item.responsibleUserId)) {
+                        sHolder.mRepairBtn.setVisibility(View.VISIBLE);
+                        sHolder.mBottomPreant.setVisibility(View.VISIBLE);
+                        sHolder.mBottomLineView.setVisibility(View.VISIBLE);
+                    }else{
+                        sHolder.mRepairBtn.setVisibility(View.GONE);
+                    }
                     statusText = "已延迟";
                     break;
                 case CommonConfig.QC_STATE_ACCEPTED:

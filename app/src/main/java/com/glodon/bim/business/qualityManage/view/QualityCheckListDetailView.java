@@ -290,7 +290,12 @@ public class QualityCheckListDetailView implements QualityCheckListDetailViewCon
             statusView.setTextColor(mActivity.getResources().getColor(R.color.c_f33d3d));
             timeLimitView.setVisibility(View.VISIBLE);
             //整改期限
-            timeLimitView.setText("整改期："+DateUtil.getNormalDate(Long.parseLong(info.lastRectificationDate)));
+            if(info.lastRectificationDate!=null && Long.parseLong(info.lastRectificationDate)>0) {
+                timeLimitView.setVisibility(View.GONE);
+                timeLimitView.setText("整改期：" + DateUtil.getNormalDate(Long.parseLong(info.lastRectificationDate)));
+            }else{
+                timeLimitView.setVisibility(View.GONE);
+            }
         }
         //描述
         desView.setText(info.description);

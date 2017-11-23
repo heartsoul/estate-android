@@ -190,22 +190,22 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
                 mIsDrawerOpen = false;
                 break;
             case R.id.main_drawer_quality_blueprint://点击图纸
-                setSelect(1);
-                showFragmentById(mBluePrintFragmentId);
-                hideDrawer(300);
-                mIsDrawerOpen = false;
+//                setSelect(1);
+//                showFragmentById(mBluePrintFragmentId);
+//                hideDrawer(300);
+//                mIsDrawerOpen = false;
                 break;
             case R.id.main_drawer_quality_model://点击模型
-                setSelect(2);
-                showFragmentById(mModelFragmentId);
-                hideDrawer(300);
-                mIsDrawerOpen = false;
+//                setSelect(2);
+//                showFragmentById(mModelFragmentId);
+//                hideDrawer(300);
+//                mIsDrawerOpen = false;
                 break;
             case R.id.main_drawer_quality_module://点击质检项目
-                setSelect(3);
-                showFragmentById(mQualityCheckModuleFragmentId);
-                hideDrawer(300);
-                mIsDrawerOpen = false;
+//                setSelect(3);
+//                showFragmentById(mQualityCheckModuleFragmentId);
+//                hideDrawer(300);
+//                mIsDrawerOpen = false;
                 break;
             case R.id.main_drawer_setting:
 //                mPresenter.toSetting(mProjectInfo);
@@ -418,7 +418,7 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
             mPresenter.onDestroy();
             mPresenter = null;
         }
-        mFragmentMap.get(mCurrentFragmentId).onDestroy();
+//        mFragmentMap.get(mCurrentFragmentId).onDestroy();
     }
 
 

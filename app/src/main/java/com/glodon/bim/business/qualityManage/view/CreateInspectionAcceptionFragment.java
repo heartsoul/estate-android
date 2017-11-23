@@ -91,7 +91,7 @@ public class CreateInspectionAcceptionFragment extends BaseFragment implements V
     private RelativeLayout mModuleParent;
     private ImageView mModuleStar;
     private EditText mModuleName;
-    private ImageView mModuleBenchmark;
+    private RelativeLayout mModuleBenchmark;
     //关联图纸
     private RelativeLayout mBluePrintParent;
     private TextView mBluePrintName;
@@ -121,11 +121,12 @@ public class CreateInspectionAcceptionFragment extends BaseFragment implements V
     private String mPersonEmptyText = "您需要去PC端添加责任人数据";
     private boolean mIsCompanyAble = true;//是否可用
     private boolean mIsPersonAble = true;//是否可用
-
+    View view;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflate(R.layout.quality_create_inspection_acception_view);
+
+        view = inflate(R.layout.quality_create_inspection_acception_view);
         initView(view);
         setListener();
         initData();
@@ -309,7 +310,7 @@ public class CreateInspectionAcceptionFragment extends BaseFragment implements V
             }
             mModuleName.setText(mParams.qualityCheckpointName);
             if(mParams.qualityCheckpointId!=null && mParams.qualityCheckpointId.longValue()>0){
-                mModuleBenchmark.setVisibility(View.VISIBLE);
+                showBenchMark();
                 mModuleBenchmark.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -317,7 +318,7 @@ public class CreateInspectionAcceptionFragment extends BaseFragment implements V
                     }
                 });
             }else{
-                mModuleBenchmark.setVisibility(View.GONE);
+                hideBenchMark();
             }
             showDeleteButton();
             mPresenter.setEditState(mParams);
@@ -325,6 +326,13 @@ public class CreateInspectionAcceptionFragment extends BaseFragment implements V
             mParams = new CreateCheckListParams();
             mParams.inspectionType = mInspetionType;
         }
+    }
+
+    private void showBenchMark(){
+        mModuleBenchmark.setVisibility(View.VISIBLE);
+    }
+    private void hideBenchMark(){
+        mModuleBenchmark.setVisibility(View.GONE);
     }
 
     @Override
@@ -397,10 +405,10 @@ public class CreateInspectionAcceptionFragment extends BaseFragment implements V
                 mPresenter.toModuleList();
                 break;
             case R.id.create_check_list_blueprint://关联图纸
-                mPresenter.toBluePrint();
+//                mPresenter.toBluePrint();
                 break;
             case R.id.create_check_list_model://关联模型
-                mPresenter.toModelList();
+//                mPresenter.toModelList();
                 break;
             case R.id.create_check_list_save://保存
                 save();
@@ -518,7 +526,7 @@ public class CreateInspectionAcceptionFragment extends BaseFragment implements V
     @Override
     public void showModuleName(String name, final long id) {
         mModuleName.setText(name);
-        mModuleBenchmark.setVisibility(View.VISIBLE);
+        showBenchMark();
         mModuleBenchmark.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -612,7 +620,7 @@ public class CreateInspectionAcceptionFragment extends BaseFragment implements V
     public void showModuleBenchMark(boolean isshow, final long templateId) {
         if(isshow)
         {
-            mModuleBenchmark.setVisibility(View.VISIBLE);
+            showBenchMark();
             mModuleBenchmark.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -621,7 +629,7 @@ public class CreateInspectionAcceptionFragment extends BaseFragment implements V
             });
 
         }else{
-            mModuleBenchmark.setVisibility(View.GONE);
+            hideBenchMark();
         }
     }
 

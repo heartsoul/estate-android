@@ -246,13 +246,17 @@ public class QualityCheckListFragment extends BaseFragment implements QualityChe
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        mPresenter.onActivityResult(requestCode, resultCode, data);
+        if(mPresenter!=null) {
+            mPresenter.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-        mPresenter.onDestroy();
+    public void onDestroyView() {
+        super.onDestroyView();
+        if(mPresenter!=null) {
+            mPresenter.onDestroy();
+        }
     }
 
 }

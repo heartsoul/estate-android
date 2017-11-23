@@ -26,9 +26,10 @@ public class ModelFragment extends BaseFragment {
         return view;
     }
 
+
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onDestroyView() {
+        super.onDestroyView();
         if(mModelView!=null)
         {
             mModelView.onDestroy();

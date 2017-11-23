@@ -26,8 +26,11 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/dimen_13"
-            android:text="青岛花园"
+            android:layout_marginRight="@dimen/dimen_20"
             android:textColor="@color/black"
-            android:textSize="@dimen/dimen_16" />
+            android:textSize="@dimen/dimen_16"
+            android:maxLines="2"
+            android:ellipsize="end"
+            />
     </LinearLayout>
 </LinearLayout>
