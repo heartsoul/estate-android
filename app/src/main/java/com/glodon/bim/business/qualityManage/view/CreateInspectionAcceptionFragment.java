@@ -397,7 +397,7 @@ public class CreateInspectionAcceptionFragment extends BaseFragment implements V
                 mPresenter.toModuleList();
                 break;
             case R.id.create_check_list_blueprint://关联图纸
-//                mPresenter.toBluePrint();
+                mPresenter.toBluePrint();
                 break;
             case R.id.create_check_list_model://关联模型
                 mPresenter.toModelList();
@@ -535,6 +535,11 @@ public class CreateInspectionAcceptionFragment extends BaseFragment implements V
     @Override
     public void showBluePrintName(String name, long id) {
         mBluePrintName.setText(name);
+    }
+
+    @Override
+    public void showModelName(String name, long id) {
+        mModelName.setText(name);
     }
 
     @Override

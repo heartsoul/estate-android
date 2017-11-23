@@ -88,7 +88,6 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.main_activity);
         mActivity = this;
         mPresenter = new QualityMangeMainPresenter(this);
@@ -187,17 +186,26 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
             case R.id.main_drawer_quality_check_list://点击质检清单
                 setSelect(0);
                 showFragmentById(mQualityCheckListFragmentId);
+                hideDrawer(300);
+                mIsDrawerOpen = false;
                 break;
             case R.id.main_drawer_quality_blueprint://点击图纸
-//                mPresenter.toBluePrint();
+                setSelect(1);
+                showFragmentById(mBluePrintFragmentId);
+                hideDrawer(300);
+                mIsDrawerOpen = false;
                 break;
             case R.id.main_drawer_quality_model://点击模型
-//                setSelect(2);
-//                mPresenter.toModel();
+                setSelect(2);
+                showFragmentById(mModelFragmentId);
+                hideDrawer(300);
+                mIsDrawerOpen = false;
                 break;
             case R.id.main_drawer_quality_module://点击质检项目
-//                setSelect(3);
-//                showFragmentById(mQualityCheckModuleFragmentId);
+                setSelect(3);
+                showFragmentById(mQualityCheckModuleFragmentId);
+                hideDrawer(300);
+                mIsDrawerOpen = false;
                 break;
             case R.id.main_drawer_setting:
 //                mPresenter.toSetting(mProjectInfo);
@@ -410,6 +418,7 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
             mPresenter.onDestroy();
             mPresenter = null;
         }
+        mFragmentMap.get(mCurrentFragmentId).onDestroy();
     }
 
 

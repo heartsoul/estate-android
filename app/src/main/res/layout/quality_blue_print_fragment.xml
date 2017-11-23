@@ -3,10 +3,41 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-    <TextView
+
+    <!--<android.support.v7.widget.RecyclerView
+        android:id="@+id/catalog_module_catalog_recyclerview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="图纸"
-        android:layout_marginTop="@dimen/dimen_20"
+        android:layout_height="@dimen/dimen_48"
+        android:background="@color/c_f9f9f9"
+        android:visibility="gone"
+        android:layout_marginLeft="@dimen/dimen_20"
+        android:layout_marginRight="@dimen/dimen_20"
         />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/catalog_module_content_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white" />
+
+        <LinearLayout
+            android:id="@+id/catalog_module_hint"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/c_80000000"
+            android:orientation="vertical"
+            android:visibility="gone"
+            >
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/catalog_module_hint_recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_192"
+                android:background="@color/white" />
+        </LinearLayout>
+    </RelativeLayout>-->
 </LinearLayout>

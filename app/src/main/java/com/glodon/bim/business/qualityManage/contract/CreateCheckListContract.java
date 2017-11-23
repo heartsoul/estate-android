@@ -231,6 +231,11 @@ public interface CreateCheckListContract {
          * 展示图纸
          */
         void showBluePrintName(String name, long id);
+
+        /**
+         * 展示选中的模型
+         */
+        void showModelName(String name, long id);
     }
 
     interface Model {

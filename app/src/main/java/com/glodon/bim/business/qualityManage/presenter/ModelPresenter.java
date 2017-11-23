@@ -1,5 +1,6 @@
 package com.glodon.bim.business.qualityManage.presenter;
 
+import android.app.Activity;
 import android.content.Intent;
 
 import com.glodon.bim.business.qualityManage.bean.ModelListBeanItem;
@@ -8,6 +9,7 @@ import com.glodon.bim.business.qualityManage.bean.ModelSpecialListItem;
 import com.glodon.bim.business.qualityManage.contract.ModelContract;
 import com.glodon.bim.business.qualityManage.model.ModelModel;
 import com.glodon.bim.business.qualityManage.model.OnModelSelectListener;
+import com.glodon.bim.common.config.CommonConfig;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +39,12 @@ public class ModelPresenter implements ModelContract.Presenter {
     private OnModelSelectListener mListener = new OnModelSelectListener() {
         @Override
         public void selectModel(ModelListBeanItem item) {
-
+            if(mView!=null) {
+                Intent data = new Intent();
+                data.putExtra(CommonConfig.MODULE_LIST_NAME, item);
+                mView.getActivity().setResult(Activity.RESULT_OK, data);
+                mView.getActivity().finish();
+            }
         }
 
         @Override

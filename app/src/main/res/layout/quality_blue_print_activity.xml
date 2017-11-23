@@ -55,7 +55,8 @@
         </RelativeLayout>
 
     </RelativeLayout>
-    <include layout="@layout/quality_catalog_module_view" />
+    <include layout="@layout/quality_blue_print_fragment"
+        android:id="@+id/blue_print_list_content_view"/>
 
 </LinearLayout>
 
