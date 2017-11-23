@@ -143,6 +143,8 @@ public class QualityCheckListAdapter extends RecyclerView.Adapter<RecyclerView.V
                 case CommonConfig.QC_STATE_DELAYED:
                     sHolder.mBottomPreant.setVisibility(View.GONE);
                     sHolder.mBottomLineView.setVisibility(View.GONE);
+                    sHolder.mDeleteBtn.setVisibility(View.GONE);
+                    sHolder.mSubmitBtn.setVisibility(View.GONE);
                     color = R.color.c_f33d3d;
                     if(AuthorityManager.isCreateRepair()&& AuthorityManager.isMe(item.responsibleUserId)) {
                         sHolder.mRepairBtn.setVisibility(View.VISIBLE);
