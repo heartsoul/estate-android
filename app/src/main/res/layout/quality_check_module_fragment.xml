@@ -3,23 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:id="@+id/quality_check_module_list_parent"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/quality_check_module_classifes"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dimen_44"
-            android:background="@color/white"
-            android:scrollbars="none"/>
-        <include
-            android:id="@+id/quality_check_module_recyclerview"
-            layout="@layout/view_pullrefresh_view"
-            />
-
-    </LinearLayout>
+    <include layout="@layout/quality_check_list_fragment"
+        android:id="@+id/quality_check_module_list_parent"/>
 
     <ScrollView
         android:id="@+id/quality_check_module_checkpoint_parent"

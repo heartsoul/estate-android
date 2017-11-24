@@ -6,9 +6,9 @@ import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.basic.utils.NetWorkUtils;
 import com.glodon.bim.basic.utils.SharedPreferencesUtil;
 import com.glodon.bim.business.qualityManage.bean.ModuleListBeanItem;
+import com.glodon.bim.business.qualityManage.contract.ChooseModuleContract;
 import com.glodon.bim.business.qualityManage.contract.QulityCheckModuleContract;
 import com.glodon.bim.business.qualityManage.model.ChooseModuleModel;
-import com.glodon.bim.business.qualityManage.model.QulityCheckModuleModel;
 import com.glodon.bim.customview.ToastManager;
 
 import java.util.ArrayList;
@@ -28,18 +28,18 @@ import rx.subscriptions.CompositeSubscription;
 
 public class QualityCheckModulePresenter implements QulityCheckModuleContract.Presenter {
 
-    private QulityCheckModuleContract.Model mModel;
+    private ChooseModuleContract.Model mModel;
     private QulityCheckModuleContract.View mView;
 
-    private List<ModuleListBeanItem> mDataList;
-    private List<ModuleListBeanItem> mRootList;
+    private List<ModuleListBeanItem> mModuleDataList;//质检项目列表
+    private List<ModuleListBeanItem> mRootList;//最外层的质检项目列表
     private CompositeSubscription mSubscription;
     private long mDeptId;
 
     public QualityCheckModulePresenter(QulityCheckModuleContract.View mView) {
         this.mView = mView;
-        mModel = new QulityCheckModuleModel();
-        mDataList = new ArrayList<>();
+        mModel = new ChooseModuleModel();
+        mModuleDataList = new ArrayList<>();
         mRootList = new ArrayList<>();
         mSubscription = new CompositeSubscription();
         mDeptId = SharedPreferencesUtil.getProjectId();
@@ -51,7 +51,7 @@ public class QualityCheckModulePresenter implements QulityCheckModuleContract.Pr
             if (mView != null) {
                 mView.showLoadingDialog();
             }
-            Subscription sub = new ChooseModuleModel().getModuleList(mDeptId,mDeptId)
+            Subscription sub = mModel.getModuleList(mDeptId,mDeptId)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Subscriber<List<ModuleListBeanItem>>() {
@@ -75,7 +75,7 @@ public class QualityCheckModulePresenter implements QulityCheckModuleContract.Pr
                                     LogUtil.e("item=" +item.toString());
                                 }
 //                                list = getList();
-                                mDataList.addAll(list);
+                                mModuleDataList.addAll(list);
                                 mRootList = getListByParentId(0);//获取一级目录的item
                                 if (mView != null) {
                                     mView.updateList(mRootList);
@@ -95,19 +95,10 @@ public class QualityCheckModulePresenter implements QulityCheckModuleContract.Pr
     }
 
     @Override
-    public void pullDown() {
-
-    }
-
-    @Override
-    public void pullUp() {
-
-    }
-
-    @Override
     public List<ModuleListBeanItem> getChildList(long id) {
         return getListByParentId(id);
     }
+
 
     private List<ModuleListBeanItem> getList(){
         List<ModuleListBeanItem> list = new ArrayList<>();
@@ -146,9 +137,9 @@ public class QualityCheckModulePresenter implements QulityCheckModuleContract.Pr
 
     private List<ModuleListBeanItem> getListByParentId(long parentId){
         List<ModuleListBeanItem> list = new ArrayList<>();
-        for(ModuleListBeanItem item:mDataList){
+        for(ModuleListBeanItem item: mModuleDataList){
             if(item.parentId == parentId){
-                for(ModuleListBeanItem cItem:mDataList){
+                for(ModuleListBeanItem cItem: mModuleDataList){
                     if(cItem.parentId == item.id.longValue()){
                         item.viewType = 0;
                         break;
@@ -172,7 +163,7 @@ public class QualityCheckModulePresenter implements QulityCheckModuleContract.Pr
             mSubscription.unsubscribe();
             mSubscription = null;
         }
-        mDataList = null;
+        mModuleDataList = null;
         mView = null;
         mModel = null;
     }

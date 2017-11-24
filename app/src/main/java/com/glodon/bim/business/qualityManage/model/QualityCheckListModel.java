@@ -33,6 +33,14 @@ public class QualityCheckListModel implements QualityCheckListContract.Model{
         return NetRequest.getInstance().getCall(AppConfig.BASE_URL,QualityCheckListApi.class).getQualityCheckList(deptId,qcState,page,size,sort,new DaoProvider().getCookie());
     }
 
+    /**
+     * 获取质检清单
+     */
+    public Observable<QualityCheckListBean> getQualityCheckList(long deptId, String qcState,int page, int size, long qualityCheckpointId, String qualityCheckpointName){
+        String[] sort = {"updateTime,desc"};
+        return NetRequest.getInstance().getCall(AppConfig.BASE_URL,QualityCheckListApi.class).getQualityCheckList(deptId,qcState,page,size,sort,qualityCheckpointId,qualityCheckpointName,new DaoProvider().getCookie());
+    }
+
     @Override
     public Observable<List<ClassifyNum>> getStatusNum(long deptId){
         return NetRequest.getInstance().getCall(AppConfig.BASE_URL,QualityCheckListApi.class).getStatusNum(deptId,new DaoProvider().getCookie());

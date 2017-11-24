@@ -41,22 +41,9 @@ import java.util.Map;
  * 邮箱：zhourf@glodon.com
  */
 
-public class QualityCheckListFragment extends BaseFragment implements QualityCheckListContract.View {
-    private PullRefreshView mPullRefreshView;
-    private RecyclerView mRecyclerView;
-    private ImageView mToTopView;
-    private QualityCheckListAdapter mAdapter;
-    private QualityCheckListContract.Presenter mPresenter;
+public class QualityCheckListFragment extends BaseFragment{
     private ProjectListItem mProjectInfo;
-
-    private RecyclerView mClassifesView;
-    private QualityCheckListClassifyAdapter mCalssifyAdapter;
-    private String mCurrentState = "";//当前选择的列表状态
-
-    private List<ClassifyItem> mDataList;//分类数据
-
-    private PhotoAlbumDialog mPhotoAlbumDialog;//拍照相册弹出框
-
+    private QualityCheckListView mQualityCheckListView;
     public void setProjectInfo(ProjectListItem info) {
         this.mProjectInfo = info;
     }
@@ -66,196 +53,26 @@ public class QualityCheckListFragment extends BaseFragment implements QualityChe
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflate(R.layout.quality_check_list_fragment);
-        initView(view);
+        mQualityCheckListView = new QualityCheckListView(getActivity(),view,mProjectInfo);
+        mQualityCheckListView.initData();
         return view;
     }
 
 
-    private void initView(View view) {
-        mPullRefreshView = view.findViewById(R.id.quality_check_list_recyclerview);
-        mToTopView = view.findViewById(R.id.quality_check_list_to_top);
-        mClassifesView = view.findViewById(R.id.quality_check_list_classifes);
-
-        setListener();
-        initClassify();
-        initRecyclerView();
-        initData();
-    }
-
-    private void setListener() {
-        ThrottleClickEvents.throttleClick(mToTopView, new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mRecyclerView.smoothScrollToPosition(0);
-            }
-        });
-    }
-
-    private void initRecyclerView() {
-        mPullRefreshView.setPullDownEnable(true);
-        mPullRefreshView.setPullUpEnable(true);
-        mPullRefreshView.setOnPullRefreshListener(new OnPullRefreshListener() {
-            @Override
-            public void onPullDown() {
-                mPresenter.pullDown();
-                mPullRefreshView.onPullDownComplete();
-            }
-
-            @Override
-            public void onPullUp() {
-                mPresenter.pullUp();
-                mPullRefreshView.onPullUpComplete();
-            }
-        });
-        mRecyclerView = mPullRefreshView.getmRecyclerView();
-
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mRecyclerView.setVerticalScrollBarEnabled(true);
-        final LinearLayoutManager manager = new LinearLayoutManager(getContext());
-        mRecyclerView.setLayoutManager(manager);
-
-    }
-
-    /**
-     * 初始化分类
-     */
-    private void initClassify(){
-        mDataList = new ArrayList<>();
-        for(int i = 0;i<8;i++){
-            ClassifyItem item = new ClassifyItem();
-            item.name = CommonConfig.CLASSIFY_NAMES[i];
-            item.qcState = CommonConfig.CLASSIFY_STATES[i];
-            mDataList.add(item);
-        }
-        mCalssifyAdapter = new QualityCheckListClassifyAdapter(getActivity(), mDataList, new OnClassifyItemClickListener() {
-            @Override
-            public void onClassifyItemClick(int position, ClassifyItem item) {
-                if(!mCurrentState.equals(CommonConfig.CLASSIFY_STATES[position])) {
-                    mCurrentState = CommonConfig.CLASSIFY_STATES[position];
-                    mPresenter.getClassifyData(mCurrentState);
-                }
-            }
-        });
-        LinearLayoutManager llm = new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false);
-        mClassifesView.setLayoutManager(llm);
-        mClassifesView.setAdapter(mCalssifyAdapter);
-    }
-
-    @Override
-    public void updateClassifyCount(List<ClassifyNum> list){
-        if(list!=null && list.size()>0){
-            Map<String,Integer> map = new HashMap<>();
-            List<String> keyList = new ArrayList<>();
-            keyList.add(CommonConfig.QC_STATE_STAGED);
-            keyList.add(CommonConfig.QC_STATE_UNRECTIFIED);
-            keyList.add(CommonConfig.QC_STATE_UNREVIEWED);
-            keyList.add(CommonConfig.QC_STATE_DELAYED);
-
-            for(ClassifyNum item : list){
-//                {"全部","待提交",  "待整改",      "待复查",    "已检查",    "已复查",  "已延迟",  "已验收"};
-//                {"",   "staged",  "unrectified","unreviewed","inspected","reviewed","delayed","accepted"};
-                if(keyList.contains(item.qcState)) {
-                    map.put(item.qcState, item.count);
-                }
-            }
-            if(mDataList!=null && mDataList.size()>0){
-                List<ClassifyItem> tempList = new ArrayList<>();
-                for(ClassifyItem item :mDataList){
-                    ClassifyItem temp = new ClassifyItem();
-                    temp.name = item.name;
-                    temp.qcState = item.qcState;
-                    Integer tempCount = map.get(item.qcState);
-                    if(tempCount==null){
-                        temp.count = 0;
-                    }else{
-                        temp.count = tempCount.intValue();
-                    }
-                    tempList.add(temp);
-                }
-                mDataList=tempList;
-                mCalssifyAdapter.updateNums(mDataList);
-            }
-        }
-    }
-
-    private void initData() {
-        mPresenter = new QualityCheckListPresenter(this);
-        mAdapter = new QualityCheckListAdapter(getContext(), mPresenter.getListener());
-        mRecyclerView.setAdapter(mAdapter);
-        mPresenter.initData(mProjectInfo);
-
-//        QualityCheckListAdapter2 adapter = new QualityCheckListAdapter2(getActivity(),null);
-//        mRecyclerView.setAdapter(adapter);
-//        List<QualityCheckListBeanItem> list = new ArrayList<>();
-//        for(int i = 0;i<15;i++){
-//            QualityCheckListBeanItem item = new QualityCheckListBeanItem();
-//            item.showType = 1;
-//            list.add(item);
-//        }
-//        adapter.updateList(list);
-    }
-
-
-    @Override
-    public void create() {
-        if (mPhotoAlbumDialog == null) {
-            mPhotoAlbumDialog = new PhotoAlbumDialog(getActivity()).builder(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mPresenter.openPhoto();
-                }
-            }, new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mPresenter.openAlbum();
-                }
-            }, new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mPresenter.toCreate();
-                }
-            });
-        }
-        mPhotoAlbumDialog.show();
-    }
-
-
-    @Override
-    public void showLoadingDialog() {
-        showLoadDialog(true);
-    }
-
-    @Override
-    public void dismissLoadingDialog() {
-        dismissLoadDialog();
-    }
-
-    @Override
-    public void updateData(List<QualityCheckListBeanItem> mDataList) {
-        mAdapter.updateList(mDataList);
-//        List<ClassifyNum> list = new ArrayList<>();
-//        for(int i = 1;i<8;i++){
-//            ClassifyNum num = new ClassifyNum();
-//            num.count = i*(i+39);
-//            num.qcState = CommonConfig.CLASSIFY_STATES[i];
-//            list.add(num);
-//        }
-//        updateClassifyCount(list);
-    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(mPresenter!=null) {
-            mPresenter.onActivityResult(requestCode, resultCode, data);
+        if(mQualityCheckListView!=null) {
+            mQualityCheckListView.onActivityResult(requestCode, resultCode, data);
         }
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if(mPresenter!=null) {
-            mPresenter.onDestroy();
+        if(mQualityCheckListView!=null) {
+            mQualityCheckListView.onDestroyView();
         }
     }
 

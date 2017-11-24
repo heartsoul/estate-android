@@ -4,6 +4,7 @@ import com.glodon.bim.base.IBasePresenter;
 import com.glodon.bim.base.IBaseView;
 import com.glodon.bim.business.qualityManage.bean.BlueprintListBeanItem;
 import com.glodon.bim.business.qualityManage.bean.ModuleListBeanItem;
+import com.glodon.bim.business.qualityManage.bean.QualityCheckListBean;
 import com.glodon.bim.business.qualityManage.listener.OnBlueprintCatalogClickListener;
 import com.glodon.bim.business.qualityManage.listener.OnBlueprintHintClickListener;
 import com.glodon.bim.business.qualityManage.listener.OnChooseBlueprintCataListener;
@@ -24,19 +25,11 @@ public interface QulityCheckModuleContract {
     interface Presenter extends IBasePresenter {
 
         /**
-         * 下拉刷新数据
-         */
-        void pullDown();
-
-        /**
-         * 上拉加载更多数据
-         */
-        void pullUp();
-
-        /**
          * 根据id查询该目录下有多少子类节点
          */
         List<ModuleListBeanItem> getChildList(long id);
+
+
     }
 
     interface View extends IBaseView {
@@ -48,6 +41,9 @@ public interface QulityCheckModuleContract {
     }
 
     interface Model {
-
+        /**
+         * 获取质检清单列表
+         */
+        Observable<QualityCheckListBean> getQualityCheckList(long deptId, String qcState, int page, int size, long qualityCheckpointId, String qualityCheckpointName);
     }
 }

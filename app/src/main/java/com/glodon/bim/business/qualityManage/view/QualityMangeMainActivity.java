@@ -11,7 +11,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
-import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -26,6 +25,7 @@ import com.glodon.bim.business.authority.AuthorityManager;
 import com.glodon.bim.business.greendao.provider.DaoProvider;
 import com.glodon.bim.business.main.bean.ProjectListItem;
 import com.glodon.bim.business.qualityManage.contract.QualityMangeMainContract;
+import com.glodon.bim.business.qualityManage.listener.OnTitleChangerListener;
 import com.glodon.bim.business.qualityManage.presenter.QualityMangeMainPresenter;
 import com.glodon.bim.common.config.CommonConfig;
 import com.glodon.bim.customview.dialog.PhotoAlbumDialog;
@@ -59,6 +59,7 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
 
     private RelativeLayout  mBackView,mMenuView;
     private ImageView  mSearchView, mCreateView;
+    private TextView mTitleView;
 
     private boolean mIsDrawerOpen = false;
 
@@ -90,7 +91,6 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
         mActivity = this;
-        mPresenter = new QualityMangeMainPresenter(this);
         mProjectInfo = (ProjectListItem) getIntent().getSerializableExtra(CommonConfig.PROJECT_LIST_ITEM);
 
         mFromType = getIntent().getIntExtra(CommonConfig.MAIN_FROM_TYPE,0);
@@ -109,7 +109,7 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
         mContentView = (LinearLayout) findViewById(R.id.main_content);
         mStatusLeft = (LinearLayout) findViewById(R.id.main_drawer_status_left);
         mStatusRight = (LinearLayout) findViewById(R.id.main_drawer_status_right);
-
+        mTitleView = (TextView) findViewById(R.id.main_header_title);
 
         LinearLayout.LayoutParams contentParams = (LinearLayout.LayoutParams) mContentView.getLayoutParams();
         contentParams.width = ScreenUtil.getScreenInfo()[0];
@@ -150,11 +150,24 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
     }
 
     @Override
+    public void onBackPressed() {
+        back();
+    }
+
+    private void back(){
+        if(mCurrentFragmentId == mQualityCheckModuleFragmentId){
+            mQualityCheckModuleFragment.back();
+        }else{
+            mActivity.finish();
+        }
+    }
+
+    @Override
     public void onClick(View view) {
         int id = view.getId();
         switch (id) {
             case R.id.main_header_back_icon://点击返回键
-                mActivity.finish();
+                back();
                 break;
             case R.id.main_header_menu_icon://点击菜单键
                 if (mIsDrawerOpen) {
@@ -188,18 +201,21 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
                 showFragmentById(mQualityCheckListFragmentId);
                 hideDrawer(300);
                 mIsDrawerOpen = false;
+                mTitleView.setText("质检清单");
                 break;
             case R.id.main_drawer_quality_blueprint://点击图纸
 //                setSelect(1);
 //                showFragmentById(mBluePrintFragmentId);
 //                hideDrawer(300);
 //                mIsDrawerOpen = false;
+//                mTitleView.setText("图纸");
                 break;
             case R.id.main_drawer_quality_model://点击模型
 //                setSelect(2);
 //                showFragmentById(mModelFragmentId);
 //                hideDrawer(300);
 //                mIsDrawerOpen = false;
+//                mTitleView.setText("模型");
                 break;
             case R.id.main_drawer_quality_module://点击质检项目
                 setSelect(3);
@@ -335,6 +351,13 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
                     transaction.add(R.id.main_fragment_content, mQualityCheckModuleFragment);
                 }
                 mQualityCheckModuleFragment.setProjectInfo(mProjectInfo);
+                mQualityCheckModuleFragment.setTitleChangeListener(new OnTitleChangerListener() {
+                    @Override
+                    public void onTitleChange(String name) {
+                        mTitleView.setText(name);
+                    }
+                });
+                mQualityCheckModuleFragment.changeTitle();
                 currentFragment = mQualityCheckModuleFragment;
                 break;
         }
@@ -418,7 +441,6 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
             mPresenter.onDestroy();
             mPresenter = null;
         }
-//        mFragmentMap.get(mCurrentFragmentId).onDestroy();
     }
 
 

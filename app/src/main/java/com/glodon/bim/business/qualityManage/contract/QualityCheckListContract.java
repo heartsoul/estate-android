@@ -4,6 +4,7 @@ import com.glodon.bim.base.IBasePresenter;
 import com.glodon.bim.base.IBaseView;
 import com.glodon.bim.business.main.bean.ProjectListItem;
 import com.glodon.bim.business.qualityManage.bean.ClassifyNum;
+import com.glodon.bim.business.qualityManage.bean.ModuleListBeanItem;
 import com.glodon.bim.business.qualityManage.bean.QualityCheckListBean;
 import com.glodon.bim.business.qualityManage.bean.QualityCheckListBeanItem;
 import com.glodon.bim.business.qualityManage.listener.OnOperateSheetListener;
@@ -65,6 +66,11 @@ public interface QualityCheckListContract {
          * 打开创建界面
          */
         void toCreate();
+
+        /**
+         * 选中的质检项目
+         */
+        void setModuleSelectInfo(ModuleListBeanItem item);
     }
 
     interface View extends IBaseView {
@@ -93,6 +99,11 @@ public interface QualityCheckListContract {
          * @param size 每页数量
          */
         Observable<QualityCheckListBean> getQualityCheckList(long deptId,String qcState,int page, int size);
+
+        /**
+         * 根据质检项目 获取质检清单
+         */
+         Observable<QualityCheckListBean> getQualityCheckList(long deptId, String qcState,int page, int size, long qualityCheckpointId, String qualityCheckpointName);
 
         /**
          * 获取各状态数量

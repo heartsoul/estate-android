@@ -95,7 +95,7 @@ public class ModuleStandardActivity extends BaseActivity implements View.OnClick
     public void onClick(View view) {
         int id = view.getId();
         switch (id) {
-            case R.id.choose_module_list_nav_back://返回按钮
+            case R.id.module_standard_nav_back://返回按钮
                 mActivity.finish();
                 break;
 

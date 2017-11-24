@@ -1,10 +1,8 @@
 package com.glodon.bim.business.qualityManage.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,18 +15,12 @@ import android.widget.TextView;
 import com.glodon.bim.R;
 import com.glodon.bim.base.BaseFragment;
 import com.glodon.bim.business.main.bean.ProjectListItem;
-import com.glodon.bim.business.qualityManage.OnClassifyItemClickListener;
-import com.glodon.bim.business.qualityManage.adapter.QualityCheckListClassifyAdapter;
-import com.glodon.bim.business.qualityManage.bean.ClassifyItem;
 import com.glodon.bim.business.qualityManage.bean.ModuleListBeanItem;
 import com.glodon.bim.business.qualityManage.contract.QulityCheckModuleContract;
+import com.glodon.bim.business.qualityManage.listener.OnTitleChangerListener;
 import com.glodon.bim.business.qualityManage.presenter.QualityCheckModulePresenter;
 import com.glodon.bim.business.qualityManage.util.IntentManager;
-import com.glodon.bim.common.config.CommonConfig;
-import com.glodon.bim.customview.pullrefreshview.OnPullRefreshListener;
-import com.glodon.bim.customview.pullrefreshview.PullRefreshView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -44,20 +36,18 @@ public class QualityCheckModuleFragment extends BaseFragment implements QulityCh
 
     //分类与列表的父
     private LinearLayout mListParent;
-    //顶部横向的分类信息
-    private RecyclerView mClassifesView;
-    private QualityCheckListClassifyAdapter mCalssifyAdapter;
-    private String mCurrentState = "";//当前选择的列表状态
-    private List<ClassifyItem> mDataList;//分类数据
-
-    //清单列表
-    private PullRefreshView mPullRefreshView;
-    private RecyclerView mRecyclerView;
+    private QualityCheckListView mQualityCheckListView;
 
     //质检项目列表
     private ScrollView mCheckPointParent;
     private LinearLayout mCheckPointBase;
 
+    private OnTitleChangerListener mTitleListener;
+
+    public void setTitleChangeListener(OnTitleChangerListener listner){
+        mTitleListener = listner;
+    }
+    private String mCurrentTitle = "质检项目";
 
     @Nullable
     @Override
@@ -66,11 +56,19 @@ public class QualityCheckModuleFragment extends BaseFragment implements QulityCh
         initView(view);
         setListener();
         initData();
+
         return view;
     }
 
     private void setListener() {
 
+    }
+
+    public void changeTitle(){
+        if(mTitleListener!=null)
+        {
+            mTitleListener.onTitleChange(mCurrentTitle);
+        }
     }
 
     private void initData() {
@@ -79,61 +77,22 @@ public class QualityCheckModuleFragment extends BaseFragment implements QulityCh
     }
 
     private void initView(View view) {
-        mClassifesView = view.findViewById(R.id.quality_check_module_classifes);
         mListParent = view.findViewById(R.id.quality_check_module_list_parent);
-        mPullRefreshView = view.findViewById(R.id.quality_check_module_recyclerview);
-        mRecyclerView = mPullRefreshView.getmRecyclerView();
+        mListParent.setVisibility(View.GONE);
         mCheckPointParent = view.findViewById(R.id.quality_check_module_checkpoint_parent);
         mCheckPointBase = view.findViewById(R.id.quality_check_module_checkpoint_base);
-        initClassify();
-        initRecyclerView();
+
+        mQualityCheckListView = new QualityCheckListView(getActivity(),mListParent,mProjectInfo);
     }
 
-    /**
-     * 初始化分类
-     */
-    private void initClassify(){
-        mDataList = new ArrayList<>();
-
-        for(int i = 0;i<8;i++){
-            ClassifyItem item = new ClassifyItem();
-            item.name = CommonConfig.CLASSIFY_NAMES[i];
-            mDataList.add(item);
+    //返回键,奇幻质检项目和质检清单列表
+    public void back(){
+        if(mCheckPointParent.getVisibility() == View.VISIBLE){
+            getActivity().finish();
+        }else {
+            mListParent.setVisibility(View.GONE);
+            mCheckPointParent.setVisibility(View.VISIBLE);
         }
-        mCalssifyAdapter = new QualityCheckListClassifyAdapter(getActivity(), mDataList, new OnClassifyItemClickListener() {
-            @Override
-            public void onClassifyItemClick(int position, ClassifyItem item) {
-                mCurrentState = CommonConfig.CLASSIFY_STATES[position];
-            }
-        });
-        LinearLayoutManager llm = new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false);
-        mClassifesView.setLayoutManager(llm);
-        mClassifesView.setAdapter(mCalssifyAdapter);
-    }
-
-    private void initRecyclerView() {
-        mPullRefreshView.setPullDownEnable(true);
-        mPullRefreshView.setPullUpEnable(true);
-        mPullRefreshView.setOnPullRefreshListener(new OnPullRefreshListener() {
-            @Override
-            public void onPullDown() {
-                mPresenter.pullDown();
-                mPullRefreshView.onPullDownComplete();
-            }
-
-            @Override
-            public void onPullUp() {
-                mPresenter.pullUp();
-                mPullRefreshView.onPullUpComplete();
-            }
-        });
-        mRecyclerView = mPullRefreshView.getmRecyclerView();
-
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mRecyclerView.setVerticalScrollBarEnabled(true);
-        final LinearLayoutManager manager = new LinearLayoutManager(getContext());
-        mRecyclerView.setLayoutManager(manager);
-
     }
 
     @Override
@@ -215,6 +174,11 @@ public class QualityCheckModuleFragment extends BaseFragment implements QulityCh
             @Override
             public void onClick(View view) {
                 //根据条件查询质检清单列表
+                mCheckPointParent.setVisibility(View.GONE);
+                mListParent.setVisibility(View.VISIBLE);
+                mQualityCheckListView.initData(item);
+                mCurrentTitle = item.name;
+                changeTitle();
             }
         });
         parent.addView(view);
@@ -233,5 +197,23 @@ public class QualityCheckModuleFragment extends BaseFragment implements QulityCh
     public void setProjectInfo(ProjectListItem info)
     {
         this.mProjectInfo = info;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(mQualityCheckListView!=null)
+        {
+            mQualityCheckListView.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if(mQualityCheckListView!=null)
+        {
+            mQualityCheckListView.onDestroyView();
+        }
     }
 }
