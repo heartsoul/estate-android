@@ -14,12 +14,14 @@ import android.widget.TextView;
 
 import com.glodon.bim.R;
 import com.glodon.bim.base.BaseFragment;
+import com.glodon.bim.basic.utils.SharedPreferencesUtil;
 import com.glodon.bim.business.main.bean.ProjectListItem;
 import com.glodon.bim.business.qualityManage.bean.ModuleListBeanItem;
 import com.glodon.bim.business.qualityManage.contract.QulityCheckModuleContract;
 import com.glodon.bim.business.qualityManage.listener.OnTitleChangerListener;
 import com.glodon.bim.business.qualityManage.presenter.QualityCheckModulePresenter;
 import com.glodon.bim.business.qualityManage.util.IntentManager;
+import com.glodon.bim.customview.dialog.PhotoAlbumDialog;
 
 import java.util.List;
 
@@ -48,6 +50,7 @@ public class QualityCheckModuleFragment extends BaseFragment implements QulityCh
         mTitleListener = listner;
     }
     private String mCurrentTitle = "质检项目";
+    private ModuleListBeanItem mCurrentModuleInfo;
 
     @Nullable
     @Override
@@ -68,6 +71,9 @@ public class QualityCheckModuleFragment extends BaseFragment implements QulityCh
         if(mTitleListener!=null)
         {
             mTitleListener.onTitleChange(mCurrentTitle);
+            if(mCurrentModuleInfo!=null){
+                SharedPreferencesUtil.setSelectModuleInfo(mCurrentModuleInfo.id.longValue(),mCurrentModuleInfo.name);
+            }
         }
     }
 
@@ -168,6 +174,8 @@ public class QualityCheckModuleFragment extends BaseFragment implements QulityCh
             @Override
             public void onClick(View view) {
                 //新建检查单
+                create();
+                SharedPreferencesUtil.setSelectModuleInfo(item.id.longValue(),item.name);
             }
         });
         view.setOnClickListener(new View.OnClickListener() {
@@ -178,10 +186,37 @@ public class QualityCheckModuleFragment extends BaseFragment implements QulityCh
                 mListParent.setVisibility(View.VISIBLE);
                 mQualityCheckListView.initData(item);
                 mCurrentTitle = item.name;
+                mCurrentModuleInfo = item;
                 changeTitle();
+                SharedPreferencesUtil.setSelectModuleInfo(item.id.longValue(),item.name);
             }
         });
         parent.addView(view);
+    }
+
+    private PhotoAlbumDialog mPhotoAlbumDialog;//拍照相册弹出框
+    //弹出照片选择框
+
+    private void create() {
+        if (mPhotoAlbumDialog == null) {
+            mPhotoAlbumDialog = new PhotoAlbumDialog(getActivity()).builder(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mPresenter.openPhoto();
+                }
+            }, new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mPresenter.openAlbum();
+                }
+            }, new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mPresenter.toCreate();
+                }
+            });
+        }
+        mPhotoAlbumDialog.show();
     }
 
     @Override
@@ -202,6 +237,9 @@ public class QualityCheckModuleFragment extends BaseFragment implements QulityCh
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if(mPresenter!=null){
+            mPresenter.onActivityResult(requestCode, resultCode, data);
+        }
         if(mQualityCheckListView!=null)
         {
             mQualityCheckListView.onActivityResult(requestCode, resultCode, data);

@@ -28,7 +28,20 @@ public interface QulityCheckModuleContract {
          * 根据id查询该目录下有多少子类节点
          */
         List<ModuleListBeanItem> getChildList(long id);
+        /**
+         * 打开相机
+         */
+        void openPhoto();
 
+        /**
+         * 打开相册
+         */
+        void openAlbum();
+
+        /**
+         * 打开创建界面
+         */
+        void toCreate();
 
     }
 

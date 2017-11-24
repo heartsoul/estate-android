@@ -32,7 +32,8 @@ public class SharedPreferencesUtil {
     private static final String PROJECT_CREATE_TYPE = "project_create_type";
     //用户信息
     private static final String USER_ID = "userId";
-
+    private static final String MODULE_INFO_NAME = "MODULE_INFO_NAME";
+    private static final String MODULE_INFO_ID = "MODULE_INFO_ID";
     //权限
     public static String QUALITY_CHECK_BEAN = "QUALITY_CHECK_BEAN";//质量检查记录
     public static String QUALITY_ACCEPT_BEAN= "QUALITY_ACCEPT_BEAN";//质量验收记录
@@ -191,5 +192,32 @@ public class SharedPreferencesUtil {
         }else{
             return new GsonBuilder().create().fromJson(text, new TypeToken<AuthorityBean>(){}.getType());
         }
+    }
+
+    /**
+     * 保存选中的质检项目的信息
+     */
+    public static void setSelectModuleInfo(long id,String name){
+        SharedPreferences preferences= BaseApplication.getInstance().getSharedPreferences(NAME,Context.MODE_PRIVATE);
+        Editor editor=preferences.edit();
+        editor.putString(MODULE_INFO_NAME, name);
+        editor.putLong(MODULE_INFO_ID,id);
+        editor.commit();
+    }
+
+    /**
+     * 获取选中的质检项目的name
+     */
+    public static String getSelectModuleName(){
+        SharedPreferences preferences= BaseApplication.getInstance().getSharedPreferences(NAME,Context.MODE_PRIVATE);
+        return preferences.getString(MODULE_INFO_NAME,"");
+    }
+
+    /**
+     * 获取选中的质检项目的id
+     */
+    public static long getSelectModuleId(){
+        SharedPreferences preferences= BaseApplication.getInstance().getSharedPreferences(NAME,Context.MODE_PRIVATE);
+        return preferences.getLong(MODULE_INFO_ID,-1);
     }
 }

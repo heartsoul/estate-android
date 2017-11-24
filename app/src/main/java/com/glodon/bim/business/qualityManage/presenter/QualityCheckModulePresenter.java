@@ -1,15 +1,21 @@
 package com.glodon.bim.business.qualityManage.presenter;
 
+import android.app.Activity;
 import android.content.Intent;
 
 import com.glodon.bim.basic.log.LogUtil;
+import com.glodon.bim.basic.utils.CameraUtil;
 import com.glodon.bim.basic.utils.NetWorkUtils;
 import com.glodon.bim.basic.utils.SharedPreferencesUtil;
 import com.glodon.bim.business.qualityManage.bean.ModuleListBeanItem;
 import com.glodon.bim.business.qualityManage.contract.ChooseModuleContract;
 import com.glodon.bim.business.qualityManage.contract.QulityCheckModuleContract;
 import com.glodon.bim.business.qualityManage.model.ChooseModuleModel;
+import com.glodon.bim.business.qualityManage.view.CreateCheckListActivity;
+import com.glodon.bim.business.qualityManage.view.PhotoEditActivity;
+import com.glodon.bim.common.config.CommonConfig;
 import com.glodon.bim.customview.ToastManager;
+import com.glodon.bim.customview.album.AlbumEditActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +34,10 @@ import rx.subscriptions.CompositeSubscription;
 
 public class QualityCheckModulePresenter implements QulityCheckModuleContract.Presenter {
 
+    private final int REQUEST_CODE_TAKE_PHOTO = 0;
+    private final int REQUEST_CODE_OPEN_ALBUM = 1;
+    private final int REQUEST_CODE_CREATE_CHECK_LIST = 2;
+
     private ChooseModuleContract.Model mModel;
     private QulityCheckModuleContract.View mView;
 
@@ -35,7 +45,7 @@ public class QualityCheckModulePresenter implements QulityCheckModuleContract.Pr
     private List<ModuleListBeanItem> mRootList;//最外层的质检项目列表
     private CompositeSubscription mSubscription;
     private long mDeptId;
-
+    private String mPhotoPath;
     public QualityCheckModulePresenter(QulityCheckModuleContract.View mView) {
         this.mView = mView;
         mModel = new ChooseModuleModel();
@@ -152,9 +162,48 @@ public class QualityCheckModulePresenter implements QulityCheckModuleContract.Pr
         return list;
     }
 
+
+    @Override
+    public void openPhoto() {
+        mPhotoPath = CameraUtil.getFilePath();
+        CameraUtil.openCamera(mPhotoPath, mView.getActivity(), REQUEST_CODE_TAKE_PHOTO);
+    }
+
+    @Override
+    public void openAlbum() {
+        Intent intent = new Intent(mView.getActivity(), AlbumEditActivity.class);
+        intent.putExtra(CommonConfig.ALBUM_FROM_TYPE,0);
+        intent.putExtra(CommonConfig.CREATE_TYPE,CommonConfig.CREATE_TYPE_CHECK);//表示创建检查单
+        mView.getActivity().startActivityForResult(intent,REQUEST_CODE_OPEN_ALBUM);
+    }
+
+    @Override
+    public void toCreate() {
+        Intent intent = new Intent(mView.getActivity(), CreateCheckListActivity.class);
+        intent.putExtra(CommonConfig.SHOW_PHOTO,false);
+        mView.getActivity().startActivityForResult(intent,REQUEST_CODE_CREATE_CHECK_LIST);
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case REQUEST_CODE_TAKE_PHOTO://拍照返回
+                if (resultCode == Activity.RESULT_OK) {
+                    //正常返回
+                    Intent intent = new Intent(mView.getActivity(), PhotoEditActivity.class);
+                    intent.putExtra(CommonConfig.IMAGE_PATH,mPhotoPath);
+                    intent.putExtra(CommonConfig.CREATE_TYPE,CommonConfig.CREATE_TYPE_CHECK);//表示创建检查单
+                    mView.getActivity().startActivityForResult(intent,REQUEST_CODE_CREATE_CHECK_LIST);
 
+                }
+                break;
+            case REQUEST_CODE_OPEN_ALBUM://打开相册
+
+                break;
+            case REQUEST_CODE_CREATE_CHECK_LIST:
+
+                break;
+        }
     }
 
     @Override

@@ -168,6 +168,20 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
 
             mInspectionType = mEditParams.inspectionType;
             mView.setTitle(mInspectionType);
+        }else{
+            //当从质检项目列表创建检查单时  取传递的质检项目name和id
+            String name = SharedPreferencesUtil.getSelectModuleName();
+            if(!TextUtils.isEmpty(name)){
+                mModuleSelectInfo.id = SharedPreferencesUtil.getSelectModuleId();
+                mModuleSelectInfo.name = SharedPreferencesUtil.getSelectModuleName();
+                mCurrentModuleName = SharedPreferencesUtil.getSelectModuleName();
+                mCurrentModuleId = SharedPreferencesUtil.getSelectModuleId();
+                mInitParams.qualityCheckpointId = mCurrentModuleId;
+                mInitParams.qualityCheckpointName = mCurrentModuleName;
+                if(mView!=null){
+                    mView.showModuleName(mCurrentModuleName,mCurrentModuleId);
+                }
+            }
         }
         initInspectionCompany(mEditParams);
         getCompanyList(mEditParams);

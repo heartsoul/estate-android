@@ -21,6 +21,7 @@ import com.glodon.bim.base.BaseActivity;
 import com.glodon.bim.base.BaseFragment;
 import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.basic.utils.ScreenUtil;
+import com.glodon.bim.basic.utils.SharedPreferencesUtil;
 import com.glodon.bim.business.authority.AuthorityManager;
 import com.glodon.bim.business.greendao.provider.DaoProvider;
 import com.glodon.bim.business.main.bean.ProjectListItem;
@@ -202,6 +203,7 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
                 hideDrawer(300);
                 mIsDrawerOpen = false;
                 mTitleView.setText("质检清单");
+                SharedPreferencesUtil.setSelectModuleInfo(-1,"");
                 break;
             case R.id.main_drawer_quality_blueprint://点击图纸
 //                setSelect(1);
@@ -209,6 +211,7 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
 //                hideDrawer(300);
 //                mIsDrawerOpen = false;
 //                mTitleView.setText("图纸");
+//                SharedPreferencesUtil.setSelectModuleInfo(-1,"");
                 break;
             case R.id.main_drawer_quality_model://点击模型
 //                setSelect(2);
@@ -216,6 +219,7 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
 //                hideDrawer(300);
 //                mIsDrawerOpen = false;
 //                mTitleView.setText("模型");
+//                SharedPreferencesUtil.setSelectModuleInfo(-1,"");
                 break;
             case R.id.main_drawer_quality_module://点击质检项目
                 setSelect(3);
@@ -256,6 +260,7 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
 
 
     protected void initDataForActivity() {
+        mPresenter = new QualityMangeMainPresenter(this);
         mFragmentMap = new HashMap<>();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             String[] PERMISSIONS_STORAGE = {
