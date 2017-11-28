@@ -35,7 +35,7 @@ public class User implements Serializable {
                 "username='" + username + '\'' +
                 ", gldAccountId='" + gldAccountId + '\'' +
                 ", authorities=" + authorities +
-                ", accountInfo=" + accountInfo +
+                ", accountInfo=" + accountInfo.toString() +
                 ", curUserInfo=" + curUserInfo +
                 ", curTenantId=" + curTenantId +
                 '}';

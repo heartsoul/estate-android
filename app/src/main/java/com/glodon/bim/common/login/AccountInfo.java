@@ -17,4 +17,17 @@ public class AccountInfo  implements Serializable {
     public String sex;// MALE   FEMALE
     public String gldAccountId;
     public List<UserTenant> userTenants;
+
+    @Override
+    public String toString() {
+        return "AccountInfo{" +
+                "name='" + name + '\'' +
+                ", phone='" + phone + '\'' +
+                ", email='" + email + '\'' +
+                ", qq='" + qq + '\'' +
+                ", sex='" + sex + '\'' +
+                ", gldAccountId='" + gldAccountId + '\'' +
+                ", userTenants=" + userTenants +
+                '}';
+    }
 }

@@ -34,6 +34,7 @@ public class SharedPreferencesUtil {
     private static final String USER_ID = "userId";
     private static final String MODULE_INFO_NAME = "MODULE_INFO_NAME";
     private static final String MODULE_INFO_ID = "MODULE_INFO_ID";
+    private static final String USER_NAME = "username";
     //权限
     public static String QUALITY_CHECK_BEAN = "QUALITY_CHECK_BEAN";//质量检查记录
     public static String QUALITY_ACCEPT_BEAN= "QUALITY_ACCEPT_BEAN";//质量验收记录
@@ -116,7 +117,12 @@ public class SharedPreferencesUtil {
     public static long  getUserId() {
         SharedPreferences preferences= BaseApplication.getInstance().getSharedPreferences(NAME,Context.MODE_PRIVATE);
         return preferences.getLong(USER_ID,0);
+    }
 
+    //获取当前的用户名
+    public static String  getUserName() {
+        SharedPreferences preferences= BaseApplication.getInstance().getSharedPreferences(NAME,Context.MODE_PRIVATE);
+        return preferences.getString(USER_NAME,"");
     }
 
     //保存当前的用户id
@@ -124,6 +130,14 @@ public class SharedPreferencesUtil {
         SharedPreferences preferences= BaseApplication.getInstance().getSharedPreferences(NAME,Context.MODE_PRIVATE);
         Editor editor=preferences.edit();
         editor.putLong(USER_ID, id);
+        editor.commit();
+    }
+
+    //保存当前的用户名
+    public static void setUserName(String username) {
+        SharedPreferences preferences= BaseApplication.getInstance().getSharedPreferences(NAME,Context.MODE_PRIVATE);
+        Editor editor=preferences.edit();
+        editor.putString(USER_NAME,username);
         editor.commit();
     }
 

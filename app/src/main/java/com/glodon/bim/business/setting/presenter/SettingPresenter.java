@@ -38,8 +38,9 @@ public class SettingPresenter implements SettingContract.Presenter {
 
     @Override
     public void signOut() {
-        Intent intent = new Intent(mView.getActivity(), LoginActivity.class);
-        mView.getActivity().startActivity(intent);
+        //发送广播
+        Intent intent = new Intent(CommonConfig.ACTION_LOG_OUT);
+        mView.getActivity().sendBroadcast(intent);
         SharedPreferencesUtil.setString(CommonConfig.USERNAME,"");
         SharedPreferencesUtil.setString(CommonConfig.PASSWORD,"");
     }

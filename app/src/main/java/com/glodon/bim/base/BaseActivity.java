@@ -2,7 +2,12 @@ package com.glodon.bim.base;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -11,11 +16,20 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.glodon.bim.common.config.CommonConfig;
 import com.glodon.bim.customview.dialog.LoadingDialogManager;
+
+import java.util.List;
 
 public class BaseActivity extends AppCompatActivity {
     protected Activity mActivity;
     private LoadingDialogManager mLoadingDialog;
+    private BroadcastReceiver mLogOutReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            mActivity.finish();
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +38,7 @@ public class BaseActivity extends AppCompatActivity {
         mActivity = this;
         mLoadingDialog = new LoadingDialogManager(this);
         highApiEffects();
+        registReceiver();
     }
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
@@ -33,6 +48,16 @@ public class BaseActivity extends AppCompatActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         //透明导航栏 @底部    这一句不要加，目的是防止沉浸式状态栏和部分底部自带虚拟按键的手机（比如华为）发生冲突，注释掉就好了
 //        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+    }
+
+    private void registReceiver(){
+        registerReceiver(mLogOutReceiver,new IntentFilter(CommonConfig.ACTION_LOG_OUT));
+    }
+    public void unRegistReceiver(){
+        if(mLogOutReceiver!=null) {
+            unregisterReceiver(mLogOutReceiver);
+            mLogOutReceiver=null;
+        }
     }
 
     /**
@@ -78,5 +103,11 @@ public class BaseActivity extends AppCompatActivity {
 //                        .getDimensionPixelOffset(id);
             }
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unRegistReceiver();
     }
 }

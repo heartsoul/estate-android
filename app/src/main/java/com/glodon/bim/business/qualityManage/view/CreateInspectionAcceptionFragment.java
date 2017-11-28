@@ -182,7 +182,8 @@ public class CreateInspectionAcceptionFragment extends BaseFragment implements V
         //图片删除 拖动到此处删除
         mPhotoDelete = view.findViewById(R.id.create_check_list_photo_delete);
 
-
+        //默认为关闭  不需要整改
+        clickRemain();
     }
 
     private void setListener() {
@@ -379,14 +380,7 @@ public class CreateInspectionAcceptionFragment extends BaseFragment implements V
                 mPhotoAlbumDialog.show();
                 break;
             case R.id.create_check_list_remain_flag://整改期限开关
-                if (mRemainFlagState) {
-                    mRemainFlag.setBackgroundResource(R.drawable.icon_flag_close);
-                    mRemainParent.setVisibility(View.GONE);
-                } else {
-                    mRemainFlag.setBackgroundResource(R.drawable.icon_flag_open);
-                    mRemainParent.setVisibility(View.VISIBLE);
-                }
-                mRemainFlagState = !mRemainFlagState;
+                clickRemain();
                 break;
             case R.id.create_check_list_remain://选择整改期限
                 TNBCustomDatePickerUtils.showDayDialog(getActivity(), new TNBCustomDatePickerUtils.OnDateSelectedListener() {
@@ -425,6 +419,17 @@ public class CreateInspectionAcceptionFragment extends BaseFragment implements V
                 mDeleteDialog.show();
                 break;
         }
+    }
+
+    private void clickRemain() {
+        if (mRemainFlagState) {
+            mRemainFlag.setBackgroundResource(R.drawable.icon_flag_close);
+            mRemainParent.setVisibility(View.GONE);
+        } else {
+            mRemainFlag.setBackgroundResource(R.drawable.icon_flag_open);
+            mRemainParent.setVisibility(View.VISIBLE);
+        }
+        mRemainFlagState = !mRemainFlagState;
     }
 
     private void clickRightTitle() {

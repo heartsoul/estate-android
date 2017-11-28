@@ -82,7 +82,8 @@ public class LoginPresenter implements LoginContract.Presenter {
 
                                 @Override
                                 public void onNext(User user) {
-                                    LogUtil.d(user.toString());
+//                                    LogUtil.d(user.toString());
+                                    SharedPreferencesUtil.setUserName(user.accountInfo.name);
                                     if (mView != null) {
                                         mView.dismissLoadingDialog();
                                     }

@@ -57,4 +57,5 @@ public class CommonConfig {
     public static final String ACTION_BRUSH_CHECK_LIST = "com.glodon.bim.action.brush.check.list";
     public static final String ALBUM_SHOW_DELETE = "albumShowDelete";
     public static final String MODULE_TEMPLATEID = "module_templateid";
+    public static final String ACTION_LOG_OUT = "com.glodon.bim.action.logout";//退出登录发送广播
 }

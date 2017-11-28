@@ -55,7 +55,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View, V
         initView();
         setListener();
         initDataForActivity();
-
+        unRegistReceiver();//退出登录时返回到该页面，本页面不finish
     }
 
     private void initView() {
@@ -173,8 +173,8 @@ public class LoginActivity extends BaseActivity implements LoginContract.View, V
         String password = SharedPreferencesUtil.getString(CommonConfig.PASSWORD,"");
         mUsernameEt.setText(username);
         mPasswordEt.setText(password);
-//        mUsernameEt.setText("15822320523");//徐园
-//        mPasswordEt.setText("123qwe");
+        mUsernameEt.setText("15822320523");//徐园
+        mPasswordEt.setText("123qwe");
 //        mUsernameEt.setText("15001340978");
 //        mPasswordEt.setText("123qwe");
 //        mUsernameEt.setText("15733178348");//贾光花
