@@ -45,4 +45,8 @@ public class QualityCheckListModel implements QualityCheckListContract.Model{
     public Observable<List<ClassifyNum>> getStatusNum(long deptId){
         return NetRequest.getInstance().getCall(AppConfig.BASE_URL,QualityCheckListApi.class).getStatusNum(deptId,new DaoProvider().getCookie());
     }
+    @Override
+    public Observable<List<ClassifyNum>> getStatusNum(long deptId,long qualityCheckpointId,String qualityCheckpointName){
+        return NetRequest.getInstance().getCall(AppConfig.BASE_URL,QualityCheckListApi.class).getStatusNum(deptId,qualityCheckpointId,qualityCheckpointName,new DaoProvider().getCookie());
+    }
 }

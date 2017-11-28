@@ -505,31 +505,58 @@ public class QualityCheckListPresenter implements QualityCheckListContract.Prese
     }
 
     private void updateStatusNum(){
-        Subscription sub = mModel.getStatusNum(mProjectInfo.deptId)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<List<ClassifyNum>>() {
-                    @Override
-                    public void onCompleted() {
+        if(mSelectModuleInfo!=null &&(mSelectModuleInfo.id>0 || !TextUtils.isEmpty(mSelectModuleInfo.name))) {
+            Subscription sub = mModel.getStatusNum(mProjectInfo.deptId,mSelectModuleInfo.id,mSelectModuleInfo.name)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Subscriber<List<ClassifyNum>>() {
+                        @Override
+                        public void onCompleted() {
 
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        LogUtil.e(e.getMessage());
-                    }
-
-                    @Override
-                    public void onNext(List<ClassifyNum> classifyNa) {
-                        if(classifyNa!=null && classifyNa.size()>0){
-                            if(mView!=null)
-                            {
-                                mView.updateClassifyCount(classifyNa);
-                            }
                         }
-                    }
-                });
-        mSubscription.add(sub);
+
+                        @Override
+                        public void onError(Throwable e) {
+                            LogUtil.e(e.getMessage());
+                        }
+
+                        @Override
+                        public void onNext(List<ClassifyNum> classifyNa) {
+                            updateNumber(classifyNa);
+                        }
+                    });
+            mSubscription.add(sub);
+        }else{
+            Subscription sub = mModel.getStatusNum(mProjectInfo.deptId)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Subscriber<List<ClassifyNum>>() {
+                        @Override
+                        public void onCompleted() {
+
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            LogUtil.e(e.getMessage());
+                        }
+
+                        @Override
+                        public void onNext(List<ClassifyNum> classifyNa) {
+                            updateNumber(classifyNa);
+                        }
+                    });
+            mSubscription.add(sub);
+        }
+    }
+
+    private void updateNumber(List<ClassifyNum> classifyNa){
+        if(classifyNa!=null && classifyNa.size()>0){
+            if(mView!=null)
+            {
+                mView.updateClassifyCount(classifyNa);
+            }
+        }
     }
 
     @Override

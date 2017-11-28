@@ -110,5 +110,11 @@ public interface QualityCheckListContract {
          * @param deptId  项目id
          */
         Observable<List<ClassifyNum>> getStatusNum(long deptId);
+
+        /**
+         * 获取各状态数量  根据质检项目id和name
+         * @param deptId  项目id
+         */
+        Observable<List<ClassifyNum>> getStatusNum(long deptId,long qualityCheckpointId,String qualityCheckpointName);
     }
 }

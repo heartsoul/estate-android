@@ -31,6 +31,7 @@
                 android:orientation="vertical">
 
                 <ImageView
+                    android:id="@+id/main_drawer_project_name_icon"
                     android:layout_width="@dimen/dimen_54"
                     android:layout_height="@dimen/dimen_54"
                     android:layout_gravity="center_horizontal"

@@ -52,6 +52,7 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
     //drawer
     private LinearLayout mDrawerView;
     private TextView mProjectNameView;
+    private ImageView mProjectNameIcon;
     private TextView mQualityCheckListTv, mBluePrintTv, mModelTv, mQualityCheckModuleTv;
     private RelativeLayout mQualityManagerView,mSettingView;
     private LinearLayout mQualityContentView;
@@ -103,6 +104,7 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
     private void initView() {
         mDrawerView = (LinearLayout) findViewById(R.id.main_drawer);
         mProjectNameView = (TextView) findViewById(R.id.main_drawer_project_name);
+        mProjectNameIcon = (ImageView) findViewById(R.id.main_drawer_project_name_icon);
         mQualityManagerView = (RelativeLayout) findViewById(R.id.main_drawer_quality);
         mSettingView = (RelativeLayout) findViewById(R.id.main_drawer_setting);
         mQualityContentView = (LinearLayout) findViewById(R.id.main_drawer_quality_content);
@@ -185,10 +187,10 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
                 create();
                 break;
             case R.id.main_drawer_project_name://点击项目名称切换项目
-                Intent data = new Intent();
-                data.putExtra(CommonConfig.CHANGE_PROJECT,true);
-                setResult(RESULT_OK,data);
-                finish();
+                changeProject();
+                break;
+            case R.id.main_drawer_project_name_icon://点击项目名称icon切换项目
+                changeProject();
                 break;
             case R.id.main_drawer_quality://点击质量管理
                 if(mQualityContentView.getVisibility() == View.VISIBLE){
@@ -232,6 +234,13 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
                 break;
 
         }
+    }
+
+    private void changeProject() {
+        Intent data = new Intent();
+        data.putExtra(CommonConfig.CHANGE_PROJECT,true);
+        setResult(RESULT_OK,data);
+        finish();
     }
 
     //弹出照片选择框
@@ -284,6 +293,7 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
         }
 
         mProjectNameView.setOnClickListener(this);
+        mProjectNameIcon.setOnClickListener(this);
         mQualityManagerView.setOnClickListener(this);
 
         mQualityCheckListTv.setOnClickListener(this);

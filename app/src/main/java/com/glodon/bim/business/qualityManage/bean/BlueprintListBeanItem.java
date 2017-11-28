@@ -20,6 +20,7 @@ public class BlueprintListBeanItem implements Serializable {
     public String specialtyName;
     public String treePath;
 
+
     public int viewType = 1;//0目录，1具体的项
     @Override
     public String toString() {

@@ -53,5 +53,11 @@ public interface QualityCheckListApi {
     @GET("quality/{deptId}/qualityInspection/all/qcState/summary")
     Observable<List<ClassifyNum>> getStatusNum(@Path("deptId") long deptId, @Header("cookie") String cookie);
 
+    /**
+     * 获取检查单详情  根据质检项目
+     */
+    @GET("quality/{deptId}/qualityInspection/all/qcState/summary")
+    Observable<List<ClassifyNum>> getStatusNum(@Path("deptId") long deptId,@Query("qualityCheckpointId")long qualityCheckpointId,@Query("qualityCheckpointName")String qualityCheckpointName, @Header("cookie") String cookie);
+
 
 }
