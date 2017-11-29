@@ -3,9 +3,12 @@ package com.glodon.bim.business.qualityManage.presenter;
 import android.app.Activity;
 import android.content.Intent;
 
+import com.glodon.bim.basic.log.LogUtil;
+import com.glodon.bim.basic.utils.SharedPreferencesUtil;
 import com.glodon.bim.business.qualityManage.bean.ModelListBeanItem;
 import com.glodon.bim.business.qualityManage.bean.ModelSingleListItem;
 import com.glodon.bim.business.qualityManage.bean.ModelSpecialListItem;
+import com.glodon.bim.business.qualityManage.bean.ProjectVersionBean;
 import com.glodon.bim.business.qualityManage.contract.ModelContract;
 import com.glodon.bim.business.qualityManage.model.ModelModel;
 import com.glodon.bim.business.qualityManage.model.OnModelSelectListener;
@@ -14,6 +17,10 @@ import com.glodon.bim.common.config.CommonConfig;
 import java.util.ArrayList;
 import java.util.List;
 
+import rx.Subscriber;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
 /**
@@ -35,6 +42,10 @@ public class ModelPresenter implements ModelContract.Presenter {
 
     private ModelSpecialListItem mCurrentSpecial;
     private ModelSingleListItem mCurrentSingle;
+
+    private long projectId;
+
+    private ProjectVersionBean mLatestVersionInfo;//最新版本信息
 
     private OnModelSelectListener mListener = new OnModelSelectListener() {
         @Override
@@ -90,13 +101,112 @@ public class ModelPresenter implements ModelContract.Presenter {
         mModelList = new ArrayList<>();
         mSpecialList = new ArrayList<>();
         mSingleList = new ArrayList<>();
+        projectId = SharedPreferencesUtil.getProjectId();
     }
 
     @Override
     public void initData(Intent intent) {
 
+        getLatestVersion();
+        getSpecialData();
+        getSingleData();
     }
 
+    //获取最新版本
+    private void getLatestVersion(){
+        Subscription sub = mModel.getLatestVersion(projectId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<ProjectVersionBean>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        LogUtil.e(e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(ProjectVersionBean projectVersionBean) {
+                        mLatestVersionInfo = projectVersionBean;
+                    }
+                });
+        mSubscription.add(sub);
+    }
+
+    //专业列表
+    private void getSpecialData(){
+        Subscription sub = mModel.getSpecialList()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<List<ModelSpecialListItem>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        LogUtil.e(e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(List<ModelSpecialListItem> list) {
+                        mSpecialList = list;
+                    }
+                });
+        mSubscription.add(sub);
+    }
+
+    //单体列表
+    private void getSingleData(){
+        Subscription sub = mModel.getSingleList(projectId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<List<ModelSingleListItem>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        LogUtil.e(e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(List<ModelSingleListItem> list) {
+                        mSingleList = list;
+                    }
+                });
+        mSubscription.add(sub);
+    }
+
+    //模型列表
+    private void getModelData(){
+        Subscription sub = mModel.getModelList(projectId,mLatestVersionInfo.data.versionId,mCurrentSingle.id,mCurrentSpecial.code)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<ProjectVersionBean>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        LogUtil.e(e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(ProjectVersionBean list) {
+
+                    }
+                });
+        mSubscription.add(sub);
+    }
 
     @Override
     public void showSpecialList() {

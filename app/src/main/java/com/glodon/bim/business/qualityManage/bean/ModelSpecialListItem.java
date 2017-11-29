@@ -9,4 +9,9 @@ package com.glodon.bim.business.qualityManage.bean;
 public class ModelSpecialListItem {
     public long id;
     public String name;
+    public String code;
+    public String keywords;
+    public long orderNum;
+    public long parentId;
+    public String treePath;
 }

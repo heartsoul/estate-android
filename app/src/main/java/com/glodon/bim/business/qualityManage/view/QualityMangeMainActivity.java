@@ -216,12 +216,12 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
 //                SharedPreferencesUtil.setSelectModuleInfo(-1,"");
                 break;
             case R.id.main_drawer_quality_model://点击模型
-//                setSelect(2);
-//                showFragmentById(mModelFragmentId);
-//                hideDrawer(300);
-//                mIsDrawerOpen = false;
-//                mTitleView.setText("模型");
-//                SharedPreferencesUtil.setSelectModuleInfo(-1,"");
+                setSelect(2);
+                showFragmentById(mModelFragmentId);
+                hideDrawer(300);
+                mIsDrawerOpen = false;
+                mTitleView.setText("模型");
+                SharedPreferencesUtil.setSelectModuleInfo(-1,"");//清空当前选中的质检项目
                 break;
             case R.id.main_drawer_quality_module://点击质检项目
 //                setSelect(3);
