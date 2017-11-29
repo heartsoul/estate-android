@@ -1,5 +1,6 @@
 package com.glodon.bim.business.qualityManage.model;
 
+import com.glodon.bim.business.qualityManage.bean.BluePrintBean;
 import com.glodon.bim.business.qualityManage.bean.BlueprintListBeanItem;
 
 import java.util.List;
@@ -7,6 +8,7 @@ import java.util.List;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 import rx.Observable;
 
 /**
@@ -24,6 +26,15 @@ public interface BluePrintApi {
     @GET("quality/{deptId}/quality/checkpoints/project/{projectId}")
     Observable<List<BlueprintListBeanItem>> getBluePrintList(@Path("deptId") long deptId, @Path("projectId") long projectId, @Header("cookie") String cookie);
 
-
+    /**
+     * 获取图纸项目列表
+     */
+    @GET("model/{projectId}/{projectVersionId}/bim/file/children")
+    Observable<BluePrintBean> getBluePrint(
+            @Path("projectId") long projectId,
+            @Path("projectVersionId") String projectVersionId,
+            @Query("fileId") String fileId,
+            @Query("pageIndex") int pageIndex,
+            @Header("cookie") String cookie);
 
 }

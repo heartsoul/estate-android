@@ -249,6 +249,7 @@ public class QualityCheckModuleFragment extends BaseFragment implements QulityCh
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        SharedPreferencesUtil.setSelectModuleInfo(-1,"");
         if(mQualityCheckListView!=null)
         {
             mQualityCheckListView.onDestroyView();

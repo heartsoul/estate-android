@@ -9,4 +9,8 @@ package com.glodon.bim.business.qualityManage.bean;
 public class ModelSingleListItem {
     public long id;
     public String name;
+    public long area;
+    public String code;
+    public long projectId;
+    public String structureType;
 }

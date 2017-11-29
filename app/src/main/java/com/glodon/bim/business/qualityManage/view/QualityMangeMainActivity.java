@@ -230,7 +230,7 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
 //                mIsDrawerOpen = false;
                 break;
             case R.id.main_drawer_setting:
-                mPresenter.toSetting(mProjectInfo);
+//                mPresenter.toSetting(mProjectInfo);
                 break;
 
         }

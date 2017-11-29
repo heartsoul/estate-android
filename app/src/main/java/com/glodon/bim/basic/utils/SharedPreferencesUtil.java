@@ -34,7 +34,7 @@ public class SharedPreferencesUtil {
     private static final String USER_ID = "userId";
     private static final String MODULE_INFO_NAME = "MODULE_INFO_NAME";
     private static final String MODULE_INFO_ID = "MODULE_INFO_ID";
-    private static final String USER_NAME = "username";
+    private static final String USER_NAME = "user_name";
     //权限
     public static String QUALITY_CHECK_BEAN = "QUALITY_CHECK_BEAN";//质量检查记录
     public static String QUALITY_ACCEPT_BEAN= "QUALITY_ACCEPT_BEAN";//质量验收记录
