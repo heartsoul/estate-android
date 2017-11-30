@@ -9,7 +9,7 @@ import java.util.List;
  */
 
 public class BluePrintBeanData {
-    public List<BluePrintBeanDataItem> items;
+    public List<BlueprintListBeanItem> items;
     public long pageCount;
     public long pageIndex;
     public long pageItemCount;

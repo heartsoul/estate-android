@@ -247,7 +247,7 @@ public class QualityCheckListPresenter implements QualityCheckListContract.Prese
         for(QualityCheckListBeanItemFile file:info.files){
             CreateCheckListParamsFile f = new CreateCheckListParamsFile();
 //                                    public String extData;
-//                                    public long id;
+//                                    public long fileId;
 //                                    public String name;
 //                                    public String objectId;
 //                                    public String url;

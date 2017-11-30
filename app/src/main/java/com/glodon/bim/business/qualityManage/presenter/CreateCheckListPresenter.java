@@ -88,7 +88,7 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
     //图纸
     private BlueprintListBeanItem mBluePrintSelectInfo;
     private String mCurrentBluePrintName;//当前的图纸名称
-    private Long mCurrentBluePrintId;//当前的图纸id
+    private String mCurrentBluePrintId;//当前的图纸id
 
     //图纸
     private ModelListBeanItem mModelSelectInfo;
@@ -133,7 +133,6 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
         mBluePrintSelectInfo = new BlueprintListBeanItem();
         mInitParams = new CreateCheckListParams();
         mCurrentModuleId = new Long(-1);
-        mCurrentBluePrintId = new Long(-1);
         mModelSelectInfo = new ModelListBeanItem();
         mCurrentModelId = new Long(-1);
     }
@@ -775,10 +774,10 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
     @Override
     public void toBluePrint() {
         Intent intent = new Intent(mView.getActivity(), BluePrintActivity.class);
-        if(!TextUtils.isEmpty(mCurrentBluePrintName) && !TextUtils.isEmpty(mBluePrintSelectInfo.name) && mBluePrintSelectInfo.id!=null){
+        if(!TextUtils.isEmpty(mCurrentBluePrintName) && !TextUtils.isEmpty(mBluePrintSelectInfo.name) && mBluePrintSelectInfo.fileId !=null){
             mCurrentBluePrintName = mView.getBluePrintName();
             if(mCurrentBluePrintName.equals(mBluePrintSelectInfo.name)){
-                intent.putExtra(CommonConfig.MODULE_LIST_POSITION, mBluePrintSelectInfo.id);
+                intent.putExtra(CommonConfig.MODULE_LIST_POSITION, mBluePrintSelectInfo.fileId);
             }
         }
         mView.getActivity().startActivityForResult(intent, REQUEST_CODE_CHOOSE_BLUE_PRINT);
@@ -813,9 +812,9 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     mBluePrintSelectInfo = (BlueprintListBeanItem) data.getSerializableExtra(CommonConfig.MODULE_LIST_NAME);
                     mCurrentBluePrintName = mBluePrintSelectInfo.name;
-                    mCurrentBluePrintId= mBluePrintSelectInfo.id;
+                    mCurrentBluePrintId= mBluePrintSelectInfo.fileId;
                     if (mView != null && mBluePrintSelectInfo != null) {
-                        mView.showBluePrintName(mBluePrintSelectInfo.name,mBluePrintSelectInfo.id.longValue());
+                        mView.showBluePrintName(mBluePrintSelectInfo.name,mBluePrintSelectInfo.fileId);
                     }
                 }
                 break;

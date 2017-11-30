@@ -10,5 +10,5 @@ import com.glodon.bim.business.qualityManage.bean.BlueprintListBeanItem;
 
 public interface OnChooseBlueprintObjListener {
 
-    void onSelect(BlueprintListBeanItem item, long selectId);
+    void onSelect(BlueprintListBeanItem item, String selectId);
 }

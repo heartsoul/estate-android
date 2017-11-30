@@ -5,6 +5,7 @@ import android.content.Intent;
 
 import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.basic.utils.SharedPreferencesUtil;
+import com.glodon.bim.business.qualityManage.bean.ModelListBean;
 import com.glodon.bim.business.qualityManage.bean.ModelListBeanItem;
 import com.glodon.bim.business.qualityManage.bean.ModelSingleListItem;
 import com.glodon.bim.business.qualityManage.bean.ModelSpecialListItem;
@@ -67,10 +68,11 @@ public class ModelPresenter implements ModelContract.Presenter {
                 mView.showSingle(item);
             }
             //刷新模型列表
-            mModelList = getModelList(mSpecialSelectId,mSingleSelectId);
-            if(mView!=null) {
-                mView.updateModelList(mModelList);
-            }
+//            mModelList = getModelList(mSpecialSelectId,mSingleSelectId);
+//            if(mView!=null) {
+//                mView.updateModelList(mModelList);
+//            }
+            getModelData();
         }
 
         @Override
@@ -82,10 +84,11 @@ public class ModelPresenter implements ModelContract.Presenter {
                 mView.showSpecial(item);
             }
             //刷新模型列表
-            mModelList = getModelList(mSpecialSelectId,mSingleSelectId);
-            if(mView!=null) {
-                mView.updateModelList(mModelList);
-            }
+//            mModelList = getModelList(mSpecialSelectId,mSingleSelectId);
+//            if(mView!=null) {
+//                mView.updateModelList(mModelList);
+//            }
+            getModelData();
         }
     };
 
@@ -102,6 +105,8 @@ public class ModelPresenter implements ModelContract.Presenter {
         mSpecialList = new ArrayList<>();
         mSingleList = new ArrayList<>();
         projectId = SharedPreferencesUtil.getProjectId();
+        mCurrentSingle = new ModelSingleListItem();
+        mCurrentSpecial = new ModelSpecialListItem();
     }
 
     @Override
@@ -189,7 +194,7 @@ public class ModelPresenter implements ModelContract.Presenter {
         Subscription sub = mModel.getModelList(projectId,mLatestVersionInfo.data.versionId,mCurrentSingle.id,mCurrentSpecial.code)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<ProjectVersionBean>() {
+                .subscribe(new Subscriber<ModelListBean>() {
                     @Override
                     public void onCompleted() {
 
@@ -201,8 +206,21 @@ public class ModelPresenter implements ModelContract.Presenter {
                     }
 
                     @Override
-                    public void onNext(ProjectVersionBean list) {
-
+                    public void onNext(ModelListBean bean) {
+                        mModelList.clear();
+                        if(bean!=null){
+                            if(bean.data!=null && bean.data.size()>0){
+                                for(String name:bean.data)
+                                {
+                                    ModelListBeanItem item = new ModelListBeanItem();
+                                    item.name = name;
+                                    mModelList.add(item);
+                                }
+                            }
+                        }
+                        if(mView!=null){
+                            mView.updateModelList(mModelList);
+                        }
                     }
                 });
         mSubscription.add(sub);

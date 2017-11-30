@@ -2,8 +2,8 @@ package com.glodon.bim.business.qualityManage.contract;
 
 import com.glodon.bim.base.IBasePresenter;
 import com.glodon.bim.base.IBaseView;
+import com.glodon.bim.business.qualityManage.bean.BluePrintBean;
 import com.glodon.bim.business.qualityManage.bean.BlueprintListBeanItem;
-import com.glodon.bim.business.qualityManage.bean.ModuleListBeanItem;
 import com.glodon.bim.business.qualityManage.listener.OnBlueprintCatalogClickListener;
 import com.glodon.bim.business.qualityManage.listener.OnBlueprintHintClickListener;
 import com.glodon.bim.business.qualityManage.listener.OnChooseBlueprintCataListener;
@@ -50,9 +50,10 @@ public interface BluePrintContract {
 
         /**
          * 初始化列表
+         *
          * @param selectId 选中的id
          */
-        void updateContentListView(List<BlueprintListBeanItem> list, Long selectId);
+        void updateContentListView(List<BlueprintListBeanItem> list, String selectId);
 
         /**
          * 更新顶部目录
@@ -73,9 +74,9 @@ public interface BluePrintContract {
 
     interface Model {
 
-        /**
-         * 获取图纸项目列表
-         */
-        Observable<List<BlueprintListBeanItem>> getBluePrintList(long deptId, long projectId);
+        //        /**
+//         * 获取图纸项目列表
+//         */
+        Observable<BluePrintBean> getBluePrint(long projectId,String projectVersionId,String fileId,int pageIndex);
     }
 }

@@ -24,7 +24,7 @@ public class ImageUploadBeanData {
                 ", createTime=" + createTime +
                 ", digest='" + digest + '\'' +
                 ", extension='" + extension + '\'' +
-                ", id='" + id + '\'' +
+                ", fileId='" + id + '\'' +
                 ", length=" + length +
                 ", name='" + name + '\'' +
                 '}';

@@ -1,5 +1,6 @@
 package com.glodon.bim.business.qualityManage.model;
 
+import com.glodon.bim.business.qualityManage.bean.ModelListBean;
 import com.glodon.bim.business.qualityManage.bean.ModelSingleListItem;
 import com.glodon.bim.business.qualityManage.bean.ModelSpecialListItem;
 import com.glodon.bim.business.qualityManage.bean.ProjectVersionBean;
@@ -24,8 +25,8 @@ public interface ModelApi {
      * 查询单体列表
      * @param id 项目id
      */
-    @GET("pmbasic/projects/{id}/buildings")
-    Observable<List<ModelSingleListItem>> getSingleList(@Path("id") long id,@Header("cookie") String cookie);
+    @GET("pmbasic/projects/{fileId}/buildings")
+    Observable<List<ModelSingleListItem>> getSingleList(@Path("fileId") long id,@Header("cookie") String cookie);
 
     /**
      * 查询专业列表
@@ -47,6 +48,24 @@ public interface ModelApi {
      * @param specialtyCode  专业
      */
     @GET("model/{projectId}/{projectVersionId}/bimFiles")
-    Observable<ProjectVersionBean> getModelList(@Path("projectId") long projectId,@Path("projectVersionId") String projectVersionId,@Query("buildingId")long buildingId,@Query("specialtyCode")String specialtyCode,@Header("cookie") String cookie);
+    Observable<ModelListBean> getModelList(@Path("projectId") long projectId, @Path("projectVersionId") String projectVersionId, @Query("buildingId")long buildingId, @Query("specialtyCode")String specialtyCode, @Header("cookie") String cookie);
+
+    /**
+     * 根据专业和单体查询模型列表
+     * @param projectId  项目id
+     * @param projectVersionId  最新版本
+     * @param specialtyCode  专业
+     */
+    @GET("model/{projectId}/{projectVersionId}/bimFiles")
+    Observable<ModelListBean> getModelList(@Path("projectId") long projectId, @Path("projectVersionId") String projectVersionId,@Query("specialtyCode")String specialtyCode, @Header("cookie") String cookie);
+
+    /**
+     * 根据专业和单体查询模型列表
+     * @param projectId  项目id
+     * @param projectVersionId  最新版本
+     * @param buildingId  单体
+     */
+    @GET("model/{projectId}/{projectVersionId}/bimFiles")
+    Observable<ModelListBean> getModelList(@Path("projectId") long projectId, @Path("projectVersionId") String projectVersionId, @Query("buildingId")long buildingId, @Header("cookie") String cookie);
 
 }

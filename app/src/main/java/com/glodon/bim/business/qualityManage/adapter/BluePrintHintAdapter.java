@@ -27,14 +27,14 @@ public class BluePrintHintAdapter extends RecyclerView.Adapter<RecyclerView.View
     private ImageView mLastView;
     private TextView mLastTextView;
     private OnBlueprintHintClickListener mListener;
-    private long mSelectId = 0;
+    private String mSelectId ;
 
     public BluePrintHintAdapter(Activity mActivity) {
         this.mActivity = mActivity;
         mDataList = new ArrayList<>();
     }
 
-    public void updateList(List<BlueprintListBeanItem> dataList, long selectId) {
+    public void updateList(List<BlueprintListBeanItem> dataList, String selectId) {
         mDataList = dataList;
         this.mSelectId = selectId;
         notifyDataSetChanged();
@@ -65,14 +65,14 @@ public class BluePrintHintAdapter extends RecyclerView.Adapter<RecyclerView.View
                 lHolder.mNameView.setTextColor(mActivity.getResources().getColor(R.color.c_00baf3));
                 mLastView = lHolder.mSelectView;
                 mLastTextView = lHolder.mNameView;
-                mSelectId = position;
+                mSelectId = item.fileId;
                 if (mListener != null) {
                     mListener.onSelect(item);
                 }
             }
         });
 
-        if (item != null && mSelectId == item.id.longValue()) {
+        if (item != null && mSelectId .equals(item.fileId)) {
             lHolder.mSelectView.setVisibility(View.VISIBLE);
             lHolder.mNameView.setTextColor(mActivity.getResources().getColor(R.color.c_00baf3));
             mLastView = lHolder.mSelectView;

@@ -208,12 +208,12 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
                 SharedPreferencesUtil.setSelectModuleInfo(-1,"");
                 break;
             case R.id.main_drawer_quality_blueprint://点击图纸
-//                setSelect(1);
-//                showFragmentById(mBluePrintFragmentId);
-//                hideDrawer(300);
-//                mIsDrawerOpen = false;
-//                mTitleView.setText("图纸");
-//                SharedPreferencesUtil.setSelectModuleInfo(-1,"");
+                setSelect(1);
+                showFragmentById(mBluePrintFragmentId);
+                hideDrawer(300);
+                mIsDrawerOpen = false;
+                mTitleView.setText("图纸");
+                SharedPreferencesUtil.setSelectModuleInfo(-1,"");
                 break;
             case R.id.main_drawer_quality_model://点击模型
                 setSelect(2);

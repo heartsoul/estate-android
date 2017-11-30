@@ -33,6 +33,7 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:text="专业"
+                android:maxLength="7"
                 android:textColor="@color/black"
                 android:textSize="@dimen/dimen_14" />
         </RelativeLayout>
@@ -50,7 +51,8 @@
                 android:layout_marginLeft="@dimen/dimen_29"
                 android:layout_marginRight="@dimen/dimen_06"
                 android:ellipsize="end"
-                android:maxLength="4"
+                android:maxLength="7"
+                android:maxLines="1"
                 android:text="单体"
                 android:textColor="@color/black"
                 android:textSize="@dimen/dimen_14" />

@@ -19,7 +19,7 @@
         android:layout_centerHorizontal="true"
         />
     <!--<View
-        android:id="@+id/quality_model_single_item_empty"
+        android:fileId="@+fileId/quality_model_single_item_empty"
         android:layout_width="@dimen/dimen_37"
         android:layout_height="@dimen/dimen_06"/>-->
 </RelativeLayout>

@@ -81,11 +81,11 @@
     </RelativeLayout>
 
     <!--<LinearLayout-->
-        <!--android:id="@+id/webView_container"-->
+        <!--android:fileId="@+fileId/webView_container"-->
         <!--android:layout_width="match_parent"-->
         <!--android:layout_height="match_parent"-->
-        <!--android:layout_above="@id/umeng_socialize_follow"-->
-        <!--android:layout_below="@id/umeng_socialize_titlebar"-->
+        <!--android:layout_above="@fileId/umeng_socialize_follow"-->
+        <!--android:layout_below="@fileId/umeng_socialize_titlebar"-->
         <!--android:orientation="horizontal"-->
         <!--android:visibility="visible" />-->
 

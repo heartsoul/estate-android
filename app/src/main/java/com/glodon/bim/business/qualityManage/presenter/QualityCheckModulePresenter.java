@@ -118,7 +118,7 @@ public class QualityCheckModulePresenter implements QulityCheckModuleContract.Pr
             ModuleListBeanItem item = new ModuleListBeanItem();
             item.id = count;
             item.parentId = 0;
-            item.name = "id="+i+"  parentId=0";
+            item.name = "fileId="+i+"  parentId=0";
             list.add(item);
             count++;
         }
@@ -127,7 +127,7 @@ public class QualityCheckModulePresenter implements QulityCheckModuleContract.Pr
                 ModuleListBeanItem item = new ModuleListBeanItem();
                 item.id = count;
                 item.parentId = i;
-                item.name = "id="+count+"  parentId="+i;
+                item.name = "fileId="+count+"  parentId="+i;
                 count++;
                 list.add(item);
             }
@@ -137,7 +137,7 @@ public class QualityCheckModulePresenter implements QulityCheckModuleContract.Pr
                 ModuleListBeanItem item = new ModuleListBeanItem();
                 item.id = count;
                 item.parentId = i;
-                item.name = "id="+count+"  parentId="+i;
+                item.name = "fileId="+count+"  parentId="+i;
                 count++;
                 list.add(item);
             }

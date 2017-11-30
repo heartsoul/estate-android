@@ -2,6 +2,7 @@ package com.glodon.bim.business.qualityManage.contract;
 
 import com.glodon.bim.base.IBasePresenter;
 import com.glodon.bim.base.IBaseView;
+import com.glodon.bim.business.qualityManage.bean.ModelListBean;
 import com.glodon.bim.business.qualityManage.bean.ModelListBeanItem;
 import com.glodon.bim.business.qualityManage.bean.ModelSingleListItem;
 import com.glodon.bim.business.qualityManage.bean.ModelSpecialListItem;
@@ -90,6 +91,6 @@ public interface ModelContract {
          * @param buildingId  单体
          * @param specialtyCode  专业
          */
-        Observable<ProjectVersionBean> getModelList(long projectId, String projectVersionId,long buildingId, String specialtyCode);
+        Observable<ModelListBean> getModelList(long projectId, String projectVersionId, long buildingId, String specialtyCode);
     }
 }

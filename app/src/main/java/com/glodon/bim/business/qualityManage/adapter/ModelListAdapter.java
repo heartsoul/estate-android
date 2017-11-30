@@ -72,7 +72,7 @@ public class ModelListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 }
             });
 
-//            if (item != null && mSelectId == item.id) {
+//            if (item != null && mSelectId == item.fileId) {
 //                lHolder.mSelectView.setVisibility(View.VISIBLE);
 //                lHolder.mNameView.setTextColor(mActivity.getResources().getColor(R.color.c_00baf3));
 //                mLastView = lHolder.mSelectView;

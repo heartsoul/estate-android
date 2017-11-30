@@ -230,7 +230,7 @@ public interface CreateCheckListContract {
         /**
          * 展示图纸
          */
-        void showBluePrintName(String name, long id);
+        void showBluePrintName(String name, String id);
 
         /**
          * 展示选中的模型

@@ -5,7 +5,7 @@
     android:orientation="vertical">
 
     <!--<android.support.v7.widget.RecyclerView
-        android:id="@+id/catalog_module_catalog_recyclerview"
+        android:fileId="@+fileId/catalog_module_catalog_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_48"
         android:background="@color/c_f9f9f9"
@@ -19,13 +19,13 @@
         android:layout_height="match_parent">
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/catalog_module_content_recyclerview"
+            android:fileId="@+fileId/catalog_module_content_recyclerview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/white" />
 
         <LinearLayout
-            android:id="@+id/catalog_module_hint"
+            android:fileId="@+fileId/catalog_module_hint"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/c_80000000"
@@ -34,7 +34,7 @@
             >
 
             <android.support.v7.widget.RecyclerView
-                android:id="@+id/catalog_module_hint_recyclerview"
+                android:fileId="@+fileId/catalog_module_hint_recyclerview"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimen_192"
                 android:background="@color/white" />

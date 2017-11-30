@@ -32,14 +32,14 @@ public interface CreateCheckListApi {
     /**
      * 获取施工单位列表
      */
-    @GET("pmbasic/projects/{id}/supporters")
-    Observable<List<CompanyItem>> getCompaniesList(@Path("id") long id, @Query("deptTypeEnums") List<String> deptTypeEnums, @Header("cookie") String cookie);
+    @GET("pmbasic/projects/{fileId}/supporters")
+    Observable<List<CompanyItem>> getCompaniesList(@Path("fileId") long id, @Query("deptTypeEnums") List<String> deptTypeEnums, @Header("cookie") String cookie);
 
     /**
      * 查询施工单位的责任人
      */
-    @GET("pmbasic/projects/{id}/coperationCorps/{coperationCorpId}/coperationRoles")
-    Observable<List<PersonItem>> getPersonList(@Path("id") long id, @Path("coperationCorpId") long coperationCorpId, @Query("active") boolean active,@Header("cookie") String cookie);
+    @GET("pmbasic/projects/{fileId}/coperationCorps/{coperationCorpId}/coperationRoles")
+    Observable<List<PersonItem>> getPersonList(@Path("fileId") long id, @Path("coperationCorpId") long coperationCorpId, @Query("active") boolean active,@Header("cookie") String cookie);
 
 
     /**
@@ -71,22 +71,22 @@ public interface CreateCheckListApi {
     /**
      * 检查单 编辑   提交
      */
-    @PUT("quality/{deptId}/qualityInspection/{id}/commit")
-    Observable<ResponseBody> editSubmitInspection(@Path("deptId") long deptId, @Path("id") long id, @Body CreateCheckListParams props, @Header("cookie") String cookie);
+    @PUT("quality/{deptId}/qualityInspection/{fileId}/commit")
+    Observable<ResponseBody> editSubmitInspection(@Path("deptId") long deptId, @Path("fileId") long id, @Body CreateCheckListParams props, @Header("cookie") String cookie);
 
 
     /**
      * 检查单 编辑   保存
      */
-    @PUT("quality/{deptId}/qualityInspection/{id}")
-    Observable<ResponseBody> editSaveInspection(@Path("deptId") long deptId, @Path("id") long id, @Body CreateCheckListParams props, @Header("cookie") String cookie);
+    @PUT("quality/{deptId}/qualityInspection/{fileId}")
+    Observable<ResponseBody> editSaveInspection(@Path("deptId") long deptId, @Path("fileId") long id, @Body CreateCheckListParams props, @Header("cookie") String cookie);
 
 
     /**
      * 检查单 删除
      */
-    @DELETE("quality/{deptId}/qualityInspection/{id}")
-    Observable<ResponseBody> createDeleteInspection(@Path("deptId") long deptId, @Path("id") long id, @Header("cookie") String cookie);
+    @DELETE("quality/{deptId}/qualityInspection/{fileId}")
+    Observable<ResponseBody> createDeleteInspection(@Path("deptId") long deptId, @Path("fileId") long id, @Header("cookie") String cookie);
 
     /**
      * 验收单 新增   提交
@@ -103,22 +103,22 @@ public interface CreateCheckListApi {
     /**
      * 验收单 编辑   提交
      */
-    @PUT("quality/{deptId}/qualityAcceptance/{id}/commit")
-    Observable<ResponseBody> editSubmitAcceptance(@Path("deptId") long deptId, @Path("id") long id, @Body CreateCheckListParams props, @Header("cookie") String cookie);
+    @PUT("quality/{deptId}/qualityAcceptance/{fileId}/commit")
+    Observable<ResponseBody> editSubmitAcceptance(@Path("deptId") long deptId, @Path("fileId") long id, @Body CreateCheckListParams props, @Header("cookie") String cookie);
 
 
     /**
      * 验收单 编辑   保存
      */
-    @PUT("quality/{deptId}/qualityAcceptance/{id}")
-    Observable<ResponseBody> editSaveAcceptance(@Path("deptId") long deptId, @Path("id") long id, @Body CreateCheckListParams props, @Header("cookie") String cookie);
+    @PUT("quality/{deptId}/qualityAcceptance/{fileId}")
+    Observable<ResponseBody> editSaveAcceptance(@Path("deptId") long deptId, @Path("fileId") long id, @Body CreateCheckListParams props, @Header("cookie") String cookie);
 
 
     /**
      * 验收单 删除
      */
-    @DELETE("quality/{deptId}/qualityAcceptance/{id}")
-    Observable<ResponseBody> createDeleteAcceptance(@Path("deptId") long deptId, @Path("id") long id, @Header("cookie") String cookie);
+    @DELETE("quality/{deptId}/qualityAcceptance/{fileId}")
+    Observable<ResponseBody> createDeleteAcceptance(@Path("deptId") long deptId, @Path("fileId") long id, @Header("cookie") String cookie);
 
     /**
      * 获取项目下检查单位列表

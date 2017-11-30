@@ -2,6 +2,7 @@ package com.glodon.bim.business.qualityManage.adapter;
 
 import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +30,7 @@ public class BluePrintContentAdapter extends RecyclerView.Adapter<RecyclerView.V
     private TextView mLastTextView;
     private OnChooseBlueprintObjListener mObjListener;
     private OnChooseBlueprintCataListener mCataListener;
-    private long mSelectId = 0;
+    private String mSelectId ;
 
     public BluePrintContentAdapter(Activity mActivity) {
         this.mActivity = mActivity;
@@ -37,7 +38,7 @@ public class BluePrintContentAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
 
 
-    public void updateList(List<BlueprintListBeanItem> dataList, long selectId){
+    public void updateList(List<BlueprintListBeanItem> dataList, String selectId){
         this.mSelectId = selectId;
         mDataList=dataList;
         notifyDataSetChanged();
@@ -87,7 +88,7 @@ public class BluePrintContentAdapter extends RecyclerView.Adapter<RecyclerView.V
                     lHolder.mNameView.setTextColor(mActivity.getResources().getColor(R.color.c_00baf3));
                     mLastView = lHolder.mSelectView;
                     mLastTextView = lHolder.mNameView;
-                    mSelectId = position;
+                    mSelectId = item.fileId;
                     if(mObjListener !=null)
                     {
                         mObjListener.onSelect(item,mSelectId);
@@ -95,7 +96,7 @@ public class BluePrintContentAdapter extends RecyclerView.Adapter<RecyclerView.V
                 }
             });
 
-            if(item!=null && mSelectId == item.id.longValue()){
+            if(!TextUtils.isEmpty(mSelectId) && mSelectId .equals(item.fileId)){
                 lHolder.mSelectView.setVisibility(View.VISIBLE);
                 lHolder.mNameView.setTextColor(mActivity.getResources().getColor(R.color.c_00baf3));
                 mLastView = lHolder.mSelectView;
@@ -115,7 +116,7 @@ public class BluePrintContentAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     @Override
     public int getItemViewType(int position) {
-        return mDataList.get(position).viewType;
+        return mDataList.get(position).folder?0:1;
     }
 
     public void setListener(OnChooseBlueprintObjListener objListener, OnChooseBlueprintCataListener cataListener) {

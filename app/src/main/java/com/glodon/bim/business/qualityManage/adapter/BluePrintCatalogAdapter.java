@@ -90,7 +90,7 @@ public class BluePrintCatalogAdapter extends RecyclerView.Adapter<RecyclerView.V
             }
         });
 
-//        if(mDataList.get(position)!=null && mSelectId == mDataList.get(position).id){
+//        if(mDataList.get(position)!=null && mSelectId == mDataList.get(position).fileId){
 //            lHolder.mIconUpdown.setVisibility(View.VISIBLE);
 //            lHolder.mNameView.setTextColor(mActivity.getResources().getColor(R.color.c_00baf3));
 //            mLastView = lHolder.mIconUpdown;

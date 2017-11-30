@@ -20,11 +20,11 @@ import rx.Observable;
 public interface BluePrintApi {
 
 
-    /**
-     * 获取图纸项目列表
-     */
-    @GET("quality/{deptId}/quality/checkpoints/project/{projectId}")
-    Observable<List<BlueprintListBeanItem>> getBluePrintList(@Path("deptId") long deptId, @Path("projectId") long projectId, @Header("cookie") String cookie);
+//    /**
+//     * 获取图纸项目列表
+//     */
+//    @GET("quality/{deptId}/quality/checkpoints/project/{projectId}")
+//    Observable<List<BlueprintListBeanItem>> getBluePrintList(@Path("deptId") long deptId, @Path("projectId") long projectId, @Header("cookie") String cookie);
 
     /**
      * 获取图纸项目列表
@@ -34,6 +34,15 @@ public interface BluePrintApi {
             @Path("projectId") long projectId,
             @Path("projectVersionId") String projectVersionId,
             @Query("fileId") String fileId,
+            @Query("pageIndex") int pageIndex,
+            @Header("cookie") String cookie);
+    /**
+     * 获取图纸项目列表
+     */
+    @GET("model/{projectId}/{projectVersionId}/bim/file/children")
+    Observable<BluePrintBean> getBluePrint(
+            @Path("projectId") long projectId,
+            @Path("projectVersionId") String projectVersionId,
             @Query("pageIndex") int pageIndex,
             @Header("cookie") String cookie);
 

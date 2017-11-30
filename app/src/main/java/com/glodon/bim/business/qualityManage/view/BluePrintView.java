@@ -101,7 +101,7 @@ public class BluePrintView implements BluePrintContract.View {
 
 
     @Override
-    public void updateContentListView(List<BlueprintListBeanItem> list, Long selectId) {
+    public void updateContentListView(List<BlueprintListBeanItem> list, String selectId) {
         mContentAdapter.updateList(list, selectId);
     }
 
@@ -114,7 +114,7 @@ public class BluePrintView implements BluePrintContract.View {
     @Override
     public void updateHintListView(List<BlueprintListBeanItem> mHintList, BlueprintListBeanItem item) {
         mHintParent.setVisibility(View.VISIBLE);
-        mHintAdapter.updateList(mHintList, item.id.longValue());
+        mHintAdapter.updateList(mHintList, item.fileId);
     }
 
     @Override

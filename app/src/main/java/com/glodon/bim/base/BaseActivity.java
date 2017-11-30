@@ -100,7 +100,7 @@ public class BaseActivity extends AppCompatActivity {
                 mStatusView.getLayoutParams().height = getResources() //设置状态栏的高度
                         .getDimensionPixelOffset(id);
 //                mStatusView.getLayoutParams().height = getResources() //设置状态栏的高度
-//                        .getDimensionPixelOffset(id);
+//                        .getDimensionPixelOffset(fileId);
             }
         }
     }

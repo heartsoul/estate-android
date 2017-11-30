@@ -108,7 +108,7 @@ public class ModelSingleListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         public ObjHolder(View itemView) {
             super(itemView);
             mNameView = itemView.findViewById(R.id.quality_model_single_item_name);
-//            mEmptyView = itemView.findViewById(R.id.quality_model_single_item_empty);
+//            mEmptyView = itemView.findViewById(R.fileId.quality_model_single_item_empty);
         }
     }
 

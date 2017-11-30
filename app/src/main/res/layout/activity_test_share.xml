@@ -10,22 +10,22 @@
         android:layout_height="wrap_content"
         android:text="默认面板"/>
     <!--<Button-->
-        <!--android:id="@+id/btn_recyclerView"-->
+        <!--android:fileId="@+fileId/btn_recyclerView"-->
         <!--android:layout_width="match_parent"-->
         <!--android:layout_height="wrap_content"-->
         <!--android:text="RecyclerView"/>-->
     <!--<Button-->
-        <!--android:id="@+id/btn_zxing"-->
+        <!--android:fileId="@+fileId/btn_zxing"-->
         <!--android:layout_width="match_parent"-->
         <!--android:layout_height="wrap_content"-->
         <!--android:text="二维码扫描"/>-->
     <!--<Button-->
-        <!--android:id="@+id/btn_zxing_create"-->
+        <!--android:fileId="@+fileId/btn_zxing_create"-->
         <!--android:layout_width="match_parent"-->
         <!--android:layout_height="wrap_content"-->
         <!--android:text="二维码生成"/>-->
     <!--<Button-->
-        <!--android:id="@+id/btn_share"-->
+        <!--android:fileId="@+fileId/btn_share"-->
         <!--android:layout_width="match_parent"-->
         <!--android:layout_height="wrap_content"-->
         <!--android:text="友盟分享"/>-->

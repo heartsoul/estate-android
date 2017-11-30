@@ -26,7 +26,7 @@ public class ModuleListBeanItem implements Serializable {
     public String toString() {
         return "ModuleListBeanItem{" +
                 "code='" + code + '\'' +
-                ", id=" + id +
+                ", fileId=" + id +
                 ", name='" + name + '\'' +
                 ", parentId=" + parentId +
                 ", projectType='" + projectType + '\'' +

@@ -546,7 +546,7 @@ public class CreateInspectionAcceptionFragment extends BaseFragment implements V
     }
 
     @Override
-    public void showBluePrintName(String name, long id) {
+    public void showBluePrintName(String name, String id) {
         mBluePrintName.setText(name);
     }
 

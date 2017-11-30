@@ -29,7 +29,7 @@ public interface WeatherApi {
 
 
     @POST("onebox/weather/query")
-    Call<ResponseBody> getWeather(@Field("id") int id,@Field("key") String key);
+    Call<ResponseBody> getWeather(@Field("fileId") int id,@Field("key") String key);
 
     @GET("onebox/weather/query?")
     rx.Observable<ResponseBody> getRxWeather(@QueryMap Map<String ,String> params);
