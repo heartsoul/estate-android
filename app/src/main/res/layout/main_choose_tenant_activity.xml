@@ -45,7 +45,8 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/dimen_14"
-            android:background="@drawable/icon_search_white" />
+            android:background="@drawable/icon_search_white"
+            android:visibility="gone"/>
     </RelativeLayout>
 
     <RelativeLayout
