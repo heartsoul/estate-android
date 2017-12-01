@@ -21,7 +21,7 @@ public class AccountInfo  implements Serializable {
     @Override
     public String toString() {
         return "AccountInfo{" +
-                "name='" + name + '\'' +
+                "fileName='" + name + '\'' +
                 ", phone='" + phone + '\'' +
                 ", email='" + email + '\'' +
                 ", qq='" + qq + '\'' +

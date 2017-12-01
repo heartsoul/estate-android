@@ -308,7 +308,7 @@ public class BluePrintPresenter implements BluePrintContract.Presenter {
 //            BlueprintListBeanItem item = new BlueprintListBeanItem();
 //            item.fileId = count;
 //            item.parentId = 0;
-//            item.name = "fileId="+i+"  parentId=0";
+//            item.fileName = "fileId="+i+"  parentId=0";
 //            list.add(item);
 //            count++;
 //        }
@@ -317,7 +317,7 @@ public class BluePrintPresenter implements BluePrintContract.Presenter {
 //                BlueprintListBeanItem item = new BlueprintListBeanItem();
 //                item.fileId = count;
 //                item.parentId = i;
-//                item.name = "fileId="+count+"  parentId="+i;
+//                item.fileName = "fileId="+count+"  parentId="+i;
 //                count++;
 //                list.add(item);
 //            }
@@ -327,7 +327,7 @@ public class BluePrintPresenter implements BluePrintContract.Presenter {
 //                BlueprintListBeanItem item = new BlueprintListBeanItem();
 //                item.fileId = count;
 //                item.parentId = i;
-//                item.name = "fileId="+count+"  parentId="+i+".jpg";
+//                item.fileName = "fileId="+count+"  parentId="+i+".jpg";
 //                count++;
 //                list.add(item);
 //            }

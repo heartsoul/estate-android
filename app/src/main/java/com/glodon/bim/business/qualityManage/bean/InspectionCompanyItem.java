@@ -28,7 +28,7 @@ public class InspectionCompanyItem {
                 ", external=" + external +
                 ", formal=" + formal +
                 ", fileId=" + id +
-                ", name='" + name + '\'' +
+                ", fileName='" + name + '\'' +
                 ", orderNum=" + orderNum +
                 ", parentId=" + parentId +
                 ", treePath='" + treePath + '\'' +

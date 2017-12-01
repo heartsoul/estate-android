@@ -248,7 +248,7 @@ public class QualityCheckListPresenter implements QualityCheckListContract.Prese
             CreateCheckListParamsFile f = new CreateCheckListParamsFile();
 //                                    public String extData;
 //                                    public long fileId;
-//                                    public String name;
+//                                    public String fileName;
 //                                    public String objectId;
 //                                    public String url;
             f.extData = file.extData;

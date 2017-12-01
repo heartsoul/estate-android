@@ -235,7 +235,7 @@ public interface CreateCheckListContract {
         /**
          * 展示选中的模型
          */
-        void showModelName(String name, long id);
+        void showModelName(String name, String id);
     }
 
     interface Model {

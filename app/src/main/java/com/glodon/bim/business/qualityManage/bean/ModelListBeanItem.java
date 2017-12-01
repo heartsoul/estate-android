@@ -9,6 +9,6 @@ import java.io.Serializable;
  */
 
 public class ModelListBeanItem implements Serializable{
-    public Long id;
-    public String name;
+    public String fileId;
+    public String fileName;
 }

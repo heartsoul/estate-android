@@ -7,6 +7,8 @@ import com.glodon.bim.business.qualityManage.bean.ProjectVersionBean;
 
 import java.util.List;
 
+import okhttp3.ResponseBody;
+import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Path;
@@ -49,6 +51,17 @@ public interface ModelApi {
      */
     @GET("model/{projectId}/{projectVersionId}/bimFiles")
     Observable<ModelListBean> getModelList(@Path("projectId") long projectId, @Path("projectVersionId") String projectVersionId, @Query("buildingId")long buildingId, @Query("specialtyCode")String specialtyCode, @Header("cookie") String cookie);
+
+    /**
+     * 根据专业和单体查询模型列表
+     * @param projectId  项目id
+     * @param projectVersionId  最新版本
+     * @param buildingId  单体
+     * @param specialtyCode  专业
+     */
+    @GET("model/{projectId}/{projectVersionId}/bimFiles")
+    Call<ResponseBody> getModelList2(@Path("projectId") long projectId, @Path("projectVersionId") String projectVersionId, @Query("buildingId")long buildingId, @Query("specialtyCode")String specialtyCode, @Header("cookie") String cookie);
+
 
     /**
      * 根据专业和单体查询模型列表

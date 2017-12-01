@@ -26,7 +26,7 @@ public class ImageUploadBeanData {
                 ", extension='" + extension + '\'' +
                 ", fileId='" + id + '\'' +
                 ", length=" + length +
-                ", name='" + name + '\'' +
+                ", fileName='" + name + '\'' +
                 '}';
     }
 }

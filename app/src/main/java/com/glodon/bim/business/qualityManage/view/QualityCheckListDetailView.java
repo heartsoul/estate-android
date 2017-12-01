@@ -128,7 +128,7 @@ public class QualityCheckListDetailView implements QualityCheckListDetailViewCon
         if(info.commitTime>0) {
             mSubmitTimeView.setText(DateUtil.getNormalTime(info.commitTime));
         }
-        mBluePrintView.setText("");
+        mBluePrintView.setText(info.buildingName);
         mModelView.setText(info.elementName);
     }
 

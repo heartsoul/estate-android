@@ -41,9 +41,9 @@
             android:name=".business.qualityManage.view.QualityMangeMainActivity"
             android:screenOrientation="portrait" >
             <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
+                <!--<action android:fileName="android.intent.action.MAIN" />-->
 
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+                <!--<category android:fileName="android.intent.category.LAUNCHER" />-->
             <!--</intent-filter>-->
             </activity>
 
@@ -230,9 +230,9 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan">
             <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
+                <!--<action android:fileName="android.intent.action.MAIN" />-->
 
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+                <!--<category android:fileName="android.intent.category.LAUNCHER" />-->
             <!--</intent-filter>-->
 
         </activity>
@@ -252,10 +252,10 @@
             android:name=".customview.album.AlbumEditActivity"
             android:screenOrientation="portrait">
             <!--<intent-filter>-->
-            <!--<action android:name="android.intent.action.MAIN" />-->
+            <!--<action android:fileName="android.intent.action.MAIN" />-->
 
 
-            <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--<category android:fileName="android.intent.category.LAUNCHER" />-->
             <!--</intent-filter>-->
         </activity>
         <!--图片预览-->

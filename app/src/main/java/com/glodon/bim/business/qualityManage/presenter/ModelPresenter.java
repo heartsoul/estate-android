@@ -203,6 +203,7 @@ public class ModelPresenter implements ModelContract.Presenter {
                     @Override
                     public void onError(Throwable e) {
                         LogUtil.e(e.getMessage());
+
                     }
 
                     @Override
@@ -210,12 +211,7 @@ public class ModelPresenter implements ModelContract.Presenter {
                         mModelList.clear();
                         if(bean!=null){
                             if(bean.data!=null && bean.data.size()>0){
-                                for(String name:bean.data)
-                                {
-                                    ModelListBeanItem item = new ModelListBeanItem();
-                                    item.name = name;
-                                    mModelList.add(item);
-                                }
+                                mModelList = bean.data;
                             }
                         }
                         if(mView!=null){
@@ -224,13 +220,40 @@ public class ModelPresenter implements ModelContract.Presenter {
                     }
                 });
         mSubscription.add(sub);
+//        LogUtil.e("参数：projectId="+projectId+" projectVersionId="+mLatestVersionInfo.data.versionId+" buildingId="+mCurrentSingle.id+" specialtyCode="+mCurrentSpecial.code);
+//        NetRequest.getInstance().getCall(AppConfig.BASE_URL, ModelApi.class).getModelList2(projectId,mLatestVersionInfo.data.versionId,mCurrentSingle.id,mCurrentSpecial.code,new DaoProvider().getCookie())
+//                .enqueue(new Callback<ResponseBody>() {
+//                    @Override
+//                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+//                        if(response.body()!=null)
+//                        {
+//                            try {
+//                                LogUtil.e("resop="+response.body().string());
+//                            } catch (IOException e) {
+//                                e.printStackTrace();
+//                            }
+//                        }
+//                        if(response.errorBody()!=null){
+//                            try {
+//                                LogUtil.e(response.errorBody().string());
+//                            } catch (IOException e) {
+//                                e.printStackTrace();
+//                            }
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+//
+//                    }
+//                });
     }
 
     @Override
     public void showSpecialList() {
-        if (mSpecialList.size() == 0) {
-            mSpecialList = getSpecialList();
-        }
+//        if (mSpecialList.size() == 0) {
+//            mSpecialList = getSpecialList();
+//        }
         if(mCurrentSpecial!=null && mCurrentSpecial.id>=0){
             mSpecialSelectId = mCurrentSpecial.id;
         }
@@ -239,48 +262,48 @@ public class ModelPresenter implements ModelContract.Presenter {
 
     @Override
     public void showSingleList() {
-        if (mSingleList.size() == 0) {
-            mSingleList = getSingleList();
-        }
+//        if (mSingleList.size() == 0) {
+//            mSingleList = getSingleList();
+//        }
         if(mCurrentSingle!=null && mCurrentSingle.id>=0){
             mSingleSelectId = mCurrentSingle.id;
         }
         mView.updateSingleList(mSingleList, mSingleSelectId);
     }
 
-    private List<ModelListBeanItem> getModelList(long specialId,long singleId) {
-        List<ModelListBeanItem> list = new ArrayList<>();
-        for(int i = 0;i<20;i++){
-            ModelListBeanItem item = new ModelListBeanItem();
-            item.id = specialId*singleId;
-            item.name = "special"+specialId+" single"+singleId;
-            list.add(item);
-        }
-        return list;
-    }
-
-
-    private List<ModelSpecialListItem> getSpecialList() {
-        List<ModelSpecialListItem> list = new ArrayList<>();
-        for (long i = 0; i < 20; i++) {
-            ModelSpecialListItem item = new ModelSpecialListItem();
-            item.id = i;
-            item.name = "专业 " + i;
-            list.add(item);
-        }
-        return list;
-    }
-
-    private List<ModelSingleListItem> getSingleList() {
-        List<ModelSingleListItem> list = new ArrayList<>();
-        for (long i = 1; i <= 20; i++) {
-            ModelSingleListItem item = new ModelSingleListItem();
-            item.id = i;
-            item.name = i + "栋";
-            list.add(item);
-        }
-        return list;
-    }
+//    private List<ModelListBeanItem> getModelList(long specialId,long singleId) {
+//        List<ModelListBeanItem> list = new ArrayList<>();
+//        for(int i = 0;i<20;i++){
+//            ModelListBeanItem item = new ModelListBeanItem();
+//            item.fileId = specialId*singleId;
+//            item.fileName = "special"+specialId+" single"+singleId;
+//            list.add(item);
+//        }
+//        return list;
+//    }
+//
+//
+//    private List<ModelSpecialListItem> getSpecialList() {
+//        List<ModelSpecialListItem> list = new ArrayList<>();
+//        for (long i = 0; i < 20; i++) {
+//            ModelSpecialListItem item = new ModelSpecialListItem();
+//            item.fileId = i;
+//            item.fileName = "专业 " + i;
+//            list.add(item);
+//        }
+//        return list;
+//    }
+//
+//    private List<ModelSingleListItem> getSingleList() {
+//        List<ModelSingleListItem> list = new ArrayList<>();
+//        for (long i = 1; i <= 20; i++) {
+//            ModelSingleListItem item = new ModelSingleListItem();
+//            item.fileId = i;
+//            item.fileName = i + "栋";
+//            list.add(item);
+//        }
+//        return list;
+//    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

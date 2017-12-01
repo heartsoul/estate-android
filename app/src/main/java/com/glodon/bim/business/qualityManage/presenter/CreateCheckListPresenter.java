@@ -93,7 +93,7 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
     //图纸
     private ModelListBeanItem mModelSelectInfo;
     private String mCurrentModelName;//当前的图纸名称
-    private Long mCurrentModelId;//当前的图纸id
+    private String mCurrentModelId;//当前的图纸id
 
     //新建检查单参数
     private CreateCheckListParams mInput;
@@ -134,7 +134,6 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
         mInitParams = new CreateCheckListParams();
         mCurrentModuleId = new Long(-1);
         mModelSelectInfo = new ModelListBeanItem();
-        mCurrentModelId = new Long(-1);
     }
 
 
@@ -786,10 +785,10 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
     @Override
     public void toModelList() {
         Intent intent = new Intent(mView.getActivity(), ModelActivity.class);
-        if(!TextUtils.isEmpty(mCurrentModelName) && !TextUtils.isEmpty(mModelSelectInfo.name) && mModelSelectInfo.id!=null){
+        if(!TextUtils.isEmpty(mCurrentModelName) && !TextUtils.isEmpty(mModelSelectInfo.fileName) && mModelSelectInfo.fileId !=null){
             mCurrentModelName = mView.getBluePrintName();
-            if(mCurrentModelName.equals(mModelSelectInfo.name)){
-                intent.putExtra(CommonConfig.MODULE_LIST_POSITION, mModelSelectInfo.id);
+            if(mCurrentModelName.equals(mModelSelectInfo.fileName)){
+                intent.putExtra(CommonConfig.MODULE_LIST_POSITION, mModelSelectInfo.fileId);
             }
         }
         mView.getActivity().startActivityForResult(intent, REQUEST_CODE_CHOOSE_MODEL);
@@ -821,10 +820,10 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
             case REQUEST_CODE_CHOOSE_MODEL:
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     mModelSelectInfo = (ModelListBeanItem) data.getSerializableExtra(CommonConfig.MODULE_LIST_NAME);
-                    mCurrentModelName = mModelSelectInfo.name;
-                    mCurrentModelId= mModelSelectInfo.id;
+                    mCurrentModelName = mModelSelectInfo.fileName;
+                    mCurrentModelId= mModelSelectInfo.fileId;
                     if (mView != null && mModelSelectInfo != null) {
-                        mView.showModelName(mModelSelectInfo.name,mModelSelectInfo.id.longValue());
+                        mView.showModelName(mModelSelectInfo.fileName,mModelSelectInfo.fileId);
                     }
                 }
                 break;

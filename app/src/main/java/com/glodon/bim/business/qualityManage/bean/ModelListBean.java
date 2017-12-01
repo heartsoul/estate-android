@@ -11,6 +11,6 @@ import java.util.List;
 
 public class ModelListBean implements Serializable{
     public String code;
-    public List<String> data;
+    public List<ModelListBeanItem> data;
     public String message;
 }

@@ -52,7 +52,7 @@ public class ModelListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         final ModelListBeanItem item = mDataList.get(position);
         if (holder instanceof ObjHolder) {
             final ObjHolder lHolder = (ObjHolder) holder;
-            lHolder.mNameView.setText(item.name);
+            lHolder.mNameView.setText(item.fileName);
 
             lHolder.mParentView.setOnClickListener(new View.OnClickListener() {
                 @Override

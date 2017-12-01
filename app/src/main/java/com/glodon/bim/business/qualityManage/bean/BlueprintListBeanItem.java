@@ -59,7 +59,7 @@ public class BlueprintListBeanItem implements Serializable {
                 ", folder=" + folder +
                 ", index=" + index +
                 ", length=" + length +
-                ", name='" + name + '\'' +
+                ", fileName='" + name + '\'' +
                 ", parentId='" + parentId + '\'' +
                 ", revisionId='" + revisionId + '\'' +
                 ", specialtyCode='" + specialtyCode + '\'' +
