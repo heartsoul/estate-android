@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.glodon.bim.R;
 import com.glodon.bim.base.BaseFragment;
+import com.glodon.bim.basic.config.AppConfig;
 import com.glodon.bim.basic.image.ImageLoader;
 import com.glodon.bim.basic.listener.ThrottleClickEvents;
 import com.glodon.bim.basic.log.LogUtil;
@@ -399,10 +400,14 @@ public class CreateInspectionAcceptionFragment extends BaseFragment implements V
                 mPresenter.toModuleList();
                 break;
             case R.id.create_check_list_blueprint://关联图纸
-                mPresenter.toBluePrint();
+                if(AppConfig.isShow) {
+                    mPresenter.toBluePrint();
+                }
                 break;
             case R.id.create_check_list_model://关联模型
-                mPresenter.toModelList();
+                if(AppConfig.isShow) {
+                    mPresenter.toModelList();
+                }
                 break;
             case R.id.create_check_list_save://保存
                 save();

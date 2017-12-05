@@ -45,4 +45,6 @@ public class AppConfig {
     public static String BASE_URL = "http://192.168.81.30/"; //测试
 //    public static String BASE_URL = "http://bimcop.glodon.com/"; //正式环境
 
+    public static boolean isShow = true;//控制是否可现实模型图纸界面
+
 }

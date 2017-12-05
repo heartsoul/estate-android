@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 
 import com.glodon.bim.R;
 import com.glodon.bim.base.BaseActivity;
+import com.glodon.bim.basic.config.AppConfig;
 import com.glodon.bim.basic.listener.ThrottleClickEvents;
 import com.glodon.bim.basic.utils.ScreenUtil;
 import com.glodon.bim.business.authority.AuthorityManager;
@@ -43,8 +44,8 @@ public class ChooseCategoryItemActivity extends BaseActivity implements ChooseCa
     /**
      * 判断权限  控制是否显示新增按钮
      */
-    private void checkAuthority(){
-        if(mCreateView!=null) {
+    private void checkAuthority() {
+        if (mCreateView != null) {
             if (AuthorityManager.isShowCreateButton()) {
                 mCreateView.setVisibility(View.VISIBLE);
             } else {
@@ -106,14 +107,20 @@ public class ChooseCategoryItemActivity extends BaseActivity implements ChooseCa
             case R.id.choose_category_item_item_zjqd://点击质检清单
                 mPresenter.toQualityChickList(0);
                 break;
-            case R.id.choose_category_item_item_mx://点击模型
-//                mPresenter.toModel();
-                break;
             case R.id.choose_category_item_item_tz://点击图纸
-//                mPresenter.toBluePrint();
+                if(AppConfig.isShow) {
+                    mPresenter.toQualityChickList(1);
+                }
+                break;
+            case R.id.choose_category_item_item_mx://点击模型
+                if(AppConfig.isShow) {
+                    mPresenter.toQualityChickList(2);
+                }
                 break;
             case R.id.choose_category_item_item_zjxm://点击质检项目
-//                mPresenter.toQualityChickList(1);
+                if(AppConfig.isShow) {
+                    mPresenter.toQualityChickList(3);
+                }
                 break;
             case R.id.choose_category_item_item_create://点击新建
                 create();
@@ -124,7 +131,7 @@ public class ChooseCategoryItemActivity extends BaseActivity implements ChooseCa
 
     private void initDataForActivity() {
         //注册广播  监听   获取权限的变化  控制新增按钮的显示
-        registerReceiver(mReceiver,new IntentFilter(CommonConfig.ACTION_GET_AUTHORITY_CHECK));
+        registerReceiver(mReceiver, new IntentFilter(CommonConfig.ACTION_GET_AUTHORITY_CHECK));
         mPresenter = new ChooseCategoryItemPresenter(this);
         mPresenter.initData(getIntent());
 
@@ -190,7 +197,7 @@ public class ChooseCategoryItemActivity extends BaseActivity implements ChooseCa
             mPresenter.onDestroy();
             mPresenter = null;
         }
-        if(mReceiver!=null) {
+        if (mReceiver != null) {
             unregisterReceiver(mReceiver);
         }
     }

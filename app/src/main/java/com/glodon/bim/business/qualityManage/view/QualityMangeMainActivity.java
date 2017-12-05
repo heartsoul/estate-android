@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.glodon.bim.R;
 import com.glodon.bim.base.BaseActivity;
 import com.glodon.bim.base.BaseFragment;
+import com.glodon.bim.basic.config.AppConfig;
 import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.basic.utils.ScreenUtil;
 import com.glodon.bim.basic.utils.SharedPreferencesUtil;
@@ -86,7 +87,7 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
     private ProjectListItem mProjectInfo;//项目信息
     private List<TextView> mContentList;
 
-    private int mFromType = 0;//0质检清单  1质检项目
+    private int mFromType = 0;//0质检清单  1图纸  2 模型   3质检项目
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -208,29 +209,37 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
                 SharedPreferencesUtil.setSelectModuleInfo(-1,"");
                 break;
             case R.id.main_drawer_quality_blueprint://点击图纸
-                setSelect(1);
-                showFragmentById(mBluePrintFragmentId);
-                hideDrawer(300);
-                mIsDrawerOpen = false;
-                mTitleView.setText("图纸");
-                SharedPreferencesUtil.setSelectModuleInfo(-1,"");
+                if(AppConfig.isShow) {
+                    setSelect(1);
+                    showFragmentById(mBluePrintFragmentId);
+                    hideDrawer(300);
+                    mIsDrawerOpen = false;
+                    mTitleView.setText("图纸");
+                    SharedPreferencesUtil.setSelectModuleInfo(-1, "");
+                }
                 break;
             case R.id.main_drawer_quality_model://点击模型
-                setSelect(2);
-                showFragmentById(mModelFragmentId);
-                hideDrawer(300);
-                mIsDrawerOpen = false;
-                mTitleView.setText("模型");
-                SharedPreferencesUtil.setSelectModuleInfo(-1,"");//清空当前选中的质检项目
+                if(AppConfig.isShow) {
+                    setSelect(2);
+                    showFragmentById(mModelFragmentId);
+                    hideDrawer(300);
+                    mIsDrawerOpen = false;
+                    mTitleView.setText("模型");
+                    SharedPreferencesUtil.setSelectModuleInfo(-1, "");//清空当前选中的质检项目
+                }
                 break;
             case R.id.main_drawer_quality_module://点击质检项目
-//                setSelect(3);
-//                showFragmentById(mQualityCheckModuleFragmentId);
-//                hideDrawer(300);
-//                mIsDrawerOpen = false;
+                if(AppConfig.isShow) {
+                    setSelect(3);
+                    showFragmentById(mQualityCheckModuleFragmentId);
+                    hideDrawer(300);
+                    mIsDrawerOpen = false;
+                }
                 break;
             case R.id.main_drawer_setting:
-//                mPresenter.toSetting(mProjectInfo);
+                if(AppConfig.isShow) {
+                    mPresenter.toSetting(mProjectInfo);
+                }
                 break;
 
         }
@@ -280,10 +289,30 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
 
         LogUtil.d("====", new DaoProvider().getCookie());
 
-        showFragmentById(mQualityCheckListFragmentId);
-        mCurrentFragmentId = mQualityCheckListFragmentId;
-
+        showFragmentById(mFromType);
+        mCurrentFragmentId = mFromType;
+        setNavTitle(mFromType);
         initDrawer();
+    }
+
+    private void setNavTitle(int fromType){
+        String title = "";
+        switch (fromType)
+        {
+            case 0:
+                title = "质检清单";
+                break;
+            case 1:
+                title = "图纸";
+                break;
+            case 2:
+                title = "模型";
+                break;
+            case 3:
+                title = "质检项目";
+                break;
+        }
+        mTitleView.setText(title);
     }
 
     //初始化drawer数据
@@ -310,11 +339,7 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
         mContentList.add(mQualityCheckModuleTv);
 
         //设置选中颜色
-        if(mFromType == 0){
-            setSelect(0);//质检清单
-        }else if(mFromType == 1){
-            setSelect(3);//质检项目
-        }
+        setSelect(mFromType);
     }
 
     private void setSelect(int position){

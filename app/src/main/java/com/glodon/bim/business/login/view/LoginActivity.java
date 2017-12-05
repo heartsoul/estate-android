@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import com.glodon.bim.R;
 import com.glodon.bim.base.BaseActivity;
+import com.glodon.bim.basic.config.AppConfig;
 import com.glodon.bim.basic.listener.ThrottleClickEvents;
 import com.glodon.bim.basic.utils.ScreenUtil;
 import com.glodon.bim.basic.utils.SharedPreferencesUtil;
@@ -169,19 +170,20 @@ public class LoginActivity extends BaseActivity implements LoginContract.View, V
         ThrottleClickEvents.throttleClick(mLoginBtn, this);
         ThrottleClickEvents.throttleClick(mForgetPassword, this);
 
-        String username = SharedPreferencesUtil.getString(CommonConfig.USERNAME,"");
-        String password = SharedPreferencesUtil.getString(CommonConfig.PASSWORD,"");
+        String username = SharedPreferencesUtil.getString(CommonConfig.USERNAME, "");
+        String password = SharedPreferencesUtil.getString(CommonConfig.PASSWORD, "");
         mUsernameEt.setText(username);
         mPasswordEt.setText(password);
-        mUsernameEt.setText("15822320523");//徐园
-        mPasswordEt.setText("123qwe");
+        if (AppConfig.isShow) {
+            mUsernameEt.setText("15822320523");//徐园
+            mPasswordEt.setText("123qwe");
 //        mUsernameEt.setText("15001340978");
 //        mPasswordEt.setText("123qwe");
 //        mUsernameEt.setText("15733178348");//贾光花
 //        mPasswordEt.setText("123qwe");
 //        mUsernameEt.setText("15810540135");//郭瑾
 //        mPasswordEt.setText("123qwe");
-
+        }
     }
 
     //更改登录按钮的显示
@@ -316,7 +318,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View, V
 
     @Override
     public void showErrorDialog() {
-        if(mErrorDialog == null){
+        if (mErrorDialog == null) {
             mErrorDialog = new ErrorMessageDialog(this);
             mErrorDialog.builder(new View.OnClickListener() {
                 @Override
@@ -329,8 +331,8 @@ public class LoginActivity extends BaseActivity implements LoginContract.View, V
         mErrorDialog.show();
     }
 
-    private void hideErrorDialog(){
-        if(mErrorDialog!=null){
+    private void hideErrorDialog() {
+        if (mErrorDialog != null) {
             mErrorDialog.dismiss();
         }
     }
