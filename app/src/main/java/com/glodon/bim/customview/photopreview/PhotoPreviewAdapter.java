@@ -54,7 +54,7 @@ public class PhotoPreviewAdapter extends PagerAdapter {
         if(url.startsWith("http")){
             UploadManger.loadOriginalUrl(mActivity,mDataList.get(position).objectId,imageview);
         }else{
-            ImageLoader.showImageNormal(mActivity,url,imageview);
+            ImageLoader.showPreviewImage(mActivity,url,imageview);
         }
 
         container.addView(view);

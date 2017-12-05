@@ -175,7 +175,7 @@ public class UploadManger {
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         try {
                             String url = response.body().string();
-                            ImageLoader.showImageNormal(context,url,view);
+                            ImageLoader.showPreviewImage(context,url,view);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
