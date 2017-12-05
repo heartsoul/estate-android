@@ -1,6 +1,6 @@
 package com.glodon.bim.customview.album;
 
-import java.util.LinkedHashMap;
+import com.glodon.bim.basic.utils.LinkedHashList;
 
 /**
  * 描述：相册照片点击后的监听
@@ -10,5 +10,5 @@ import java.util.LinkedHashMap;
 
 public interface OnAlbumChangeListener {
 
-    void onChange(LinkedHashMap<String,TNBImageItem> map);
+    void onChange(LinkedHashList<String,TNBImageItem> map);
 }

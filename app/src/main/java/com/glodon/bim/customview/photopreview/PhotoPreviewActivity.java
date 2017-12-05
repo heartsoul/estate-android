@@ -4,23 +4,20 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.glodon.bim.R;
 import com.glodon.bim.base.BaseActivity;
 import com.glodon.bim.basic.listener.ThrottleClickEvents;
+import com.glodon.bim.basic.utils.LinkedHashList;
 import com.glodon.bim.common.config.CommonConfig;
 import com.glodon.bim.customview.album.AlbumData;
 import com.glodon.bim.customview.album.TNBImageItem;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 描述：图片预览
@@ -62,8 +59,8 @@ public class PhotoPreviewActivity extends BaseActivity implements View.OnClickLi
         mDeleteView.setVisibility(mIsShowDelete?View.VISIBLE:View.GONE);
         if(mAlbumData!=null && mAlbumData.map!=null && mAlbumData.map.size()>0)
         {
-            for(Map.Entry<String,TNBImageItem> entry:mAlbumData.map.entrySet()){
-                mDataList.add(entry.getValue());
+            for(TNBImageItem entry:mAlbumData.map.getValueList()){
+                mDataList.add(entry);
             }
         }
         mAdapter = new PhotoPreviewAdapter(mDataList,this);
@@ -142,7 +139,7 @@ public class PhotoPreviewActivity extends BaseActivity implements View.OnClickLi
 
     private void backData(){
         Intent data = new Intent();
-        LinkedHashMap<String,TNBImageItem> map = new LinkedHashMap<>();
+        LinkedHashList<String,TNBImageItem> map = new LinkedHashList<>();
         if(mDataList.size()>0){
             for(TNBImageItem item:mDataList)
             {

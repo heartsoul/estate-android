@@ -2,19 +2,16 @@ package com.glodon.bim.business.qualityManage.contract;
 
 import com.glodon.bim.base.IBasePresenter;
 import com.glodon.bim.base.IBaseView;
+import com.glodon.bim.basic.utils.LinkedHashList;
 import com.glodon.bim.business.qualityManage.bean.CompanyItem;
 import com.glodon.bim.business.qualityManage.bean.CreateCheckListParams;
-import com.glodon.bim.business.qualityManage.bean.ImageUploadBean;
 import com.glodon.bim.business.qualityManage.bean.InspectionCompanyItem;
 import com.glodon.bim.business.qualityManage.bean.PersonItem;
 import com.glodon.bim.business.qualityManage.bean.SaveBean;
 import com.glodon.bim.customview.album.TNBImageItem;
 
-import java.util.LinkedHashMap;
 import java.util.List;
 
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import rx.Observable;
 
@@ -83,7 +80,7 @@ public interface CreateCheckListContract {
         /**
          * 设置选中的图片
          */
-        void setSelectedImages(LinkedHashMap<String, TNBImageItem> map);
+        void setSelectedImages(LinkedHashList<String, TNBImageItem> map);
 
         /**
          * 跳转到图片预览页
@@ -194,7 +191,7 @@ public interface CreateCheckListContract {
          *
          * @param mSelectedMap
          */
-        void showImages(LinkedHashMap<String, TNBImageItem> mSelectedMap);
+        void showImages(LinkedHashList<String, TNBImageItem> mSelectedMap);
 
         /**
          * 设置检查单和验收单的title

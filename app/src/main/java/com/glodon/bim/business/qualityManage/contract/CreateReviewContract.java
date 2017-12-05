@@ -2,6 +2,7 @@ package com.glodon.bim.business.qualityManage.contract;
 
 import com.glodon.bim.base.IBasePresenter;
 import com.glodon.bim.base.IBaseView;
+import com.glodon.bim.basic.utils.LinkedHashList;
 import com.glodon.bim.business.qualityManage.bean.QualityCheckListBeanItemFile;
 import com.glodon.bim.business.qualityManage.bean.QualityCheckListDetailBean;
 import com.glodon.bim.business.qualityManage.bean.QualityGetRepairInfo;
@@ -9,10 +10,8 @@ import com.glodon.bim.business.qualityManage.bean.QualityGetReviewInfo;
 import com.glodon.bim.business.qualityManage.bean.QualityRepairParams;
 import com.glodon.bim.business.qualityManage.bean.QualityReviewParams;
 import com.glodon.bim.business.qualityManage.bean.SaveBean;
-import com.glodon.bim.business.qualityManage.view.QualityCheckListDetailView;
 import com.glodon.bim.customview.album.TNBImageItem;
 
-import java.util.LinkedHashMap;
 import java.util.List;
 
 import okhttp3.ResponseBody;
@@ -31,7 +30,7 @@ public interface CreateReviewContract {
         /**
          * 设定选中的图片
          */
-        void setSelectedImages(LinkedHashMap<String, TNBImageItem> map);
+        void setSelectedImages(LinkedHashList<String, TNBImageItem> map);
 
         /**
          * 打开相机
@@ -74,7 +73,7 @@ public interface CreateReviewContract {
         /**
          * 展示选中的图片
          */
-        void showImages(LinkedHashMap<String, TNBImageItem> mSelectedMap);
+        void showImages(LinkedHashList<String, TNBImageItem> mSelectedMap);
 
         /**
          * 检查单详情

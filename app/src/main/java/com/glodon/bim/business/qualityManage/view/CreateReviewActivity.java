@@ -7,7 +7,6 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -22,6 +21,7 @@ import com.glodon.bim.basic.listener.ThrottleClickEvents;
 import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.basic.utils.CameraUtil;
 import com.glodon.bim.basic.utils.DateUtil;
+import com.glodon.bim.basic.utils.LinkedHashList;
 import com.glodon.bim.business.qualityManage.bean.CreateCheckListParamsFile;
 import com.glodon.bim.business.qualityManage.bean.QualityCheckListBeanItemFile;
 import com.glodon.bim.business.qualityManage.bean.QualityCheckListDetailBean;
@@ -39,7 +39,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -402,7 +401,7 @@ public class CreateReviewActivity extends BaseActivity implements View.OnClickLi
             mPhotoParent.setVisibility(View.VISIBLE);
             mImagePath = getIntent().getStringExtra(CommonConfig.IAMGE_SAVE_PATH);
             data = (AlbumData) getIntent().getSerializableExtra(CommonConfig.ALBUM_DATA);
-            LinkedHashMap<String, TNBImageItem> map = new LinkedHashMap<>();
+            LinkedHashList<String, TNBImageItem> map = new LinkedHashList<>();
             if (!TextUtils.isEmpty(mImagePath)) {
                 TNBImageItem item = new TNBImageItem();
                 item.imagePath = mImagePath;
@@ -442,7 +441,7 @@ public class CreateReviewActivity extends BaseActivity implements View.OnClickLi
         mDesView.setText(description);
         if (files != null && files.size() > 0) {
             mPhotoParent.setVisibility(View.VISIBLE);
-            LinkedHashMap<String, TNBImageItem> mSelectedMap = new LinkedHashMap<>();
+            LinkedHashList<String, TNBImageItem> mSelectedMap = new LinkedHashList<>();
             for (QualityCheckListBeanItemFile file : files) {
                 TNBImageItem item = new TNBImageItem();
                 item.imagePath = file.url;
@@ -500,15 +499,15 @@ public class CreateReviewActivity extends BaseActivity implements View.OnClickLi
     }
 
     @Override
-    public void showImages(LinkedHashMap<String, TNBImageItem> mSelectedMap) {
+    public void showImages(LinkedHashList<String, TNBImageItem> mSelectedMap) {
         int size = mSelectedMap.size();
         List<ImageView> list = new ArrayList<>();
         list.add(mPhoto0);
         list.add(mPhoto1);
         list.add(mPhoto2);
         int position = 0;
-        for (Map.Entry<String, TNBImageItem> entry : mSelectedMap.entrySet()) {
-            TNBImageItem item = entry.getValue();
+        for (TNBImageItem entry : mSelectedMap.getValueList()) {
+            TNBImageItem item = entry;
             String url = item.thumbnailPath;
             if (TextUtils.isEmpty(url)) {
                 url = item.imagePath;

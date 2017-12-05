@@ -1,7 +1,8 @@
 package com.glodon.bim.customview.album;
 
+import com.glodon.bim.basic.utils.LinkedHashList;
+
 import java.io.Serializable;
-import java.util.LinkedHashMap;
 
 /**
  * 描述：选中的图片
@@ -10,9 +11,9 @@ import java.util.LinkedHashMap;
  */
 
 public class AlbumData implements Serializable{
-    public LinkedHashMap<String,TNBImageItem> map;
+    public LinkedHashList<String,TNBImageItem> map;
 
-    public AlbumData(LinkedHashMap<String, TNBImageItem> map) {
+    public AlbumData(LinkedHashList<String, TNBImageItem> map) {
         this.map = map;
     }
 }

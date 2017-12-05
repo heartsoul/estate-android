@@ -8,6 +8,7 @@ import com.glodon.bim.basic.config.AppConfig;
 import com.glodon.bim.basic.image.ImageLoader;
 import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.basic.network.NetRequest;
+import com.glodon.bim.basic.utils.LinkedHashList;
 import com.glodon.bim.business.greendao.provider.DaoProvider;
 import com.glodon.bim.business.qualityManage.bean.CreateCheckListParamsFile;
 import com.glodon.bim.business.qualityManage.bean.UploadImageBean;
@@ -20,7 +21,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -39,12 +39,12 @@ import retrofit2.Response;
  */
 
 public class UploadManger {
-    private LinkedHashMap<String ,TNBImageItem> mSelectedMap;
+    private LinkedHashList<String ,TNBImageItem> mSelectedMap;
     private OnUploadImageListener mListener;
     private List<CreateCheckListParamsFile> mDataList;
     private Map<String,CreateCheckListParamsFile> mResult;
     private int count = 0;
-    public UploadManger(LinkedHashMap<String ,TNBImageItem> selectedMap){
+    public UploadManger(LinkedHashList<String ,TNBImageItem> selectedMap){
         this.mSelectedMap = selectedMap;
         mDataList = new ArrayList<>();
         mResult = new HashMap<>();
@@ -52,14 +52,14 @@ public class UploadManger {
 
     public void uploadImages(OnUploadImageListener listener){
         this.mListener = listener;
-        for (Map.Entry<String, TNBImageItem> entry : mSelectedMap.entrySet()) {
-           String imagePath = entry.getValue().imagePath;
-            if(!entry.getValue().objectId.equals("-1")){
-                mResult.put(imagePath,entry.getValue().urlFile);
+        for (TNBImageItem entry : mSelectedMap.getValueList()) {
+           String imagePath = entry.imagePath;
+            if(!entry.objectId.equals("-1")){
+                mResult.put(imagePath,entry.urlFile);
                 count++;
                 if(count == mSelectedMap.size()){
-                    for (Map.Entry<String, TNBImageItem> entry2 : mSelectedMap.entrySet()) {
-                        String imagePath2 = entry2.getValue().imagePath;
+                    for (TNBImageItem entry2 : mSelectedMap.getValueList()) {
+                        String imagePath2 = entry2.imagePath;
                         mDataList.add(mResult.get(imagePath2));
                     }
                     if (mListener != null) {
@@ -143,8 +143,8 @@ public class UploadManger {
                 }
                 if(count == mSelectedMap.size()) {
                     if (mResult.size() == mSelectedMap.size()) {
-                        for (Map.Entry<String, TNBImageItem> entry : mSelectedMap.entrySet()) {
-                            String imagePath = entry.getValue().imagePath;
+                        for (TNBImageItem entry : mSelectedMap.getValueList()) {
+                            String imagePath = entry.imagePath;
                             mDataList.add(mResult.get(imagePath));
                         }
                         if (mListener != null) {

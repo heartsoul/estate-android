@@ -12,13 +12,13 @@ import android.widget.TextView;
 import com.glodon.bim.R;
 import com.glodon.bim.base.BaseActivity;
 import com.glodon.bim.basic.listener.ThrottleClickEvents;
+import com.glodon.bim.basic.utils.LinkedHashList;
 import com.glodon.bim.basic.utils.SharedPreferencesUtil;
 import com.glodon.bim.business.qualityManage.view.CreateCheckListActivity;
 import com.glodon.bim.business.qualityManage.view.CreateReviewActivity;
 import com.glodon.bim.common.config.CommonConfig;
 import com.glodon.bim.customview.photopreview.PhotoPreviewActivity;
 
-import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -91,7 +91,7 @@ public class AlbumEditActivity extends BaseActivity implements View.OnClickListe
         mRecyclerView.setLayoutManager(manager);
         mListener = new OnAlbumChangeListener() {
             @Override
-            public void onChange(LinkedHashMap<String, TNBImageItem> map) {
+            public void onChange(LinkedHashList<String, TNBImageItem> map) {
                 if(map.size()==0){
                     mNavFinish.setText("完成");
                 }else{
@@ -103,7 +103,7 @@ public class AlbumEditActivity extends BaseActivity implements View.OnClickListe
         //设置选中后的数量
         AlbumData data = (AlbumData) getIntent().getSerializableExtra(CommonConfig.ALBUM_DATA);
         if(data!=null) {
-            LinkedHashMap<String, TNBImageItem> map = data.map;
+            LinkedHashList<String, TNBImageItem> map = data.map;
             if(map.size()==0){
                 mNavFinish.setText("完成");
             }else{
@@ -181,7 +181,7 @@ public class AlbumEditActivity extends BaseActivity implements View.OnClickListe
                         mRecyclerView.setAdapter(mAdapter);
                         mAdapter.upateData(mDataList);
 
-                        LinkedHashMap<String, TNBImageItem> map = albumdata.map;
+                        LinkedHashList<String, TNBImageItem> map = albumdata.map;
                         if(map.size()==0){
                             mNavFinish.setText("完成");
                         }else{

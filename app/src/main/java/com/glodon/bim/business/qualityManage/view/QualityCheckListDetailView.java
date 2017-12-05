@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.glodon.bim.R;
 import com.glodon.bim.basic.image.ImageLoader;
 import com.glodon.bim.basic.utils.DateUtil;
+import com.glodon.bim.basic.utils.LinkedHashList;
 import com.glodon.bim.basic.utils.ScreenUtil;
 import com.glodon.bim.business.qualityManage.bean.QualityCheckListBeanItemFile;
 import com.glodon.bim.business.qualityManage.bean.QualityCheckListDetailBean;
@@ -27,7 +28,6 @@ import com.glodon.bim.customview.album.TNBImageItem;
 import com.glodon.bim.customview.dialog.LoadingDialogManager;
 import com.glodon.bim.customview.photopreview.PhotoPreviewActivity;
 
-import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -173,7 +173,7 @@ public class QualityCheckListDetailView implements QualityCheckListDetailViewCon
         //图片
         List<QualityCheckListBeanItemFile> files  = info.files;
         if(files!=null && files.size()!=0){
-            final LinkedHashMap<String,TNBImageItem> mSelectedMap = new LinkedHashMap<>();
+            final LinkedHashList<String,TNBImageItem> mSelectedMap = new LinkedHashList<>();
             int size = files.size();
             for(QualityCheckListBeanItemFile imageFile:files){
                 TNBImageItem imageItem = new TNBImageItem();
@@ -302,7 +302,7 @@ public class QualityCheckListDetailView implements QualityCheckListDetailViewCon
         //图片
         List<QualityCheckListBeanItemFile> files  = info.files;
         if(files!=null && files.size()!=0){
-            final LinkedHashMap<String,TNBImageItem> mSelectedMap = new LinkedHashMap<>();
+            final LinkedHashList<String,TNBImageItem> mSelectedMap = new LinkedHashList<>();
             int size = files.size();
             for(QualityCheckListBeanItemFile imageFile:files){
                 TNBImageItem imageItem = new TNBImageItem();

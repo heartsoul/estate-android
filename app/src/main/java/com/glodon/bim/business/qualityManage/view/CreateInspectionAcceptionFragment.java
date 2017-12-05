@@ -25,6 +25,7 @@ import com.glodon.bim.basic.listener.ThrottleClickEvents;
 import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.basic.utils.CameraUtil;
 import com.glodon.bim.basic.utils.DateUtil;
+import com.glodon.bim.basic.utils.LinkedHashList;
 import com.glodon.bim.business.qualityManage.bean.CompanyItem;
 import com.glodon.bim.business.qualityManage.bean.CreateCheckListParams;
 import com.glodon.bim.business.qualityManage.bean.InspectionCompanyItem;
@@ -44,7 +45,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -272,7 +272,7 @@ public class CreateInspectionAcceptionFragment extends BaseFragment implements V
             String mImagePath = intent.getStringExtra(CommonConfig.IAMGE_SAVE_PATH);//前面传递过来的图片路径
             AlbumData data = (AlbumData) intent.getSerializableExtra(CommonConfig.ALBUM_DATA);
 
-            LinkedHashMap<String, TNBImageItem> map = new LinkedHashMap<>();
+            LinkedHashList<String, TNBImageItem> map = new LinkedHashList<>();
             if (!TextUtils.isEmpty(mImagePath)) {
                 TNBImageItem item = new TNBImageItem();
                 item.imagePath = mImagePath;
@@ -561,15 +561,15 @@ public class CreateInspectionAcceptionFragment extends BaseFragment implements V
     }
 
     @Override
-    public void showImages(LinkedHashMap<String, TNBImageItem> mSelectedMap) {
+    public void showImages(LinkedHashList<String, TNBImageItem> mSelectedMap) {
         int size = mSelectedMap.size();
         List<ImageView> list = new ArrayList<>();
         list.add(mPhoto0);
         list.add(mPhoto1);
         list.add(mPhoto2);
         int position = 0;
-        for (Map.Entry<String, TNBImageItem> entry : mSelectedMap.entrySet()) {
-            TNBImageItem item = entry.getValue();
+        for (TNBImageItem entry : mSelectedMap.getValueList()) {
+            TNBImageItem item = entry;
             String url = item.thumbnailPath;
             if (TextUtils.isEmpty(url)) {
                 url = item.imagePath;

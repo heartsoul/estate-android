@@ -11,10 +11,10 @@ import android.widget.RelativeLayout;
 
 import com.glodon.bim.R;
 import com.glodon.bim.basic.image.ImageLoader;
+import com.glodon.bim.basic.utils.LinkedHashList;
 import com.glodon.bim.basic.utils.ScreenUtil;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -27,7 +27,7 @@ public class AlbumEditAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private Activity mActivity;
     private List<TNBImageItem> mDataList;
     private int w = 90;
-    private LinkedHashMap<String,TNBImageItem> mSelectedMap ;
+    private LinkedHashList<String,TNBImageItem> mSelectedMap ;
     private int max = 3;
     private OnAlbumChangeListener mListener;
 
@@ -35,7 +35,7 @@ public class AlbumEditAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         this.mActivity = mActivity;
         mDataList = new ArrayList<>();
         w = (ScreenUtil.getScreenInfo()[0]-ScreenUtil.dp2px(3))/4;
-        mSelectedMap = new LinkedHashMap<>();
+        mSelectedMap = new LinkedHashList<>();
         mListener = listener;
     }
 

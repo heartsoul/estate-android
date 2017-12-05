@@ -6,6 +6,7 @@ import android.text.TextUtils;
 
 import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.basic.utils.CameraUtil;
+import com.glodon.bim.basic.utils.LinkedHashList;
 import com.glodon.bim.basic.utils.NetWorkUtils;
 import com.glodon.bim.basic.utils.SharedPreferencesUtil;
 import com.glodon.bim.business.qualityManage.bean.BlueprintListBeanItem;
@@ -34,9 +35,7 @@ import com.glodon.bim.customview.photopreview.PhotoPreviewActivity;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import okhttp3.ResponseBody;
 import rx.Subscriber;
@@ -79,7 +78,7 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
     private List<String> mPersonNameList;
     private int mPersonSelectPosition = -1;
     //图片
-    private LinkedHashMap<String, TNBImageItem> mSelectedMap;
+    private LinkedHashList<String, TNBImageItem> mSelectedMap;
     //质检项目
     private ModuleListBeanItem mModuleSelectInfo;
     private String mCurrentModuleName;//当前的质检项目名称
@@ -128,7 +127,7 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
         mProjectId = SharedPreferencesUtil.getProjectId();
         mInput = new CreateCheckListParams();
         mInput.projectId = mProjectId;
-        mSelectedMap = new LinkedHashMap<>();
+        mSelectedMap = new LinkedHashList<>();
         mModuleSelectInfo = new ModuleListBeanItem();
         mBluePrintSelectInfo = new BlueprintListBeanItem();
         mInitParams = new CreateCheckListParams();
@@ -408,8 +407,8 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
                     @Override
                     public void onUploadFinished(List<CreateCheckListParamsFile> list) {
                         int i = 0;
-                        for (Map.Entry<String, TNBImageItem> entry : mSelectedMap.entrySet()) {
-                            TNBImageItem item = entry.getValue();
+                        for (TNBImageItem entry : mSelectedMap.getValueList()) {
+                            TNBImageItem item = entry;
                             item.objectId = list.get(i).objectId;
                             item.urlFile = list.get(i);
                             i++;
@@ -532,12 +531,13 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
                     public void onUploadFinished(List<CreateCheckListParamsFile> list) {
                         params.files = list;
                         int i = 0;
-                        for (Map.Entry<String, TNBImageItem> entry : mSelectedMap.entrySet()) {
-                            TNBImageItem item = entry.getValue();
+//                        LinkedHashMap<Integer,TNBImageItem>
+                        for (TNBImageItem entry : mSelectedMap.getValueList()) {
+                            TNBImageItem item = entry;
                             item.objectId = list.get(i).objectId;
                             item.urlFile = list.get(i);
                             i++;
-                            entry.setValue(item);
+//                            entry=item;
                         }
                         toSave(params);
                     }
@@ -665,7 +665,7 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
     }
 
     @Override
-    public void setSelectedImages(LinkedHashMap<String, TNBImageItem> map) {
+    public void setSelectedImages(LinkedHashList<String, TNBImageItem> map) {
         this.mSelectedMap = map;
     }
 
@@ -1006,9 +1006,9 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
     private boolean isEqual(List<CreateCheckListParamsFile> a, List<CreateCheckListParamsFile> inputList) {
         List<CreateCheckListParamsFile> b = new ArrayList<>();
         if (mSelectedMap != null && mSelectedMap.size() > 0) {
-            for (Map.Entry<String, TNBImageItem> entry : mSelectedMap.entrySet()) {
+            for (TNBImageItem entry : mSelectedMap.getValueList()) {
                 CreateCheckListParamsFile file = new CreateCheckListParamsFile();
-                file.objectId = entry.getValue().objectId;
+                file.objectId = entry.objectId;
                 b.add(file);
             }
 
