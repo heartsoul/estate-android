@@ -337,7 +337,7 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
                             } else {
                                 mView.showCompany(mCompanyList.get(0));
                                 mInitParams.constructionCompanyName = mCompanyList.get(0).name;
-                                mInitParams.constructionCompanyId = mCompanyList.get(0).id;
+                                mInitParams.constructionCompanyId = mCompanyList.get(0).coperationId;
                             }
                         }else{
                             //施工单位为空  则特殊处理
@@ -723,7 +723,7 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
         }
         //施工单位
         if (mCompanyList != null && mCompanyList.size() > 0 && mCompanySelectPosition<mCompanyList.size()) {
-            mInput.constructionCompanyId = mCompanyList.get(mCompanySelectPosition).id;
+            mInput.constructionCompanyId = mCompanyList.get(mCompanySelectPosition).coperationId;
             mInput.constructionCompanyName = mCompanyList.get(mCompanySelectPosition).name;
         }
         //责任人
