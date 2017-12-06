@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 
 import com.glodon.bim.R;
 import com.glodon.bim.basic.image.ImageLoader;
+import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.basic.utils.LinkedHashList;
 import com.glodon.bim.basic.utils.ScreenUtil;
 
@@ -60,10 +61,11 @@ public class AlbumEditAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         holder.mParent.getLayoutParams().height = w;
         //显示图片
         final TNBImageItem item = mDataList.get(position);
-        String url = item.thumbnailPath;
-        if(TextUtils.isEmpty(url)){
-            url = item.imagePath;
-        }
+        String url = item.imagePath;
+//        String url = item.thumbnailPath;
+//        if(TextUtils.isEmpty(url)){
+//            url = item.imagePath;
+//        }
         ImageLoader.showImageCenterCrop(mActivity,url,holder.mImageView,R.drawable.icon_default_image);
 
         //设置选中状态

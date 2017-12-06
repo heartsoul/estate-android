@@ -48,6 +48,6 @@ public class AppConfig {
 //    public static String BASE_URL = "http://bimcop.glodon.com/"; //正式环境
 
     public static final String BASE_URL_FEEDBACK = "http://192.168.81.30:8000/";//意见反馈的url
-    public static boolean isShow = true;//控制是否可现实模型图纸界面
+    public static boolean isShow = false;//控制是否可现实模型图纸界面
 
 }
