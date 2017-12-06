@@ -99,7 +99,8 @@ public class SettingActivity extends BaseActivity implements SettingContract.Vie
 
                 break;
             case R.id.setting_feedback:
-                showToast();
+                Intent feedbackIntent = new Intent(mActivity,FeedBackActivity.class);
+                startActivity(feedbackIntent);
                 break;
             case R.id.setting_contact_us:
                 call(mPhoneNumber.getText().toString().trim());

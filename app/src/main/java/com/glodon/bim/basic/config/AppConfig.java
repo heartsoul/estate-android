@@ -10,6 +10,7 @@ import com.glodon.bim.R;
 
 public class AppConfig {
 
+
     /**
      * 控制是否显示控制台log
      */
@@ -37,6 +38,7 @@ public class AppConfig {
     /**
      * 环境的url
      */
+
 //    public static String BASE_URL = "http://192.168.72.48/";//欧阳
 //    public static String BASE_UPLOAD_URL =  "https://api.glodon.com/";
     public static String BASE_UPLOAD_URL =  "http://172.16.233.183:8093/";//图片上传  测试
@@ -45,6 +47,7 @@ public class AppConfig {
     public static String BASE_URL = "http://192.168.81.30/"; //测试
 //    public static String BASE_URL = "http://bimcop.glodon.com/"; //正式环境
 
+    public static final String BASE_URL_FEEDBACK = "http://192.168.81.30:8000/";//意见反馈的url
     public static boolean isShow = true;//控制是否可现实模型图纸界面
 
 }

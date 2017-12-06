@@ -39,13 +39,13 @@
         <!-- 主界面 -->
         <activity
             android:name=".business.qualityManage.view.QualityMangeMainActivity"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait">
             <!--<intent-filter>-->
-                <!--<action android:fileName="android.intent.action.MAIN" />-->
+            <!--<action android:fileName="android.intent.action.MAIN" />-->
 
-                <!--<category android:fileName="android.intent.category.LAUNCHER" />-->
+            <!--<category android:fileName="android.intent.category.LAUNCHER" />-->
             <!--</intent-filter>-->
-            </activity>
+        </activity>
 
         <!-- 登录界面 -->
         <activity
@@ -230,9 +230,9 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan">
             <!--<intent-filter>-->
-                <!--<action android:fileName="android.intent.action.MAIN" />-->
+            <!--<action android:fileName="android.intent.action.MAIN" />-->
 
-                <!--<category android:fileName="android.intent.category.LAUNCHER" />-->
+            <!--<category android:fileName="android.intent.category.LAUNCHER" />-->
             <!--</intent-filter>-->
 
         </activity>
@@ -241,11 +241,16 @@
             android:name=".business.qualityManage.view.ChooseModuleActivity"
             android:screenOrientation="portrait" />
         <!-- 质检标准 -->
-        <activity android:name="com.glodon.bim.business.qualityManage.view.ModuleStandardActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.glodon.bim.business.qualityManage.view.ModuleStandardActivity"
+            android:screenOrientation="portrait" />
         <!-- 设置 -->
         <activity
             android:name=".business.setting.view.SettingActivity"
+            android:screenOrientation="portrait" />
+        <!-- 意见反馈 -->
+        <activity
+            android:name="com.glodon.bim.business.setting.view.FeedBackActivity"
             android:screenOrientation="portrait" />
         <!--相册-->
         <activity
@@ -263,10 +268,12 @@
             android:name="com.glodon.bim.customview.photopreview.PhotoPreviewActivity"
             android:screenOrientation="portrait" />
         <!--检查单详情-->
-        <activity android:name="com.glodon.bim.business.qualityManage.view.QualityCheckListDetailActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name="com.glodon.bim.business.qualityManage.view.CreateReviewActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.glodon.bim.business.qualityManage.view.QualityCheckListDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.glodon.bim.business.qualityManage.view.CreateReviewActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
