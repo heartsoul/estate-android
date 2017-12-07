@@ -13,6 +13,7 @@
     <!-- 登录 -->
     <color name="c_999992">#999992</color>
     <color name="c_f3f3f2">#f3f3f2</color>
+    <color name="c_f3f2f2">#f3f2f2</color>
     <color name="c_00baf3">#00baf3</color>
     <color name="c_00b0f1">#00b0f1</color>
     <color name="c_00b3f1">#00b3f1</color>
@@ -86,6 +87,7 @@
     <color name="c_333333">#333333</color>
     <color name="c_7a7a7a">#7a7a7a</color>
     <color name="c_070707">#070707</color>
+    <color name="c_898989">#898989</color>
 
     <!-- zxing -->
     <color name="viewfinder_frame">#ff000000</color>

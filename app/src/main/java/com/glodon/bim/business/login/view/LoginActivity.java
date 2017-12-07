@@ -226,8 +226,6 @@ public class LoginActivity extends BaseActivity implements LoginContract.View, V
                 break;
             case R.id.login_button:
                 mPresenter.clickLoginBtn(mUsernameEt.getText().toString(), mPasswordEt.getText().toString());
-//                Intent intent = new Intent(LoginActivity.this, QualityMangeMainActivity.class);
-//                startActivity(intent);
                 break;
             case R.id.login_forget_password:
                 mPresenter.forgetPassword();

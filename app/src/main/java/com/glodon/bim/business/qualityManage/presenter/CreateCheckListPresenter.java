@@ -754,7 +754,7 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
 
         //项目名称
         mInput.projectName = SharedPreferencesUtil.getProjectName();
-
+        mInput.inspectionType = mInspectionType;
         mInput.code = mCode;
     }
 

@@ -3,12 +3,14 @@ package com.glodon.bim.business.login.presenter;
 import android.content.Intent;
 import android.text.TextUtils;
 
+import com.glodon.bim.basic.config.AppConfig;
 import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.basic.utils.NetWorkUtils;
 import com.glodon.bim.basic.utils.SharedPreferencesUtil;
 import com.glodon.bim.business.login.contract.LoginContract;
 import com.glodon.bim.business.login.listener.OnLoginListener;
 import com.glodon.bim.business.login.model.LoginModel;
+import com.glodon.bim.business.login.view.PictureCodeActivity;
 import com.glodon.bim.business.main.view.ChooseTenantActivity;
 import com.glodon.bim.common.config.CommonConfig;
 import com.glodon.bim.common.login.User;
@@ -116,7 +118,10 @@ public class LoginPresenter implements LoginContract.Presenter {
 
     @Override
     public void forgetPassword() {
-
+        if (AppConfig.isShow) {
+            Intent intent = new Intent(mView.getActivity(), PictureCodeActivity.class);
+            mView.getActivity().startActivity(intent);
+        }
     }
 
     @Override
