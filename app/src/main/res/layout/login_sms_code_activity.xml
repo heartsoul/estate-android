@@ -15,8 +15,7 @@
         <RelativeLayout
             android:id="@+id/sms_code_back"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/dimen_43"
-            android:background="@color/c_00baf3">
+            android:layout_height="@dimen/dimen_43">
 
             <ImageView
                 android:layout_width="@dimen/dimen_09"
@@ -24,7 +23,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/dimen_26"
                 android:layout_marginRight="@dimen/dimen_10"
-                android:background="@drawable/icon_back_white" />
+                android:background="@drawable/icon_back_black" />
         </RelativeLayout>
 
     <LinearLayout
