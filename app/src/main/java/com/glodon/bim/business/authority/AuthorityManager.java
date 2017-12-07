@@ -133,6 +133,7 @@ public class AuthorityManager {
                     @Override
                     public void onResponse(Call<AuthorityBean> call, Response<AuthorityBean> response) {
                         Quality_Check_Bean = response.body();
+                        LogUtil.e("质量检查记录="+Quality_Check_Bean.toString());
                         SharedPreferencesUtil.setQualityCheckBean(Quality_Check_Bean);
                         Intent intent = new Intent();
                         intent.setAction(CommonConfig.ACTION_GET_AUTHORITY_CHECK);
@@ -152,6 +153,7 @@ public class AuthorityManager {
                     @Override
                     public void onResponse(Call<AuthorityBean> call, Response<AuthorityBean> response) {
                         Quality_Accept_Bean = response.body();
+                        LogUtil.e("质量验收记录="+Quality_Accept_Bean.toString());
                         SharedPreferencesUtil.setQualityAcceptBean(Quality_Accept_Bean);
                     }
 
@@ -168,6 +170,7 @@ public class AuthorityManager {
                     @Override
                     public void onResponse(Call<AuthorityBean> call, Response<AuthorityBean> response) {
                         Quality_Risk_Bean = response.body();
+                        LogUtil.e("质量隐患记录="+Quality_Risk_Bean.toString());
                         SharedPreferencesUtil.setQualityRiskBean(Quality_Risk_Bean);
                     }
 
@@ -184,6 +187,7 @@ public class AuthorityManager {
                     @Override
                     public void onResponse(Call<AuthorityBean> call, Response<AuthorityBean> response) {
                         Quality_Facility_Bean = response.body();
+                        LogUtil.e("材料设备进场验收="+Quality_Facility_Bean.toString());
                         SharedPreferencesUtil.setQualityFacilityBean(Quality_Facility_Bean);
                     }
 
@@ -200,6 +204,7 @@ public class AuthorityManager {
                     @Override
                     public void onResponse(Call<AuthorityBean> call, Response<AuthorityBean> response) {
                         Quality_Rectification_Bean = response.body();
+                        LogUtil.e("质量整改记录="+Quality_Rectification_Bean.toString());
                         SharedPreferencesUtil.setQualityRectificationBean(Quality_Rectification_Bean);
                     }
 

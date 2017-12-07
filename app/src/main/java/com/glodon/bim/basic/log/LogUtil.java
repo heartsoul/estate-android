@@ -61,19 +61,19 @@ public class LogUtil {
     }
 
     public static void e(String msg) {
-        if (isShowLog()) {
+        if (isShowLog() && AppConfig.isShow) {
             Log.e(TAG, msg);
         }
     }
 
     public static void e(String tag, String msg) {
-        if (isShowLog()) {
+        if (isShowLog()&& AppConfig.isShow) {
             Log.e(tag, msg);
         }
     }
 
     public static void e(String tag, String msg, Throwable t) {
-        if (isShowLog()) {
+        if (isShowLog()&& AppConfig.isShow) {
             Log.e(tag, msg, t);
         }
     }
