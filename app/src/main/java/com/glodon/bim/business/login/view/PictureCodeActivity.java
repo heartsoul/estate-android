@@ -2,20 +2,17 @@ package com.glodon.bim.business.login.view;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.glodon.bim.R;
 import com.glodon.bim.base.BaseActivity;
-import com.glodon.bim.basic.utils.ScreenUtil;
 import com.glodon.bim.customview.ToastManager;
 
 import java.util.Random;
@@ -30,11 +27,11 @@ public class PictureCodeActivity extends BaseActivity implements View.OnClickLis
     private RelativeLayout mBackView;
     private EditText mNameView;
     private View mNameLineGray,mNameLineBlue;
-    private ImageView mNameDelete;
+    private RelativeLayout mNameDelete;
 
     private TextView mCodeName;
     private EditText mCodeText;
-    private ImageView mCodeDelete;
+    private RelativeLayout mCodeDelete;
     private TextView mCodeView;
     private View mCodeLineGray,mCodeLineBlue;
 
@@ -57,11 +54,11 @@ public class PictureCodeActivity extends BaseActivity implements View.OnClickLis
         mNameView = (EditText) findViewById(R.id.picture_code_name);
         mNameLineGray = findViewById(R.id.picture_code_name_line_gray);
         mNameLineBlue = findViewById(R.id.picture_code_name_line_blue);
-        mNameDelete = (ImageView) findViewById(R.id.picture_code_name_delete);
+        mNameDelete = (RelativeLayout) findViewById(R.id.picture_code_name_delete);
 
         mCodeName = (TextView) findViewById(R.id.picture_code_code_name);
         mCodeText= (EditText) findViewById(R.id.picture_code_code_text);
-        mCodeDelete= (ImageView) findViewById(R.id.picture_code_code_text_delete);
+        mCodeDelete= (RelativeLayout) findViewById(R.id.picture_code_code_text_delete);
         mCodeView= (TextView) findViewById(R.id.picture_code_code_view);
         mCodeLineGray = findViewById(R.id.picture_code_code_line_gray);
         mCodeLineBlue = findViewById(R.id.picture_code_code_line_blue);

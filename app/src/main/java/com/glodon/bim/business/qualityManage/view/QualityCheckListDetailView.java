@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.glodon.bim.R;
 import com.glodon.bim.basic.image.ImageLoader;
+import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.basic.utils.DateUtil;
 import com.glodon.bim.basic.utils.LinkedHashList;
 import com.glodon.bim.basic.utils.ScreenUtil;
@@ -154,6 +155,7 @@ public class QualityCheckListDetailView implements QualityCheckListDetailViewCon
 
 //        ImageLoader.showHeadIcon(mActivity,R.drawable.icon_default_boy,headIcon);
         //创建者
+        LogUtil.e("check title="+info.inspectionUserTitle);
         nameView.setText(info.creatorName+ (TextUtils.isEmpty(info.inspectionUserTitle)?"":"-"+info.inspectionUserTitle));
         //状态
         statusView.setBackgroundResource(R.drawable.check_list_status_blue);
@@ -273,6 +275,8 @@ public class QualityCheckListDetailView implements QualityCheckListDetailViewCon
         //头像
 //        ImageLoader.showHeadIcon(mActivity,"",headIcon);
         //创建者
+
+        LogUtil.e("history title="+info.handlerTitle);
         nameView.setText(info.handlerName+(TextUtils.isEmpty(info.handlerTitle)?"":"-"+info.handlerTitle));
         //最新时间
         if(info.commitTime>0) {

@@ -77,15 +77,21 @@
                 android:background="@color/white"
                 android:layout_gravity="center_vertical"
                 />
-            <ImageView
+            <RelativeLayout
                 android:id="@+id/picture_code_name_delete"
-                android:layout_width="@dimen/dimen_18"
-                android:layout_height="@dimen/dimen_18"
-                android:background="@drawable/icon_login_password_delete"
-                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/dimen_15"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/dimen_15"
-                />
+                android:background="@color/white"
+                android:visibility="gone">
+                <ImageView
+                    android:layout_width="@dimen/dimen_18"
+                    android:layout_height="@dimen/dimen_18"
+                    android:background="@drawable/icon_login_password_delete"
+                    />
+            </RelativeLayout>
+
         </LinearLayout>
 
         <View
@@ -133,15 +139,21 @@
                 android:textColorHint="@color/c_999992"
                 android:layout_gravity="center_vertical"
                 />
-            <ImageView
+            <RelativeLayout
                 android:id="@+id/picture_code_code_text_delete"
-                android:layout_width="@dimen/dimen_18"
-                android:layout_height="@dimen/dimen_18"
-                android:background="@drawable/icon_login_password_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/dimen_15"
-                android:visibility="gone"
-                />
+                android:paddingLeft="@dimen/dimen_15"
+                android:background="@color/white"
+                android:visibility="gone">
+                <ImageView
+                    android:layout_width="@dimen/dimen_18"
+                    android:layout_height="@dimen/dimen_18"
+                    android:background="@drawable/icon_login_password_delete"
+                    />
+            </RelativeLayout>
+
             <TextView
                 android:id="@+id/picture_code_code_view"
                 android:layout_width="wrap_content"

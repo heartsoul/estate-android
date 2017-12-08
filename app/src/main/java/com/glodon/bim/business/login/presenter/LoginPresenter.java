@@ -11,6 +11,7 @@ import com.glodon.bim.business.login.contract.LoginContract;
 import com.glodon.bim.business.login.listener.OnLoginListener;
 import com.glodon.bim.business.login.model.LoginModel;
 import com.glodon.bim.business.login.view.PictureCodeActivity;
+import com.glodon.bim.business.login.view.ResetPasswordActivity;
 import com.glodon.bim.business.main.view.ChooseTenantActivity;
 import com.glodon.bim.common.config.CommonConfig;
 import com.glodon.bim.common.login.User;
@@ -119,7 +120,8 @@ public class LoginPresenter implements LoginContract.Presenter {
     @Override
     public void forgetPassword() {
         if (AppConfig.isShow) {
-            Intent intent = new Intent(mView.getActivity(), PictureCodeActivity.class);
+//            Intent intent = new Intent(mView.getActivity(), PictureCodeActivity.class);
+            Intent intent = new Intent(mView.getActivity(), ResetPasswordActivity.class);
             mView.getActivity().startActivity(intent);
         }
     }

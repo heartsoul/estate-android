@@ -8,13 +8,11 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.glodon.bim.R;
 import com.glodon.bim.base.BaseActivity;
-import com.glodon.bim.customview.ToastManager;
 
 import java.util.concurrent.TimeUnit;
 
@@ -37,7 +35,7 @@ public class SmsCodeActivity extends BaseActivity implements View.OnClickListene
 
     private TextView mCodeTop;
     private EditText mCodeText;
-    private ImageView mCodeDelete;
+    private RelativeLayout mCodeDelete;
     private TextView mCodeView;
 
     private Button mSubmitView;
@@ -63,7 +61,7 @@ public class SmsCodeActivity extends BaseActivity implements View.OnClickListene
         mCodeTop = (TextView) findViewById(R.id.sms_code_top);
 
         mCodeText = (EditText) findViewById(R.id.sms_code_text);
-        mCodeDelete = (ImageView) findViewById(R.id.sms_code_delete);
+        mCodeDelete = (RelativeLayout) findViewById(R.id.sms_code_delete);
         mCodeView = (TextView) findViewById(R.id.sms_code_view);
 
         mSubmitView = (Button) findViewById(R.id.sms_code_next);
@@ -199,12 +197,12 @@ public class SmsCodeActivity extends BaseActivity implements View.OnClickListene
 
     private void toNext() {
         String code = mCodeText.getText().toString().trim();
-        if (!TextUtils.isEmpty(code) && code.equals(mCurrentCode)) {
+//        if (!TextUtils.isEmpty(code) && code.equals(mCurrentCode)) {
             Intent intent = new Intent(mActivity, ResetPasswordActivity.class);
             startActivity(intent);
-        } else {
-            ToastManager.show("验证码错误，请重试！");
-            mCodeText.setText("");
-        }
+//        } else {
+//            ToastManager.show("验证码错误，请重试！");
+//            mCodeText.setText("");
+//        }
     }
 }
