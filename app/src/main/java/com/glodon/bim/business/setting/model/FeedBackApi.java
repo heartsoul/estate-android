@@ -17,7 +17,7 @@ import rx.Observable;
 
 public interface FeedBackApi {
 
-    @POST("/feedbacks")
+    @POST("/backend/feedbacks")
     Observable<FeedBackBean> addFeedBack(@Body FeedBackParams props);
     @POST("/feedbacks")
     Call<ResponseBody> addFeedBack2(@Body FeedBackParams props);

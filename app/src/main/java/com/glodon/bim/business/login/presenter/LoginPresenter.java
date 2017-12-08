@@ -120,8 +120,8 @@ public class LoginPresenter implements LoginContract.Presenter {
     @Override
     public void forgetPassword() {
         if (AppConfig.isShow) {
-//            Intent intent = new Intent(mView.getActivity(), PictureCodeActivity.class);
-            Intent intent = new Intent(mView.getActivity(), ResetPasswordActivity.class);
+            Intent intent = new Intent(mView.getActivity(), PictureCodeActivity.class);
+//            Intent intent = new Intent(mView.getActivity(), ResetPasswordActivity.class);
             mView.getActivity().startActivity(intent);
         }
     }

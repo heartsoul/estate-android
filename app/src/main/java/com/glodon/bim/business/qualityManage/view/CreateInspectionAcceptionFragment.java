@@ -648,6 +648,8 @@ public class CreateInspectionAcceptionFragment extends BaseFragment implements V
     public void showEmptyCompany() {
         mCompanyName.setText(mCompanyEmptyText);
         mPersonName.setText(mPersonEmptyText);
+        mCompanyName.setTextColor(getResources().getColor(R.color.c_acacac));
+        mPersonName.setTextColor(getResources().getColor(R.color.c_acacac));
         mIsCompanyAble = false;
         mIsPersonAble = false;
     }
@@ -655,6 +657,7 @@ public class CreateInspectionAcceptionFragment extends BaseFragment implements V
     @Override
     public void showPersonEmpty() {
         mPersonName.setText(mPersonEmptyText);
+        mPersonName.setTextColor(getResources().getColor(R.color.c_acacac));
     }
 
 
