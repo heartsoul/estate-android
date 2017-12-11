@@ -16,6 +16,7 @@ import com.glodon.bim.business.qualityManage.listener.OnChooseBlueprintCataListe
 import com.glodon.bim.business.qualityManage.listener.OnChooseBlueprintObjListener;
 import com.glodon.bim.business.qualityManage.model.BluePrintModel;
 import com.glodon.bim.business.qualityManage.model.ModelModel;
+import com.glodon.bim.business.qualityManage.view.RelevantBluePrintActivity;
 import com.glodon.bim.common.config.CommonConfig;
 import com.glodon.bim.customview.ToastManager;
 
@@ -110,10 +111,12 @@ public class BluePrintPresenter implements BluePrintContract.Presenter {
     private OnChooseBlueprintObjListener mObjListener = new OnChooseBlueprintObjListener() {
         @Override
         public void onSelect(BlueprintListBeanItem item, String position) {
-            Intent data = new Intent();
-            data.putExtra(CommonConfig.MODULE_LIST_NAME, item);
-            mView.getActivity().setResult(Activity.RESULT_OK, data);
-            mView.getActivity().finish();
+//            Intent data = new Intent();
+//            data.putExtra(CommonConfig.MODULE_LIST_NAME, item);
+//            mView.getActivity().setResult(Activity.RESULT_OK, data);
+//            mView.getActivity().finish();
+            Intent intent = new Intent(mView.getActivity(), RelevantBluePrintActivity.class);
+            mView.getActivity().startActivity(intent);
         }
     };
 
