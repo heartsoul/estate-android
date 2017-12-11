@@ -52,7 +52,11 @@
             android:name=".business.login.view.LoginActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <!-- 启动界面 -->
         <activity
@@ -274,11 +278,7 @@
         <!--关联图纸-具体展示图纸-->
         <activity android:name="com.glodon.bim.business.qualityManage.view.RelevantBluePrintActivity"
             android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 

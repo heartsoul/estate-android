@@ -1,7 +1,9 @@
 package com.glodon.bim.business.qualityManage.view;
 
+import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
@@ -16,7 +18,11 @@ import com.glodon.bim.R;
 import com.glodon.bim.base.BaseActivity;
 import com.glodon.bim.basic.config.AppConfig;
 import com.glodon.bim.basic.log.LogUtil;
+import com.glodon.bim.basic.utils.SharedPreferencesUtil;
 import com.glodon.bim.business.qualityManage.bean.BluePrintBasicInfo;
+import com.glodon.bim.business.qualityManage.contract.RelevantBluePrintContract;
+import com.glodon.bim.business.qualityManage.presenter.RelevantBluePrintPresenter;
+import com.glodon.bim.common.config.CommonConfig;
 import com.glodon.bim.customview.ToastManager;
 import com.google.gson.GsonBuilder;
 
@@ -29,14 +35,17 @@ import java.util.Map;
  * 作者：zhourf on 2017/9/8
  * 邮箱：zhourf@glodon.com
  */
-public class RelevantBluePrintActivity extends BaseActivity implements View.OnClickListener {
+public class RelevantBluePrintActivity extends BaseActivity implements View.OnClickListener, RelevantBluePrintContract.View {
 
     private View mStatusView;
     private RelativeLayout mBackView;
-    private TextView mCancelView,mTitleView,mFinishView;
+    private TextView mCancelView, mTitleView, mFinishView;
     private WebView mWebview;
     private ImageView mTrangleView;
     private TextView mTrangleTextView;
+    private String mFileName = "";
+
+    private RelevantBluePrintContract.Presenter mPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +71,7 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
         initWebview();
     }
 
-    private void initWebview(){
+    private void initWebview() {
         mWebview.setWebChromeClient(new WebChromeClient());
         /**
          * 依旧当前webview加载新的html
@@ -109,6 +118,17 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
         setting.setLoadWithOverviewMode(true);
     }
 
+
+    @Override
+    public void sendBasicInfo(long mProjectId, String mProjectVersionId, String mFileId) {
+        String url = getUrl(mProjectId, mProjectVersionId, mFileId);
+        LogUtil.e("url="+url);
+        mWebview.loadUrl(url);
+    }
+
+//    window.modelEvent.getPosition
+
+
     class BasicInfo {
 
         @JavascriptInterface
@@ -140,26 +160,41 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
     }
 
     private void initData() {
-        mWebview.loadUrl(getUrl());
+        //title名字
+        mFileName = getIntent().getStringExtra(CommonConfig.BLUE_PRINT_FILE_NAME);
+        mTitleView.setText(mFileName);
+        //隐藏提示
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mTrangleTextView.setVisibility(View.GONE);
+                mTrangleView.setVisibility(View.GONE);
+            }
+        },3000);
+
+        //获取数据
+        mPresenter = new RelevantBluePrintPresenter(this);
+        mPresenter.initData(getIntent());
+
     }
 
-    private String getUrl(){
+    private String getUrl(long mProjectId, String mProjectVersionId, String mFileId) {
         BluePrintBasicInfo info = new BluePrintBasicInfo();
-        info.projectId = "projectId1";
-        info.projectVersionId = "projectVersionId1";
-        info.fileId = "fileId1";
-        return AppConfig.BASE_URL_BLUEPRINT+"?param="+new GsonBuilder().create().toJson(info);
+        info.projectId = mProjectId + "";
+        info.projectVersionId = mProjectVersionId;
+        info.fileId = mFileId;
+        return AppConfig.BASE_URL_BLUEPRINT + "?param=" + new GsonBuilder().create().toJson(info);
     }
 
     //传递基本信息给h5  我的id  项目id   图纸id
 
     //传递点的信息给h5
-    public void sendDotsData(){
+    public void sendDotsData() {
         BluePrintBasicInfo info = new BluePrintBasicInfo();
         info.projectId = "projectId2";
         info.projectVersionId = "projectVersionId2";
         info.fileId = "fileId2";
-        sendDataToHtml("loadInitData",new GsonBuilder().create().toJson(info));
+        sendDataToHtml("loadInitData", new GsonBuilder().create().toJson(info));
     }
 
 
@@ -175,10 +210,6 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
 
     /**
      * 创建返回的事件
-     *
-     * @param eventName
-     * @param json
-     * @return
      */
     private static String createReturnUrl(String eventName, String json) {
         String temp = "javascript:{ var e = document.createEvent('Event');" + "e.data=" + json + ";" + "e.initEvent('"
@@ -188,18 +219,30 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
     }
 
     public void sendDataToHtml(String callbackMethodName, String json) {
-//        TNBMethodConfig.returnToHtml(this, eventName, params);
-//        this.loadUrl("javascript:"+callbackMethodName+"(\""+json+"\")");
-        LogUtil.e("json=============" + json);
-
         mWebview.loadUrl("javascript:" + callbackMethodName + "('" + json + "')");
     }
 
-    class CustomWebViewClient extends  WebViewClient{
+    class CustomWebViewClient extends WebViewClient {
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
             sendDotsData();
         }
+    }
+
+
+    @Override
+    public void showLoadingDialog() {
+        showLoadDialog(true);
+    }
+
+    @Override
+    public void dismissLoadingDialog() {
+        dismissLoadDialog();
+    }
+
+    @Override
+    public Activity getActivity() {
+        return mActivity;
     }
 }

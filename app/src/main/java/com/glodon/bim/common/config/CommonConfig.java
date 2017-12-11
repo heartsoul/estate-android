@@ -58,4 +58,6 @@ public class CommonConfig {
     public static final String ALBUM_SHOW_DELETE = "albumShowDelete";
     public static final String MODULE_TEMPLATEID = "module_templateid";
     public static final String ACTION_LOG_OUT = "com.glodon.bim.action.logout";//退出登录发送广播
+    public static final String BLUE_PRINT_FILE_ID = "BLUE_PRINT_FILE_ID";//图纸的id
+    public static final String BLUE_PRINT_FILE_NAME = "BLUE_PRINT_FILE_NAME";//图纸的NAME
 }

@@ -116,6 +116,8 @@ public class BluePrintPresenter implements BluePrintContract.Presenter {
 //            mView.getActivity().setResult(Activity.RESULT_OK, data);
 //            mView.getActivity().finish();
             Intent intent = new Intent(mView.getActivity(), RelevantBluePrintActivity.class);
+            intent.putExtra(CommonConfig.BLUE_PRINT_FILE_NAME,item.name);
+            intent.putExtra(CommonConfig.BLUE_PRINT_FILE_ID,item.fileId);
             mView.getActivity().startActivity(intent);
         }
     };
