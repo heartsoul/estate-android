@@ -1,16 +1,19 @@
 package com.glodon.bim.business.qualityManage.view;
 
 import android.app.Activity;
+import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.webkit.JavascriptInterface;
+import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -18,7 +21,6 @@ import com.glodon.bim.R;
 import com.glodon.bim.base.BaseActivity;
 import com.glodon.bim.basic.config.AppConfig;
 import com.glodon.bim.basic.log.LogUtil;
-import com.glodon.bim.basic.utils.SharedPreferencesUtil;
 import com.glodon.bim.business.qualityManage.bean.BluePrintBasicInfo;
 import com.glodon.bim.business.qualityManage.contract.RelevantBluePrintContract;
 import com.glodon.bim.business.qualityManage.presenter.RelevantBluePrintPresenter;
@@ -27,8 +29,6 @@ import com.glodon.bim.customview.ToastManager;
 import com.google.gson.GsonBuilder;
 
 import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * 描述：关联图纸-图纸展示
@@ -44,6 +44,9 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
     private ImageView mTrangleView;
     private TextView mTrangleTextView;
     private String mFileName = "";
+
+    private RelevantBluePrintAndModelDialog mRepairDialog;
+    private RelevantBluePrintAndModelDialog mReviewDialog;
 
     private RelevantBluePrintContract.Presenter mPresenter;
 
@@ -67,6 +70,8 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
         mWebview = (WebView) findViewById(R.id.relevant_blueprint_webview);
         mTrangleView = (ImageView) findViewById(R.id.relevant_blueprint_trangle);
         mTrangleTextView = (TextView) findViewById(R.id.relevant_blueprint_trangle_content);
+
+
 
         initWebview();
     }
@@ -121,7 +126,15 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
 
     @Override
     public void sendBasicInfo(long mProjectId, String mProjectVersionId, String mFileId) {
-        String url = getUrl(mProjectId, mProjectVersionId, mFileId);
+        // param = {
+        //     "fileId":"de3a033fa5a046eeb11ae6994d3f124c",
+        //     "projectId": '5211517',
+        //     "projectVersionId": '0e44a8f4f2fc4b7eb6c097aa361f342b'
+        // }
+//        String url = getUrl(5211517, "0e44a8f4f2fc4b7eb6c097aa361f342b", "de3a033fa5a046eeb11ae6994d3f124c");
+//        String url = getUrl(mProjectId, mProjectVersionId, mFileId);  http://47.95.204.243/app.html
+        String url = "http://47.95.204.243/app.html?param={%22fileId%22:%22dff5aed79cf5407687b91ee42b2ebb91%22,%22projectId%22:%225200103%22,%22projectVersionId%22:%22da563a7890e24d90b8adb23a0883f270%22}";
+
         LogUtil.e("url="+url);
         mWebview.loadUrl(url);
     }
@@ -156,10 +169,13 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
     }
 
     private void setListener() {
-
+        mBackView.setOnClickListener(this);
     }
 
     private void initData() {
+        //初始化底部弹出框
+        mRepairDialog = new RelevantBluePrintAndModelDialog(this);
+        mReviewDialog = new RelevantBluePrintAndModelDialog(this);
         //title名字
         mFileName = getIntent().getStringExtra(CommonConfig.BLUE_PRINT_FILE_NAME);
         mTitleView.setText(mFileName);
@@ -194,18 +210,55 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
         info.projectId = "projectId2";
         info.projectVersionId = "projectVersionId2";
         info.fileId = "fileId2";
-        sendDataToHtml("loadInitData", new GsonBuilder().create().toJson(info));
+//        sendDataToHtml("loadInitData", new GsonBuilder().create().toJson(info));
     }
 
+    private boolean isshow = true;
 
     @Override
     public void onClick(View view) {
         int id = view.getId();
         switch (id) {
-            case R.id.sms_code_back://返回键
-                mActivity.finish();
+            case R.id.relevant_blueprint_back://返回键
+//                mActivity.finish();
+                if(isshow){
+                    showRepairDialog();
+                }else {
+                    showReviewDialog();
+                }
+                isshow = !isshow;
                 break;
         }
+    }
+
+    //新建整改单的弹出框
+   private void showRepairDialog(){
+       mRepairDialog.getRepairDialog(new View.OnClickListener() {
+           @Override
+           public void onClick(View view) {
+
+           }
+       }, new View.OnClickListener() {
+           @Override
+           public void onClick(View view) {
+
+           }
+       }).show();
+   }
+
+   //新建复查单的弹出框
+    private void showReviewDialog(){
+        mReviewDialog.getReviewDialog(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        }, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        }).show();
     }
 
     /**
@@ -227,6 +280,11 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
             sendDotsData();
+        }
+
+        @Override
+        public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+            handler.proceed();
         }
     }
 
