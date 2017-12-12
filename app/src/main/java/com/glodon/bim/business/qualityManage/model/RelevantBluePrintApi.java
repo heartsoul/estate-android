@@ -1,10 +1,14 @@
 package com.glodon.bim.business.qualityManage.model;
 
 import com.glodon.bim.business.qualityManage.bean.ProjectVersionBean;
+import com.glodon.bim.business.qualityManage.bean.RelevantBluePrintToken;
 
+import okhttp3.ResponseBody;
+import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 import rx.Observable;
 
 /**
@@ -22,4 +26,9 @@ public interface RelevantBluePrintApi {
     @GET("model/{projectId}/projectVersion/latestVersion")
     Observable<ProjectVersionBean> getLatestVersion(@Path("projectId") long projectId, @Header("cookie") String cookie);
 
+    /**
+     * 获取图纸的token
+     */
+    @GET("model/{projectId}/{projectVersionId}/bim/view/token")
+    Observable<RelevantBluePrintToken> getToken(@Path("projectId") long projectId, @Path("projectVersionId") String projectVersionId, @Query("fileId") String fileId, @Header("cookie") String cookie);
 }

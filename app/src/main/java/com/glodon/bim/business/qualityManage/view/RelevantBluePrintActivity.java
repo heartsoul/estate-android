@@ -28,7 +28,9 @@ import com.glodon.bim.common.config.CommonConfig;
 import com.glodon.bim.customview.ToastManager;
 import com.google.gson.GsonBuilder;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
+import java.net.URLEncoder;
 
 /**
  * 描述：关联图纸-图纸展示
@@ -125,7 +127,7 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
 
 
     @Override
-    public void sendBasicInfo(long mProjectId, String mProjectVersionId, String mFileId) {
+    public void sendBasicInfo(String token) {
         // param = {
         //     "fileId":"de3a033fa5a046eeb11ae6994d3f124c",
         //     "projectId": '5211517',
@@ -133,10 +135,15 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
         // }
 //        String url = getUrl(5211517, "0e44a8f4f2fc4b7eb6c097aa361f342b", "de3a033fa5a046eeb11ae6994d3f124c");
 //        String url = getUrl(mProjectId, mProjectVersionId, mFileId);  http://47.95.204.243/app.html
-        String url = "http://47.95.204.243/app.html?param={%22fileId%22:%22dff5aed79cf5407687b91ee42b2ebb91%22,%22projectId%22:%225200103%22,%22projectVersionId%22:%22da563a7890e24d90b8adb23a0883f270%22}";
-
+//        String url = "http://47.95.204.243/app.html?param={\"fileId\":\"dff5aed79cf5407687b91ee42b2ebb91\",\"projectId\":\"5200103\",\"projectVersionId\":\"da563a7890e24d90b8adb23a0883f270\"}";
+//        String url = "http://47.95.204.243/app.html?param=a585d8bf293340c3beac83217ab8f924";
+        String url = AppConfig.BASE_URL_BLUEPRINT_TOKEN+token;
         LogUtil.e("url="+url);
         mWebview.loadUrl(url);
+//        try {
+//        } catch (UnsupportedEncodingException e) {
+//            e.printStackTrace();
+//        }
     }
 
 //    window.modelEvent.getPosition
@@ -186,7 +193,7 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
                 mTrangleTextView.setVisibility(View.GONE);
                 mTrangleView.setVisibility(View.GONE);
             }
-        },3000);
+        },4000);
 
         //获取数据
         mPresenter = new RelevantBluePrintPresenter(this);
@@ -194,13 +201,7 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
 
     }
 
-    private String getUrl(long mProjectId, String mProjectVersionId, String mFileId) {
-        BluePrintBasicInfo info = new BluePrintBasicInfo();
-        info.projectId = mProjectId + "";
-        info.projectVersionId = mProjectVersionId;
-        info.fileId = mFileId;
-        return AppConfig.BASE_URL_BLUEPRINT + "?param=" + new GsonBuilder().create().toJson(info);
-    }
+//    pr
 
     //传递基本信息给h5  我的id  项目id   图纸id
 
@@ -276,6 +277,8 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
     }
 
     class CustomWebViewClient extends WebViewClient {
+
+
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);

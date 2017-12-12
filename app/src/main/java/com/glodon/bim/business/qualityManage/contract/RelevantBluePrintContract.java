@@ -7,6 +7,7 @@ import com.glodon.bim.business.qualityManage.bean.ModelListBeanItem;
 import com.glodon.bim.business.qualityManage.bean.ModelSingleListItem;
 import com.glodon.bim.business.qualityManage.bean.ModelSpecialListItem;
 import com.glodon.bim.business.qualityManage.bean.ProjectVersionBean;
+import com.glodon.bim.business.qualityManage.bean.RelevantBluePrintToken;
 import com.glodon.bim.business.qualityManage.model.OnModelSelectListener;
 
 import java.util.List;
@@ -30,11 +31,9 @@ public interface RelevantBluePrintContract {
 
         /**
          * 给h5传递基本信息
-         * @param mProjectId  项目id
-         * @param mProjectVersionId  项目最新版本
-         * @param mFileId  图纸文件的id
+         * @param token  图纸的token
          */
-        void sendBasicInfo(long mProjectId, String mProjectVersionId, String mFileId);
+        void sendBasicInfo(String token);
     }
 
     interface Model {
@@ -42,5 +41,13 @@ public interface RelevantBluePrintContract {
          * 获取当前已发布的最新版本
          */
         Observable<ProjectVersionBean> getLatestVersion(long projectId);
+
+        /**
+         * 获取图纸的token
+         * @param projectId  项目id
+         * @param projectVersionId  项目的版本
+         * @param fileId 图纸文件的id
+         */
+        Observable<RelevantBluePrintToken> getToken(long projectId, String projectVersionId, String fileId);
     }
 }

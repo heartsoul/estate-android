@@ -1,17 +1,29 @@
 package com.glodon.bim.business.qualityManage.presenter;
 
 import android.content.Intent;
+import android.text.TextUtils;
 
+import com.glodon.bim.basic.config.AppConfig;
 import com.glodon.bim.basic.log.LogUtil;
+import com.glodon.bim.basic.network.NetRequest;
 import com.glodon.bim.basic.utils.NetWorkUtils;
 import com.glodon.bim.basic.utils.SharedPreferencesUtil;
+import com.glodon.bim.business.greendao.provider.DaoProvider;
 import com.glodon.bim.business.qualityManage.bean.ProjectVersionBean;
 import com.glodon.bim.business.qualityManage.bean.ProjectVersionData;
+import com.glodon.bim.business.qualityManage.bean.RelevantBluePrintToken;
 import com.glodon.bim.business.qualityManage.contract.RelevantBluePrintContract;
+import com.glodon.bim.business.qualityManage.model.RelevantBluePrintApi;
 import com.glodon.bim.business.qualityManage.model.RelevantBluePrintModel;
 import com.glodon.bim.common.config.CommonConfig;
 import com.glodon.bim.customview.ToastManager;
 
+import java.io.IOException;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -72,7 +84,7 @@ public class RelevantBluePrintPresenter implements RelevantBluePrintContract.Pre
                         public void onNext(ProjectVersionBean projectVersionBean) {
                             if (projectVersionBean != null && projectVersionBean.data != null) {
                                 mProjectVersionId = projectVersionBean.data.versionId;
-                                mView.sendBasicInfo(mProjectId, mProjectVersionId, mFileId);
+                                getTokey(mProjectId, mProjectVersionId, mFileId);
                             }
                             if (mView != null) {
                                 mView.dismissLoadingDialog();
@@ -83,6 +95,32 @@ public class RelevantBluePrintPresenter implements RelevantBluePrintContract.Pre
         } else {
             ToastManager.showNetWorkToast();
         }
+    }
+
+    private void getTokey(long mProjectId, String mProjectVersionId, String mFileId) {
+        Subscription sub = mModel.getToken(mProjectId, mProjectVersionId, mFileId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<RelevantBluePrintToken>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        LogUtil.e(e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(RelevantBluePrintToken bean) {
+                        if(bean!=null && !TextUtils.isEmpty(bean.data)){
+                            if(mView!=null){
+                                mView.sendBasicInfo(bean.data);
+                            }
+                        }
+                    }
+                });
     }
 
     @Override
