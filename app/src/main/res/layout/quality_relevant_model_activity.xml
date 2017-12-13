@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <View
+        android:id="@+id/relevant_model_statusview"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_20"
+        android:background="@color/c_80000000" />
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_43"
+        android:background="@color/c_80000000">
+
+        <TextView
+            android:id="@+id/relevant_model_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/dimen_20"
+            android:gravity="center_vertical"
+            android:text="取消"
+            android:textColor="@color/white"
+            android:textSize="@dimen/dimen_15"
+            android:visibility="gone"/>
+
+        <RelativeLayout
+            android:id="@+id/relevant_model_back"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dimen_43">
+
+            <ImageView
+                android:layout_width="@dimen/dimen_09"
+                android:layout_height="@dimen/dimen_20"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/dimen_10"
+                android:background="@drawable/icon_back_white" />
+        </RelativeLayout>
+        <TextView
+            android:id="@+id/relevant_model_finish"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/dimen_20"
+            android:gravity="center_vertical"
+            android:text="长按新建"
+            android:textColor="@color/white"
+            android:textSize="@dimen/dimen_15" />
+
+        <TextView
+            android:id="@+id/relevant_model_title"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_vertical"
+            android:text="img_234"
+            android:textColor="@color/white"
+            android:textSize="@dimen/dimen_17"
+            android:maxLength="15"
+            />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <WebView
+            android:id="@+id/relevant_model_webview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+        <ImageView
+            android:id="@+id/relevant_model_trangle"
+            android:layout_width="@dimen/dimen_20"
+            android:layout_height="@dimen/dimen_20"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/dimen_40"
+            android:background="@drawable/icon_trangle_up_blue"
+            android:scaleX="0.7" />
+
+        <TextView
+            android:id="@+id/relevant_model_trangle_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/dimen_10"
+            android:background="@drawable/corner_radius_6_blue_bg"
+            android:gravity="center_horizontal"
+            android:padding="@dimen/dimen_10"
+            android:text="手指长按屏幕可以再当前位\n置新建检查单或者质检单哦"
+            android:textColor="@color/white"
+            android:textSize="@dimen/dimen_16"
+            android:layout_below="@id/relevant_model_trangle"/>
+
+
+    </RelativeLayout>
+</LinearLayout>
+

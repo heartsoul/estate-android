@@ -286,6 +286,8 @@
             >
 
         </activity>
+        <!--关联模型-具体展示模型-->
+        <activity android:name="com.glodon.bim.business.qualityManage.view.RelevantModelActivity" android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

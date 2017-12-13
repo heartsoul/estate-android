@@ -1,6 +1,5 @@
 package com.glodon.bim.business.qualityManage.presenter;
 
-import android.app.Activity;
 import android.content.Intent;
 
 import com.glodon.bim.basic.log.LogUtil;
@@ -13,7 +12,7 @@ import com.glodon.bim.business.qualityManage.bean.ProjectVersionBean;
 import com.glodon.bim.business.qualityManage.contract.ModelContract;
 import com.glodon.bim.business.qualityManage.model.ModelModel;
 import com.glodon.bim.business.qualityManage.model.OnModelSelectListener;
-import com.glodon.bim.common.config.CommonConfig;
+import com.glodon.bim.business.qualityManage.view.RelevantModelActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +30,7 @@ import rx.subscriptions.CompositeSubscription;
  */
 
 public class ModelPresenter implements ModelContract.Presenter {
+    private static final int REQUEST_CODE_OPEN_MODEL = 0;
     private ModelContract.View mView;
     private ModelContract.Model mModel;
     private CompositeSubscription mSubscription;
@@ -52,10 +52,13 @@ public class ModelPresenter implements ModelContract.Presenter {
         @Override
         public void selectModel(ModelListBeanItem item) {
             if(mView!=null) {
-                Intent data = new Intent();
-                data.putExtra(CommonConfig.MODULE_LIST_NAME, item);
-                mView.getActivity().setResult(Activity.RESULT_OK, data);
-                mView.getActivity().finish();
+//                Intent data = new Intent();
+//                data.putExtra(CommonConfig.MODULE_LIST_NAME, item);
+//                mView.getActivity().setResult(Activity.RESULT_OK, data);
+//                mView.getActivity().finish();
+
+                Intent intent = new Intent(mView.getActivity(), RelevantModelActivity.class);
+                mView.getActivity().startActivityForResult(intent,REQUEST_CODE_OPEN_MODEL);
             }
         }
 
@@ -220,40 +223,10 @@ public class ModelPresenter implements ModelContract.Presenter {
                     }
                 });
         mSubscription.add(sub);
-//        LogUtil.e("参数：projectId="+projectId+" projectVersionId="+mLatestVersionInfo.data.versionId+" buildingId="+mCurrentSingle.id+" specialtyCode="+mCurrentSpecial.code);
-//        NetRequest.getInstance().getCall(AppConfig.BASE_URL, ModelApi.class).getModelList2(projectId,mLatestVersionInfo.data.versionId,mCurrentSingle.id,mCurrentSpecial.code,new DaoProvider().getCookie())
-//                .enqueue(new Callback<ResponseBody>() {
-//                    @Override
-//                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-//                        if(response.body()!=null)
-//                        {
-//                            try {
-//                                LogUtil.e("resop="+response.body().string());
-//                            } catch (IOException e) {
-//                                e.printStackTrace();
-//                            }
-//                        }
-//                        if(response.errorBody()!=null){
-//                            try {
-//                                LogUtil.e(response.errorBody().string());
-//                            } catch (IOException e) {
-//                                e.printStackTrace();
-//                            }
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Call<ResponseBody> call, Throwable t) {
-//
-//                    }
-//                });
     }
 
     @Override
     public void showSpecialList() {
-//        if (mSpecialList.size() == 0) {
-//            mSpecialList = getSpecialList();
-//        }
         if(mCurrentSpecial!=null && mCurrentSpecial.id>=0){
             mSpecialSelectId = mCurrentSpecial.id;
         }
@@ -262,52 +235,20 @@ public class ModelPresenter implements ModelContract.Presenter {
 
     @Override
     public void showSingleList() {
-//        if (mSingleList.size() == 0) {
-//            mSingleList = getSingleList();
-//        }
         if(mCurrentSingle!=null && mCurrentSingle.id>=0){
             mSingleSelectId = mCurrentSingle.id;
         }
         mView.updateSingleList(mSingleList, mSingleSelectId);
     }
 
-//    private List<ModelListBeanItem> getModelList(long specialId,long singleId) {
-//        List<ModelListBeanItem> list = new ArrayList<>();
-//        for(int i = 0;i<20;i++){
-//            ModelListBeanItem item = new ModelListBeanItem();
-//            item.fileId = specialId*singleId;
-//            item.fileName = "special"+specialId+" single"+singleId;
-//            list.add(item);
-//        }
-//        return list;
-//    }
-//
-//
-//    private List<ModelSpecialListItem> getSpecialList() {
-//        List<ModelSpecialListItem> list = new ArrayList<>();
-//        for (long i = 0; i < 20; i++) {
-//            ModelSpecialListItem item = new ModelSpecialListItem();
-//            item.fileId = i;
-//            item.fileName = "专业 " + i;
-//            list.add(item);
-//        }
-//        return list;
-//    }
-//
-//    private List<ModelSingleListItem> getSingleList() {
-//        List<ModelSingleListItem> list = new ArrayList<>();
-//        for (long i = 1; i <= 20; i++) {
-//            ModelSingleListItem item = new ModelSingleListItem();
-//            item.fileId = i;
-//            item.fileName = i + "栋";
-//            list.add(item);
-//        }
-//        return list;
-//    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode){
+            case REQUEST_CODE_OPEN_MODEL:
 
+                break;
+        }
     }
 
     @Override
