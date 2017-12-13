@@ -88,6 +88,8 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
     private BlueprintListBeanItem mBluePrintSelectInfo;
     private String mCurrentBluePrintName;//当前的图纸名称
     private String mCurrentBluePrintId;//当前的图纸id
+    private String drawingPositionX;//位置的x信息
+    private String drawingPositionY;//位置的y信息
 
     //图纸
     private ModelListBeanItem mModelSelectInfo;
@@ -777,6 +779,8 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
             mCurrentBluePrintName = mView.getBluePrintName();
             if(mCurrentBluePrintName.equals(mBluePrintSelectInfo.name)){
                 intent.putExtra(CommonConfig.MODULE_LIST_POSITION, mBluePrintSelectInfo.fileId);
+                intent.putExtra(CommonConfig.BLUE_PRINT_POSITION_X, mBluePrintSelectInfo.drawingPositionX);
+                intent.putExtra(CommonConfig.BLUE_PRINT_POSITION_Y, mBluePrintSelectInfo.drawingPositionY);
             }
         }
         mView.getActivity().startActivityForResult(intent, REQUEST_CODE_CHOOSE_BLUE_PRINT);
@@ -812,6 +816,8 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
                     mBluePrintSelectInfo = (BlueprintListBeanItem) data.getSerializableExtra(CommonConfig.MODULE_LIST_NAME);
                     mCurrentBluePrintName = mBluePrintSelectInfo.name;
                     mCurrentBluePrintId= mBluePrintSelectInfo.fileId;
+                    drawingPositionX = mBluePrintSelectInfo.drawingPositionX;
+                    drawingPositionY = mBluePrintSelectInfo.drawingPositionY;
                     if (mView != null && mBluePrintSelectInfo != null) {
                         mView.showBluePrintName(mBluePrintSelectInfo.name,mBluePrintSelectInfo.fileId);
                     }

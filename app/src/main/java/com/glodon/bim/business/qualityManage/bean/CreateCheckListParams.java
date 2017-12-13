@@ -40,10 +40,16 @@ public class CreateCheckListParams implements Serializable {
     public String responsibleUserTitle;
     //模型
     public String versionId;//模型版本id
-    public Long buildingId;
-    public String buildingName;
-    public String elementId;
-    public String elementName;
+    public Long buildingId;//栋号id
+    public String buildingName;//栋号name
+    public String elementId;//构件id
+    public String elementName;//构件name
+    //图纸
+    public String drawingGdocFileId;//图纸id
+    public String drawingName;//图纸名
+    public String drawingPositionX;//位置的x信息
+    public String drawingPositionY;//位置的y信息
+
 //    public String qcState;
 
     //检查单id

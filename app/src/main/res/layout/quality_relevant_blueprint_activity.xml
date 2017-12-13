@@ -39,18 +39,6 @@
                 android:layout_marginLeft="@dimen/dimen_10"
                 android:background="@drawable/icon_back_white" />
         </RelativeLayout>
-
-        <TextView
-            android:id="@+id/relevant_blueprint_title"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_centerHorizontal="true"
-            android:gravity="center_vertical"
-            android:maxLength="15"
-            android:text="img_234"
-            android:textColor="@color/white"
-            android:textSize="@dimen/dimen_17" />
-
         <TextView
             android:id="@+id/relevant_blueprint_finish"
             android:layout_width="wrap_content"
@@ -61,6 +49,18 @@
             android:text="长按新建"
             android:textColor="@color/white"
             android:textSize="@dimen/dimen_15" />
+
+        <TextView
+            android:id="@+id/relevant_blueprint_title"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_vertical"
+            android:text="img_234"
+            android:textColor="@color/white"
+            android:textSize="@dimen/dimen_17"
+            android:maxLength="15"
+            />
 
     </RelativeLayout>
 

@@ -60,4 +60,7 @@ public class CommonConfig {
     public static final String ACTION_LOG_OUT = "com.glodon.bim.action.logout";//退出登录发送广播
     public static final String BLUE_PRINT_FILE_ID = "BLUE_PRINT_FILE_ID";//图纸的id
     public static final String BLUE_PRINT_FILE_NAME = "BLUE_PRINT_FILE_NAME";//图纸的NAME
+    public static final String BLUE_PRINT_POSITION_X = "BLUE_PRINT_POSITION_X";//图纸位置x
+    public static final String BLUE_PRINT_POSITION_Y = "BLUE_PRINT_POSITION_Y";//图纸位置y
+    public static final String BLUE_PRINT_FILE = "BLUE_PRINT_FILE";
 }

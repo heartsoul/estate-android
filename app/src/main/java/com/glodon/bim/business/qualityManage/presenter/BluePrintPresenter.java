@@ -36,6 +36,7 @@ import rx.subscriptions.CompositeSubscription;
  */
 
 public class BluePrintPresenter implements BluePrintContract.Presenter {
+    private static final int REQUEST_CODE_TO_RELEVANT = 0;
     private BluePrintContract.View mView;
     private BluePrintContract.Model mModel;
     private List<BlueprintListBeanItem> mDataList;
@@ -44,6 +45,8 @@ public class BluePrintPresenter implements BluePrintContract.Presenter {
     private List<BlueprintListBeanItem> mHintList;
     private CompositeSubscription mSubscription;
     private String mSelectId;
+    private String drawingPositionX;//位置的x信息
+    private String drawingPositionY;//位置的y信息
     private long mDeptId;//项目id
     private BlueprintListBeanItem mClickedItem;
     private ProjectVersionBean mLatestVersionInfo;//最新版本信息
@@ -67,11 +70,6 @@ public class BluePrintPresenter implements BluePrintContract.Presenter {
             if (mView != null) {
                 mView.updateCataListView(mCatalogList);
             }
-            //刷新内容列表
-//            mContentList = getListByParentId(item.fileId);//获取一级目录的item
-//            if (mView != null) {
-//                mView.updateContentListView(mContentList, mSelectId);
-//            }
             fileId = item.fileId;
             getBluePrintData();
         }
@@ -115,10 +113,15 @@ public class BluePrintPresenter implements BluePrintContract.Presenter {
 //            data.putExtra(CommonConfig.MODULE_LIST_NAME, item);
 //            mView.getActivity().setResult(Activity.RESULT_OK, data);
 //            mView.getActivity().finish();
+            //新建检查单时
             Intent intent = new Intent(mView.getActivity(), RelevantBluePrintActivity.class);
             intent.putExtra(CommonConfig.BLUE_PRINT_FILE_NAME,item.name);
             intent.putExtra(CommonConfig.BLUE_PRINT_FILE_ID,item.fileId);
-            mView.getActivity().startActivity(intent);
+            if(item.fileId.equals(mSelectId)){
+                intent.putExtra(CommonConfig.BLUE_PRINT_POSITION_X, drawingPositionX);
+                intent.putExtra(CommonConfig.BLUE_PRINT_POSITION_Y, drawingPositionY);
+            }
+            mView.getActivity().startActivityForResult(intent,REQUEST_CODE_TO_RELEVANT);
         }
     };
 
@@ -136,46 +139,9 @@ public class BluePrintPresenter implements BluePrintContract.Presenter {
     @Override
     public void initData(Intent intent) {
         mSelectId = intent.getStringExtra(CommonConfig.MODULE_LIST_POSITION);
+        drawingPositionX = intent.getStringExtra(CommonConfig.BLUE_PRINT_POSITION_X);
+        drawingPositionY = intent.getStringExtra(CommonConfig.BLUE_PRINT_POSITION_Y);
         if (NetWorkUtils.isNetworkAvailable(mView.getActivity())) {
-
-//            Subscription sub = mModel.getBluePrintList(mDeptId, mDeptId)
-//                    .subscribeOn(Schedulers.io())
-//                    .observeOn(AndroidSchedulers.mainThread())
-//                    .subscribe(new Subscriber<List<BlueprintListBeanItem>>() {
-//                        @Override
-//                        public void onCompleted() {
-//
-//                        }
-//
-//                        @Override
-//                        public void onError(Throwable e) {
-//                            LogUtil.e("----", e.getMessage());
-//                            if (mView != null) {
-//                                mView.dismissLoadingDialog();
-//                            }
-//                        }
-//
-//                        @Override
-//                        public void onNext(List<BlueprintListBeanItem> list) {
-//                            if (list != null && list.size() > 0) {
-////                                for(BlueprintListBeanItem item:list) {
-////                                    LogUtil.e("item=" +item.toString());
-////                                }
-////                                list = getList();
-//                                mDataList.addAll(list);
-//                                mContentList = getListByParentId(0);//获取一级目录的item
-//                                if (mView != null) {
-//                                    mView.updateContentListView(mContentList, mSelectId);
-//                                }
-//
-//                            }
-//                            if (mView != null) {
-//                                mView.dismissLoadingDialog();
-//                            }
-//
-//                        }
-//                    });
-//            mSubscription.add(sub);
             getLatestVersion();
         } else {
             ToastManager.showNetWorkToast();
@@ -240,8 +206,6 @@ public class BluePrintPresenter implements BluePrintContract.Presenter {
                                     LogUtil.e("item=" + item.toString());
                                 }
                             }
-//                            mDataList.addAll(bean.data.items);
-//                            mContentList = getListByParentId(0);//获取一级目录的item
                             mContentList = bean.data.items;
                             if (mView != null) {
                                 mView.updateContentListView(mContentList, mSelectId);
@@ -305,63 +269,17 @@ public class BluePrintPresenter implements BluePrintContract.Presenter {
         mSubscription.add(sub);
     }
 
-//    private List<BlueprintListBeanItem> getList(){
-//        List<BlueprintListBeanItem> list = new ArrayList<>();
-//        long count = 1;
-//        int size = 10;
-//        for(long i = 1;i<=size;i++){
-//            BlueprintListBeanItem item = new BlueprintListBeanItem();
-//            item.fileId = count;
-//            item.parentId = 0;
-//            item.fileName = "fileId="+i+"  parentId=0";
-//            list.add(item);
-//            count++;
-//        }
-//        for(long i = 1;i<=size;i++){
-//            for(long j = 1;j<size;j++) {
-//                BlueprintListBeanItem item = new BlueprintListBeanItem();
-//                item.fileId = count;
-//                item.parentId = i;
-//                item.fileName = "fileId="+count+"  parentId="+i;
-//                count++;
-//                list.add(item);
-//            }
-//        }
-//        for(long i=size+1;i<=size*size;i++){
-//            for(int j=0;j<5;j++) {
-//                BlueprintListBeanItem item = new BlueprintListBeanItem();
-//                item.fileId = count;
-//                item.parentId = i;
-//                item.fileName = "fileId="+count+"  parentId="+i+".jpg";
-//                count++;
-//                list.add(item);
-//            }
-//        }
-//        return list;
-//    }
-//
-//    private List<BlueprintListBeanItem> getListByParentId(long parentId){
-//        List<BlueprintListBeanItem> list = new ArrayList<>();
-//        for(BlueprintListBeanItem item:mDataList){
-//            if(item.parentId == parentId){
-//                for(BlueprintListBeanItem cItem:mDataList){
-//                    if(cItem.parentId == item.fileId.longValue()){
-//                        item.viewType = 0;
-//                        break;
-//                    }
-//                }
-//                list.add(item);
-//            }
-//        }
-//
-//        return list;
-//    }
-//
-
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
+        switch (requestCode)
+        {
+            case REQUEST_CODE_TO_RELEVANT:
+                if(resultCode == Activity.RESULT_OK){
+                    mView.getActivity().setResult(Activity.RESULT_OK,data);
+                    mView.getActivity().finish();
+                }
+                break;
+        }
     }
 
     @Override

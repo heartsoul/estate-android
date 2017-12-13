@@ -1,6 +1,7 @@
 package com.glodon.bim.business.qualityManage.view;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,6 +23,8 @@ import com.glodon.bim.base.BaseActivity;
 import com.glodon.bim.basic.config.AppConfig;
 import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.business.qualityManage.bean.BluePrintBasicInfo;
+import com.glodon.bim.business.qualityManage.bean.BluePrintPosition;
+import com.glodon.bim.business.qualityManage.bean.BlueprintListBeanItem;
 import com.glodon.bim.business.qualityManage.contract.RelevantBluePrintContract;
 import com.glodon.bim.business.qualityManage.presenter.RelevantBluePrintPresenter;
 import com.glodon.bim.common.config.CommonConfig;
@@ -45,12 +48,16 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
     private WebView mWebview;
     private ImageView mTrangleView;
     private TextView mTrangleTextView;
-    private String mFileName = "";
+    private String mFileName = "";//图纸名
+    private String mFileId = "";//图纸id
 
     private RelevantBluePrintAndModelDialog mRepairDialog;
     private RelevantBluePrintAndModelDialog mReviewDialog;
 
     private RelevantBluePrintContract.Presenter mPresenter;
+
+    private String drawingPositionX;//位置的x信息
+    private String drawingPositionY;//位置的y信息
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,18 +113,19 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
         setting.setPluginState(WebSettings.PluginState.ON);
         setting.setJavaScriptEnabled(true);
         mWebview.addJavascriptInterface(new BasicInfo(), "BasicInfo");
-        setting.setDomStorageEnabled(true);
+        mWebview.addJavascriptInterface(new ModelEvent(), "modelEvent");
+        setting.setDomStorageEnabled(false);
         // 暂时先去掉（在HuaWeiP6上显示异常）
         // this.setLayerType(WebView.LAYER_TYPE_HARDWARE, new Paint());
-        setting.setAppCacheMaxSize(1024 * 1024 * 8);
+//        setting.setAppCacheMaxSize(1024 * 1024 * 8);
 //        String appCachePath = TNBToonBrowserApplication.getInstance().getApplicationContext().getCacheDir()
 //                .getAbsolutePath();
 //        setting.setAppCachePath(appCachePath);
         setting.setAllowFileAccess(true);
-        setting.setAppCacheEnabled(true);
-        setting.setDatabaseEnabled(true);
+        setting.setAppCacheEnabled(false);
+        setting.setDatabaseEnabled(false);
         setting.setUseWideViewPort(true);
-        setting.setCacheMode(WebSettings.LOAD_DEFAULT);
+//        setting.setCacheMode(WebSettings.LOAD_DEFAULT);
         // 1、LayoutAlgorithm.NARROW_COLUMNS ： 适应内容大小
         // 2、LayoutAlgorithm.SINGLE_COLUMN:适应屏幕，内容将自动缩放
         // setting.setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);
@@ -128,25 +136,32 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
 
     @Override
     public void sendBasicInfo(String token) {
-        // param = {
-        //     "fileId":"de3a033fa5a046eeb11ae6994d3f124c",
-        //     "projectId": '5211517',
-        //     "projectVersionId": '0e44a8f4f2fc4b7eb6c097aa361f342b'
-        // }
-//        String url = getUrl(5211517, "0e44a8f4f2fc4b7eb6c097aa361f342b", "de3a033fa5a046eeb11ae6994d3f124c");
-//        String url = getUrl(mProjectId, mProjectVersionId, mFileId);  http://47.95.204.243/app.html
-//        String url = "http://47.95.204.243/app.html?param={\"fileId\":\"dff5aed79cf5407687b91ee42b2ebb91\",\"projectId\":\"5200103\",\"projectVersionId\":\"da563a7890e24d90b8adb23a0883f270\"}";
-//        String url = "http://47.95.204.243/app.html?param=a585d8bf293340c3beac83217ab8f924";
         String url = AppConfig.BASE_URL_BLUEPRINT_TOKEN+token;
         LogUtil.e("url="+url);
         mWebview.loadUrl(url);
-//        try {
-//        } catch (UnsupportedEncodingException e) {
-//            e.printStackTrace();
-//        }
     }
 
 //    window.modelEvent.getPosition
+    class ModelEvent {
+
+        @JavascriptInterface
+        public void getPosition(final String json) {
+            LogUtil.e("json="+json);
+            BluePrintPosition position = new GsonBuilder().create().fromJson(json,BluePrintPosition.class);
+            if(position!=null){
+                drawingPositionX = position.x;
+                drawingPositionY = position.y;
+            }
+            LogUtil.e("x="+drawingPositionX+" y="+drawingPositionY);
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    showFinish();
+                }
+            });
+
+        }
+    }
 
 
     class BasicInfo {
@@ -180,11 +195,15 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
     }
 
     private void initData() {
+        //初始的位置信息
+        drawingPositionX = getIntent().getStringExtra(CommonConfig.BLUE_PRINT_POSITION_X);
+        drawingPositionY = getIntent().getStringExtra(CommonConfig.BLUE_PRINT_POSITION_Y);
         //初始化底部弹出框
         mRepairDialog = new RelevantBluePrintAndModelDialog(this);
         mReviewDialog = new RelevantBluePrintAndModelDialog(this);
         //title名字
         mFileName = getIntent().getStringExtra(CommonConfig.BLUE_PRINT_FILE_NAME);
+        mFileId = getIntent().getStringExtra(CommonConfig.BLUE_PRINT_FILE_ID);
         mTitleView.setText(mFileName);
         //隐藏提示
         new Handler().postDelayed(new Runnable() {
@@ -198,6 +217,7 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
         //获取数据
         mPresenter = new RelevantBluePrintPresenter(this);
         mPresenter.initData(getIntent());
+
 
     }
 
@@ -221,15 +241,56 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
         int id = view.getId();
         switch (id) {
             case R.id.relevant_blueprint_back://返回键
-//                mActivity.finish();
-                if(isshow){
-                    showRepairDialog();
-                }else {
-                    showReviewDialog();
-                }
-                isshow = !isshow;
+                mActivity.finish();
+//                if(isshow){
+//                    showRepairDialog();
+//                }else {
+//                    showReviewDialog();
+//                }
+//                isshow = !isshow;
                 break;
         }
+    }
+
+    private void showFinish(){
+        mCancelView.setVisibility(View.VISIBLE);
+        mBackView.setVisibility(View.GONE);
+        mFinishView.setText("完成");
+        mFinishView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent data = new Intent();
+                BlueprintListBeanItem item = new BlueprintListBeanItem();
+                item.name = mFileName;
+                item.fileId = mFileId;
+                item.drawingPositionX = drawingPositionX;
+                item.drawingPositionY = drawingPositionY;
+                data.putExtra(CommonConfig.MODULE_LIST_NAME,item);
+                setResult(RESULT_OK,data);
+                finish();
+            }
+        });
+        mCancelView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //消除图钉
+                removePosition("aaa");
+                //展示返回按钮
+                hideFinish();
+            }
+        });
+    }
+
+    //消除图钉
+    private void removePosition(String param) {
+        mWebview.loadUrl("javascript:removeDrawableItem('" + param + "')");
+    }
+
+    private void hideFinish(){
+        mCancelView.setVisibility(View.GONE);
+        mBackView.setVisibility(View.VISIBLE);
+        mFinishView.setText("长按新建");
+        mFinishView.setOnClickListener(null);
     }
 
     //新建整改单的弹出框

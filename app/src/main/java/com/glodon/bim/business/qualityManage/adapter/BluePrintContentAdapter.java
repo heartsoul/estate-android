@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.glodon.bim.R;
+import com.glodon.bim.basic.image.ImageLoader;
 import com.glodon.bim.business.qualityManage.bean.BlueprintListBeanItem;
 import com.glodon.bim.business.qualityManage.listener.OnChooseBlueprintCataListener;
 import com.glodon.bim.business.qualityManage.listener.OnChooseBlueprintObjListener;
@@ -76,6 +77,7 @@ public class BluePrintContentAdapter extends RecyclerView.Adapter<RecyclerView.V
         if(holder instanceof ObjHolder){
             final ObjHolder lHolder = (ObjHolder) holder;
             lHolder.mNameView.setText(item.name);
+            ImageLoader.showImageCenterCrop(mActivity,item.thumbnail,lHolder.mThumbnailView,R.drawable.icon_blueprint_default);
 
             lHolder.mParentView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -129,11 +131,13 @@ public class BluePrintContentAdapter extends RecyclerView.Adapter<RecyclerView.V
         TextView mNameView;
         ImageView mSelectView;
         View mParentView;
+        ImageView mThumbnailView;
         public ObjHolder(View itemView) {
             super(itemView);
             mNameView = itemView.findViewById(R.id.quality_blue_print_content_item_obj_name);
             mSelectView = itemView.findViewById(R.id.quality_blue_print_content_item_obj_select);
             mParentView = itemView;
+            mThumbnailView = itemView.findViewById(R.id.quality_blue_print_content_item_obj_thumbnail);
         }
     }
 

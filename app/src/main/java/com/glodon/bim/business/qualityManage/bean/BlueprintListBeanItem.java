@@ -39,6 +39,8 @@ public class BlueprintListBeanItem implements Serializable {
     public String workspaceId;
 
     public int viewType = 1;//0目录，1具体的项
+    public String drawingPositionX;//位置的x信息
+    public String drawingPositionY;//位置的y信息
 
     @Override
     public String toString() {
