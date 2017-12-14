@@ -243,7 +243,8 @@ public class LoginActivity extends BaseActivity implements LoginContract.View, V
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             String[] PERMISSIONS_STORAGE = {
                     Manifest.permission.READ_EXTERNAL_STORAGE,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.READ_PHONE_STATE
             };
             requestPermission(PERMISSIONS_STORAGE, 0);
         }

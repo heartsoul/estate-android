@@ -11,4 +11,6 @@ import java.io.Serializable;
 public class ModelListBeanItem implements Serializable{
     public String fileId;
     public String fileName;
+
+    public ModelComponent component;
 }

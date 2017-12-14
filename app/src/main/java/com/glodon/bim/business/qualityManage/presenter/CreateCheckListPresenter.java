@@ -793,6 +793,7 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
             mCurrentModelName = mView.getBluePrintName();
             if(mCurrentModelName.equals(mModelSelectInfo.fileName)){
                 intent.putExtra(CommonConfig.MODULE_LIST_POSITION, mModelSelectInfo.fileId);
+                intent.putExtra(CommonConfig.MODEL_SELECT_INFO,mModelSelectInfo);
             }
         }
         mView.getActivity().startActivityForResult(intent, REQUEST_CODE_CHOOSE_MODEL);
@@ -825,7 +826,7 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
                 break;
             case REQUEST_CODE_CHOOSE_MODEL:
                 if (resultCode == Activity.RESULT_OK && data != null) {
-                    mModelSelectInfo = (ModelListBeanItem) data.getSerializableExtra(CommonConfig.MODULE_LIST_NAME);
+                    mModelSelectInfo = (ModelListBeanItem) data.getSerializableExtra(CommonConfig.MODEL_SELECT_INFO);
                     mCurrentModelName = mModelSelectInfo.fileName;
                     mCurrentModelId= mModelSelectInfo.fileId;
                     if (mView != null && mModelSelectInfo != null) {

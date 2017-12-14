@@ -63,4 +63,5 @@ public class CommonConfig {
     public static final String BLUE_PRINT_POSITION_X = "BLUE_PRINT_POSITION_X";//图纸位置x
     public static final String BLUE_PRINT_POSITION_Y = "BLUE_PRINT_POSITION_Y";//图纸位置y
     public static final String BLUE_PRINT_FILE = "BLUE_PRINT_FILE";
+    public static final String MODEL_SELECT_INFO = "MODEL_SELECT_INFO";//关联模型
 }

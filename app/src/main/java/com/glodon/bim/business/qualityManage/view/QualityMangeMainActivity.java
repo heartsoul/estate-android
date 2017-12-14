@@ -282,7 +282,7 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
         mFragmentMap = new HashMap<>();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             String[] PERMISSIONS_STORAGE = {
-                    Manifest.permission.CAMERA,
+                    Manifest.permission.CAMERA
             };
             requestPermission(PERMISSIONS_STORAGE, REQUEST_CAMERA);
         }

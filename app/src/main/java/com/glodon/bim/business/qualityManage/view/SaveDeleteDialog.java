@@ -71,6 +71,44 @@ public class SaveDeleteDialog {
     }
 
     /**
+     * 提示信息  还有选择构件
+     */
+    public SaveDeleteDialog getModelHintDialog(String content) {
+        View view = LayoutInflater.from(context).inflate(R.layout.view_save_delete_dialog,null);
+        mTitleView = view.findViewById(R.id.save_delete_dialog_title);
+        mContentView = view.findViewById(R.id.save_delete_dialog_content);
+        mLeftView = view.findViewById(R.id.save_delete_dialog_left);
+        mMiddleView = view.findViewById(R.id.save_delete_dialog_middle);
+        mRightView = view.findViewById(R.id.save_delete_dialog_right);
+        mLineView = view.findViewById(R.id.save_delete_dialog_middle_line);
+
+        mTitleView.setText("提示信息");
+        mContentView.setText(content);
+        mLeftView.setText("取消");
+        mLeftView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dismiss();
+            }
+        });
+        mLeftView.setVisibility(View.GONE);
+        mMiddleView.setVisibility(View.GONE);
+        mLineView.setVisibility(View.GONE);
+        mRightView.setText("知道了");
+        mRightView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dismiss();
+            }
+        });
+        mRightView.setTextColor(context.getResources().getColor(R.color.c_00baf3));
+
+        dialogSetting(view);
+
+        return this;
+    }
+
+    /**
      * 删除确认信息
      */
     public SaveDeleteDialog getDeleteDialog(final View.OnClickListener mDeleteListener) {

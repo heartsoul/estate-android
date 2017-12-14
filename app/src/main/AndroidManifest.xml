@@ -26,10 +26,12 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.GET_TASKS" />
 
-    <uses-feature android:glEsVersion="0x00020000" android:required="true"/>
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true" />
 
-    <uses-permission android:name="android.permission.BLUETOOTH"/>
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 
     <application
         android:name=".base.BaseApplication"
@@ -281,13 +283,16 @@
             android:name="com.glodon.bim.business.qualityManage.view.CreateReviewActivity"
             android:screenOrientation="portrait" />
         <!--关联图纸-具体展示图纸-->
-        <activity android:name="com.glodon.bim.business.qualityManage.view.RelevantBluePrintActivity"
-            android:screenOrientation="portrait"
-            >
+        <activity
+            android:name="com.glodon.bim.business.qualityManage.view.RelevantBluePrintActivity"
+            android:screenOrientation="portrait">
 
         </activity>
         <!--关联模型-具体展示模型-->
-        <activity android:name="com.glodon.bim.business.qualityManage.view.RelevantModelActivity" android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.glodon.bim.business.qualityManage.view.RelevantModelActivity"
+            android:screenOrientation="portrait"
+            android:hardwareAccelerated="true"/>
     </application>
 
 </manifest>

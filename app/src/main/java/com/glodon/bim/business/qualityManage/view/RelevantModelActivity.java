@@ -24,9 +24,9 @@ import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.business.qualityManage.bean.BluePrintBasicInfo;
 import com.glodon.bim.business.qualityManage.bean.BluePrintPosition;
 import com.glodon.bim.business.qualityManage.bean.BlueprintListBeanItem;
-import com.glodon.bim.business.qualityManage.contract.RelevantBluePrintContract;
+import com.glodon.bim.business.qualityManage.bean.ModelComponent;
+import com.glodon.bim.business.qualityManage.bean.ModelListBeanItem;
 import com.glodon.bim.business.qualityManage.contract.RelevantModelContract;
-import com.glodon.bim.business.qualityManage.presenter.RelevantBluePrintPresenter;
 import com.glodon.bim.business.qualityManage.presenter.RelevantModelPresenter;
 import com.glodon.bim.common.config.CommonConfig;
 import com.glodon.bim.customview.ToastManager;
@@ -43,41 +43,35 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
 
     private View mStatusView;
     private RelativeLayout mBackView;
-    private TextView mCancelView, mTitleView, mFinishView;
+    private RelativeLayout mFinishView;
     private WebView mWebview;
-    private ImageView mTrangleView;
-    private TextView mTrangleTextView;
-    private String mFileName = "";//图纸名
-    private String mFileId = "";//图纸id
+    private String mFileName = "";
+    private String mFileId = "";//模型id
 
     private RelevantBluePrintAndModelDialog mRepairDialog;
     private RelevantBluePrintAndModelDialog mReviewDialog;
 
     private RelevantModelContract.Presenter mPresenter;
 
-    private String drawingPositionX;//位置的x信息
-    private String drawingPositionY;//位置的y信息
+    private ModelListBeanItem mModelSelectInfo;//编辑时有过这个item
+    private ModelComponent component;//选中的构件
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.quality_relevant_model_activity);
-
         initView();
         initStatusBar(mStatusView);
         setListener();
         initData();
+
     }
 
     private void initView() {
         mStatusView = findViewById(R.id.relevant_model_statusview);
         mBackView = (RelativeLayout) findViewById(R.id.relevant_model_back);
-        mCancelView = (TextView) findViewById(R.id.relevant_model_cancel);
-        mTitleView = (TextView) findViewById(R.id.relevant_model_title);
-        mFinishView = (TextView) findViewById(R.id.relevant_model_finish);
+        mFinishView = (RelativeLayout) findViewById(R.id.relevant_model_finish);
         mWebview = (WebView) findViewById(R.id.relevant_model_webview);
-        mTrangleView = (ImageView) findViewById(R.id.relevant_model_trangle);
-        mTrangleTextView = (TextView) findViewById(R.id.relevant_model_trangle_content);
         initWebview();
     }
 
@@ -108,10 +102,9 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
         setting.setJavaScriptCanOpenWindowsAutomatically(true);
         setting.setPluginState(WebSettings.PluginState.ON);
         setting.setJavaScriptEnabled(true);
-        mWebview.addJavascriptInterface(new BasicInfo(), "BasicInfo");
         mWebview.addJavascriptInterface(new ModelEvent(), "modelEvent");
         setting.setDomStorageEnabled(false);
-        
+
         // 暂时先去掉（在HuaWeiP6上显示异常）
         // this.setLayerType(WebView.LAYER_TYPE_HARDWARE, new Paint());
 //        setting.setAppCacheMaxSize(1024 * 1024 * 8);
@@ -133,94 +126,40 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
 
     @Override
     public void sendBasicInfo(String token) {
-        String url = AppConfig.BASE_URL_BLUEPRINT_TOKEN+token;
-        LogUtil.e("url="+url);
+        String url = AppConfig.BASE_URL_BLUEPRINT_TOKEN + token;
+        LogUtil.e("url=" + url);
         mWebview.loadUrl(url);
     }
 
-//    window.modelEvent.getPosition
+    //    window.modelEvent.getPosition
     class ModelEvent {
 
         @JavascriptInterface
         public void getPosition(final String json) {
-            LogUtil.e("json="+json);
-            BluePrintPosition position = new GsonBuilder().create().fromJson(json,BluePrintPosition.class);
-            if(position!=null){
-                drawingPositionX = position.x;
-                drawingPositionY = position.y;
-            }
-            LogUtil.e("x="+drawingPositionX+" y="+drawingPositionY);
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    showFinish();
-                }
-            });
-
+            LogUtil.e("json=" + json);
+            component = new GsonBuilder().create().fromJson(json, ModelComponent.class);
         }
     }
 
-
-    class BasicInfo {
-
-        @JavascriptInterface
-        public void getIpPort(String str) {
-            ipPort(str);
-        }
-    }
-
-    /**
-     * 告诉H5ip和port
-     */
-    private void ipPort(final String str) {
-//        final String ip = TNBStartMwapUtil.getCurrentIP(getContext());
-//        final int port = TNBStartMwapUtil.getCurrentPort(getContext());
-//        final Map<String, String> params = new HashMap<String, String>();
-//        params.put("ip", ip + ":" + port);
-//        params.put("ip", ip + ":" + TNBConfig.PORT);
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-//                TNBWebView.this.sendParamsToHtml(TNBMethodConfig.IP_PORT, params);
-                ToastManager.show(str);
-            }
-        });
-    }
 
     private void setListener() {
         mBackView.setOnClickListener(this);
+        mFinishView.setOnClickListener(this);
     }
 
     private void initData() {
-        //初始的位置信息
-        drawingPositionX = getIntent().getStringExtra(CommonConfig.BLUE_PRINT_POSITION_X);
-        drawingPositionY = getIntent().getStringExtra(CommonConfig.BLUE_PRINT_POSITION_Y);
+        //编辑时不为空
+        mModelSelectInfo = (ModelListBeanItem) getIntent().getSerializableExtra(CommonConfig.MODEL_SELECT_INFO);
+        mFileName = getIntent().getStringExtra(CommonConfig.BLUE_PRINT_FILE_NAME);
+        mFileId = getIntent().getStringExtra(CommonConfig.BLUE_PRINT_FILE_ID);
         //初始化底部弹出框
         mRepairDialog = new RelevantBluePrintAndModelDialog(this);
         mReviewDialog = new RelevantBluePrintAndModelDialog(this);
-        //title名字
-        mFileName = getIntent().getStringExtra(CommonConfig.BLUE_PRINT_FILE_NAME);
-        mFileId = getIntent().getStringExtra(CommonConfig.BLUE_PRINT_FILE_ID);
-        mTitleView.setText(mFileName);
-        //隐藏提示
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mTrangleTextView.setVisibility(View.GONE);
-                mTrangleView.setVisibility(View.GONE);
-            }
-        },4000);
 
         //获取数据
         mPresenter = new RelevantModelPresenter(this);
         mPresenter.initData(getIntent());
-
-
     }
-
-//    pr
-
-    //传递基本信息给h5  我的id  项目id   图纸id
 
     //传递点的信息给h5
     public void sendDotsData() {
@@ -231,7 +170,6 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
 //        sendDataToHtml("loadInitData", new GsonBuilder().create().toJson(info));
     }
 
-    private boolean isshow = true;
 
     @Override
     public void onClick(View view) {
@@ -239,74 +177,62 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
         switch (id) {
             case R.id.relevant_model_back://返回键
                 mActivity.finish();
-//                if(isshow){
-//                    showRepairDialog();
-//                }else {
-//                    showReviewDialog();
-//                }
-//                isshow = !isshow;
+                break;
+            case R.id.relevant_model_finish://+号
+                if(checkComponent()){
+                    backData();
+                }
                 break;
         }
     }
 
-    private void showFinish(){
-        mCancelView.setVisibility(View.VISIBLE);
-        mBackView.setVisibility(View.GONE);
-        mFinishView.setText("完成");
-        mFinishView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent data = new Intent();
-                BlueprintListBeanItem item = new BlueprintListBeanItem();
-                item.name = mFileName;
-                item.fileId = mFileId;
-                item.drawingPositionX = drawingPositionX;
-                item.drawingPositionY = drawingPositionY;
-                data.putExtra(CommonConfig.MODULE_LIST_NAME,item);
-                setResult(RESULT_OK,data);
-                finish();
-            }
-        });
-        mCancelView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //消除图钉
-                removePosition("aaa");
-                //展示返回按钮
-                hideFinish();
-            }
-        });
+    //检测是否选择了构件
+    private boolean checkComponent(){
+        if(component==null) {
+            SaveDeleteDialog mHintDialog = new SaveDeleteDialog(getActivity());
+            mHintDialog.getModelHintDialog("您还未选择构件!");
+            mHintDialog.show();
+            return false;
+        }
+        return true;
     }
+
+    private void backData(){
+        Intent data = new Intent();
+        ModelListBeanItem item = new ModelListBeanItem();
+        item.fileId = mFileId;
+        item.fileName = mFileName;
+        item.component = component;
+        data.putExtra(CommonConfig.MODEL_SELECT_INFO, item);
+        setResult(RESULT_OK, data);
+        finish();
+    }
+
 
     //消除图钉
     private void removePosition(String param) {
         mWebview.loadUrl("javascript:removeDrawableItem('" + param + "')");
     }
 
-    private void hideFinish(){
-        mCancelView.setVisibility(View.GONE);
-        mBackView.setVisibility(View.VISIBLE);
-        mFinishView.setText("长按新建");
-        mFinishView.setOnClickListener(null);
-    }
+
 
     //新建整改单的弹出框
-   private void showRepairDialog(){
-       mRepairDialog.getRepairDialog(new View.OnClickListener() {
-           @Override
-           public void onClick(View view) {
+    private void showRepairDialog() {
+        mRepairDialog.getRepairDialog(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
-           }
-       }, new View.OnClickListener() {
-           @Override
-           public void onClick(View view) {
+            }
+        }, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
-           }
-       }).show();
-   }
+            }
+        }).show();
+    }
 
-   //新建复查单的弹出框
-    private void showReviewDialog(){
+    //新建复查单的弹出框
+    private void showReviewDialog() {
         mReviewDialog.getReviewDialog(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

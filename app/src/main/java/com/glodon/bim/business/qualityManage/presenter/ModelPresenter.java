@@ -1,5 +1,6 @@
 package com.glodon.bim.business.qualityManage.presenter;
 
+import android.app.Activity;
 import android.content.Intent;
 
 import com.glodon.bim.basic.log.LogUtil;
@@ -49,6 +50,8 @@ public class ModelPresenter implements ModelContract.Presenter {
 
     private ProjectVersionBean mLatestVersionInfo;//最新版本信息
 
+    private ModelListBeanItem mModelSelectInfo;//编辑时有过这个item
+
     private OnModelSelectListener mListener = new OnModelSelectListener() {
         @Override
         public void selectModel(ModelListBeanItem item) {
@@ -61,6 +64,9 @@ public class ModelPresenter implements ModelContract.Presenter {
                 Intent intent = new Intent(mView.getActivity(), RelevantModelActivity.class);
                 intent.putExtra(CommonConfig.BLUE_PRINT_FILE_ID,item.fileId);
                 intent.putExtra(CommonConfig.BLUE_PRINT_FILE_NAME,item.fileName);
+                if(mModelSelectInfo!=null && mModelSelectInfo.fileId.equals(item.fileId)) {
+                    intent.putExtra(CommonConfig.MODEL_SELECT_INFO, mModelSelectInfo);
+                }
                 mView.getActivity().startActivityForResult(intent,REQUEST_CODE_OPEN_MODEL);
             }
         }
@@ -117,7 +123,7 @@ public class ModelPresenter implements ModelContract.Presenter {
 
     @Override
     public void initData(Intent intent) {
-
+        mModelSelectInfo = (ModelListBeanItem) intent.getSerializableExtra(CommonConfig.MODEL_SELECT_INFO);
         getLatestVersion();
         getSpecialData();
         getSingleData();
@@ -249,7 +255,10 @@ public class ModelPresenter implements ModelContract.Presenter {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode){
             case REQUEST_CODE_OPEN_MODEL:
-
+                if(resultCode == Activity.RESULT_OK && mView!=null) {
+                    mView.getActivity().setResult(Activity.RESULT_OK, data);
+                    mView.getActivity().finish();
+                }
                 break;
         }
     }
