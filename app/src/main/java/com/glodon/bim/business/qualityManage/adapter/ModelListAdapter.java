@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.glodon.bim.R;
+import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.business.qualityManage.bean.ModelListBeanItem;
 import com.glodon.bim.business.qualityManage.model.OnModelSelectListener;
 
@@ -50,6 +51,7 @@ public class ModelListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if (holder == null) return;
         final ModelListBeanItem item = mDataList.get(position);
+        LogUtil.e("id="+item.fileId);
         if (holder instanceof ObjHolder) {
             final ObjHolder lHolder = (ObjHolder) holder;
             lHolder.mNameView.setText(item.fileName);

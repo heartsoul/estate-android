@@ -10,4 +10,13 @@ public class RelevantBluePrintToken {
     public String code;
     public String message;
     public String data;
+
+    @Override
+    public String toString() {
+        return "RelevantBluePrintToken{" +
+                "code='" + code + '\'' +
+                ", message='" + message + '\'' +
+                ", data='" + data + '\'' +
+                '}';
+    }
 }

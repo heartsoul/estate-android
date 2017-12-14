@@ -13,6 +13,7 @@ import com.glodon.bim.business.qualityManage.contract.ModelContract;
 import com.glodon.bim.business.qualityManage.model.ModelModel;
 import com.glodon.bim.business.qualityManage.model.OnModelSelectListener;
 import com.glodon.bim.business.qualityManage.view.RelevantModelActivity;
+import com.glodon.bim.common.config.CommonConfig;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,6 +59,8 @@ public class ModelPresenter implements ModelContract.Presenter {
 //                mView.getActivity().finish();
 
                 Intent intent = new Intent(mView.getActivity(), RelevantModelActivity.class);
+                intent.putExtra(CommonConfig.BLUE_PRINT_FILE_ID,item.fileId);
+                intent.putExtra(CommonConfig.BLUE_PRINT_FILE_NAME,item.fileName);
                 mView.getActivity().startActivityForResult(intent,REQUEST_CODE_OPEN_MODEL);
             }
         }

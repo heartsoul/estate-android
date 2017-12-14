@@ -1,21 +1,32 @@
 package com.glodon.bim.business.qualityManage.presenter;
 
 import android.content.Intent;
+import android.os.SystemClock;
 import android.text.TextUtils;
 
+import com.glodon.bim.basic.config.AppConfig;
 import com.glodon.bim.basic.log.LogUtil;
+import com.glodon.bim.basic.network.NetRequest;
 import com.glodon.bim.basic.utils.NetWorkUtils;
 import com.glodon.bim.basic.utils.SharedPreferencesUtil;
+import com.glodon.bim.business.greendao.provider.DaoProvider;
 import com.glodon.bim.business.qualityManage.bean.ProjectVersionBean;
 import com.glodon.bim.business.qualityManage.bean.ProjectVersionData;
 import com.glodon.bim.business.qualityManage.bean.RelevantBluePrintToken;
 import com.glodon.bim.business.qualityManage.contract.RelevantBluePrintContract;
 import com.glodon.bim.business.qualityManage.contract.RelevantModelContract;
 import com.glodon.bim.business.qualityManage.model.RelevantBluePrintModel;
+import com.glodon.bim.business.qualityManage.model.RelevantModelApi;
 import com.glodon.bim.business.qualityManage.model.RelevantModelModel;
 import com.glodon.bim.common.config.CommonConfig;
 import com.glodon.bim.customview.ToastManager;
 
+import java.io.IOException;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -90,6 +101,9 @@ public class RelevantModelPresenter implements RelevantModelContract.Presenter {
     }
 
     private void getTokey(long mProjectId, String mProjectVersionId, String mFileId) {
+        LogUtil.e("projectId="+mProjectId);
+        LogUtil.e("mProjectVersionId="+mProjectVersionId);
+        LogUtil.e("mFileId="+mFileId);
         Subscription sub = mModel.getToken(mProjectId, mProjectVersionId, mFileId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -106,13 +120,18 @@ public class RelevantModelPresenter implements RelevantModelContract.Presenter {
 
                     @Override
                     public void onNext(RelevantBluePrintToken bean) {
+                        if(bean!=null){
+                            LogUtil.e("info="+bean.toString());
+                        }
                         if(bean!=null && !TextUtils.isEmpty(bean.data)){
+
                             if(mView!=null){
                                 mView.sendBasicInfo(bean.data);
                             }
                         }
                     }
                 });
+        mSubscription.add(sub);
     }
 
     @Override

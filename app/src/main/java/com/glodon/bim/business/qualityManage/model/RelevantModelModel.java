@@ -28,7 +28,7 @@ public class RelevantModelModel implements RelevantModelContract.Model{
         return NetRequest.getInstance().getCall(AppConfig.BASE_URL, RelevantModelApi.class).getLatestVersion(projectId, cookie);
     }
     @Override
-    public Observable<RelevantBluePrintToken> getToken(long projectId, String projectVersionId, String fileId){
-        return NetRequest.getInstance().getCall(AppConfig.BASE_URL,RelevantModelApi.class).getToken(projectId,projectVersionId,fileId,cookie);
+    public Observable<RelevantBluePrintToken> getToken(long projectId, String projectVersionId, String integrateId){
+        return NetRequest.getInstance().getCall(AppConfig.BASE_URL,RelevantModelApi.class).getToken(projectId,projectVersionId,integrateId,cookie);
     }
 }

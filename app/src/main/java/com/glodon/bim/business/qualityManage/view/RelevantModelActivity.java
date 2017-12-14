@@ -78,9 +78,6 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
         mWebview = (WebView) findViewById(R.id.relevant_model_webview);
         mTrangleView = (ImageView) findViewById(R.id.relevant_model_trangle);
         mTrangleTextView = (TextView) findViewById(R.id.relevant_model_trangle_content);
-
-
-
         initWebview();
     }
 
@@ -114,6 +111,7 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
         mWebview.addJavascriptInterface(new BasicInfo(), "BasicInfo");
         mWebview.addJavascriptInterface(new ModelEvent(), "modelEvent");
         setting.setDomStorageEnabled(false);
+        
         // 暂时先去掉（在HuaWeiP6上显示异常）
         // this.setLayerType(WebView.LAYER_TYPE_HARDWARE, new Paint());
 //        setting.setAppCacheMaxSize(1024 * 1024 * 8);

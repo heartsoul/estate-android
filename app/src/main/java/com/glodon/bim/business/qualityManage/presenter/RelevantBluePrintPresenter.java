@@ -121,6 +121,7 @@ public class RelevantBluePrintPresenter implements RelevantBluePrintContract.Pre
                         }
                     }
                 });
+        mSubscription.add(sub);
     }
 
     @Override
