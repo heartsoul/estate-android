@@ -781,6 +781,13 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
             }
         }
 
+        //关联图纸
+        if(mBluePrintSelectInfo!=null && !TextUtils.isEmpty(mBluePrintSelectInfo.fileId)){
+            mInput.drawingPositionY = mBluePrintSelectInfo.drawingPositionY;
+            mInput.drawingPositionX = mBluePrintSelectInfo.drawingPositionX;
+            mInput.drawingName = mBluePrintSelectInfo.name;
+            mInput.drawingGdocFileId = mBluePrintSelectInfo.fileId;
+        }
         //项目名称
         mInput.projectName = SharedPreferencesUtil.getProjectName();
         mInput.inspectionType = mInspectionType;

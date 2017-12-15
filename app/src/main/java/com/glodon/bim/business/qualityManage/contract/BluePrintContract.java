@@ -43,6 +43,10 @@ public interface BluePrintContract {
          */
         OnBlueprintHintClickListener getmHintClickListener();
 
+        /**
+         * 表示当前是fragment
+         */
+        void setIsFragment();
     }
 
     interface View extends IBaseView {

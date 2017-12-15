@@ -2,6 +2,7 @@ package com.glodon.bim.business.qualityManage.contract;
 
 import com.glodon.bim.base.IBasePresenter;
 import com.glodon.bim.base.IBaseView;
+import com.glodon.bim.business.qualityManage.bean.BluePrintDotItem;
 import com.glodon.bim.business.qualityManage.bean.ModelListBean;
 import com.glodon.bim.business.qualityManage.bean.ModelListBeanItem;
 import com.glodon.bim.business.qualityManage.bean.ModelSingleListItem;
@@ -24,7 +25,10 @@ public interface RelevantBluePrintContract {
 
     interface Presenter extends IBasePresenter {
 
-
+        /**
+         * 获取点的信息
+         */
+        void getBluePrintDots();
     }
 
     interface View extends IBaseView {
@@ -34,6 +38,11 @@ public interface RelevantBluePrintContract {
          * @param token  图纸的token
          */
         void sendBasicInfo(String token);
+
+        /**
+         * 设置多点数据
+         */
+        void setDotsData(List<BluePrintDotItem> bluePrintDotItems);
     }
 
     interface Model {
@@ -49,5 +58,12 @@ public interface RelevantBluePrintContract {
          * @param fileId 图纸文件的id
          */
         Observable<RelevantBluePrintToken> getToken(long projectId, String projectVersionId, String fileId);
+
+        /**
+         * 获取历史点数据
+         * @param deptId 项目id
+         * @param drawingGdocFileId 图纸文件id
+         */
+        Observable<List<BluePrintDotItem>> getBluePrintDots(long deptId, String drawingGdocFileId);
     }
 }

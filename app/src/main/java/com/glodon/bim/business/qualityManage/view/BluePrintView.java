@@ -55,6 +55,9 @@ public class BluePrintView implements BluePrintContract.View {
     }
 
 
+    public void setIsFragment(){
+        mPresenter.setIsFragment();
+    }
 
     private void initView() {
         mCatalogView = mParent.findViewById(R.id.catalog_module_catalog_recyclerview);

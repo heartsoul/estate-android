@@ -53,7 +53,7 @@ public class BluePrintPresenter implements BluePrintContract.Presenter {
     private String fileId = "";
     private int pageIndex = 0;
     private int type = 0;//0新建检查单 1检查单编辑状态 2详情查看  3图纸模式
-
+    private boolean mIsFragment = false;
     private OnBlueprintHintClickListener mHintClickListener = new OnBlueprintHintClickListener() {
         @Override
         public void onSelect(BlueprintListBeanItem item) {
@@ -114,6 +114,9 @@ public class BluePrintPresenter implements BluePrintContract.Presenter {
             Intent intent = new Intent(mView.getActivity(), RelevantBluePrintActivity.class);
             intent.putExtra(CommonConfig.BLUE_PRINT_FILE_NAME,item.name);
             intent.putExtra(CommonConfig.BLUE_PRINT_FILE_ID,item.fileId);
+            if(mIsFragment){
+                type = 3;
+            }
             intent.putExtra(CommonConfig.RELEVANT_TYPE,type);
             if(item.fileId.equals(mSelectId)){
                 intent.putExtra(CommonConfig.BLUE_PRINT_POSITION_X, drawingPositionX);
@@ -122,6 +125,7 @@ public class BluePrintPresenter implements BluePrintContract.Presenter {
             mView.getActivity().startActivityForResult(intent,REQUEST_CODE_TO_RELEVANT);
         }
     };
+
 
     public BluePrintPresenter(BluePrintContract.View mView) {
         this.mView = mView;
@@ -306,5 +310,10 @@ public class BluePrintPresenter implements BluePrintContract.Presenter {
 
     public OnBlueprintHintClickListener getmHintClickListener() {
         return mHintClickListener;
+    }
+
+    @Override
+    public void setIsFragment() {
+        mIsFragment = true;
     }
 }

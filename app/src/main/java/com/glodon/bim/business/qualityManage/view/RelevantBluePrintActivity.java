@@ -2,11 +2,13 @@ package com.glodon.bim.business.qualityManage.view;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.SslErrorHandler;
@@ -15,7 +17,6 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -23,19 +24,16 @@ import com.glodon.bim.R;
 import com.glodon.bim.base.BaseActivity;
 import com.glodon.bim.basic.config.AppConfig;
 import com.glodon.bim.basic.log.LogUtil;
-import com.glodon.bim.business.qualityManage.bean.BluePrintBasicInfo;
+import com.glodon.bim.business.qualityManage.bean.BluePrintDotItem;
 import com.glodon.bim.business.qualityManage.bean.BluePrintPosition;
 import com.glodon.bim.business.qualityManage.bean.BluePrintPositionItem;
 import com.glodon.bim.business.qualityManage.bean.BlueprintListBeanItem;
 import com.glodon.bim.business.qualityManage.contract.RelevantBluePrintContract;
 import com.glodon.bim.business.qualityManage.presenter.RelevantBluePrintPresenter;
 import com.glodon.bim.common.config.CommonConfig;
-import com.glodon.bim.customview.ToastManager;
 import com.google.gson.GsonBuilder;
 
-import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -117,7 +115,6 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
         setting.setJavaScriptCanOpenWindowsAutomatically(true);
         setting.setPluginState(WebSettings.PluginState.ON);
         setting.setJavaScriptEnabled(true);
-        mWebview.addJavascriptInterface(new BasicInfo(), "BasicInfo");
         mWebview.addJavascriptInterface(new ModelEvent(), "modelEvent");
         setting.setDomStorageEnabled(false);
         // 暂时先去掉（在HuaWeiP6上显示异常）
@@ -146,6 +143,14 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
         mWebview.loadUrl(url);
     }
 
+    @Override
+    public void setDotsData(List<BluePrintDotItem> list) {
+        String dots=new GsonBuilder().create().toJson(list);
+        String url = "javascript:loadCircleItems('" + dots + "')";
+        LogUtil.e("order dots="+url);
+        mWebview.loadUrl(url);
+    }
+
     private void setListener() {
         mBackView.setOnClickListener(this);
     }
@@ -156,12 +161,6 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
         switch (id) {
             case R.id.relevant_blueprint_back://返回键
                 mActivity.finish();
-//                if(isshow){
-//                    showRepairDialog();
-//                }else {
-//                    showReviewDialog();
-//                }
-//                isshow = !isshow;
                 break;
         }
     }
@@ -307,14 +306,6 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
         }).show();
     }
 
-    class BasicInfo {
-
-        @JavascriptInterface
-        public void getIpPort(String str) {
-            ipPort(str);
-        }
-    }
-
     class ModelEvent {
 
         @JavascriptInterface
@@ -336,18 +327,6 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
         }
     }
 
-    /**
-     * 告诉H5ip和port
-     */
-    private void ipPort(final String str) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-//                TNBWebView.this.sendParamsToHtml(TNBMethodConfig.IP_PORT, params);
-                ToastManager.show(str);
-            }
-        });
-    }
 
     //消除图钉
     private void removePosition(String param) {
@@ -357,6 +336,7 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
     //设定图钉
     private void setPosition(){
         BluePrintPositionItem info = new BluePrintPositionItem();
+        LogUtil.e("setposition="+drawingPositionX+"  "+drawingPositionY);
         if(!TextUtils.isEmpty(drawingPositionX) && !TextUtils.isEmpty(drawingPositionY)) {
             info.x = Double.parseDouble(drawingPositionX);
             info.y = Double.parseDouble(drawingPositionY);
@@ -370,7 +350,21 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    showFinish();
+                    switch (type){
+                        case 0:
+
+                            break;
+                        case 1:
+                            showFinish();
+                            break;
+                        case 2:
+
+                            break;
+                        case 3:
+
+                            break;
+                    }
+
                 }
             });
         }
@@ -378,10 +372,31 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
 
     //传递点的信息给h5
     public void sendDotsData() {
-        String dots="";
-//        sendDataToHtml("loadInitData", new GsonBuilder().create().toJson(info));
-        mWebview.loadUrl("javascript:loadCircleItems('" + dots + "')");
+        List<BluePrintDotItem> list = new ArrayList<>();
+        BluePrintDotItem item1 = new BluePrintDotItem();
+        item1.drawingGdocFileId = mFileId;
+        item1.drawingPositionX = "2974.698028564453";
+        item1.drawingPositionY = "2133.756134033203";
+        item1.qcState = CommonConfig.QC_STATE_UNREVIEWED;
+        list.add(item1);
+        BluePrintDotItem item2 = new BluePrintDotItem();
+        item2.drawingGdocFileId = mFileId;
+        item2.drawingPositionX = "2984.698028564453";
+        item2.drawingPositionY = "2143.756134033203";
+        item2.qcState = CommonConfig.QC_STATE_UNRECTIFIED;
+        list.add(item2);
+        BluePrintDotItem item3 = new BluePrintDotItem();
+        item3.drawingGdocFileId = mFileId;
+        item3.drawingPositionX = "2994.698028564453";
+        item3.drawingPositionY = "2153.756134033203";
+        item3.qcState = CommonConfig.QC_STATE_DELAYED;
+        list.add(item3);
+        String dots=new GsonBuilder().create().toJson(list);
+        String url = "javascript:loadCircleItems('" + dots + "')";
+        LogUtil.e("order dots="+url);
+        mWebview.loadUrl(url);
     }
+
     /**
      * 创建返回的事件
      */
@@ -398,13 +413,20 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
 
     class CustomWebViewClient extends WebViewClient {
 
+        @Override
+        public void onPageStarted(WebView view, String url, Bitmap favicon) {
+            super.onPageStarted(view, url, favicon);
+//            setInitData();
+        }
 
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
             //0新建检查单 1检查单编辑状态 2详情查看  3图纸模式
+            LogUtil.e("pageFinish type="+type);
             switch (type){
                 case 0:
+//                    sendDotsData();
                     break;
                 case 1:
                     setPosition();
@@ -413,7 +435,7 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
                     setPosition();
                     break;
                 case 3:
-                    sendDotsData();
+                    mPresenter.getBluePrintDots();
                     break;
             }
         }

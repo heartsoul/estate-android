@@ -23,6 +23,7 @@ public class BluePrintFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflate(R.layout.quality_catalog_module_view);
         mBluePrintView = new BluePrintView(getActivity(),view);
+        mBluePrintView.setIsFragment();
         return view;
     }
 
