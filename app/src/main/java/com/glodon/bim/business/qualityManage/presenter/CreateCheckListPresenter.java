@@ -91,10 +91,10 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
     private String drawingPositionX;//位置的x信息
     private String drawingPositionY;//位置的y信息
 
-    //图纸
+    //模型
     private ModelListBeanItem mModelSelectInfo;
-    private String mCurrentModelName;//当前的图纸名称
-    private String mCurrentModelId;//当前的图纸id
+    private String mCurrentModelName;//当前的模型名称
+    private String mCurrentModelId;//当前的模型id
 
     //新建检查单参数
     private CreateCheckListParams mInput;
@@ -111,8 +111,7 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
 
     private String mInspectionType;
 
-//    private String mCompanyEmptyText = "您需要去PC端添加施工单位数据";
-//    private String mPersonEmptyText = "您需要去PC端添加责任人数据";
+    private int type = 0;//0新建检查单 1检查单编辑状态 2详情查看  3图纸模式
 
     @Override
     public boolean isChange() {
@@ -167,6 +166,9 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
 
             mInspectionType = mEditParams.inspectionType;
             mView.setTitle(mInspectionType);
+
+            //图纸
+            initBluePrint(mEditParams.drawingGdocFileId,mEditParams.drawingName,mEditParams.drawingPositionX,mEditParams.drawingPositionY);
         }else{
             //当从质检项目列表创建检查单时  取传递的质检项目name和id
             String name = SharedPreferencesUtil.getSelectModuleName();
@@ -184,7 +186,32 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
         }
         initInspectionCompany(mEditParams);
         getCompanyList(mEditParams);
+        //判断是否从图纸过来
+        String drawingGdocFileId = intent.getStringExtra(CommonConfig.DRAWINGGDOCFILEID);
+        String drawingName = intent.getStringExtra(CommonConfig.DRAWINGNAME);
+        String drawingPositionX = intent.getStringExtra(CommonConfig.DRAWINGPOSITIONX);
+        String drawingPositionY = intent.getStringExtra(CommonConfig.DRAWINGPOSITIONY);
+        if(!TextUtils.isEmpty(drawingGdocFileId)){
+            initBluePrint(drawingGdocFileId,drawingName,drawingPositionX,drawingPositionY);
+        }
+    }
 
+    //编辑状态或从图纸模型跳转过来时  图纸有值
+    private void initBluePrint(String drawingGdocFileId,String drawingName,String drawingPositionX,String drawingPositionY){
+        mInitParams.drawingGdocFileId = drawingGdocFileId;
+        mInitParams.drawingName = drawingName;
+        mInitParams.drawingPositionX = drawingPositionX;
+        mInitParams.drawingPositionY = drawingPositionY;
+        if(!TextUtils.isEmpty(drawingName)){
+            mView.showBluePrintName(mInitParams.drawingName,mInitParams.drawingGdocFileId);
+            mCurrentBluePrintName = mInitParams.drawingName;
+            mCurrentBluePrintId = mInitParams.drawingGdocFileId;
+            mBluePrintSelectInfo.name = mInitParams.drawingName;
+            mBluePrintSelectInfo.fileId = mInitParams.drawingGdocFileId;
+            mBluePrintSelectInfo.drawingPositionX = mInitParams.drawingPositionX;
+            mBluePrintSelectInfo.drawingPositionY = mInitParams.drawingPositionY;
+        }
+        type = 1;//编辑状态
     }
 
     //初始化图片
@@ -783,6 +810,7 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
                 intent.putExtra(CommonConfig.BLUE_PRINT_POSITION_Y, mBluePrintSelectInfo.drawingPositionY);
             }
         }
+        intent.putExtra(CommonConfig.RELEVANT_TYPE,type);
         mView.getActivity().startActivityForResult(intent, REQUEST_CODE_CHOOSE_BLUE_PRINT);
     }
 
@@ -822,6 +850,7 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
                     if (mView != null && mBluePrintSelectInfo != null) {
                         mView.showBluePrintName(mBluePrintSelectInfo.name,mBluePrintSelectInfo.fileId);
                     }
+                    type = 1;
                 }
                 break;
             case REQUEST_CODE_CHOOSE_MODEL:

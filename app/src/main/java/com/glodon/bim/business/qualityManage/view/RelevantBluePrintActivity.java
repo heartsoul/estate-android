@@ -6,6 +6,7 @@ import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.SslErrorHandler;
@@ -24,6 +25,7 @@ import com.glodon.bim.basic.config.AppConfig;
 import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.business.qualityManage.bean.BluePrintBasicInfo;
 import com.glodon.bim.business.qualityManage.bean.BluePrintPosition;
+import com.glodon.bim.business.qualityManage.bean.BluePrintPositionItem;
 import com.glodon.bim.business.qualityManage.bean.BlueprintListBeanItem;
 import com.glodon.bim.business.qualityManage.contract.RelevantBluePrintContract;
 import com.glodon.bim.business.qualityManage.presenter.RelevantBluePrintPresenter;
@@ -34,6 +36,8 @@ import com.google.gson.GsonBuilder;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 描述：关联图纸-图纸展示
@@ -59,6 +63,9 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
     private String drawingPositionX;//位置的x信息
     private String drawingPositionY;//位置的y信息
 
+    private int type = 0;//0新建检查单 1检查单编辑状态 2详情查看  3图纸模式
+    private boolean show = false;//true  不相应长按事件  false相应长按事件
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,8 +86,6 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
         mWebview = (WebView) findViewById(R.id.relevant_blueprint_webview);
         mTrangleView = (ImageView) findViewById(R.id.relevant_blueprint_trangle);
         mTrangleTextView = (TextView) findViewById(R.id.relevant_blueprint_trangle_content);
-
-
 
         initWebview();
     }
@@ -136,68 +141,38 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
 
     @Override
     public void sendBasicInfo(String token) {
-        String url = AppConfig.BASE_URL_BLUEPRINT_TOKEN+token;
+        String url = AppConfig.BASE_URL_BLUEPRINT_TOKEN+token+"&show="+show;
         LogUtil.e("url="+url);
         mWebview.loadUrl(url);
-    }
-
-//    window.modelEvent.getPosition
-    class ModelEvent {
-
-        @JavascriptInterface
-        public void getPosition(final String json) {
-            LogUtil.e("json="+json);
-            BluePrintPosition position = new GsonBuilder().create().fromJson(json,BluePrintPosition.class);
-            if(position!=null){
-                drawingPositionX = position.x;
-                drawingPositionY = position.y;
-            }
-            LogUtil.e("x="+drawingPositionX+" y="+drawingPositionY);
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    showFinish();
-                }
-            });
-
-        }
-    }
-
-
-    class BasicInfo {
-
-        @JavascriptInterface
-        public void getIpPort(String str) {
-            ipPort(str);
-        }
-    }
-
-    /**
-     * 告诉H5ip和port
-     */
-    private void ipPort(final String str) {
-//        final String ip = TNBStartMwapUtil.getCurrentIP(getContext());
-//        final int port = TNBStartMwapUtil.getCurrentPort(getContext());
-//        final Map<String, String> params = new HashMap<String, String>();
-//        params.put("ip", ip + ":" + port);
-//        params.put("ip", ip + ":" + TNBConfig.PORT);
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-//                TNBWebView.this.sendParamsToHtml(TNBMethodConfig.IP_PORT, params);
-                ToastManager.show(str);
-            }
-        });
     }
 
     private void setListener() {
         mBackView.setOnClickListener(this);
     }
 
+    @Override
+    public void onClick(View view) {
+        int id = view.getId();
+        switch (id) {
+            case R.id.relevant_blueprint_back://返回键
+                mActivity.finish();
+//                if(isshow){
+//                    showRepairDialog();
+//                }else {
+//                    showReviewDialog();
+//                }
+//                isshow = !isshow;
+                break;
+        }
+    }
+
     private void initData() {
+        //类型
+        type = getIntent().getIntExtra(CommonConfig.RELEVANT_TYPE,0);
         //初始的位置信息
         drawingPositionX = getIntent().getStringExtra(CommonConfig.BLUE_PRINT_POSITION_X);
         drawingPositionY = getIntent().getStringExtra(CommonConfig.BLUE_PRINT_POSITION_Y);
+        handleType();
         //初始化底部弹出框
         mRepairDialog = new RelevantBluePrintAndModelDialog(this);
         mReviewDialog = new RelevantBluePrintAndModelDialog(this);
@@ -217,37 +192,57 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
         //获取数据
         mPresenter = new RelevantBluePrintPresenter(this);
         mPresenter.initData(getIntent());
-
-
     }
 
-//    pr
-
-    //传递基本信息给h5  我的id  项目id   图纸id
-
-    //传递点的信息给h5
-    public void sendDotsData() {
-        BluePrintBasicInfo info = new BluePrintBasicInfo();
-        info.projectId = "projectId2";
-        info.projectVersionId = "projectVersionId2";
-        info.fileId = "fileId2";
-//        sendDataToHtml("loadInitData", new GsonBuilder().create().toJson(info));
+    //不同类型的处理
+    private void handleType(){
+        //0新建检查单 1检查单编辑状态 2详情查看  3图纸模式
+        switch (type){
+            case 0:
+                show = false;
+                break;
+            case 1:
+                show = false;
+                break;
+            case 2:
+                mFinishView.setVisibility(View.GONE);
+                mTrangleView.setVisibility(View.GONE);
+                mTrangleTextView.setVisibility(View.GONE);
+                show = true;
+                break;
+            case 3:
+                show = false;
+                break;
+        }
     }
 
-    private boolean isshow = true;
+    //不同type的返回处理
+    private void setResultByType(){
+        //0新建检查单 1检查单编辑状态 2详情查看  3图纸模式
+        switch (type){
+            case 0:
+            case 1://将值返回
+                Intent data = new Intent();
+                BlueprintListBeanItem item = new BlueprintListBeanItem();
+                item.name = mFileName;
+                item.fileId = mFileId;
+                item.drawingPositionX = drawingPositionX;
+                item.drawingPositionY = drawingPositionY;
+                data.putExtra(CommonConfig.MODULE_LIST_NAME,item);
+                setResult(RESULT_OK,data);
+                finish();
+                break;
+            case 2://无
 
-    @Override
-    public void onClick(View view) {
-        int id = view.getId();
-        switch (id) {
-            case R.id.relevant_blueprint_back://返回键
+                break;
+            case 3://跳转到新建检查单
+                Intent intent = new Intent(mActivity, CreateCheckListActivity.class);
+                intent.putExtra(CommonConfig.DRAWINGGDOCFILEID,mFileId);
+                intent.putExtra(CommonConfig.DRAWINGNAME,mFileName);
+                intent.putExtra(CommonConfig.DRAWINGPOSITIONX,drawingPositionX);
+                intent.putExtra(CommonConfig.DRAWINGPOSITIONY,drawingPositionY);
+                mActivity.startActivity(intent);
                 mActivity.finish();
-//                if(isshow){
-//                    showRepairDialog();
-//                }else {
-//                    showReviewDialog();
-//                }
-//                isshow = !isshow;
                 break;
         }
     }
@@ -259,15 +254,7 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
         mFinishView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent data = new Intent();
-                BlueprintListBeanItem item = new BlueprintListBeanItem();
-                item.name = mFileName;
-                item.fileId = mFileId;
-                item.drawingPositionX = drawingPositionX;
-                item.drawingPositionY = drawingPositionY;
-                data.putExtra(CommonConfig.MODULE_LIST_NAME,item);
-                setResult(RESULT_OK,data);
-                finish();
+                setResultByType();
             }
         });
         mCancelView.setOnClickListener(new View.OnClickListener() {
@@ -281,10 +268,7 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
         });
     }
 
-    //消除图钉
-    private void removePosition(String param) {
-        mWebview.loadUrl("javascript:removeDrawableItem('" + param + "')");
-    }
+
 
     private void hideFinish(){
         mCancelView.setVisibility(View.GONE);
@@ -323,6 +307,81 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
         }).show();
     }
 
+    class BasicInfo {
+
+        @JavascriptInterface
+        public void getIpPort(String str) {
+            ipPort(str);
+        }
+    }
+
+    class ModelEvent {
+
+        @JavascriptInterface
+        public void getPosition(final String json) {
+            LogUtil.e("json="+json);
+            BluePrintPosition position = new GsonBuilder().create().fromJson(json,BluePrintPosition.class);
+            if(position!=null){
+                drawingPositionX = position.x;
+                drawingPositionY = position.y;
+            }
+            LogUtil.e("x="+drawingPositionX+" y="+drawingPositionY);
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    showFinish();
+                }
+            });
+
+        }
+    }
+
+    /**
+     * 告诉H5ip和port
+     */
+    private void ipPort(final String str) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+//                TNBWebView.this.sendParamsToHtml(TNBMethodConfig.IP_PORT, params);
+                ToastManager.show(str);
+            }
+        });
+    }
+
+    //消除图钉
+    private void removePosition(String param) {
+        mWebview.loadUrl("javascript:removeDrawableItem('" + param + "')");
+    }
+
+    //设定图钉
+    private void setPosition(){
+        BluePrintPositionItem info = new BluePrintPositionItem();
+        if(!TextUtils.isEmpty(drawingPositionX) && !TextUtils.isEmpty(drawingPositionY)) {
+            info.x = Double.parseDouble(drawingPositionX);
+            info.y = Double.parseDouble(drawingPositionY);
+            info.z = 0;
+            List<BluePrintPositionItem> list = new ArrayList<>();
+            list.add(info);
+            String param = new GsonBuilder().create().toJson(list);
+            String order = "javascript:loadPinItems('" + param + "')";
+            LogUtil.e("order=" + order);
+            mWebview.loadUrl(order);
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    showFinish();
+                }
+            });
+        }
+    }
+
+    //传递点的信息给h5
+    public void sendDotsData() {
+        String dots="";
+//        sendDataToHtml("loadInitData", new GsonBuilder().create().toJson(info));
+        mWebview.loadUrl("javascript:loadCircleItems('" + dots + "')");
+    }
     /**
      * 创建返回的事件
      */
@@ -343,7 +402,20 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
-            sendDotsData();
+            //0新建检查单 1检查单编辑状态 2详情查看  3图纸模式
+            switch (type){
+                case 0:
+                    break;
+                case 1:
+                    setPosition();
+                    break;
+                case 2:
+                    setPosition();
+                    break;
+                case 3:
+                    sendDotsData();
+                    break;
+            }
         }
 
         @Override

@@ -51,4 +51,10 @@ public class QualityCheckListDetailInspectionInfo {
     //提交时间
     public String updateTime;//过期
     public long commitTime;
+
+    //图纸
+    public String drawingGdocFileId;//图纸id
+    public String drawingName;//图纸名
+    public String drawingPositionX;//位置的x信息
+    public String drawingPositionY;//位置的y信息
 }

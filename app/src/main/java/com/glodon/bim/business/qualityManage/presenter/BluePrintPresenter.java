@@ -52,6 +52,7 @@ public class BluePrintPresenter implements BluePrintContract.Presenter {
     private ProjectVersionBean mLatestVersionInfo;//最新版本信息
     private String fileId = "";
     private int pageIndex = 0;
+    private int type = 0;//0新建检查单 1检查单编辑状态 2详情查看  3图纸模式
 
     private OnBlueprintHintClickListener mHintClickListener = new OnBlueprintHintClickListener() {
         @Override
@@ -109,14 +110,11 @@ public class BluePrintPresenter implements BluePrintContract.Presenter {
     private OnChooseBlueprintObjListener mObjListener = new OnChooseBlueprintObjListener() {
         @Override
         public void onSelect(BlueprintListBeanItem item, String position) {
-//            Intent data = new Intent();
-//            data.putExtra(CommonConfig.MODULE_LIST_NAME, item);
-//            mView.getActivity().setResult(Activity.RESULT_OK, data);
-//            mView.getActivity().finish();
             //新建检查单时
             Intent intent = new Intent(mView.getActivity(), RelevantBluePrintActivity.class);
             intent.putExtra(CommonConfig.BLUE_PRINT_FILE_NAME,item.name);
             intent.putExtra(CommonConfig.BLUE_PRINT_FILE_ID,item.fileId);
+            intent.putExtra(CommonConfig.RELEVANT_TYPE,type);
             if(item.fileId.equals(mSelectId)){
                 intent.putExtra(CommonConfig.BLUE_PRINT_POSITION_X, drawingPositionX);
                 intent.putExtra(CommonConfig.BLUE_PRINT_POSITION_Y, drawingPositionY);
@@ -141,6 +139,7 @@ public class BluePrintPresenter implements BluePrintContract.Presenter {
         mSelectId = intent.getStringExtra(CommonConfig.MODULE_LIST_POSITION);
         drawingPositionX = intent.getStringExtra(CommonConfig.BLUE_PRINT_POSITION_X);
         drawingPositionY = intent.getStringExtra(CommonConfig.BLUE_PRINT_POSITION_Y);
+        type = intent.getIntExtra(CommonConfig.RELEVANT_TYPE,0);
         if (NetWorkUtils.isNetworkAvailable(mView.getActivity())) {
             getLatestVersion();
         } else {

@@ -16,6 +16,7 @@ import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.glodon.bim.R;
 import com.glodon.bim.base.BaseActivity;
@@ -126,7 +127,7 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
 
     @Override
     public void sendBasicInfo(String token) {
-        String url = AppConfig.BASE_URL_BLUEPRINT_TOKEN + token;
+        String url = AppConfig.BASE_URL_BLUEPRINT_TOKEN +"f1cd89775d6c402dbf8fbb65778751ac";
         LogUtil.e("url=" + url);
         mWebview.loadUrl(url);
     }
@@ -137,7 +138,8 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
         @JavascriptInterface
         public void getPosition(final String json) {
             LogUtil.e("json=" + json);
-            component = new GsonBuilder().create().fromJson(json, ModelComponent.class);
+//            Toast.makeText(mActivity,json,Toast.LENGTH_LONG).show();
+//            component = new GsonBuilder().create().fromJson(json, ModelComponent.class);
         }
     }
 
@@ -145,6 +147,7 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
     private void setListener() {
         mBackView.setOnClickListener(this);
         mFinishView.setOnClickListener(this);
+
     }
 
     private void initData() {
@@ -179,9 +182,9 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
                 mActivity.finish();
                 break;
             case R.id.relevant_model_finish://+号
-                if(checkComponent()){
-                    backData();
-                }
+//                if(checkComponent()){
+//                    backData();
+//                }
                 break;
         }
     }
@@ -209,12 +212,16 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
     }
 
 
+
     //消除图钉
     private void removePosition(String param) {
         mWebview.loadUrl("javascript:removeDrawableItem('" + param + "')");
     }
 
-
+    private void setPosition(){
+        String param = "{\"objectId\":\"298094\",\"fileId\":null,\"elementId\":\"298094\",\"boundingBox\":{\"min\":{\"x\":29649.99914178392,\"y\":42780.285546173705,\"z\":10699.997674078857},\"max\":{\"x\":46449.99837493291,\"y\":43178.15051548913,\"z\":11701.053423734613}},\"objectData\":{\"categoryId\":\"-2001320\",\"levelName\":\"L4\",\"specialty\":\"\"},\"eventType\":\"Click\",\"click\":1,\"worldPosition\":{\"x\":36095.18761454279,\"y\":42780.28922324637,\"z\":10745.030700784731}}\n";
+        mWebview.loadUrl("javascript:removeDrawableItem('" + param + "')");
+    }
 
     //新建整改单的弹出框
     private void showRepairDialog() {

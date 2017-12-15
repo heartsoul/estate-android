@@ -7,9 +7,7 @@ import com.glodon.bim.basic.utils.CameraUtil;
 import com.glodon.bim.basic.utils.SharedPreferencesUtil;
 import com.glodon.bim.business.main.bean.ProjectListItem;
 import com.glodon.bim.business.main.contract.ChooseCategoryItemContract;
-import com.glodon.bim.business.qualityManage.view.BluePrintActivity;
 import com.glodon.bim.business.qualityManage.view.CreateCheckListActivity;
-import com.glodon.bim.business.qualityManage.view.ModelActivity;
 import com.glodon.bim.business.qualityManage.view.PhotoEditActivity;
 import com.glodon.bim.business.qualityManage.view.QualityMangeMainActivity;
 import com.glodon.bim.common.config.CommonConfig;
@@ -42,17 +40,17 @@ public class ChooseCategoryItemPresenter implements ChooseCategoryItemContract.P
 
 
 
-    //跳转到图纸
-    public void toBluePrint() {
-        Intent intent = new Intent(mView.getActivity(), BluePrintActivity.class);
-        mView.getActivity().startActivity(intent);
-    }
-
-    //跳转到模型
-    public void toModel() {
-        Intent intent = new Intent(mView.getActivity(), ModelActivity.class);
-        mView.getActivity().startActivity(intent);
-    }
+//    //跳转到图纸
+//    public void toBluePrint() {
+//        Intent intent = new Intent(mView.getActivity(), BluePrintActivity.class);
+//        mView.getActivity().startActivity(intent);
+//    }
+//
+//    //跳转到模型
+//    public void toModel() {
+//        Intent intent = new Intent(mView.getActivity(), ModelActivity.class);
+//        mView.getActivity().startActivity(intent);
+//    }
 
     @Override
     public void openPhoto() {

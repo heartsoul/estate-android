@@ -64,4 +64,9 @@ public class CommonConfig {
     public static final String BLUE_PRINT_POSITION_Y = "BLUE_PRINT_POSITION_Y";//图纸位置y
     public static final String BLUE_PRINT_FILE = "BLUE_PRINT_FILE";
     public static final String MODEL_SELECT_INFO = "MODEL_SELECT_INFO";//关联模型
+    public static final String RELEVANT_TYPE = "RELEVANT_TYPE";//传递的类型  //0新建检查单 1检查单编辑状态 2详情查看  3图纸模式
+    public static final String DRAWINGGDOCFILEID = "DRAWINGGDOCFILEID";//从图纸模式进入检查单
+    public static final String DRAWINGNAME = "DRAWINGNAME";//从图纸模式进入检查单
+    public static final String DRAWINGPOSITIONX = "DRAWINGPOSITIONX";//从图纸模式进入检查单
+    public static final String DRAWINGPOSITIONY = "DRAWINGPOSITIONY";//从图纸模式进入检查单
 }

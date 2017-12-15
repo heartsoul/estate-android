@@ -28,7 +28,7 @@ public class QualityMangeMainPresenter implements QualityMangeMainContract.Prese
 
     private QualityMangeMainContract.View mView;
     private String mPhotoPath;
-
+    private int type = 3;//0新建检查单 1检查单编辑状态 2详情查看  3图纸模式
     public QualityMangeMainPresenter(QualityMangeMainContract.View mView) {
         this.mView = mView;
 
@@ -37,6 +37,7 @@ public class QualityMangeMainPresenter implements QualityMangeMainContract.Prese
     //跳转到图纸
     public void toBluePrint() {
         Intent intent = new Intent(mView.getActivity(), BluePrintActivity.class);
+        intent.putExtra(CommonConfig.RELEVANT_TYPE,type);
         mView.getActivity().startActivity(intent);
     }
 
