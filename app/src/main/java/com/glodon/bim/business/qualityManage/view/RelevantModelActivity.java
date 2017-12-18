@@ -216,6 +216,7 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
                         mModelSelectInfo.component = component;
                         intent.putExtra(CommonConfig.RELEVANT_MODEL,mModelSelectInfo);
                         startActivity(intent);
+                        finish();
                         break;
                 }
 
@@ -329,17 +330,21 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
                 case 1:
                     if(mModelSelectInfo!=null){
                         component = mModelSelectInfo.component;
-                        List<String> list = new ArrayList<>();
-                        list.add(mModelSelectInfo.component.elementId);
-                        showSelectedComponent(list);
+                        if(component!=null) {
+                            List<String> list = new ArrayList<>();
+                            list.add(mModelSelectInfo.component.elementId);
+                            showSelectedComponent(list);
+                        }
                     }
                     break;
                 case 2:
                     if(mModelSelectInfo!=null){
                         component = mModelSelectInfo.component;
-                        List<String> list = new ArrayList<>();
-                        list.add(mModelSelectInfo.component.elementId);
-                        showSelectedComponent(list);
+                        if(component!=null) {
+                            List<String> list = new ArrayList<>();
+                            list.add(mModelSelectInfo.component.elementId);
+                            showSelectedComponent(list);
+                        }
                     }
                     break;
                 case 3:
