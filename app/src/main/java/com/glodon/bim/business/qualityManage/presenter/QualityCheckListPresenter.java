@@ -277,6 +277,7 @@ public class QualityCheckListPresenter implements QualityCheckListContract.Prese
         props.qualityCheckpointName = info.qualityCheckpointName;
         props.responsibleUserName = info.responsibleUserName;
         props.responsibleUserId = info.responsibleUserId;
+        props.gdocFileId = info.gdocFileId;
         return  props;
     }
 

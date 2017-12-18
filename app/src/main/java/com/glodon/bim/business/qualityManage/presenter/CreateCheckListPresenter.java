@@ -14,6 +14,8 @@ import com.glodon.bim.business.qualityManage.bean.CompanyItem;
 import com.glodon.bim.business.qualityManage.bean.CreateCheckListParams;
 import com.glodon.bim.business.qualityManage.bean.CreateCheckListParamsFile;
 import com.glodon.bim.business.qualityManage.bean.InspectionCompanyItem;
+import com.glodon.bim.business.qualityManage.bean.ModelComponent;
+import com.glodon.bim.business.qualityManage.bean.ModelElementInfo;
 import com.glodon.bim.business.qualityManage.bean.ModelListBeanItem;
 import com.glodon.bim.business.qualityManage.bean.ModuleListBeanItem;
 import com.glodon.bim.business.qualityManage.bean.PersonItem;
@@ -93,8 +95,6 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
 
     //模型
     private ModelListBeanItem mModelSelectInfo;
-    private String mCurrentModelName;//当前的模型名称
-    private String mCurrentModelId;//当前的模型id
 
     //新建检查单参数
     private CreateCheckListParams mInput;
@@ -137,8 +137,6 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
     }
 
 
-
-
     @Override
     public void setEditState(CreateCheckListParams mParams) {
         mInput = mParams;
@@ -168,19 +166,33 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
             mView.setTitle(mInspectionType);
 
             //图纸
-            initBluePrint(mEditParams.drawingGdocFileId,mEditParams.drawingName,mEditParams.drawingPositionX,mEditParams.drawingPositionY);
-        }else{
+            initBluePrint(mEditParams.drawingGdocFileId, mEditParams.drawingName, mEditParams.drawingPositionX, mEditParams.drawingPositionY);
+            //模型
+            if(!TextUtils.isEmpty(mEditParams.gdocFileId)) {
+                mInitParams.gdocFileId = mEditParams.gdocFileId;
+                mInitParams.elementId = mEditParams.elementId;
+                mInitParams.elementName = mEditParams.elementName;
+                mInitParams.buildingId = mEditParams.buildingId;
+                mInitParams.buildingName = mEditParams.buildingName;
+                mModelSelectInfo.fileId = mEditParams.gdocFileId;
+                mModelSelectInfo.buildingId = mEditParams.buildingId;
+                mModelSelectInfo.buildingName = mEditParams.buildingName;
+                mModelSelectInfo.component = new ModelComponent();
+                mModelSelectInfo.component.elementId = mEditParams.elementId;
+                mView.showModelName(mEditParams.elementName);
+            }
+        } else {
             //当从质检项目列表创建检查单时  取传递的质检项目name和id
             String name = SharedPreferencesUtil.getSelectModuleName();
-            if(!TextUtils.isEmpty(name)){
+            if (!TextUtils.isEmpty(name)) {
                 mModuleSelectInfo.id = SharedPreferencesUtil.getSelectModuleId();
                 mModuleSelectInfo.name = SharedPreferencesUtil.getSelectModuleName();
                 mCurrentModuleName = SharedPreferencesUtil.getSelectModuleName();
                 mCurrentModuleId = SharedPreferencesUtil.getSelectModuleId();
                 mInitParams.qualityCheckpointId = mCurrentModuleId;
                 mInitParams.qualityCheckpointName = mCurrentModuleName;
-                if(mView!=null){
-                    mView.showModuleName(mCurrentModuleName,mCurrentModuleId);
+                if (mView != null) {
+                    mView.showModuleName(mCurrentModuleName, mCurrentModuleId);
                 }
             }
         }
@@ -191,19 +203,28 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
         String drawingName = intent.getStringExtra(CommonConfig.DRAWINGNAME);
         String drawingPositionX = intent.getStringExtra(CommonConfig.DRAWINGPOSITIONX);
         String drawingPositionY = intent.getStringExtra(CommonConfig.DRAWINGPOSITIONY);
-        if(!TextUtils.isEmpty(drawingGdocFileId)){
-            initBluePrint(drawingGdocFileId,drawingName,drawingPositionX,drawingPositionY);
+        if (!TextUtils.isEmpty(drawingGdocFileId)) {
+            initBluePrint(drawingGdocFileId, drawingName, drawingPositionX, drawingPositionY);
+        }
+        //判断是否从模型列表过来
+        mModelSelectInfo = (ModelListBeanItem) intent.getSerializableExtra(CommonConfig.RELEVANT_MODEL);
+        if(mModelSelectInfo!=null){
+            mInitParams.gdocFileId = mModelSelectInfo.fileId;
+            mInitParams.elementId = mModelSelectInfo.component.elementId;
+            mInitParams.buildingId = mModelSelectInfo.buildingId;
+            mInitParams.buildingName = mModelSelectInfo.buildingName;
+            getElementName(mModelSelectInfo.fileId,mModelSelectInfo.component.elementId);
         }
     }
 
     //编辑状态或从图纸模型跳转过来时  图纸有值
-    private void initBluePrint(String drawingGdocFileId,String drawingName,String drawingPositionX,String drawingPositionY){
+    private void initBluePrint(String drawingGdocFileId, String drawingName, String drawingPositionX, String drawingPositionY) {
         mInitParams.drawingGdocFileId = drawingGdocFileId;
         mInitParams.drawingName = drawingName;
         mInitParams.drawingPositionX = drawingPositionX;
         mInitParams.drawingPositionY = drawingPositionY;
-        if(!TextUtils.isEmpty(drawingName)){
-            mView.showBluePrintName(mInitParams.drawingName,mInitParams.drawingGdocFileId);
+        if (!TextUtils.isEmpty(drawingName)) {
+            mView.showBluePrintName(mInitParams.drawingName, mInitParams.drawingGdocFileId);
             mCurrentBluePrintName = mInitParams.drawingName;
             mCurrentBluePrintId = mInitParams.drawingGdocFileId;
             mBluePrintSelectInfo.name = mInitParams.drawingName;
@@ -212,6 +233,41 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
             mBluePrintSelectInfo.drawingPositionY = mInitParams.drawingPositionY;
         }
         type = 1;//编辑状态
+    }
+
+    //编辑状态或从模型跳转过来时  模型有值
+    private void initModel(String elementId) {
+
+    }
+
+    //获取构件名称
+    private void getElementName(String fileId, String elementId) {
+        Subscription sub = mModel.getElementProperty(mProjectId, SharedPreferencesUtil.getString(mProjectId + "", ""), fileId, elementId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<ModelElementInfo>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        LogUtil.e(e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(ModelElementInfo modelElementInfo) {
+                        if (modelElementInfo != null && modelElementInfo.data != null) {
+                            String elementName = modelElementInfo.data.name;
+
+                            if (mView != null) {
+                                mView.showModelName(elementName);
+                            }
+                        }
+                    }
+                });
+        mSubscritption.add(sub);
     }
 
     //初始化图片
@@ -284,7 +340,7 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
             //设置质检项目
             mModuleSelectInfo.name = mEditParams.qualityCheckpointName;
             mModuleSelectInfo.id = mEditParams.qualityCheckpointId;
-            mCurrentModuleName =mModuleSelectInfo.name;
+            mCurrentModuleName = mModuleSelectInfo.name;
             mCurrentModuleId = mModuleSelectInfo.id;
             //设置责任人
             Subscription sub = mModel.gePersonList(mProjectId, mCompanyList.get(mCompanySelectPosition).coperationId)
@@ -368,7 +424,7 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
                                 mInitParams.constructionCompanyName = mCompanyList.get(0).name;
                                 mInitParams.constructionCompanyId = mCompanyList.get(0).coperationId;
                             }
-                        }else{
+                        } else {
                             //施工单位为空  则特殊处理
                             mView.showEmptyCompany();
                         }
@@ -407,7 +463,7 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
                                 if (mView != null) {
                                     mView.showPersonList(mPersonNameList, mPersonSelectPosition);
                                 }
-                            }else{
+                            } else {
                                 mView.showPersonEmpty();
                             }
                         }
@@ -469,6 +525,7 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
 
     private void toSubmit(CreateCheckListParams params) {
         assembleParams(params);
+        LogUtil.e("input="+mInput.toString());
         if (mInspectId == -1) {
             //新增
             Subscription sub = mModel.createSubmit(mProjectId, mInput)
@@ -751,12 +808,12 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
             mInput.inspectionCompanyName = mInspectionCompanyList.get(mInspectionCompanySelectPosition).name;
         }
         //施工单位
-        if (mCompanyList != null && mCompanyList.size() > 0 && mCompanySelectPosition<mCompanyList.size()) {
+        if (mCompanyList != null && mCompanyList.size() > 0 && mCompanySelectPosition < mCompanyList.size()) {
             mInput.constructionCompanyId = mCompanyList.get(mCompanySelectPosition).coperationId;
             mInput.constructionCompanyName = mCompanyList.get(mCompanySelectPosition).name;
         }
         //责任人
-        if (mPersonList != null && mPersonList.size() > 0 &&mPersonSelectPosition<mPersonList.size()) {
+        if (mPersonList != null && mPersonList.size() > 0 && mPersonSelectPosition < mPersonList.size()) {
             mInput.responsibleUserId = mPersonList.get(mPersonSelectPosition).userId;
             mInput.responsibleUserName = mPersonList.get(mPersonSelectPosition).name;
             mInput.responsibleUserTitle = mPersonList.get(mPersonSelectPosition).title;
@@ -772,21 +829,29 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
         }
         //质检项目
         if (mModuleSelectInfo != null) {
-            if(mCurrentModuleName.equals(mModuleSelectInfo.name)) {
+            if (mCurrentModuleName.equals(mModuleSelectInfo.name)) {
                 mInput.qualityCheckpointName = mModuleSelectInfo.name;
                 mInput.qualityCheckpointId = mModuleSelectInfo.id;
-            }else{
+            } else {
                 mInput.qualityCheckpointName = mCurrentModuleName;
                 mInput.qualityCheckpointId = null;
             }
         }
 
         //关联图纸
-        if(mBluePrintSelectInfo!=null && !TextUtils.isEmpty(mBluePrintSelectInfo.fileId)){
+        if (mBluePrintSelectInfo != null && !TextUtils.isEmpty(mBluePrintSelectInfo.fileId)) {
             mInput.drawingPositionY = mBluePrintSelectInfo.drawingPositionY;
             mInput.drawingPositionX = mBluePrintSelectInfo.drawingPositionX;
             mInput.drawingName = mBluePrintSelectInfo.name;
             mInput.drawingGdocFileId = mBluePrintSelectInfo.fileId;
+        }
+        //关联模型
+        if(mModelSelectInfo!=null && mModelSelectInfo.component!=null){
+            mInput.elementName = mView.getModelElementName();
+            mInput.elementId = mModelSelectInfo.component.elementId;
+            mInput.buildingName = mModelSelectInfo.buildingName;
+            mInput.buildingId = mModelSelectInfo.buildingId;
+            mInput.gdocFileId = mModelSelectInfo.fileId;
         }
         //项目名称
         mInput.projectName = SharedPreferencesUtil.getProjectName();
@@ -797,9 +862,9 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
     @Override
     public void toModuleList() {
         Intent intent = new Intent(mView.getActivity(), ChooseModuleActivity.class);
-        if(!TextUtils.isEmpty(mCurrentModuleName) && !TextUtils.isEmpty(mModuleSelectInfo.name) && mModuleSelectInfo.id!=null){
+        if (!TextUtils.isEmpty(mCurrentModuleName) && !TextUtils.isEmpty(mModuleSelectInfo.name) && mModuleSelectInfo.id != null) {
             mCurrentModuleName = mView.getModuleName();
-            if(mCurrentModuleName.equals(mModuleSelectInfo.name)){
+            if (mCurrentModuleName.equals(mModuleSelectInfo.name)) {
                 intent.putExtra(CommonConfig.MODULE_LIST_POSITION, mModuleSelectInfo.id);
             }
         }
@@ -809,27 +874,24 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
     @Override
     public void toBluePrint() {
         Intent intent = new Intent(mView.getActivity(), BluePrintActivity.class);
-        if(!TextUtils.isEmpty(mCurrentBluePrintName) && !TextUtils.isEmpty(mBluePrintSelectInfo.name) && mBluePrintSelectInfo.fileId !=null){
+        if (!TextUtils.isEmpty(mCurrentBluePrintName) && !TextUtils.isEmpty(mBluePrintSelectInfo.name) && mBluePrintSelectInfo.fileId != null) {
             mCurrentBluePrintName = mView.getBluePrintName();
-            if(mCurrentBluePrintName.equals(mBluePrintSelectInfo.name)){
+            if (mCurrentBluePrintName.equals(mBluePrintSelectInfo.name)) {
                 intent.putExtra(CommonConfig.MODULE_LIST_POSITION, mBluePrintSelectInfo.fileId);
                 intent.putExtra(CommonConfig.BLUE_PRINT_POSITION_X, mBluePrintSelectInfo.drawingPositionX);
                 intent.putExtra(CommonConfig.BLUE_PRINT_POSITION_Y, mBluePrintSelectInfo.drawingPositionY);
             }
         }
-        intent.putExtra(CommonConfig.RELEVANT_TYPE,type);
+        intent.putExtra(CommonConfig.RELEVANT_TYPE, type);
         mView.getActivity().startActivityForResult(intent, REQUEST_CODE_CHOOSE_BLUE_PRINT);
     }
 
     @Override
     public void toModelList() {
         Intent intent = new Intent(mView.getActivity(), ModelActivity.class);
-        if(!TextUtils.isEmpty(mCurrentModelName) && !TextUtils.isEmpty(mModelSelectInfo.fileName) && mModelSelectInfo.fileId !=null){
-            mCurrentModelName = mView.getBluePrintName();
-            if(mCurrentModelName.equals(mModelSelectInfo.fileName)){
-                intent.putExtra(CommonConfig.MODULE_LIST_POSITION, mModelSelectInfo.fileId);
-                intent.putExtra(CommonConfig.MODEL_SELECT_INFO,mModelSelectInfo);
-            }
+        if (mModelSelectInfo!=null && !TextUtils.isEmpty(mModelSelectInfo.fileId)) {
+            intent.putExtra(CommonConfig.MODULE_LIST_POSITION, mModelSelectInfo.fileId);
+            intent.putExtra(CommonConfig.MODEL_SELECT_INFO, mModelSelectInfo);
         }
         mView.getActivity().startActivityForResult(intent, REQUEST_CODE_CHOOSE_MODEL);
     }
@@ -843,7 +905,7 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
                     mCurrentModuleName = mModuleSelectInfo.name;
                     mCurrentModuleId = mModuleSelectInfo.id;
                     if (mView != null && mModuleSelectInfo != null) {
-                        mView.showModuleName(mModuleSelectInfo.name,mModuleSelectInfo.id.longValue());
+                        mView.showModuleName(mModuleSelectInfo.name, mModuleSelectInfo.id.longValue());
                     }
                 }
                 break;
@@ -851,11 +913,11 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     mBluePrintSelectInfo = (BlueprintListBeanItem) data.getSerializableExtra(CommonConfig.MODULE_LIST_NAME);
                     mCurrentBluePrintName = mBluePrintSelectInfo.name;
-                    mCurrentBluePrintId= mBluePrintSelectInfo.fileId;
+                    mCurrentBluePrintId = mBluePrintSelectInfo.fileId;
                     drawingPositionX = mBluePrintSelectInfo.drawingPositionX;
                     drawingPositionY = mBluePrintSelectInfo.drawingPositionY;
                     if (mView != null && mBluePrintSelectInfo != null) {
-                        mView.showBluePrintName(mBluePrintSelectInfo.name,mBluePrintSelectInfo.fileId);
+                        mView.showBluePrintName(mBluePrintSelectInfo.name, mBluePrintSelectInfo.fileId);
                     }
                     type = 1;
                 }
@@ -863,10 +925,8 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
             case REQUEST_CODE_CHOOSE_MODEL:
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     mModelSelectInfo = (ModelListBeanItem) data.getSerializableExtra(CommonConfig.MODEL_SELECT_INFO);
-                    mCurrentModelName = mModelSelectInfo.fileName;
-                    mCurrentModelId= mModelSelectInfo.fileId;
-                    if (mView != null && mModelSelectInfo != null) {
-                        mView.showModelName(mModelSelectInfo.fileName,mModelSelectInfo.fileId);
+                    if (mModelSelectInfo.component != null) {
+                        getElementName(mModelSelectInfo.fileId, mModelSelectInfo.component.elementId);
                     }
                 }
                 break;
@@ -1020,13 +1080,12 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
 
     @Override
     public void moduleNameChanged(String text) {
-        if(!TextUtils.isEmpty(text) && text.equals(mCurrentModuleName) && mCurrentModuleId!=null && mCurrentModuleId.longValue()>0){
-            mView.showModuleBenchMark(true,mCurrentModuleId.longValue());
-        }else{
-            mView.showModuleBenchMark(false,-1);
+        if (!TextUtils.isEmpty(text) && text.equals(mCurrentModuleName) && mCurrentModuleId != null && mCurrentModuleId.longValue() > 0) {
+            mView.showModuleBenchMark(true, mCurrentModuleId.longValue());
+        } else {
+            mView.showModuleBenchMark(false, -1);
         }
     }
-
 
 
     //保存后将值付给初始值  以便下一次比较

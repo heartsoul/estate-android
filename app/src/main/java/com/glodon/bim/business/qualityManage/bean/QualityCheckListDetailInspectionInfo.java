@@ -9,8 +9,7 @@ import java.util.List;
  */
 
 public class QualityCheckListDetailInspectionInfo {
-    public long buildingId;
-    public String buildingName;
+
     public String code;
     //施工单位
     public long constructionCompanyId;
@@ -20,12 +19,10 @@ public class QualityCheckListDetailInspectionInfo {
     public long creatorId;
     public String creatorName;  //检查单  创建者
     public String description;  //现场描述
-    //关联模型   构件
-    public String elementId;
-    public String elementName;
+
 
     public List<QualityCheckListBeanItemFile> files; //图片
-    public String gdocFileId;
+
     public int id;
     public long inspectionCompanyId;
     public String inspectionCompanyName;
@@ -57,4 +54,13 @@ public class QualityCheckListDetailInspectionInfo {
     public String drawingName;//图纸名
     public String drawingPositionX;//位置的x信息
     public String drawingPositionY;//位置的y信息
+
+    //模型
+    public String gdocFileId;
+    //关联模型   构件
+    public String elementId;
+    public String elementName;
+    //模型单体
+    public long buildingId;
+    public String buildingName;
 }

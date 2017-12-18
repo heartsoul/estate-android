@@ -38,6 +38,8 @@ public interface ModelContract {
          */
         OnModelSelectListener getListener();
 
+        void setIsFragment();
+
     }
 
     interface View extends IBaseView {

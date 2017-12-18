@@ -551,12 +551,17 @@ public class CreateInspectionAcceptionFragment extends BaseFragment implements V
     }
 
     @Override
+    public String getModelElementName() {
+        return mModelName.getText().toString().trim();
+    }
+
+    @Override
     public void showBluePrintName(String name, String id) {
         mBluePrintName.setText(name);
     }
 
     @Override
-    public void showModelName(String name, String id) {
+    public void showModelName(String name) {
         mModelName.setText(name);
     }
 

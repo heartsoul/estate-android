@@ -14,15 +14,15 @@ public interface QualityMangeMainContract {
 
     interface Presenter extends IBasePresenter {
 
-        /**
-         * 跳转到图纸
-         */
-        void toBluePrint();
-
-        /**
-         * 跳转到模型
-         */
-        void toModel();
+//        /**
+//         * 跳转到图纸
+//         */
+//        void toBluePrint();
+//
+//        /**
+//         * 跳转到模型
+//         */
+//        void toModel();
 
         /**
          * 打开相机

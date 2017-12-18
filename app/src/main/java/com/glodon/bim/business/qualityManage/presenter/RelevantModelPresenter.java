@@ -10,6 +10,9 @@ import com.glodon.bim.basic.network.NetRequest;
 import com.glodon.bim.basic.utils.NetWorkUtils;
 import com.glodon.bim.basic.utils.SharedPreferencesUtil;
 import com.glodon.bim.business.greendao.provider.DaoProvider;
+import com.glodon.bim.business.qualityManage.bean.ModelComponentWorldPosition;
+import com.glodon.bim.business.qualityManage.bean.ModelElementHistory;
+import com.glodon.bim.business.qualityManage.bean.ModelElementInfo;
 import com.glodon.bim.business.qualityManage.bean.ProjectVersionBean;
 import com.glodon.bim.business.qualityManage.bean.ProjectVersionData;
 import com.glodon.bim.business.qualityManage.bean.RelevantBluePrintToken;
@@ -22,6 +25,11 @@ import com.glodon.bim.common.config.CommonConfig;
 import com.glodon.bim.customview.ToastManager;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -47,11 +55,13 @@ public class RelevantModelPresenter implements RelevantModelContract.Presenter {
     private ProjectVersionData mPersionData;
     private String mProjectVersionId;
     private String mFileId;
+    private List<ModelElementHistory> mElementHistories;
 
     public RelevantModelPresenter(RelevantModelContract.View mView) {
         this.mView = mView;
         mModel = new RelevantModelModel();
         mSubscription = new CompositeSubscription();
+        mPositionMap = new LinkedHashMap<>();
     }
 
     @Override
@@ -133,6 +143,80 @@ public class RelevantModelPresenter implements RelevantModelContract.Presenter {
                 });
         mSubscription.add(sub);
     }
+
+    public void getElements(){
+        Subscription sub = mModel.getElements(mProjectId,mFileId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<List<ModelElementHistory>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        LogUtil.e(e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(List<ModelElementHistory> modelElementHistories) {
+                        if(modelElementHistories!=null && modelElementHistories.size()>0){
+                            mElementHistories = modelElementHistories;
+                            for(ModelElementHistory element:modelElementHistories)
+                            {
+                                getElementName(element,element.gdocFileId,element.elementId);
+                            }
+                        }
+                    }
+                });
+        mSubscription.add(sub);
+    }
+
+    private LinkedHashMap<String,ModelElementHistory> mPositionMap;
+    //获取构件名称
+    private void getElementName(final ModelElementHistory element, String fileId, final String elementId) {
+        Subscription sub = mModel.getElementProperty(mProjectId, SharedPreferencesUtil.getString(mProjectId + "", ""), fileId, elementId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<ModelElementInfo>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        LogUtil.e(e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(ModelElementInfo modelElementInfo) {
+                        if (modelElementInfo != null && modelElementInfo.data != null && modelElementInfo.data.boundingBox!=null) {
+                            ModelComponentWorldPosition min = modelElementInfo.data.boundingBox.min;
+                            ModelComponentWorldPosition max = modelElementInfo.data.boundingBox.max;
+                            if(max!=null && min!=null) {
+                                element.drawingPositionX = (max.x + min.x) / 2;
+                                element.drawingPositionY = (max.y + min.y) / 2;
+                                element.drawingPositionZ = max.z > min.z ? max.z : min.z;
+                                mPositionMap.put(elementId, element);
+                                if (mPositionMap.size() == mElementHistories.size()) {
+                                    List<ModelElementHistory> list = new ArrayList<>();
+                                    for(Map.Entry<String,ModelElementHistory> entry:mPositionMap.entrySet()){
+                                        list.add(entry.getValue());
+                                    }
+                                    if(mView!=null)
+                                    {
+                                        mView.showModelHistory(list);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+        mSubscription.add(sub);
+    }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

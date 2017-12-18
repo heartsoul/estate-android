@@ -2,8 +2,12 @@ package com.glodon.bim.business.qualityManage.contract;
 
 import com.glodon.bim.base.IBasePresenter;
 import com.glodon.bim.base.IBaseView;
+import com.glodon.bim.business.qualityManage.bean.ModelElementHistory;
+import com.glodon.bim.business.qualityManage.bean.ModelElementInfo;
 import com.glodon.bim.business.qualityManage.bean.ProjectVersionBean;
 import com.glodon.bim.business.qualityManage.bean.RelevantBluePrintToken;
+
+import java.util.List;
 
 import rx.Observable;
 
@@ -17,7 +21,10 @@ public interface RelevantModelContract {
 
     interface Presenter extends IBasePresenter {
 
-
+        /**
+         * 获取历史的构件信息
+         */
+        void getElements();
     }
 
     interface View extends IBaseView {
@@ -27,6 +34,11 @@ public interface RelevantModelContract {
          * @param token  图纸的token
          */
         void sendBasicInfo(String token);
+
+        /**
+         * 展示历史构件信息
+         */
+        void showModelHistory(List<ModelElementHistory> list);
     }
 
     interface Model {
@@ -42,5 +54,15 @@ public interface RelevantModelContract {
          * @param fileId 图纸文件的id
          */
         Observable<RelevantBluePrintToken> getToken(long projectId, String projectVersionId, String fileId);
+
+        /**
+         * App端查询模型文件对应的所有关联构件
+         */
+         Observable<List<ModelElementHistory>> getElements(long deptId, String gdocFileId);
+
+        /**
+         * 根据构件id获取构件名称
+         */
+         Observable<ModelElementInfo> getElementProperty(long projectId, String versionId, String fileId, String elementId);
     }
 }

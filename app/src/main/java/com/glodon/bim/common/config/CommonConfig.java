@@ -69,4 +69,5 @@ public class CommonConfig {
     public static final String DRAWINGNAME = "DRAWINGNAME";//从图纸模式进入检查单
     public static final String DRAWINGPOSITIONX = "DRAWINGPOSITIONX";//从图纸模式进入检查单
     public static final String DRAWINGPOSITIONY = "DRAWINGPOSITIONY";//从图纸模式进入检查单
+    public static final String RELEVANT_MODEL = "RELEVANT_MODEL";//从模型模式进入检查单
 }

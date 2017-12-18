@@ -12,6 +12,7 @@ import com.glodon.bim.business.main.contract.ChooseProjectContract;
 import com.glodon.bim.business.main.listener.OnProjectClickListener;
 import com.glodon.bim.business.main.model.ChooseProjectModel;
 import com.glodon.bim.business.main.view.ChooseCategoryItemActivity;
+import com.glodon.bim.business.qualityManage.bean.ProjectVersionBean;
 import com.glodon.bim.common.config.CommonConfig;
 import com.glodon.bim.customview.ToastManager;
 import com.google.gson.GsonBuilder;
@@ -70,7 +71,35 @@ public class ChooseProjectPresenter implements ChooseProjectContract.Presenter {
         Intent intent = new Intent(mView.getActivity(), ChooseCategoryItemActivity.class);
         intent.putExtra(CommonConfig.PROJECT_LIST_ITEM, item);
         mView.getActivity().startActivity(intent);
+        getLatestVersion(item.deptId);
     }
+
+    //获取最新版本
+    private void getLatestVersion(final long projectId){
+        Subscription sub = mModel.getLatestVersion(projectId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<ProjectVersionBean>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        LogUtil.e(e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(ProjectVersionBean projectVersionBean) {
+                        if(projectVersionBean!=null && projectVersionBean.data!=null) {
+                            SharedPreferencesUtil.setString(projectId + "", projectVersionBean.data.versionId);
+                        }
+                    }
+                });
+        mSubscription.add(sub);
+    }
+
     @Override
     public void initData(Intent intent) {
         if(NetWorkUtils.isNetworkAvailable(mView.getActivity())) {

@@ -9,8 +9,11 @@ import java.io.Serializable;
  */
 
 public class ModelListBeanItem implements Serializable{
-    public String fileId;
-    public String fileName;
+    public String fileId;//模型id
+    public String fileName;//模型name
 
-    public ModelComponent component;
+    public Long buildingId;//单体id
+    public String buildingName;//单体name
+
+    public ModelComponent component;//构件信息
 }

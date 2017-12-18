@@ -6,6 +6,7 @@ import com.glodon.bim.business.greendao.provider.DaoProvider;
 import com.glodon.bim.business.qualityManage.bean.CompanyItem;
 import com.glodon.bim.business.qualityManage.bean.CreateCheckListParams;
 import com.glodon.bim.business.qualityManage.bean.InspectionCompanyItem;
+import com.glodon.bim.business.qualityManage.bean.ModelElementInfo;
 import com.glodon.bim.business.qualityManage.bean.PersonItem;
 import com.glodon.bim.business.qualityManage.bean.SaveBean;
 import com.glodon.bim.business.qualityManage.contract.CreateCheckListContract;
@@ -222,5 +223,12 @@ public class CreateCheckListModel implements CreateCheckListContract.Model {
     @Override
     public Observable<List<InspectionCompanyItem>> getInspectionCompanies( long deptId){
         return NetRequest.getInstance().getCall(AppConfig.BASE_URL,CreateCheckListApi.class).getInspectionCompanies(deptId,new DaoProvider().getCookie());
+    }
+
+    /**
+     * 根据构件id获取构件名称
+     */
+    public Observable<ModelElementInfo> getElementProperty(long projectId,String versionId,String fileId,String elementId){
+        return NetRequest.getInstance().getCall(AppConfig.BASE_URL,CreateCheckListApi.class).getElementProperty(projectId,versionId,fileId,elementId,new DaoProvider().getCookie());
     }
 }

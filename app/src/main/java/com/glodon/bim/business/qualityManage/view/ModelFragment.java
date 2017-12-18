@@ -23,6 +23,7 @@ public class ModelFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflate(R.layout.quality_model_content_view);
         mModelView = new ModelView(getActivity(),view);
+        mModelView.setIsFragment();
         return view;
     }
 

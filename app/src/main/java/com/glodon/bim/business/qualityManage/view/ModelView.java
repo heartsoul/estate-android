@@ -65,6 +65,10 @@ public class ModelView implements View.OnClickListener, ModelContract.View {
         initData();
     }
 
+    public void setIsFragment(){
+        mPresenter.setIsFragment();
+    }
+
     private void initView() {
 
         //专业单体

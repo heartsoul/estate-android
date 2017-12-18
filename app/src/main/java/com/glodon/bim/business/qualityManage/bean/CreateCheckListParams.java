@@ -40,8 +40,9 @@ public class CreateCheckListParams implements Serializable {
     public String responsibleUserTitle;
     //模型
     public String versionId;//模型版本id
-    public Long buildingId;//栋号id
-    public String buildingName;//栋号name
+    public String gdocFileId;//模型的id
+    public Long buildingId;//单体id
+    public String buildingName;//单体name
     public String elementId;//构件id
     public String elementName;//构件name
     //图纸
@@ -54,4 +55,38 @@ public class CreateCheckListParams implements Serializable {
 
     //检查单id
     public long inspectId;
+
+    @Override
+    public String toString() {
+        return "CreateCheckListParams{" +
+                "code='" + code + '\'' +
+                ", projectId=" + projectId +
+                ", projectName='" + projectName + '\'' +
+                ", inspectionCompanyId=" + inspectionCompanyId +
+                ", inspectionCompanyName='" + inspectionCompanyName + '\'' +
+                ", qualityCheckpointId=" + qualityCheckpointId +
+                ", qualityCheckpointName='" + qualityCheckpointName + '\'' +
+                ", constructionCompanyId=" + constructionCompanyId +
+                ", constructionCompanyName='" + constructionCompanyName + '\'' +
+                ", needRectification=" + needRectification +
+                ", lastRectificationDate='" + lastRectificationDate + '\'' +
+                ", description='" + description + '\'' +
+                ", inspectionType='" + inspectionType + '\'' +
+                ", files=" + files +
+                ", responsibleUserId=" + responsibleUserId +
+                ", responsibleUserName='" + responsibleUserName + '\'' +
+                ", responsibleUserTitle='" + responsibleUserTitle + '\'' +
+                ", versionId='" + versionId + '\'' +
+                ", gdocFileId='" + gdocFileId + '\'' +
+                ", buildingId=" + buildingId +
+                ", buildingName='" + buildingName + '\'' +
+                ", elementId='" + elementId + '\'' +
+                ", elementName='" + elementName + '\'' +
+                ", drawingGdocFileId='" + drawingGdocFileId + '\'' +
+                ", drawingName='" + drawingName + '\'' +
+                ", drawingPositionX='" + drawingPositionX + '\'' +
+                ", drawingPositionY='" + drawingPositionY + '\'' +
+                ", inspectId=" + inspectId +
+                '}';
+    }
 }

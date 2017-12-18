@@ -2,10 +2,10 @@ package com.glodon.bim.business.qualityManage.view;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.SslErrorHandler;
@@ -13,27 +13,25 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.glodon.bim.R;
 import com.glodon.bim.base.BaseActivity;
 import com.glodon.bim.basic.config.AppConfig;
 import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.business.qualityManage.bean.BluePrintBasicInfo;
-import com.glodon.bim.business.qualityManage.bean.BluePrintPosition;
-import com.glodon.bim.business.qualityManage.bean.BlueprintListBeanItem;
 import com.glodon.bim.business.qualityManage.bean.ModelComponent;
+import com.glodon.bim.business.qualityManage.bean.ModelElementHistory;
 import com.glodon.bim.business.qualityManage.bean.ModelListBeanItem;
+import com.glodon.bim.business.qualityManage.bean.ModelSelectedComponent;
 import com.glodon.bim.business.qualityManage.contract.RelevantModelContract;
 import com.glodon.bim.business.qualityManage.presenter.RelevantModelPresenter;
 import com.glodon.bim.common.config.CommonConfig;
-import com.glodon.bim.customview.ToastManager;
 import com.google.gson.GsonBuilder;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 描述：关联模型-模型展示
@@ -56,7 +54,8 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
 
     private ModelListBeanItem mModelSelectInfo;//编辑时有过这个item
     private ModelComponent component;//选中的构件
-
+    private int type = 0;//0新建检查单 1检查单编辑状态 2详情查看  3模型模式
+    private boolean show = false;//true  不相应长按事件  false相应长按事件
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -127,19 +126,19 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
 
     @Override
     public void sendBasicInfo(String token) {
-        String url = AppConfig.BASE_URL_BLUEPRINT_TOKEN +"f1cd89775d6c402dbf8fbb65778751ac";
+        String url = AppConfig.BASE_URL_BLUEPRINT_TOKEN +token+"&show="+show;
         LogUtil.e("url=" + url);
         mWebview.loadUrl(url);
     }
 
-    //    window.modelEvent.getPosition
+
+    // 点击构件的回调
     class ModelEvent {
 
         @JavascriptInterface
         public void getPosition(final String json) {
-            LogUtil.e("json=" + json);
-//            Toast.makeText(mActivity,json,Toast.LENGTH_LONG).show();
-//            component = new GsonBuilder().create().fromJson(json, ModelComponent.class);
+            LogUtil.e("json="+json);
+            component = new GsonBuilder().create().fromJson(json, ModelComponent.class);
         }
     }
 
@@ -151,10 +150,12 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
     }
 
     private void initData() {
-        //编辑时不为空
+        //入口类型
+        type = getIntent().getIntExtra(CommonConfig.RELEVANT_TYPE,0);
         mModelSelectInfo = (ModelListBeanItem) getIntent().getSerializableExtra(CommonConfig.MODEL_SELECT_INFO);
         mFileName = getIntent().getStringExtra(CommonConfig.BLUE_PRINT_FILE_NAME);
         mFileId = getIntent().getStringExtra(CommonConfig.BLUE_PRINT_FILE_ID);
+        handleType();
         //初始化底部弹出框
         mRepairDialog = new RelevantBluePrintAndModelDialog(this);
         mReviewDialog = new RelevantBluePrintAndModelDialog(this);
@@ -164,14 +165,26 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
         mPresenter.initData(getIntent());
     }
 
-    //传递点的信息给h5
-    public void sendDotsData() {
-        BluePrintBasicInfo info = new BluePrintBasicInfo();
-        info.projectId = "projectId2";
-        info.projectVersionId = "projectVersionId2";
-        info.fileId = "fileId2";
-//        sendDataToHtml("loadInitData", new GsonBuilder().create().toJson(info));
+    //不同的入口处理数据不同
+    private void handleType(){
+        //0新建检查单 1检查单编辑状态 2详情查看  3模型模式
+        switch (type){
+            case 0:
+                show = false;
+                break;
+            case 1:
+                show = false;
+                break;
+            case 2:
+                show = true;
+                mFinishView.setVisibility(View.GONE);
+                break;
+            case 3:
+                show = false;
+                break;
+        }
     }
+
 
 
     @Override
@@ -182,9 +195,30 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
                 mActivity.finish();
                 break;
             case R.id.relevant_model_finish://+号
-//                if(checkComponent()){
-//                    backData();
-//                }
+                //0新建检查单 1检查单编辑状态 2详情查看  3模型模式
+                switch (type){
+                    case 0:
+                        if(checkComponent()){
+                            backData();
+                        }
+                        break;
+                    case 1:
+                        if(checkComponent()){
+                            backData();
+                        }
+                        break;
+                    case 2:
+
+                        break;
+                    case 3:
+                        //跳转到检查单创建页
+                        Intent intent = new Intent(mActivity,CreateCheckListActivity.class);
+                        mModelSelectInfo.component = component;
+                        intent.putExtra(CommonConfig.RELEVANT_MODEL,mModelSelectInfo);
+                        startActivity(intent);
+                        break;
+                }
+
                 break;
         }
     }
@@ -202,26 +236,34 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
 
     private void backData(){
         Intent data = new Intent();
-        ModelListBeanItem item = new ModelListBeanItem();
-        item.fileId = mFileId;
-        item.fileName = mFileName;
-        item.component = component;
-        data.putExtra(CommonConfig.MODEL_SELECT_INFO, item);
+        mModelSelectInfo.component = component;
+        data.putExtra(CommonConfig.MODEL_SELECT_INFO, mModelSelectInfo);
         setResult(RESULT_OK, data);
         finish();
     }
 
 
 
-    //消除图钉
-    private void removePosition(String param) {
-        mWebview.loadUrl("javascript:removeDrawableItem('" + param + "')");
+    //设定选中的构件  单个和多个
+    private void showSelectedComponent(List<String> list){
+        String param = new GsonBuilder().create().toJson(list);
+        mWebview.loadUrl("javascript:showSelectedComponent('" + param + "')");
+    }
+    //设置多个点
+    @Override
+    public void showModelHistory(List<ModelElementHistory> list) {
+        //设置多点
+        String param = new GsonBuilder().create().toJson(list);
+        mWebview.loadUrl("javascript:loadCircleItems('" + param + "')");
+
+        //设置多个构件选中
+        List<String> dotList = new ArrayList<>();
+        for(ModelElementHistory history:list){
+            dotList.add(history.elementId);
+        }
+        showSelectedComponent(dotList);
     }
 
-    private void setPosition(){
-        String param = "{\"objectId\":\"298094\",\"fileId\":null,\"elementId\":\"298094\",\"boundingBox\":{\"min\":{\"x\":29649.99914178392,\"y\":42780.285546173705,\"z\":10699.997674078857},\"max\":{\"x\":46449.99837493291,\"y\":43178.15051548913,\"z\":11701.053423734613}},\"objectData\":{\"categoryId\":\"-2001320\",\"levelName\":\"L4\",\"specialty\":\"\"},\"eventType\":\"Click\",\"click\":1,\"worldPosition\":{\"x\":36095.18761454279,\"y\":42780.28922324637,\"z\":10745.030700784731}}\n";
-        mWebview.loadUrl("javascript:removeDrawableItem('" + param + "')");
-    }
 
     //新建整改单的弹出框
     private void showRepairDialog() {
@@ -269,11 +311,42 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
 
     class CustomWebViewClient extends WebViewClient {
 
+        @Override
+        public void onPageStarted(WebView view, String url, Bitmap favicon) {
+            super.onPageStarted(view, url, favicon);
+            showLoadingDialog();
+        }
 
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
-            sendDotsData();
+            //0新建检查单 1检查单编辑状态 2详情查看  3图纸模式
+            LogUtil.e("pageFinish type="+type);
+            switch (type){
+                case 0:
+
+                    break;
+                case 1:
+                    if(mModelSelectInfo!=null){
+                        component = mModelSelectInfo.component;
+                        List<String> list = new ArrayList<>();
+                        list.add(mModelSelectInfo.component.elementId);
+                        showSelectedComponent(list);
+                    }
+                    break;
+                case 2:
+                    if(mModelSelectInfo!=null){
+                        component = mModelSelectInfo.component;
+                        List<String> list = new ArrayList<>();
+                        list.add(mModelSelectInfo.component.elementId);
+                        showSelectedComponent(list);
+                    }
+                    break;
+                case 3:
+                    mPresenter.getElements();
+                    break;
+            }
+            dismissLoadingDialog();
         }
 
         @Override

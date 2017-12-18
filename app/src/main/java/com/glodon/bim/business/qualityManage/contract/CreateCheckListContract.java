@@ -6,6 +6,7 @@ import com.glodon.bim.basic.utils.LinkedHashList;
 import com.glodon.bim.business.qualityManage.bean.CompanyItem;
 import com.glodon.bim.business.qualityManage.bean.CreateCheckListParams;
 import com.glodon.bim.business.qualityManage.bean.InspectionCompanyItem;
+import com.glodon.bim.business.qualityManage.bean.ModelElementInfo;
 import com.glodon.bim.business.qualityManage.bean.PersonItem;
 import com.glodon.bim.business.qualityManage.bean.SaveBean;
 import com.glodon.bim.customview.album.TNBImageItem;
@@ -225,6 +226,11 @@ public interface CreateCheckListContract {
         String getBluePrintName();
 
         /**
+         * 获取当前的模型构件名称
+         */
+        String getModelElementName();
+
+        /**
          * 展示图纸
          */
         void showBluePrintName(String name, String id);
@@ -232,7 +238,7 @@ public interface CreateCheckListContract {
         /**
          * 展示选中的模型
          */
-        void showModelName(String name, String id);
+        void showModelName(String name);
     }
 
     interface Model {
@@ -365,5 +371,13 @@ public interface CreateCheckListContract {
          * 获取项目下检查单位列表
          */
         Observable<List<InspectionCompanyItem>> getInspectionCompanies(long deptId);
+
+        /**
+         * 根据构件id获取构件名称
+         */
+        Observable<ModelElementInfo> getElementProperty(long projectId,
+                                                        String versionId,
+                                                        String fileId,
+                                                        String elementId);
     }
 }

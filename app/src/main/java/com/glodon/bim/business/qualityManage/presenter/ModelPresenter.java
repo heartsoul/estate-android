@@ -51,22 +51,40 @@ public class ModelPresenter implements ModelContract.Presenter {
     private ProjectVersionBean mLatestVersionInfo;//最新版本信息
 
     private ModelListBeanItem mModelSelectInfo;//编辑时有过这个item
-
+    private int type = 0;//0新建检查单 1检查单编辑状态 2详情查看  3模型模式
+    private boolean mIsFragment = false;
     private OnModelSelectListener mListener = new OnModelSelectListener() {
         @Override
         public void selectModel(ModelListBeanItem item) {
             if(mView!=null) {
-//                Intent data = new Intent();
-//                data.putExtra(CommonConfig.MODULE_LIST_NAME, item);
-//                mView.getActivity().setResult(Activity.RESULT_OK, data);
-//                mView.getActivity().finish();
-
                 Intent intent = new Intent(mView.getActivity(), RelevantModelActivity.class);
                 intent.putExtra(CommonConfig.BLUE_PRINT_FILE_ID,item.fileId);
                 intent.putExtra(CommonConfig.BLUE_PRINT_FILE_NAME,item.fileName);
-                if(mModelSelectInfo!=null && mModelSelectInfo.fileId.equals(item.fileId)) {
-                    intent.putExtra(CommonConfig.MODEL_SELECT_INFO, mModelSelectInfo);
+                if(mModelSelectInfo==null){
+                    mModelSelectInfo = new ModelListBeanItem();
+                    if(mIsFragment){
+                        type = 3;
+                    }else {
+                        type = 0;
+                    }
+                }else{
+                    if(item.fileId.equals(mModelSelectInfo.fileId)){
+                        //同一个模型
+                        type = 1;
+                    }else{
+                        //不同的模型
+                        type = 0;
+                    }
                 }
+                intent.putExtra(CommonConfig.RELEVANT_TYPE, type);
+                mModelSelectInfo.fileId = item.fileId;
+                mModelSelectInfo.fileName = item.fileName;
+                if(mCurrentSingle!=null) {
+                    mModelSelectInfo.buildingId = mCurrentSingle.id;
+                    mModelSelectInfo.buildingName = mCurrentSingle.name;
+                }
+                intent.putExtra(CommonConfig.MODEL_SELECT_INFO, mModelSelectInfo);
+
                 mView.getActivity().startActivityForResult(intent,REQUEST_CODE_OPEN_MODEL);
             }
         }
@@ -109,6 +127,11 @@ public class ModelPresenter implements ModelContract.Presenter {
         return mListener;
     }
 
+    @Override
+    public void setIsFragment() {
+        mIsFragment = true;
+    }
+
     public ModelPresenter(ModelContract.View mView) {
         this.mView = mView;
         mSubscription = new CompositeSubscription();
@@ -124,6 +147,7 @@ public class ModelPresenter implements ModelContract.Presenter {
     @Override
     public void initData(Intent intent) {
         mModelSelectInfo = (ModelListBeanItem) intent.getSerializableExtra(CommonConfig.MODEL_SELECT_INFO);
+        type = intent.getIntExtra(CommonConfig.RELEVANT_TYPE,0);
         getLatestVersion();
         getSpecialData();
         getSingleData();

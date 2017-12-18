@@ -5,6 +5,7 @@ import com.glodon.bim.base.IBaseView;
 import com.glodon.bim.business.main.bean.ProjectListBean;
 import com.glodon.bim.business.main.bean.ProjectListItem;
 import com.glodon.bim.business.main.listener.OnProjectClickListener;
+import com.glodon.bim.business.qualityManage.bean.ProjectVersionBean;
 
 import java.util.List;
 
@@ -57,5 +58,10 @@ public interface ChooseProjectContract {
          * @param size 每页数量
          */
         Observable<ProjectListBean> getAvailableProjects(int page, int size);
+
+        /**
+         * 获取当前已发布的最新版本
+         */
+        Observable<ProjectVersionBean> getLatestVersion(long projectId);
     }
 }

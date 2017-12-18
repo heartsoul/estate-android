@@ -417,6 +417,7 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
 //            setInitData();
+            showLoadingDialog();
         }
 
         @Override
@@ -438,6 +439,7 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
                     mPresenter.getBluePrintDots();
                     break;
             }
+            dismissLoadingDialog();
         }
 
         @Override

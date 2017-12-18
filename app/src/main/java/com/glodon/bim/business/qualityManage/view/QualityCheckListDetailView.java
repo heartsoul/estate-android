@@ -15,6 +15,8 @@ import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.basic.utils.DateUtil;
 import com.glodon.bim.basic.utils.LinkedHashList;
 import com.glodon.bim.basic.utils.ScreenUtil;
+import com.glodon.bim.business.qualityManage.bean.ModelComponent;
+import com.glodon.bim.business.qualityManage.bean.ModelListBeanItem;
 import com.glodon.bim.business.qualityManage.bean.QualityCheckListBeanItemFile;
 import com.glodon.bim.business.qualityManage.bean.QualityCheckListDetailBean;
 import com.glodon.bim.business.qualityManage.bean.QualityCheckListDetailInspectionInfo;
@@ -147,12 +149,24 @@ public class QualityCheckListDetailView implements QualityCheckListDetailViewCon
             }
         });
         mModelView.setText(info.elementName);
+        LogUtil.e("elementName="+info.elementName);
+        LogUtil.e("elementId="+info.elementId);
+        LogUtil.e("buildingName="+info.buildingName);
+        LogUtil.e("buildingId="+info.buildingId);
+        LogUtil.e("gdocFileId="+info.gdocFileId);
         mModelView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //跳转到模型
                 Intent intent = new Intent(mActivity, RelevantModelActivity.class);
                 intent.putExtra(CommonConfig.RELEVANT_TYPE, type);
+                ModelListBeanItem mModelSelectInfo = new ModelListBeanItem();
+                mModelSelectInfo.buildingName = info.buildingName;
+                mModelSelectInfo.buildingId = info.buildingId;
+                mModelSelectInfo.fileId = info.gdocFileId;
+                mModelSelectInfo.component = new ModelComponent();
+                mModelSelectInfo.component.elementId = info.elementId;
+                intent.putExtra(CommonConfig.MODEL_SELECT_INFO,mModelSelectInfo);
                 mActivity.startActivity(intent);
             }
         });

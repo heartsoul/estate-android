@@ -9,4 +9,12 @@ import java.io.Serializable;
  */
 
 public class ModelComponent implements Serializable{
+    public String objectId;
+    public String fileId;
+    public String elementId;//构件id
+    public ModelComponentBoundingBox boundingBox;
+    public int click;
+    public ModelComponentWorldPosition worldPosition;
+    public ModelComponentClientPosition clientPosition;
+    public String eventType;
 }

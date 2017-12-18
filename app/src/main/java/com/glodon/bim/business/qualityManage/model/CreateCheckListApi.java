@@ -3,6 +3,7 @@ package com.glodon.bim.business.qualityManage.model;
 import com.glodon.bim.business.qualityManage.bean.CompanyItem;
 import com.glodon.bim.business.qualityManage.bean.CreateCheckListParams;
 import com.glodon.bim.business.qualityManage.bean.InspectionCompanyItem;
+import com.glodon.bim.business.qualityManage.bean.ModelElementInfo;
 import com.glodon.bim.business.qualityManage.bean.ModuleListBeanItem;
 import com.glodon.bim.business.qualityManage.bean.ModuleStandardItem;
 import com.glodon.bim.business.qualityManage.bean.PersonItem;
@@ -126,5 +127,14 @@ public interface CreateCheckListApi {
     @GET("quality/{deptId}/qualityInspection/inspectionCompanys")
     Observable<List<InspectionCompanyItem>> getInspectionCompanies(@Path("deptId") long deptId, @Header("cookie") String cookie);
 
+    /**
+     * 根据构件id获取构件名称
+     */
+    @GET("model/{projectId}/{versionId}/model/data/element/property")
+    Observable<ModelElementInfo> getElementProperty(@Path("projectId")long projectId,
+                                                    @Path("versionId")String versionId,
+                                                    @Query("fileId") String fileId,
+                                                    @Query("elementId")String elementId,
+                                                    @Header("cookie") String cookie);
 
 }
