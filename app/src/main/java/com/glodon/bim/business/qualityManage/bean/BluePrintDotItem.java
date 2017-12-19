@@ -10,8 +10,11 @@ public class BluePrintDotItem {
     public String drawingGdocFileId;
     public String drawingPositionX;
     public String drawingPositionY;
-    public int inspectionId;
+    public long inspectionId;
     public String qcState;
-    public int rectificationId;
-    public int reviewId;
+    public long rectificationId;
+    public long reviewId;
+
+    public long responsibleUserId;
+    public long inspectionUserId;
 }

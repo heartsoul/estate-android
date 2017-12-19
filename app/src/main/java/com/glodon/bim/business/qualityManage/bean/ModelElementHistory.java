@@ -16,4 +16,7 @@ public class ModelElementHistory {
     public long reviewId;
 
     public double drawingPositionX,drawingPositionY,drawingPositionZ;
+
+    public long responsibleUserId;
+    public long inspectionUserId;
 }

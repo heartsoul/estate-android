@@ -19,11 +19,11 @@ import com.glodon.bim.R;
 import com.glodon.bim.base.BaseActivity;
 import com.glodon.bim.basic.config.AppConfig;
 import com.glodon.bim.basic.log.LogUtil;
-import com.glodon.bim.business.qualityManage.bean.BluePrintBasicInfo;
+import com.glodon.bim.basic.utils.SharedPreferencesUtil;
+import com.glodon.bim.business.authority.AuthorityManager;
 import com.glodon.bim.business.qualityManage.bean.ModelComponent;
 import com.glodon.bim.business.qualityManage.bean.ModelElementHistory;
 import com.glodon.bim.business.qualityManage.bean.ModelListBeanItem;
-import com.glodon.bim.business.qualityManage.bean.ModelSelectedComponent;
 import com.glodon.bim.business.qualityManage.contract.RelevantModelContract;
 import com.glodon.bim.business.qualityManage.presenter.RelevantModelPresenter;
 import com.glodon.bim.common.config.CommonConfig;
@@ -135,10 +135,39 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
     // 点击构件的回调
     class ModelEvent {
 
+        //点击构件返回信息
         @JavascriptInterface
         public void getPosition(final String json) {
-            LogUtil.e("json="+json);
+            LogUtil.e("getPosition json="+json);
             component = new GsonBuilder().create().fromJson(json, ModelComponent.class);
+        }
+
+        //点击圆点 返回信息
+        @JavascriptInterface
+        public void getPositionInfo(final String json) {
+            LogUtil.e("getPositionInfo json="+json);
+            final ModelElementHistory dot = new GsonBuilder().create().fromJson(json, ModelElementHistory.class);
+            if (dot != null) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+//          {"全部", "待提交",  "待整改",       "待复查",      "已检查",      "已复查",    "已延迟",  "已验收"};
+//          {"",     "staged", "unrectified",  "unreviewed",  "inspected",  "reviewed",  "delayed","accepted"};
+                        switch (dot.qcState) {
+                            case CommonConfig.QC_STATE_UNRECTIFIED://"待整改"
+                                if (AuthorityManager.isCreateRepair() && AuthorityManager.isMe(dot.responsibleUserId)) {
+                                    showRepairDialog(dot);
+                                }
+                                break;
+                            case CommonConfig.QC_STATE_UNREVIEWED://"待复查"
+                                if (AuthorityManager.isCreateReview() && AuthorityManager.isMe(dot.inspectionUserId)) {
+                                    showReviewDialog(dot);
+                                }
+                                break;
+                        }
+                    }
+                });
+            }
         }
     }
 
@@ -181,6 +210,12 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
                 break;
             case 3:
                 show = false;
+                //判断是否有权限新建检查单
+                if (!AuthorityManager.isShowCreateButton()) {
+                    //无权限
+                    show = true;//不响应点击事件
+                    mFinishView.setVisibility(View.GONE);
+                }
                 break;
         }
     }
@@ -226,7 +261,7 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
 
     //检测是否选择了构件
     private boolean checkComponent(){
-        if(component==null) {
+        if(component==null&&!"undefined".equals(component.elementId)) {
             SaveDeleteDialog mHintDialog = new SaveDeleteDialog(getActivity());
             mHintDialog.getModelHintDialog("您还未选择构件!");
             mHintDialog.show();
@@ -255,6 +290,7 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
     public void showModelHistory(List<ModelElementHistory> list) {
         //设置多点
         String param = new GsonBuilder().create().toJson(list);
+        LogUtil.e("设置多点 params="+param);
         mWebview.loadUrl("javascript:loadCircleItems('" + param + "')");
 
         //设置多个构件选中
@@ -267,31 +303,51 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
 
 
     //新建整改单的弹出框
-    private void showRepairDialog() {
+    private void showRepairDialog(final ModelElementHistory dot) {
         mRepairDialog.getRepairDialog(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                //创建整改单
+                Intent intent = new Intent(mActivity, CreateReviewActivity.class);
+                intent.putExtra(CommonConfig.CREATE_TYPE, CommonConfig.CREATE_TYPE_REPAIR);
+                intent.putExtra(CommonConfig.SHOW_PHOTO, true);
+                intent.putExtra(CommonConfig.QUALITY_CHECK_LIST_DEPTID, SharedPreferencesUtil.getProjectId());
+                intent.putExtra(CommonConfig.QUALITY_CHECK_LIST_ID, dot.inspectionId);
+                startActivity(intent);
             }
         }, new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                //查看详情
+                Intent intent = new Intent(mActivity, QualityCheckListDetailActivity.class);
+                intent.putExtra(CommonConfig.QUALITY_CHECK_LIST_DEPTID, SharedPreferencesUtil.getProjectId());
+                intent.putExtra(CommonConfig.QUALITY_CHECK_LIST_ID, dot.inspectionId);
+                startActivity(intent);
             }
         }).show();
     }
 
     //新建复查单的弹出框
-    private void showReviewDialog() {
+    private void showReviewDialog(final ModelElementHistory dot) {
         mReviewDialog.getReviewDialog(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                //创建复查单
+                Intent intent = new Intent(mActivity, CreateReviewActivity.class);
+                intent.putExtra(CommonConfig.CREATE_TYPE, CommonConfig.CREATE_TYPE_REVIEW);
+                intent.putExtra(CommonConfig.SHOW_PHOTO, true);
+                intent.putExtra(CommonConfig.QUALITY_CHECK_LIST_DEPTID, SharedPreferencesUtil.getProjectId());
+                intent.putExtra(CommonConfig.QUALITY_CHECK_LIST_ID, dot.inspectionId);
+                startActivity(intent);
             }
         }, new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                //查看详情
+                Intent intent = new Intent(mActivity, QualityCheckListDetailActivity.class);
+                intent.putExtra(CommonConfig.QUALITY_CHECK_LIST_DEPTID, SharedPreferencesUtil.getProjectId());
+                intent.putExtra(CommonConfig.QUALITY_CHECK_LIST_ID, dot.inspectionId);
+                startActivity(intent);
             }
         }).show();
     }
@@ -306,9 +362,7 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
         return temp;
     }
 
-    public void sendDataToHtml(String callbackMethodName, String json) {
-        mWebview.loadUrl("javascript:" + callbackMethodName + "('" + json + "')");
-    }
+
 
     class CustomWebViewClient extends WebViewClient {
 

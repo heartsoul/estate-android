@@ -142,6 +142,34 @@ public class RelevantModelPresenter implements RelevantModelContract.Presenter {
                     }
                 });
         mSubscription.add(sub);
+//        NetRequest.getInstance().getCall(AppConfig.BASE_URL,RelevantModelApi.class).getToken2(mProjectId,mProjectVersionId,mFileId,new DaoProvider().getCookie())
+//                .enqueue(new Callback<ResponseBody>() {
+//                    @Override
+//                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+//                        if(response.body()!=null)
+//                        {
+//                            try {
+//                                LogUtil.e("body="+response.body().string());
+//                            } catch (IOException e) {
+//                                e.printStackTrace();
+//                            }
+//                        }
+//
+//                        if(response.errorBody()!=null)
+//                        {
+//                            try {
+//                                LogUtil.e("errorbody="+response.errorBody().string());
+//                            } catch (IOException e) {
+//                                e.printStackTrace();
+//                            }
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+//
+//                    }
+//                });
     }
 
     public void getElements(){
@@ -161,6 +189,10 @@ public class RelevantModelPresenter implements RelevantModelContract.Presenter {
 
                     @Override
                     public void onNext(List<ModelElementHistory> modelElementHistories) {
+                        LogUtil.e("size="+(modelElementHistories==null));
+                        if(modelElementHistories!=null){
+                            LogUtil.e("size="+modelElementHistories.size());
+                        }
                         if(modelElementHistories!=null && modelElementHistories.size()>0){
                             mElementHistories = modelElementHistories;
                             for(ModelElementHistory element:modelElementHistories)

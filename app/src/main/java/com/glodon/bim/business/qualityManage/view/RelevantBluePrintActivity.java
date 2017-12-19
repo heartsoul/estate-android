@@ -8,7 +8,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.SslErrorHandler;
@@ -24,6 +23,8 @@ import com.glodon.bim.R;
 import com.glodon.bim.base.BaseActivity;
 import com.glodon.bim.basic.config.AppConfig;
 import com.glodon.bim.basic.log.LogUtil;
+import com.glodon.bim.basic.utils.SharedPreferencesUtil;
+import com.glodon.bim.business.authority.AuthorityManager;
 import com.glodon.bim.business.qualityManage.bean.BluePrintDotItem;
 import com.glodon.bim.business.qualityManage.bean.BluePrintPosition;
 import com.glodon.bim.business.qualityManage.bean.BluePrintPositionItem;
@@ -138,16 +139,16 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
 
     @Override
     public void sendBasicInfo(String token) {
-        String url = AppConfig.BASE_URL_BLUEPRINT_TOKEN+token+"&show="+show;
-        LogUtil.e("url="+url);
+        String url = AppConfig.BASE_URL_BLUEPRINT_TOKEN + token + "&show=" + show;
+        LogUtil.e("url=" + url);
         mWebview.loadUrl(url);
     }
 
     @Override
     public void setDotsData(List<BluePrintDotItem> list) {
-        String dots=new GsonBuilder().create().toJson(list);
+        String dots = new GsonBuilder().create().toJson(list);
         String url = "javascript:loadCircleItems('" + dots + "')";
-        LogUtil.e("order dots="+url);
+        LogUtil.e("order dots=" + url);
         mWebview.loadUrl(url);
     }
 
@@ -167,7 +168,7 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
 
     private void initData() {
         //类型
-        type = getIntent().getIntExtra(CommonConfig.RELEVANT_TYPE,0);
+        type = getIntent().getIntExtra(CommonConfig.RELEVANT_TYPE, 0);
         //初始的位置信息
         drawingPositionX = getIntent().getStringExtra(CommonConfig.BLUE_PRINT_POSITION_X);
         drawingPositionY = getIntent().getStringExtra(CommonConfig.BLUE_PRINT_POSITION_Y);
@@ -186,7 +187,7 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
                 mTrangleTextView.setVisibility(View.GONE);
                 mTrangleView.setVisibility(View.GONE);
             }
-        },4000);
+        }, 4000);
 
         //获取数据
         mPresenter = new RelevantBluePrintPresenter(this);
@@ -194,9 +195,9 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
     }
 
     //不同类型的处理
-    private void handleType(){
+    private void handleType() {
         //0新建检查单 1检查单编辑状态 2详情查看  3图纸模式
-        switch (type){
+        switch (type) {
             case 0:
                 show = false;
                 break;
@@ -211,14 +212,22 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
                 break;
             case 3:
                 show = false;
+                //判断是否有权限新建检查单
+                if (!AuthorityManager.isShowCreateButton()) {
+                    //无权限
+                    show = true;//不响应点击事件
+                    mFinishView.setVisibility(View.GONE);
+                    mTrangleView.setVisibility(View.GONE);
+                    mFinishView.setVisibility(View.GONE);
+                }
                 break;
         }
     }
 
     //不同type的返回处理
-    private void setResultByType(){
+    private void setResultByType() {
         //0新建检查单 1检查单编辑状态 2详情查看  3图纸模式
-        switch (type){
+        switch (type) {
             case 0:
             case 1://将值返回
                 Intent data = new Intent();
@@ -227,8 +236,8 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
                 item.fileId = mFileId;
                 item.drawingPositionX = drawingPositionX;
                 item.drawingPositionY = drawingPositionY;
-                data.putExtra(CommonConfig.MODULE_LIST_NAME,item);
-                setResult(RESULT_OK,data);
+                data.putExtra(CommonConfig.MODULE_LIST_NAME, item);
+                setResult(RESULT_OK, data);
                 finish();
                 break;
             case 2://无
@@ -236,17 +245,17 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
                 break;
             case 3://跳转到新建检查单
                 Intent intent = new Intent(mActivity, CreateCheckListActivity.class);
-                intent.putExtra(CommonConfig.DRAWINGGDOCFILEID,mFileId);
-                intent.putExtra(CommonConfig.DRAWINGNAME,mFileName);
-                intent.putExtra(CommonConfig.DRAWINGPOSITIONX,drawingPositionX);
-                intent.putExtra(CommonConfig.DRAWINGPOSITIONY,drawingPositionY);
+                intent.putExtra(CommonConfig.DRAWINGGDOCFILEID, mFileId);
+                intent.putExtra(CommonConfig.DRAWINGNAME, mFileName);
+                intent.putExtra(CommonConfig.DRAWINGPOSITIONX, drawingPositionX);
+                intent.putExtra(CommonConfig.DRAWINGPOSITIONY, drawingPositionY);
                 mActivity.startActivity(intent);
                 mActivity.finish();
                 break;
         }
     }
 
-    private void showFinish(){
+    private void showFinish() {
         mCancelView.setVisibility(View.VISIBLE);
         mBackView.setVisibility(View.GONE);
         mFinishView.setText("完成");
@@ -268,8 +277,7 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
     }
 
 
-
-    private void hideFinish(){
+    private void hideFinish() {
         mCancelView.setVisibility(View.GONE);
         mBackView.setVisibility(View.VISIBLE);
         mFinishView.setText("长按新建");
@@ -277,52 +285,104 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
     }
 
     //新建整改单的弹出框
-   private void showRepairDialog(){
-       mRepairDialog.getRepairDialog(new View.OnClickListener() {
-           @Override
-           public void onClick(View view) {
-
-           }
-       }, new View.OnClickListener() {
-           @Override
-           public void onClick(View view) {
-
-           }
-       }).show();
-   }
-
-   //新建复查单的弹出框
-    private void showReviewDialog(){
-        mReviewDialog.getReviewDialog(new View.OnClickListener() {
+    private void showRepairDialog(final BluePrintDotItem dot) {
+        mRepairDialog.getRepairDialog(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                //创建整改单
+                Intent intent = new Intent(mActivity, CreateReviewActivity.class);
+                intent.putExtra(CommonConfig.CREATE_TYPE, CommonConfig.CREATE_TYPE_REPAIR);
+                intent.putExtra(CommonConfig.SHOW_PHOTO, true);
+                intent.putExtra(CommonConfig.QUALITY_CHECK_LIST_DEPTID, SharedPreferencesUtil.getProjectId());
+                intent.putExtra(CommonConfig.QUALITY_CHECK_LIST_ID, dot.inspectionId);
+                startActivity(intent);
             }
         }, new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                //查看详情
+                Intent intent = new Intent(mActivity, QualityCheckListDetailActivity.class);
+                intent.putExtra(CommonConfig.QUALITY_CHECK_LIST_DEPTID, SharedPreferencesUtil.getProjectId());
+                intent.putExtra(CommonConfig.QUALITY_CHECK_LIST_ID, dot.inspectionId);
+                startActivity(intent);
             }
         }).show();
     }
 
+    //新建复查单的弹出框
+    private void showReviewDialog(final BluePrintDotItem dot) {
+        mReviewDialog.getReviewDialog(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //创建复查单
+                Intent intent = new Intent(mActivity, CreateReviewActivity.class);
+                intent.putExtra(CommonConfig.CREATE_TYPE, CommonConfig.CREATE_TYPE_REVIEW);
+                intent.putExtra(CommonConfig.SHOW_PHOTO, true);
+                intent.putExtra(CommonConfig.QUALITY_CHECK_LIST_DEPTID, SharedPreferencesUtil.getProjectId());
+                intent.putExtra(CommonConfig.QUALITY_CHECK_LIST_ID, dot.inspectionId);
+                startActivity(intent);
+            }
+        }, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //查看详情
+                Intent intent = new Intent(mActivity, QualityCheckListDetailActivity.class);
+                intent.putExtra(CommonConfig.QUALITY_CHECK_LIST_DEPTID, SharedPreferencesUtil.getProjectId());
+                intent.putExtra(CommonConfig.QUALITY_CHECK_LIST_ID, dot.inspectionId);
+                startActivity(intent);
+            }
+        }).show();
+    }
+
+
     class ModelEvent {
 
+        //长按图纸 返回点的信息
         @JavascriptInterface
         public void getPosition(final String json) {
-            LogUtil.e("json="+json);
-            BluePrintPosition position = new GsonBuilder().create().fromJson(json,BluePrintPosition.class);
-            if(position!=null){
+            LogUtil.e("getPosition  json=" + json);
+            BluePrintPosition position = new GsonBuilder().create().fromJson(json, BluePrintPosition.class);
+            if (position != null) {
                 drawingPositionX = position.x;
                 drawingPositionY = position.y;
             }
-            LogUtil.e("x="+drawingPositionX+" y="+drawingPositionY);
+            LogUtil.e("x=" + drawingPositionX + " y=" + drawingPositionY);
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     showFinish();
                 }
             });
+
+        }
+
+        //点击圆点 返回信息
+        @JavascriptInterface
+        public void getPositionInfo(final String json) {
+            LogUtil.e("getPositionInfo  json=" + json);
+            final BluePrintDotItem dot = new GsonBuilder().create().fromJson(json, BluePrintDotItem.class);
+            if (dot != null) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+//          {"全部", "待提交",  "待整改",       "待复查",      "已检查",      "已复查",    "已延迟",  "已验收"};
+//          {"",     "staged", "unrectified",  "unreviewed",  "inspected",  "reviewed",  "delayed","accepted"};
+                        switch (dot.qcState) {
+                            case CommonConfig.QC_STATE_UNRECTIFIED://"待整改"
+                                if (AuthorityManager.isCreateRepair() && AuthorityManager.isMe(dot.responsibleUserId)) {
+                                    showRepairDialog(dot);
+                                }
+                                break;
+                            case CommonConfig.QC_STATE_UNREVIEWED://"待复查"
+                                if (AuthorityManager.isCreateReview() && AuthorityManager.isMe(dot.inspectionUserId)) {
+                                    showReviewDialog(dot);
+                                }
+                                break;
+                        }
+                    }
+                });
+            }
+
 
         }
     }
@@ -334,10 +394,10 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
     }
 
     //设定图钉
-    private void setPosition(){
+    private void setPosition() {
         BluePrintPositionItem info = new BluePrintPositionItem();
-        LogUtil.e("setposition="+drawingPositionX+"  "+drawingPositionY);
-        if(!TextUtils.isEmpty(drawingPositionX) && !TextUtils.isEmpty(drawingPositionY)) {
+        LogUtil.e("setposition=" + drawingPositionX + "  " + drawingPositionY);
+        if (!TextUtils.isEmpty(drawingPositionX) && !TextUtils.isEmpty(drawingPositionY)) {
             info.x = Double.parseDouble(drawingPositionX);
             info.y = Double.parseDouble(drawingPositionY);
             info.z = 0;
@@ -350,7 +410,7 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    switch (type){
+                    switch (type) {
                         case 0:
 
                             break;
@@ -370,32 +430,6 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
         }
     }
 
-    //传递点的信息给h5
-    public void sendDotsData() {
-        List<BluePrintDotItem> list = new ArrayList<>();
-        BluePrintDotItem item1 = new BluePrintDotItem();
-        item1.drawingGdocFileId = mFileId;
-        item1.drawingPositionX = "2974.698028564453";
-        item1.drawingPositionY = "2133.756134033203";
-        item1.qcState = CommonConfig.QC_STATE_UNREVIEWED;
-        list.add(item1);
-        BluePrintDotItem item2 = new BluePrintDotItem();
-        item2.drawingGdocFileId = mFileId;
-        item2.drawingPositionX = "2984.698028564453";
-        item2.drawingPositionY = "2143.756134033203";
-        item2.qcState = CommonConfig.QC_STATE_UNRECTIFIED;
-        list.add(item2);
-        BluePrintDotItem item3 = new BluePrintDotItem();
-        item3.drawingGdocFileId = mFileId;
-        item3.drawingPositionX = "2994.698028564453";
-        item3.drawingPositionY = "2153.756134033203";
-        item3.qcState = CommonConfig.QC_STATE_DELAYED;
-        list.add(item3);
-        String dots=new GsonBuilder().create().toJson(list);
-        String url = "javascript:loadCircleItems('" + dots + "')";
-        LogUtil.e("order dots="+url);
-        mWebview.loadUrl(url);
-    }
 
     /**
      * 创建返回的事件
@@ -407,9 +441,6 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
         return temp;
     }
 
-    public void sendDataToHtml(String callbackMethodName, String json) {
-        mWebview.loadUrl("javascript:" + callbackMethodName + "('" + json + "')");
-    }
 
     class CustomWebViewClient extends WebViewClient {
 
@@ -424,8 +455,8 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
             //0新建检查单 1检查单编辑状态 2详情查看  3图纸模式
-            LogUtil.e("pageFinish type="+type);
-            switch (type){
+            LogUtil.e("pageFinish type=" + type);
+            switch (type) {
                 case 0:
 //                    sendDotsData();
                     break;

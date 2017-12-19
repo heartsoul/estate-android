@@ -167,6 +167,7 @@ public class QualityCheckListDetailView implements QualityCheckListDetailViewCon
                 mModelSelectInfo.component = new ModelComponent();
                 mModelSelectInfo.component.elementId = info.elementId;
                 intent.putExtra(CommonConfig.MODEL_SELECT_INFO,mModelSelectInfo);
+                intent.putExtra(CommonConfig.BLUE_PRINT_FILE_ID,info.gdocFileId);
                 mActivity.startActivity(intent);
             }
         });
