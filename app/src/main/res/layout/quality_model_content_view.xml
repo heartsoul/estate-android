@@ -94,7 +94,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/dimen_16"
-                android:text="请先选择具体专业和单体进行删选"
+                android:text="请先选择具体专业和单体进行筛选"
                 android:textColor="@color/c_999992"
                 android:textSize="@dimen/dimen_12" />
         </LinearLayout>

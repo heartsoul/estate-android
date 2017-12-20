@@ -63,6 +63,8 @@ public class CreateInspectionAcceptionFragment extends BaseFragment implements V
     private RelativeLayout mInspectionCompanyParent;
     private ImageView mInspectionCompanyStar;
     private TextView mInspectionCompanyName;
+    private TextView mInspectionCompanyTitle;
+    private String mInspectionCompanyTitleText;
     //施工单位
     private RelativeLayout mCompanyParent;
     private ImageView mCompanyStar;
@@ -126,12 +128,16 @@ public class CreateInspectionAcceptionFragment extends BaseFragment implements V
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
         view = inflate(R.layout.quality_create_inspection_acception_view);
         initView(view);
         setListener();
         initData();
         return view;
+    }
+
+    //设置检查单位和验收单位名字  检查单-检查单位   验收单-验收单位
+    public void setInspectionCompanyTitle(String title){
+        mInspectionCompanyTitleText = title;
     }
 
     private void initView(View view) {
@@ -140,6 +146,8 @@ public class CreateInspectionAcceptionFragment extends BaseFragment implements V
         mInspectionCompanyParent =  view.findViewById(R.id.create_check_list_inspection_company);
         mInspectionCompanyName =  view.findViewById(R.id.create_check_list_inspection_company_name);
         mInspectionCompanyStar = view.findViewById(R.id.create_check_list_inspection_company_star);
+        mInspectionCompanyTitle = view.findViewById(R.id.create_check_list_inspection_company_title);
+        mInspectionCompanyTitle.setText(mInspectionCompanyTitleText);
         //施工单位
         mCompanyParent =  view.findViewById(R.id.create_check_list_company);
         mCompanyName =  view.findViewById(R.id.create_check_list_company_name);

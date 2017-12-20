@@ -74,6 +74,7 @@ public class FeedBackPresenter implements FeedBackContract.Presenter {
                             if (mView != null) {
                                 mView.dismissLoadingDialog();
                             }
+//                            ToastManager.show("意见提交失败，请稍后重试！");
                         }
 
                         @Override
@@ -82,8 +83,7 @@ public class FeedBackPresenter implements FeedBackContract.Presenter {
                                 mView.dismissLoadingDialog();
                             }
                             if (feedBackBean != null) {
-//                            ToastManager.show("我们已经收到");
-//                            LogUtil.e("result="+feedBackBean.toString());
+                                ToastManager.show("意见已提交！");
 
                                 if (mView != null) {
                                     mView.getActivity().finish();

@@ -5,6 +5,7 @@ import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.glodon.bim.R;
 import com.glodon.bim.basic.image.ImageLoader;
@@ -49,7 +50,7 @@ public class PhotoPreviewAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         View view = LayoutInflater.from(mActivity).inflate(R.layout.quality_photo_preview_item_view,null);
-        ScaleImageView imageview = view.findViewById(R.id.photo_preview_item_view_iv);
+        ImageView imageview = view.findViewById(R.id.photo_preview_item_view_iv);
         String url = mDataList.get(position).imagePath;
         if(url.startsWith("http")){
             UploadManger.loadOriginalUrl(mActivity,mDataList.get(position).objectId,imageview);
