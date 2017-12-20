@@ -108,8 +108,6 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
         // 暂时先去掉（在HuaWeiP6上显示异常）
         // this.setLayerType(WebView.LAYER_TYPE_HARDWARE, new Paint());
 //        setting.setAppCacheMaxSize(1024 * 1024 * 8);
-//        String appCachePath = TNBToonBrowserApplication.getInstance().getApplicationContext().getCacheDir()
-//                .getAbsolutePath();
 //        setting.setAppCachePath(appCachePath);
         setting.setAllowFileAccess(true);
         setting.setAppCacheEnabled(false);

@@ -8,14 +8,10 @@ import java.util.Map;
 
 /**
  * Description:日期选择工具类
- * Created by 李亚东 ON 2015/9/8
- * Job number:137124
- * Phone:13001292135
- * Email:liyadong@syswin.com
- * Person in charge:周瑞峰
- * Leader:周瑞峰
+ * 作者：zhourf on 2017/11/10
+ * 邮箱：zhourf@glodon.com
  */
-public class TNBCustomDatePickerUtils {
+public class CustomDatePickerUtils {
 
 
 	/**
@@ -26,13 +22,13 @@ public class TNBCustomDatePickerUtils {
 	public static void showDatePicker(final Activity context,
 			final OnDateSelectedListener listener) {
 
-		TNBDateDialog.showDateDialog(context, new OnDateSelectedListener() {
+		DateDialog.showDateDialog(context, new OnDateSelectedListener() {
 			@Override
 			public void onDateSelected(Map<String, Integer> map) {
 				final Map<String,Integer> params = new HashMap<String, Integer>();
 				params.putAll(map);
 
-				TNBDateDialog.showTimeDialog(context, new OnDateSelectedListener() {
+				DateDialog.showTimeDialog(context, new OnDateSelectedListener() {
 					@Override
 					public void onDateSelected(Map<String, Integer> map) {
 						params.putAll(map);
@@ -49,7 +45,7 @@ public class TNBCustomDatePickerUtils {
 	 */
 	public static void showDayPicker(final Activity context,
 			final OnDateSelectedListener listener) {
-		TNBDateDialog.showDateDialog(context,listener);
+		DateDialog.showDateDialog(context,listener);
 	}
 
 	/**
@@ -59,7 +55,7 @@ public class TNBCustomDatePickerUtils {
 	 */
 	public static void showTimePicker(final Activity context,
 			final OnDateSelectedListener listener) {
-		TNBDateDialog.showTimeDialog(context,listener);
+		DateDialog.showTimeDialog(context,listener);
 	}
 
 	/**

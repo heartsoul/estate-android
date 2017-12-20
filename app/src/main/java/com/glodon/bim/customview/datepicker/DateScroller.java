@@ -30,14 +30,10 @@ import android.widget.Scroller;
 
 /**
  * Description:处理滑动时间的滚轮
- * Created by 周瑞峰
- * Job number:136597
- * Phone:15001340978
- * Email:zhouruifeng@syswin.com
- * Person in charge:周瑞峰
- * Leader:周瑞峰
+ * 作者：zhourf on 2017/11/10
+ * 邮箱：zhourf@glodon.com
  */
-public class TNBDateScroller {
+public class DateScroller {
     /**
      * Scrolling listener interface
      */
@@ -88,7 +84,7 @@ public class TNBDateScroller {
      * @param context the current context
      * @param listener the scrolling listener
      */
-    public TNBDateScroller(Context context, ScrollingListener listener) {
+    public DateScroller(Context context, ScrollingListener listener) {
         gestureDetector = new GestureDetector(context, gestureListener);
         gestureDetector.setIsLongpressEnabled(false);
         

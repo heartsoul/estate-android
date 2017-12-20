@@ -7,7 +7,7 @@ import android.text.TextUtils;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 
-import com.glodon.bim.customview.datepicker.adapter.TNBNumericDateAdapter;
+import com.glodon.bim.customview.datepicker.adapter.NumericDateAdapter;
 
 import java.util.Calendar;
 import java.util.HashMap;
@@ -15,16 +15,12 @@ import java.util.Map;
 
 /**
  * Description:日期view
- * Created by 周瑞峰
- * Job number:136597
- * Phone:15001340978
- * Email:zhouruifeng@syswin.com
- * Person in charge:周瑞峰
- * Leader:周瑞峰
+ * 作者：zhourf on 2017/11/10
+ * 邮箱：zhourf@glodon.com
  */
-public class TNBDateDialog {
+public class DateDialog {
     //日期选择框
-    public static void showDateDialog(final Activity context, final TNBCustomDatePickerUtils.OnDateSelectedListener listener) {
+    public static void showDateDialog(final Activity context, final CustomDatePickerUtils.OnDateSelectedListener listener) {
         Calendar c = Calendar.getInstance();
         final int curYear = c.get(Calendar.YEAR);
         final int curMonth = c.get(Calendar.MONTH) + 1;
@@ -34,21 +30,21 @@ public class TNBDateDialog {
         LinearLayout view = new LinearLayout(context);
         view.setOrientation(LinearLayout.HORIZONTAL);
 
-        final TNBDateView firstWheel = new TNBDateView(context);
-        final TNBNumericDateAdapter firstNumericWheelAdapter = new TNBNumericDateAdapter(context, 1, 10000);
+        final DateView firstWheel = new DateView(context);
+        final NumericDateAdapter firstNumericWheelAdapter = new NumericDateAdapter(context, 1, 10000);
         firstNumericWheelAdapter.setLabel("年");
         firstWheel.setViewAdapter(firstNumericWheelAdapter);
         firstWheel.setCyclic(false);
 
-        final TNBDateView secondWheel = new TNBDateView(context);
-        final TNBNumericDateAdapter secondNumericWheelAdapter = new TNBNumericDateAdapter(context, 1, 12, "%02d");
+        final DateView secondWheel = new DateView(context);
+        final NumericDateAdapter secondNumericWheelAdapter = new NumericDateAdapter(context, 1, 12, "%02d");
         secondNumericWheelAdapter.setLabel("月");
         secondWheel.setViewAdapter(secondNumericWheelAdapter);
         secondWheel.setCyclic(false);
 
 
-        final TNBDateView thirdWheel = new TNBDateView(context);
-        final TNBNumericDateAdapter thirdNumericWheelAdapter = new TNBNumericDateAdapter(context, 1, getDay(curYear, curMonth), "%02d");
+        final DateView thirdWheel = new DateView(context);
+        final NumericDateAdapter thirdNumericWheelAdapter = new NumericDateAdapter(context, 1, getDay(curYear, curMonth), "%02d");
         thirdNumericWheelAdapter.setLabel("日");
         thirdWheel.setViewAdapter(thirdNumericWheelAdapter);
         thirdWheel.setCyclic(false);
@@ -70,9 +66,9 @@ public class TNBDateDialog {
         secondParams.weight = 1;
         thirdParams.weight = 1;
 
-        secondWheel.addChangingListener(new TNBOnDateChangedListener() {
+        secondWheel.addChangingListener(new OnDateChangedListener() {
             @Override
-            public void onChanged(TNBDateView wheel, int oldValue, int newValue) {
+            public void onChanged(DateView wheel, int oldValue, int newValue) {
 
                 int first = firstWheel.getCurrentItem();
                 int third = thirdWheel.getCurrentItem();
@@ -85,7 +81,7 @@ public class TNBDateDialog {
                     thirdStr = getDay(year, month)+"";
                 }
                 int date= Integer.parseInt(thirdStr);
-                TNBNumericDateAdapter thirdAdapter = new TNBNumericDateAdapter(context, 1, getDay(year, month), "%02d");
+                NumericDateAdapter thirdAdapter = new NumericDateAdapter(context, 1, getDay(year, month), "%02d");
                 thirdAdapter.setLabel("日");
                 thirdWheel.setViewAdapter(thirdAdapter);
                 int current = date>getDay(year, month)?getDay(year, month):date;
@@ -93,9 +89,9 @@ public class TNBDateDialog {
             }
         });
 
-        firstWheel.addChangingListener(new TNBOnDateChangedListener() {
+        firstWheel.addChangingListener(new OnDateChangedListener() {
             @Override
-            public void onChanged(TNBDateView wheel, int oldValue, int newValue) {
+            public void onChanged(DateView wheel, int oldValue, int newValue) {
                 int second = secondWheel.getCurrentItem();
                 int third = thirdWheel.getCurrentItem();
                 String secondStr = (String) secondNumericWheelAdapter.getItemText(second);
@@ -105,7 +101,7 @@ public class TNBDateDialog {
                     thirdStr = getDay(newValue, month)+"";
                 }
                 int date= Integer.parseInt(thirdStr);
-                TNBNumericDateAdapter thirdAdapter = new TNBNumericDateAdapter(context, 1, getDay(newValue, month), "%02d");
+                NumericDateAdapter thirdAdapter = new NumericDateAdapter(context, 1, getDay(newValue, month), "%02d");
                 thirdAdapter.setLabel("日");
                 thirdWheel.setViewAdapter(thirdAdapter);
                 int current = date>getDay(newValue, month)?getDay(newValue, month):date;
@@ -149,7 +145,7 @@ public class TNBDateDialog {
     }
 
     //时间选择框
-    public static void showTimeDialog(Activity context, final TNBCustomDatePickerUtils.OnDateSelectedListener listener) {
+    public static void showTimeDialog(Activity context, final CustomDatePickerUtils.OnDateSelectedListener listener) {
         Calendar c = Calendar.getInstance();
         int curHour = c.get(Calendar.HOUR_OF_DAY);
         int curMinute = c.get(Calendar.MINUTE);
@@ -159,21 +155,21 @@ public class TNBDateDialog {
         LinearLayout view = new LinearLayout(context);
         view.setOrientation(LinearLayout.HORIZONTAL);
 
-        final TNBDateView firstWheel = new TNBDateView(context);
-        final TNBNumericDateAdapter firstNumericWheelAdapter = new TNBNumericDateAdapter(context, 0, 23, "%02d");
+        final DateView firstWheel = new DateView(context);
+        final NumericDateAdapter firstNumericWheelAdapter = new NumericDateAdapter(context, 0, 23, "%02d");
         firstNumericWheelAdapter.setLabel("时");
         firstWheel.setViewAdapter(firstNumericWheelAdapter);
         firstWheel.setCyclic(true);
 
-        final TNBDateView secondWheel = new TNBDateView(context);
-        final TNBNumericDateAdapter secondNumericWheelAdapter = new TNBNumericDateAdapter(context, 0, 59, "%02d");
+        final DateView secondWheel = new DateView(context);
+        final NumericDateAdapter secondNumericWheelAdapter = new NumericDateAdapter(context, 0, 59, "%02d");
         secondNumericWheelAdapter.setLabel("分");
         secondWheel.setViewAdapter(secondNumericWheelAdapter);
         secondWheel.setCyclic(true);
 
 
-        final TNBDateView thirdWheel = new TNBDateView(context);
-        final TNBNumericDateAdapter thirdNumericWheelAdapter = new TNBNumericDateAdapter(context, 0, 59, "%02d");
+        final DateView thirdWheel = new DateView(context);
+        final NumericDateAdapter thirdNumericWheelAdapter = new NumericDateAdapter(context, 0, 59, "%02d");
         thirdNumericWheelAdapter.setLabel("秒");
         thirdWheel.setViewAdapter(thirdNumericWheelAdapter);
         thirdWheel.setCyclic(true);

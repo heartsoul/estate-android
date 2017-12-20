@@ -37,8 +37,8 @@ import com.glodon.bim.business.qualityManage.util.IntentManager;
 import com.glodon.bim.common.config.CommonConfig;
 import com.glodon.bim.customview.ToastManager;
 import com.glodon.bim.customview.album.AlbumData;
-import com.glodon.bim.customview.album.TNBImageItem;
-import com.glodon.bim.customview.datepicker.TNBCustomDatePickerUtils;
+import com.glodon.bim.customview.album.ImageItem;
+import com.glodon.bim.customview.datepicker.CustomDatePickerUtils;
 import com.glodon.bim.customview.dialog.PhotoAlbumDialog;
 
 import java.text.ParseException;
@@ -273,9 +273,9 @@ public class CreateInspectionAcceptionFragment extends BaseFragment implements V
             String mImagePath = intent.getStringExtra(CommonConfig.IAMGE_SAVE_PATH);//前面传递过来的图片路径
             AlbumData data = (AlbumData) intent.getSerializableExtra(CommonConfig.ALBUM_DATA);
 
-            LinkedHashList<String, TNBImageItem> map = new LinkedHashList<>();
+            LinkedHashList<String, ImageItem> map = new LinkedHashList<>();
             if (!TextUtils.isEmpty(mImagePath)) {
-                TNBImageItem item = new TNBImageItem();
+                ImageItem item = new ImageItem();
                 item.imagePath = mImagePath;
                 map.put(mImagePath, item);
             }
@@ -384,7 +384,7 @@ public class CreateInspectionAcceptionFragment extends BaseFragment implements V
                 clickRemain();
                 break;
             case R.id.create_check_list_remain://选择整改期限
-                TNBCustomDatePickerUtils.showDayDialog(getActivity(), new TNBCustomDatePickerUtils.OnDateSelectedListener() {
+                CustomDatePickerUtils.showDayDialog(getActivity(), new CustomDatePickerUtils.OnDateSelectedListener() {
                     @Override
                     public void onDateSelected(Map<String, Integer> map) {
                         Calendar calendar = Calendar.getInstance();
@@ -571,15 +571,15 @@ public class CreateInspectionAcceptionFragment extends BaseFragment implements V
     }
 
     @Override
-    public void showImages(LinkedHashList<String, TNBImageItem> mSelectedMap) {
+    public void showImages(LinkedHashList<String, ImageItem> mSelectedMap) {
         int size = mSelectedMap.size();
         List<ImageView> list = new ArrayList<>();
         list.add(mPhoto0);
         list.add(mPhoto1);
         list.add(mPhoto2);
         int position = 0;
-        for (TNBImageItem entry : mSelectedMap.getValueList()) {
-            TNBImageItem item = entry;
+        for (ImageItem entry : mSelectedMap.getValueList()) {
+            ImageItem item = entry;
             String url = item.thumbnailPath;
             if (TextUtils.isEmpty(url)) {
                 url = item.imagePath;

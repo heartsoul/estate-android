@@ -30,8 +30,8 @@ import com.glodon.bim.business.qualityManage.presenter.CreateReviewPresenter;
 import com.glodon.bim.common.config.CommonConfig;
 import com.glodon.bim.customview.ToastManager;
 import com.glodon.bim.customview.album.AlbumData;
-import com.glodon.bim.customview.album.TNBImageItem;
-import com.glodon.bim.customview.datepicker.TNBCustomDatePickerUtils;
+import com.glodon.bim.customview.album.ImageItem;
+import com.glodon.bim.customview.datepicker.CustomDatePickerUtils;
 import com.glodon.bim.customview.dialog.PhotoAlbumDialog;
 
 import java.text.ParseException;
@@ -230,7 +230,7 @@ public class CreateReviewActivity extends BaseActivity implements View.OnClickLi
                 mIsUpToStandard = !mIsUpToStandard;
                 break;
             case R.id.create_review_remain:
-                TNBCustomDatePickerUtils.showDayDialog(mActivity, new TNBCustomDatePickerUtils.OnDateSelectedListener() {
+                CustomDatePickerUtils.showDayDialog(mActivity, new CustomDatePickerUtils.OnDateSelectedListener() {
                     @Override
                     public void onDateSelected(Map<String, Integer> map) {
                         Calendar calendar = Calendar.getInstance();
@@ -401,9 +401,9 @@ public class CreateReviewActivity extends BaseActivity implements View.OnClickLi
             mPhotoParent.setVisibility(View.VISIBLE);
             mImagePath = getIntent().getStringExtra(CommonConfig.IAMGE_SAVE_PATH);
             data = (AlbumData) getIntent().getSerializableExtra(CommonConfig.ALBUM_DATA);
-            LinkedHashList<String, TNBImageItem> map = new LinkedHashList<>();
+            LinkedHashList<String, ImageItem> map = new LinkedHashList<>();
             if (!TextUtils.isEmpty(mImagePath)) {
-                TNBImageItem item = new TNBImageItem();
+                ImageItem item = new ImageItem();
                 item.imagePath = mImagePath;
                 map.put(mImagePath, item);
             }
@@ -441,9 +441,9 @@ public class CreateReviewActivity extends BaseActivity implements View.OnClickLi
         mDesView.setText(description);
         if (files != null && files.size() > 0) {
             mPhotoParent.setVisibility(View.VISIBLE);
-            LinkedHashList<String, TNBImageItem> mSelectedMap = new LinkedHashList<>();
+            LinkedHashList<String, ImageItem> mSelectedMap = new LinkedHashList<>();
             for (QualityCheckListBeanItemFile file : files) {
-                TNBImageItem item = new TNBImageItem();
+                ImageItem item = new ImageItem();
                 item.imagePath = file.url;
                 item.objectId = file.objectId;
                 CreateCheckListParamsFile paramFile = new CreateCheckListParamsFile();
@@ -499,15 +499,15 @@ public class CreateReviewActivity extends BaseActivity implements View.OnClickLi
     }
 
     @Override
-    public void showImages(LinkedHashList<String, TNBImageItem> mSelectedMap) {
+    public void showImages(LinkedHashList<String, ImageItem> mSelectedMap) {
         int size = mSelectedMap.size();
         List<ImageView> list = new ArrayList<>();
         list.add(mPhoto0);
         list.add(mPhoto1);
         list.add(mPhoto2);
         int position = 0;
-        for (TNBImageItem entry : mSelectedMap.getValueList()) {
-            TNBImageItem item = entry;
+        for (ImageItem entry : mSelectedMap.getValueList()) {
+            ImageItem item = entry;
             String url = item.thumbnailPath;
             if (TextUtils.isEmpty(url)) {
                 url = item.imagePath;

@@ -11,9 +11,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 /**
- * Abstract wheel adapter provides common functionality for adapters.
+ * 作者：zhourf on 2017/11/10
+ * 邮箱：zhourf@glodon.com
  */
-public abstract class TNBAbstractDateTextAdapter extends TNBAbstractDateAdapter {
+public abstract class AbstractDateTextAdapter extends AbstractDateAdapter {
     
     /** Text view resource. Used as a default view for adapter. */
     public static final int TEXT_VIEW_ITEM_RESOURCE = -1;
@@ -50,7 +51,7 @@ public abstract class TNBAbstractDateTextAdapter extends TNBAbstractDateAdapter 
      * Constructor
      * @param context the current context
      */
-    protected TNBAbstractDateTextAdapter(Context context) {
+    protected AbstractDateTextAdapter(Context context) {
         this(context, TEXT_VIEW_ITEM_RESOURCE);
     }
 
@@ -59,7 +60,7 @@ public abstract class TNBAbstractDateTextAdapter extends TNBAbstractDateAdapter 
      * @param context the current context
      * @param itemResource the resource ID for a layout file containing a TextView to use when instantiating items views
      */
-    protected TNBAbstractDateTextAdapter(Context context, int itemResource) {
+    protected AbstractDateTextAdapter(Context context, int itemResource) {
         this(context, itemResource, NO_RESOURCE);
     }
     
@@ -69,7 +70,7 @@ public abstract class TNBAbstractDateTextAdapter extends TNBAbstractDateAdapter 
      * @param itemResource the resource ID for a layout file containing a TextView to use when instantiating items views
      * @param itemTextResource the resource ID for a text view in the item layout
      */
-    protected TNBAbstractDateTextAdapter(Context context, int itemResource, int itemTextResource) {
+    protected AbstractDateTextAdapter(Context context, int itemResource, int itemTextResource) {
         this.context = context;
         itemResourceId = itemResource;
         itemTextResourceId = itemTextResource;

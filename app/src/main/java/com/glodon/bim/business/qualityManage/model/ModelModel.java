@@ -3,6 +3,7 @@ package com.glodon.bim.business.qualityManage.model;
 import android.text.TextUtils;
 
 import com.glodon.bim.basic.config.AppConfig;
+import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.basic.network.NetRequest;
 import com.glodon.bim.business.greendao.provider.DaoProvider;
 import com.glodon.bim.business.qualityManage.bean.ModelListBean;
@@ -64,6 +65,10 @@ public class ModelModel implements ModelContract.Model {
      */
     @Override
     public Observable<ModelListBean> getModelList(long projectId, String projectVersionId, long buildingId, String specialtyCode) {
+        LogUtil.e("projectId="+projectId);
+        LogUtil.e("projectVersionId="+projectVersionId);
+        LogUtil.e("buildingId="+buildingId);
+        LogUtil.e("specialtyCode="+specialtyCode);
         if (buildingId != 0 && !TextUtils.isEmpty(specialtyCode)) {
             return NetRequest.getInstance().getCall(AppConfig.BASE_URL, ModelApi.class).getModelList(projectId, projectVersionId, buildingId, specialtyCode, cookie);
         } else if (buildingId != 0) {

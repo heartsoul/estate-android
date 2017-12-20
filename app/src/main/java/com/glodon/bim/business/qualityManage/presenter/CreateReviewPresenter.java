@@ -27,7 +27,7 @@ import com.glodon.bim.common.config.CommonConfig;
 import com.glodon.bim.customview.ToastManager;
 import com.glodon.bim.customview.album.AlbumData;
 import com.glodon.bim.customview.album.AlbumEditActivity;
-import com.glodon.bim.customview.album.TNBImageItem;
+import com.glodon.bim.customview.album.ImageItem;
 import com.glodon.bim.customview.photopreview.PhotoPreviewActivity;
 
 import java.util.List;
@@ -59,7 +59,7 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter {
     private String mPhotoPath;//拍照的路径
 
     //图片
-    private LinkedHashList<String, TNBImageItem> mSelectedMap;
+    private LinkedHashList<String, ImageItem> mSelectedMap;
     //初始的图片 用于判断点击返回键时是否弹出提示框
     private CreateReviewData mInitData;
 
@@ -105,20 +105,20 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter {
 
     //判断图片是否相同
     public boolean isPhotoEqual(){
-        LinkedHashList<String, TNBImageItem> mInitMap = mInitData.mInitMap;
+        LinkedHashList<String, ImageItem> mInitMap = mInitData.mInitMap;
         if(mSelectedMap == null && mInitMap == null){
             return true;
         }
         if(mSelectedMap!=null && mInitMap!=null && mSelectedMap.size()==mInitMap.size()){
             List<String> mSelectKey = mSelectedMap.getKeyList();
-            List<TNBImageItem> mSelectValue = mSelectedMap.getValueList();
-//            for(Map.Entry<String,TNBImageItem> entry:mSelectedMap.entrySet()){
+            List<ImageItem> mSelectValue = mSelectedMap.getValueList();
+//            for(Map.Entry<String,ImageItem> entry:mSelectedMap.entrySet()){
 //                mSelectKey.add(entry.getKey());
 //                mSelectValue.add(entry.getValue());
 //            }
             List<String> mInitKey = mInitMap.getKeyList();
-            List<TNBImageItem> mInitValue = mInitMap.getValueList();
-//            for(Map.Entry<String,TNBImageItem> entry:mInitMap.entrySet()){
+            List<ImageItem> mInitValue = mInitMap.getValueList();
+//            for(Map.Entry<String,ImageItem> entry:mInitMap.entrySet()){
 //                mInitKey.add(entry.getKey());
 //                mInitValue.add(entry.getValue());
 //            }
@@ -127,8 +127,8 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter {
                 if(!mSelectKey.get(i).equals(mInitKey.get(i))){
                     return false;
                 }else{
-                    TNBImageItem selectItem = mSelectValue.get(i);
-                    TNBImageItem initItem = mInitValue.get(i);
+                    ImageItem selectItem = mSelectValue.get(i);
+                    ImageItem initItem = mInitValue.get(i);
                     if(!selectItem.imagePath.equals(initItem.imagePath)){
                         return false;
                     }
@@ -140,7 +140,7 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter {
     }
 
     @Override
-    public void setSelectedImages(LinkedHashList<String, TNBImageItem> map) {
+    public void setSelectedImages(LinkedHashList<String, ImageItem> map) {
         this.mSelectedMap = map;
     }
 
@@ -216,7 +216,7 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter {
                                 if(info.files!=null && info.files.size()>0){
                                     mInitData.mInitMap = new LinkedHashList<>();
                                     for(QualityCheckListBeanItemFile file:info.files){
-                                        TNBImageItem item = new TNBImageItem();
+                                        ImageItem item = new ImageItem();
                                         item.imagePath = file.url;
                                         item.objectId = file.objectId;
                                         mInitData.mInitMap.put(item.imagePath,item);
@@ -265,7 +265,7 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter {
                                 if(info.files!=null && info.files.size()>0){
                                     mInitData.mInitMap = new LinkedHashList<>();
                                     for(QualityCheckListBeanItemFile file:info.files){
-                                        TNBImageItem item = new TNBImageItem();
+                                        ImageItem item = new ImageItem();
                                         item.imagePath = file.url;
                                         item.objectId = file.objectId;
                                         mInitData.mInitMap.put(item.imagePath,item);
@@ -319,8 +319,8 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter {
                     public void onUploadFinished(List<CreateCheckListParamsFile> list) {
 
                         int i = 0;
-                        for (TNBImageItem entry : mSelectedMap.getValueList()) {
-                            TNBImageItem item = entry;
+                        for (ImageItem entry : mSelectedMap.getValueList()) {
+                            ImageItem item = entry;
                             item.objectId = list.get(i).objectId;
                             item.urlFile = list.get(i);
                             i++;
@@ -569,8 +569,8 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter {
                     public void onUploadFinished(List<CreateCheckListParamsFile> list) {
 
                         int i = 0;
-                        for (TNBImageItem entry: mSelectedMap.getValueList()){
-                            TNBImageItem item = entry;
+                        for (ImageItem entry: mSelectedMap.getValueList()){
+                            ImageItem item = entry;
                             item.objectId = list.get(i).objectId;
                             item.urlFile = list.get(i);
                             i++;
@@ -903,7 +903,7 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter {
             case REQUEST_CODE_PHOTO_EDIT:
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     mPhotoPath = data.getStringExtra(CommonConfig.IAMGE_SAVE_PATH);
-                    TNBImageItem item = new TNBImageItem();
+                    ImageItem item = new ImageItem();
                     item.imagePath = mPhotoPath;
                     mSelectedMap.put(mPhotoPath, item);
                     if (mView != null) {

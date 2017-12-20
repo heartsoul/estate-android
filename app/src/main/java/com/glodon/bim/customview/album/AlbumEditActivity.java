@@ -35,7 +35,7 @@ public class AlbumEditActivity extends BaseActivity implements View.OnClickListe
     private RecyclerView mRecyclerView;
     private TextView mPreviewView;
     private AlbumEditAdapter mAdapter;
-    private List<TNBImageItem> mDataList;
+    private List<ImageItem> mDataList;
     private int fromType = 0;//0 从选择目录页跳转 或 从质检清单页跳转   1 从检查单页跳转
     private OnAlbumChangeListener mListener ;
     private String mCreateType = "";
@@ -56,14 +56,14 @@ public class AlbumEditActivity extends BaseActivity implements View.OnClickListe
     private void initData() {
         fromType = getIntent().getIntExtra(CommonConfig.ALBUM_FROM_TYPE,0);
         mCreateType = getIntent().getStringExtra(CommonConfig.CREATE_TYPE);
-        new AsyncTask<Void, Void, List<TNBImageItem>>() {
+        new AsyncTask<Void, Void, List<ImageItem>>() {
             @Override
-            protected List<TNBImageItem> doInBackground(Void... voids) {
-                return new TNBAlbumUtils(mActivity).getImageList();
+            protected List<ImageItem> doInBackground(Void... voids) {
+                return new AlbumUtils(mActivity).getImageList();
             }
 
             @Override
-            protected void onPostExecute(List<TNBImageItem> list) {
+            protected void onPostExecute(List<ImageItem> list) {
                 super.onPostExecute(list);
                 mDataList = list;
                 mAdapter.upateData(mDataList);
@@ -91,7 +91,7 @@ public class AlbumEditActivity extends BaseActivity implements View.OnClickListe
         mRecyclerView.setLayoutManager(manager);
         mListener = new OnAlbumChangeListener() {
             @Override
-            public void onChange(LinkedHashList<String, TNBImageItem> map) {
+            public void onChange(LinkedHashList<String, ImageItem> map) {
                 if(map.size()==0){
                     mNavFinish.setText("完成");
                 }else{
@@ -103,7 +103,7 @@ public class AlbumEditActivity extends BaseActivity implements View.OnClickListe
         //设置选中后的数量
         AlbumData data = (AlbumData) getIntent().getSerializableExtra(CommonConfig.ALBUM_DATA);
         if(data!=null) {
-            LinkedHashList<String, TNBImageItem> map = data.map;
+            LinkedHashList<String, ImageItem> map = data.map;
             if(map.size()==0){
                 mNavFinish.setText("完成");
             }else{
@@ -181,7 +181,7 @@ public class AlbumEditActivity extends BaseActivity implements View.OnClickListe
                         mRecyclerView.setAdapter(mAdapter);
                         mAdapter.upateData(mDataList);
 
-                        LinkedHashList<String, TNBImageItem> map = albumdata.map;
+                        LinkedHashList<String, ImageItem> map = albumdata.map;
                         if(map.size()==0){
                             mNavFinish.setText("完成");
                         }else{

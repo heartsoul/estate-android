@@ -20,21 +20,17 @@ import android.view.animation.Interpolator;
 import android.widget.LinearLayout;
 
 
-import com.glodon.bim.customview.datepicker.adapter.TNBDateViewAdapter;
+import com.glodon.bim.customview.datepicker.adapter.DateViewAdapter;
 
 import java.util.LinkedList;
 import java.util.List;
 
 /**
  * Description:单个item的view
- * Created by 周瑞峰
- * Job number:136597
- * Phone:15001340978
- * Email:zhouruifeng@syswin.com
- * Person in charge:周瑞峰
- * Leader:周瑞峰
+ * 作者：zhourf on 2017/11/10
+ * 邮箱：zhourf@glodon.com
  */
-public class TNBDateView extends View {
+public class DateView extends View {
 
 	/** Top and bottom shadows colors */
 //	private int[] SHADOWS_COLORS = new int[] { 0xaa0000,
@@ -75,7 +71,7 @@ public class TNBDateView extends View {
 	private boolean drawShadows = true;
 
 	// Scrolling
-	private TNBDateScroller scroller;
+	private DateScroller scroller;
 	private boolean isScrollingPerformed;
 	private int scrollingOffset;
 
@@ -89,22 +85,22 @@ public class TNBDateView extends View {
 	private int firstItem;
 
 	// View adapter
-	private TNBDateViewAdapter viewAdapter;
+	private DateViewAdapter viewAdapter;
 
 	// Recycle
-	private TNBDateRecycle recycle = new TNBDateRecycle(this);
+	private DateRecycle recycle = new DateRecycle(this);
 
 	// Listeners
-	private List<TNBOnDateChangedListener> changingListeners = new LinkedList<TNBOnDateChangedListener>();
-	private List<TNBOnDateScrollListener> scrollingListeners = new LinkedList<TNBOnDateScrollListener>();
-	private List<TNBOnDateClickedListener> clickingListeners = new LinkedList<TNBOnDateClickedListener>();
+	private List<OnDateChangedListener> changingListeners = new LinkedList<OnDateChangedListener>();
+	private List<OnDateScrollListener> scrollingListeners = new LinkedList<OnDateScrollListener>();
+	private List<OnDateClickedListener> clickingListeners = new LinkedList<OnDateClickedListener>();
 	
 	String label="";
 
 	/**
 	 * Constructor
 	 */
-	public TNBDateView(Context context, AttributeSet attrs, int defStyle) {
+	public DateView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 		initData(context);
 	}
@@ -112,7 +108,7 @@ public class TNBDateView extends View {
 	/**
 	 * Constructor
 	 */
-	public TNBDateView(Context context, AttributeSet attrs) {
+	public DateView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		initData(context);
 	}
@@ -120,7 +116,7 @@ public class TNBDateView extends View {
 	/**
 	 * Constructor
 	 */
-	public TNBDateView(Context context) {
+	public DateView(Context context) {
 		super(context);
 		initData(context);
 	}
@@ -130,11 +126,11 @@ public class TNBDateView extends View {
 	 * @param context the context
 	 */
 	private void initData(Context context) {
-		scroller = new TNBDateScroller(getContext(), scrollingListener);
+		scroller = new DateScroller(getContext(), scrollingListener);
 	}
 
 	// Scrolling listener
-	TNBDateScroller.ScrollingListener scrollingListener = new TNBDateScroller.ScrollingListener() {
+	DateScroller.ScrollingListener scrollingListener = new DateScroller.ScrollingListener() {
 		@Override
 		public void onStarted() {
 			isScrollingPerformed = true;
@@ -168,7 +164,7 @@ public class TNBDateView extends View {
 
 		@Override
 		public void onJustify() {
-			if (Math.abs(scrollingOffset) > TNBDateScroller.MIN_DELTA_FOR_SCROLLING) {
+			if (Math.abs(scrollingOffset) > DateScroller.MIN_DELTA_FOR_SCROLLING) {
 				scroller.scroll(scrollingOffset, 0);
 			}
 		}
@@ -206,7 +202,7 @@ public class TNBDateView extends View {
 	 * Gets view adapter
 	 * @return the view adapter
 	 */
-	public TNBDateViewAdapter getViewAdapter() {
+	public DateViewAdapter getViewAdapter() {
 		return viewAdapter;
 	}
 
@@ -229,7 +225,7 @@ public class TNBDateView extends View {
 	 * 
 	 * @param viewAdapter the view adapter
 	 */
-	public void setViewAdapter(TNBDateViewAdapter viewAdapter) {
+	public void setViewAdapter(DateViewAdapter viewAdapter) {
 		if (this.viewAdapter != null) {
 			this.viewAdapter.unregisterDataSetObserver(dataObserver);
 		}
@@ -245,7 +241,7 @@ public class TNBDateView extends View {
 	 * Adds wheel changing listener
 	 * @param listener the listener
 	 */
-	public void addChangingListener(TNBOnDateChangedListener listener) {
+	public void addChangingListener(OnDateChangedListener listener) {
 		changingListeners.add(listener);
 	}
 
@@ -253,7 +249,7 @@ public class TNBDateView extends View {
 	 * Removes wheel changing listener
 	 * @param listener the listener
 	 */
-	public void removeChangingListener(TNBOnDateChangedListener listener) {
+	public void removeChangingListener(OnDateChangedListener listener) {
 		changingListeners.remove(listener);
 	}
 
@@ -263,7 +259,7 @@ public class TNBDateView extends View {
 	 * @param newValue the new wheel value
 	 */
 	protected void notifyChangingListeners(int oldValue, int newValue) {
-		for (TNBOnDateChangedListener listener : changingListeners) {
+		for (OnDateChangedListener listener : changingListeners) {
 			listener.onChanged(this, oldValue, newValue);
 		}
 	}
@@ -272,7 +268,7 @@ public class TNBDateView extends View {
 	 * Adds wheel scrolling listener
 	 * @param listener the listener
 	 */
-	public void addScrollingListener(TNBOnDateScrollListener listener) {
+	public void addScrollingListener(OnDateScrollListener listener) {
 		scrollingListeners.add(listener);
 	}
 
@@ -280,7 +276,7 @@ public class TNBDateView extends View {
 	 * Removes wheel scrolling listener
 	 * @param listener the listener
 	 */
-	public void removeScrollingListener(TNBOnDateScrollListener listener) {
+	public void removeScrollingListener(OnDateScrollListener listener) {
 		scrollingListeners.remove(listener);
 	}
 
@@ -288,7 +284,7 @@ public class TNBDateView extends View {
 	 * Notifies listeners about starting scrolling
 	 */
 	protected void notifyScrollingListenersAboutStart() {
-		for (TNBOnDateScrollListener listener : scrollingListeners) {
+		for (OnDateScrollListener listener : scrollingListeners) {
 			listener.onScrollingStarted(this);
 		}
 	}
@@ -297,7 +293,7 @@ public class TNBDateView extends View {
 	 * Notifies listeners about ending scrolling
 	 */
 	protected void notifyScrollingListenersAboutEnd() {
-		for (TNBOnDateScrollListener listener : scrollingListeners) {
+		for (OnDateScrollListener listener : scrollingListeners) {
 			listener.onScrollingFinished(this);
 		}
 	}
@@ -306,7 +302,7 @@ public class TNBDateView extends View {
 	 * Adds wheel clicking listener
 	 * @param listener the listener
 	 */
-	public void addClickingListener(TNBOnDateClickedListener listener) {
+	public void addClickingListener(OnDateClickedListener listener) {
 		clickingListeners.add(listener);
 	}
 
@@ -314,7 +310,7 @@ public class TNBDateView extends View {
 	 * Removes wheel clicking listener
 	 * @param listener the listener
 	 */
-	public void removeClickingListener(TNBOnDateClickedListener listener) {
+	public void removeClickingListener(OnDateClickedListener listener) {
 		clickingListeners.remove(listener);
 	}
 
@@ -322,7 +318,7 @@ public class TNBDateView extends View {
 	 * Notifies listeners about clicking
 	 */
 	protected void notifyClickListenersAboutClick(int item) {
-		for (TNBOnDateClickedListener listener : clickingListeners) {
+		for (OnDateClickedListener listener : clickingListeners) {
 			listener.onItemClicked(this, item);
 		}
 	}
@@ -468,7 +464,7 @@ public class TNBDateView extends View {
 			scrollingOffset = 0;
 		} else if (itemsLayout != null) {
 			// cache all items
-			recycle.recycleItems(itemsLayout, firstItem, new TNBItemsRange());
+			recycle.recycleItems(itemsLayout, firstItem, new ItemsRange());
 		}
 
 		invalidate();
@@ -784,7 +780,7 @@ public class TNBDateView extends View {
 	 * Calculates range for wheel items
 	 * @return the items range
 	 */
-	private TNBItemsRange getItemsRange() {
+	private ItemsRange getItemsRange() {
 		if (getItemHeight() == 0) {
 			return null;
 		}
@@ -808,7 +804,7 @@ public class TNBDateView extends View {
 			first -= emptyItems;
 			count += Math.asin(emptyItems);
 		}
-		return new TNBItemsRange(first, count);
+		return new ItemsRange(first, count);
 	}
 
 	/**
@@ -818,7 +814,7 @@ public class TNBDateView extends View {
 	 */
 	private boolean rebuildItems() {
 		boolean updated = false;
-		TNBItemsRange range = getItemsRange();
+		ItemsRange range = getItemsRange();
 		if (itemsLayout != null) {
 			int first = recycle.recycleItems(itemsLayout, firstItem, range);
 			updated = firstItem != first;
@@ -880,7 +876,7 @@ public class TNBDateView extends View {
 	private void buildViewForMeasuring() {
 		// clear all items
 		if (itemsLayout != null) {
-			recycle.recycleItems(itemsLayout, firstItem, new TNBItemsRange());
+			recycle.recycleItems(itemsLayout, firstItem, new ItemsRange());
 		} else {
 			createItemsLayout();
 		}

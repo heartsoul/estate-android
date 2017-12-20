@@ -56,6 +56,10 @@ public class QualityMangeUtil {
         props.responsibleUserName = info.responsibleUserName;
         props.responsibleUserId = info.responsibleUserId;
         props.gdocFileId = info.gdocFileId;
+        props.drawingGdocFileId = info.drawingGdocFileId;
+        props.drawingName = info.drawingName;
+        props.drawingPositionX = info.drawingPositionX;
+        props.drawingPositionY = info.drawingPositionY;
         return  props;
     }
 }

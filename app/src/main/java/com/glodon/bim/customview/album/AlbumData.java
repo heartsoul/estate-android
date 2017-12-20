@@ -11,9 +11,9 @@ import java.io.Serializable;
  */
 
 public class AlbumData implements Serializable{
-    public LinkedHashList<String,TNBImageItem> map;
+    public LinkedHashList<String,ImageItem> map;
 
-    public AlbumData(LinkedHashList<String, TNBImageItem> map) {
+    public AlbumData(LinkedHashList<String, ImageItem> map) {
         this.map = map;
     }
 }

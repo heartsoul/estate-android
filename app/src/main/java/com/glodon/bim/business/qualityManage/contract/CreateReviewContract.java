@@ -10,7 +10,7 @@ import com.glodon.bim.business.qualityManage.bean.QualityGetReviewInfo;
 import com.glodon.bim.business.qualityManage.bean.QualityRepairParams;
 import com.glodon.bim.business.qualityManage.bean.QualityReviewParams;
 import com.glodon.bim.business.qualityManage.bean.SaveBean;
-import com.glodon.bim.customview.album.TNBImageItem;
+import com.glodon.bim.customview.album.ImageItem;
 
 import java.util.List;
 
@@ -30,7 +30,7 @@ public interface CreateReviewContract {
         /**
          * 设定选中的图片
          */
-        void setSelectedImages(LinkedHashList<String, TNBImageItem> map);
+        void setSelectedImages(LinkedHashList<String, ImageItem> map);
 
         /**
          * 打开相机
@@ -73,7 +73,7 @@ public interface CreateReviewContract {
         /**
          * 展示选中的图片
          */
-        void showImages(LinkedHashList<String, TNBImageItem> mSelectedMap);
+        void showImages(LinkedHashList<String, ImageItem> mSelectedMap);
 
         /**
          * 检查单详情

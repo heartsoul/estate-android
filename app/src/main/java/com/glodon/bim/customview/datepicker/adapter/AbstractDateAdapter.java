@@ -10,14 +10,10 @@ import java.util.List;
 
 /**
  * Description:填充数据的adapter  子类
- * Created by 周瑞峰
- * Job number:136597
- * Phone:15001340978
- * Email:zhouruifeng@syswin.com
- * Person in charge:周瑞峰
- * Leader:周瑞峰
+ * 作者：zhourf on 2017/11/10
+ * 邮箱：zhourf@glodon.com
  */
-public abstract class TNBAbstractDateAdapter implements TNBDateViewAdapter {
+public abstract class AbstractDateAdapter implements DateViewAdapter {
     // Observers
     private List<DataSetObserver> datasetObservers;
     

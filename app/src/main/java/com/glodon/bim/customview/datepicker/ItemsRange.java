@@ -21,14 +21,10 @@ package com.glodon.bim.customview.datepicker;
 
 /**
  * Description:wheel的起始、当前项管理
- * Created by 周瑞峰
- * Job number:136597
- * Phone:15001340978
- * Email:zhouruifeng@syswin.com
- * Person in charge:周瑞峰
- * Leader:周瑞峰
+ * 作者：zhourf on 2017/11/10
+ * 邮箱：zhourf@glodon.com
  */
-public class TNBItemsRange {
+public class ItemsRange {
 	// First item number
 	private int first;
 	
@@ -38,7 +34,7 @@ public class TNBItemsRange {
 	/**
 	 * Default constructor. Creates an empty range
 	 */
-    public TNBItemsRange() {
+    public ItemsRange() {
         this(0, 0);
     }
     
@@ -47,7 +43,7 @@ public class TNBItemsRange {
 	 * @param first the number of first item
 	 * @param count the count of items
 	 */
-	public TNBItemsRange(int first, int count) {
+	public ItemsRange(int first, int count) {
 		this.first = first;
 		this.count = count;
 	}

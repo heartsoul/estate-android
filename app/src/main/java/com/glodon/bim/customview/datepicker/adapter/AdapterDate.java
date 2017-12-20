@@ -4,25 +4,24 @@ package com.glodon.bim.customview.datepicker.adapter;
 
 import android.content.Context;
 
-import com.glodon.bim.customview.datepicker.TNBDateAdapter;
+import com.glodon.bim.customview.datepicker.DateAdapter;
 
 
 /**
- * Adapter class for old wheel adapter (deprecated WheelAdapter class).
- * 
- * deprecated Will be removed soon
+ * 作者：zhourf on 2017/11/10
+ * 邮箱：zhourf@glodon.com
  */
-public class TNBAdapterDate extends TNBAbstractDateTextAdapter {
+public class AdapterDate extends AbstractDateTextAdapter {
 
     // Source adapter
-    private TNBDateAdapter adapter;
+    private DateAdapter adapter;
     
     /**
      * Constructor
      * @param context the current context
      * @param adapter the source adapter
      */
-    public TNBAdapterDate(Context context, TNBDateAdapter adapter) {
+    public AdapterDate(Context context, DateAdapter adapter) {
         super(context);
         
         this.adapter = adapter;
@@ -32,7 +31,7 @@ public class TNBAdapterDate extends TNBAbstractDateTextAdapter {
      * Gets original adapter
      * @return the original adapter
      */
-    public TNBDateAdapter getAdapter() {
+    public DateAdapter getAdapter() {
         return adapter;
     }
     

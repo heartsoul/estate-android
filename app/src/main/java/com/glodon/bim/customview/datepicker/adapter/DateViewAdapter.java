@@ -6,9 +6,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 /**
- * Wheel items adapter interface
+ * 作者：zhourf on 2017/11/10
+ * 邮箱：zhourf@glodon.com
  */
-public interface TNBDateViewAdapter {
+public interface DateViewAdapter {
 	
 	/**
 	 * Gets items count

@@ -27,7 +27,7 @@ import com.glodon.bim.business.qualityManage.presenter.QualityCheckListDetailVie
 import com.glodon.bim.business.qualityManage.util.IntentManager;
 import com.glodon.bim.common.config.CommonConfig;
 import com.glodon.bim.customview.album.AlbumData;
-import com.glodon.bim.customview.album.TNBImageItem;
+import com.glodon.bim.customview.album.ImageItem;
 import com.glodon.bim.customview.dialog.LoadingDialogManager;
 import com.glodon.bim.customview.photopreview.PhotoPreviewActivity;
 
@@ -215,10 +215,10 @@ public class QualityCheckListDetailView implements QualityCheckListDetailViewCon
         //图片
         List<QualityCheckListBeanItemFile> files = info.files;
         if (files != null && files.size() != 0) {
-            final LinkedHashList<String, TNBImageItem> mSelectedMap = new LinkedHashList<>();
+            final LinkedHashList<String, ImageItem> mSelectedMap = new LinkedHashList<>();
             int size = files.size();
             for (QualityCheckListBeanItemFile imageFile : files) {
-                TNBImageItem imageItem = new TNBImageItem();
+                ImageItem imageItem = new ImageItem();
                 imageItem.imagePath = imageFile.url;
                 imageItem.objectId = imageFile.objectId;
                 mSelectedMap.put(imageFile.url, imageItem);
@@ -346,10 +346,10 @@ public class QualityCheckListDetailView implements QualityCheckListDetailViewCon
         //图片
         List<QualityCheckListBeanItemFile> files = info.files;
         if (files != null && files.size() != 0) {
-            final LinkedHashList<String, TNBImageItem> mSelectedMap = new LinkedHashList<>();
+            final LinkedHashList<String, ImageItem> mSelectedMap = new LinkedHashList<>();
             int size = files.size();
             for (QualityCheckListBeanItemFile imageFile : files) {
-                TNBImageItem imageItem = new TNBImageItem();
+                ImageItem imageItem = new ImageItem();
                 imageItem.imagePath = imageFile.url;
                 imageItem.objectId = imageFile.objectId;
                 mSelectedMap.put(imageFile.url, imageItem);

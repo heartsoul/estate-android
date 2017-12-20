@@ -14,7 +14,7 @@ import com.glodon.bim.basic.listener.ThrottleClickEvents;
 import com.glodon.bim.basic.utils.LinkedHashList;
 import com.glodon.bim.common.config.CommonConfig;
 import com.glodon.bim.customview.album.AlbumData;
-import com.glodon.bim.customview.album.TNBImageItem;
+import com.glodon.bim.customview.album.ImageItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +30,7 @@ public class PhotoPreviewActivity extends BaseActivity implements View.OnClickLi
     private RelativeLayout mDeleteView;
     private TextView mTitleView;
     private ViewPager mPagerView;
-    private List<TNBImageItem> mDataList;
+    private List<ImageItem> mDataList;
     private PhotoPreviewAdapter mAdapter;
     private int mSelectedPosition ;
     private boolean mIsShowDelete=true;
@@ -59,7 +59,7 @@ public class PhotoPreviewActivity extends BaseActivity implements View.OnClickLi
         mDeleteView.setVisibility(mIsShowDelete?View.VISIBLE:View.GONE);
         if(mAlbumData!=null && mAlbumData.map!=null && mAlbumData.map.size()>0)
         {
-            for(TNBImageItem entry:mAlbumData.map.getValueList()){
+            for(ImageItem entry:mAlbumData.map.getValueList()){
                 mDataList.add(entry);
             }
         }
@@ -139,9 +139,9 @@ public class PhotoPreviewActivity extends BaseActivity implements View.OnClickLi
 
     private void backData(){
         Intent data = new Intent();
-        LinkedHashList<String,TNBImageItem> map = new LinkedHashList<>();
+        LinkedHashList<String,ImageItem> map = new LinkedHashList<>();
         if(mDataList.size()>0){
-            for(TNBImageItem item:mDataList)
+            for(ImageItem item:mDataList)
             {
                 map.put(item.imagePath,item);
             }

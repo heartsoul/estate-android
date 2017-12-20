@@ -239,13 +239,17 @@ public class ModelPresenter implements ModelContract.Presenter {
                     @Override
                     public void onError(Throwable e) {
                         LogUtil.e(e.getMessage());
-
                     }
 
                     @Override
                     public void onNext(ModelListBean bean) {
                         mModelList.clear();
+                        LogUtil.e("bean==null?"+(bean==null));
                         if(bean!=null){
+                            LogUtil.e("bean.tostring="+bean.toString());
+                            if(bean.data!=null) {
+                                LogUtil.e("bean.size=" + bean.data.size());
+                            }
                             if(bean.data!=null && bean.data.size()>0){
                                 mModelList = bean.data;
                             }

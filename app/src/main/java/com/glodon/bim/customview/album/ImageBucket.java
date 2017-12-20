@@ -5,14 +5,10 @@ import java.util.List;
 
 /**
  * Description:  一个目录的相册对象
- * Created by 周瑞峰 ON ON 2015/5/6
- * Job number:136597
- * Phone:15001340978
- * Email:zhouruifeng@syswin.com
- * Person in charge:周瑞峰
- * Leader:周瑞峰
+ * 作者：zhourf on 2017/11/1
+ * 邮箱：zhourf@glodon.com
  */
-public class TNBImageBucket implements Serializable {
+public class ImageBucket implements Serializable {
 	/**
 	 * @Description serialVersionUID
 	 */
@@ -28,7 +24,7 @@ public class TNBImageBucket implements Serializable {
 	/**
 	 * 该文件夹下所有的图片
 	 */
-	public List<TNBImageItem> imageList;
+	public List<ImageItem> imageList;
 	
 
 

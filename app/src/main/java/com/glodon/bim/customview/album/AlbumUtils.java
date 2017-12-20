@@ -16,14 +16,10 @@ import java.util.Map.Entry;
 
 /**
  * Description:  获取手机图片
- * Created by 周瑞峰 ON 2015/5/6
- * Job number:136597
- * Phone:15001340978
- * Email:zhouruifeng@syswin.com
- * Person in charge:周瑞峰
- * Leader:周瑞峰
+ * 作者：zhourf on 2017/11/1
+ * 邮箱：zhourf@glodon.com
  */
-public class TNBAlbumUtils {
+public class AlbumUtils {
     private Activity context;
     private ContentResolver cr;
 
@@ -32,10 +28,10 @@ public class TNBAlbumUtils {
     // 相册列表
     private List<HashMap<String, String>> albumList = new ArrayList<>();
     // key：文件夹id value：文件夹内所有图片的集合
-    private HashMap<String, TNBImageBucket> bucketList = new HashMap<>();
+    private HashMap<String, ImageBucket> bucketList = new HashMap<>();
 
 
-    public TNBAlbumUtils(Activity context) {
+    public AlbumUtils(Activity context) {
         this.context = context;
         cr = context.getContentResolver();
         // 先清除之前查询的数据
@@ -45,8 +41,8 @@ public class TNBAlbumUtils {
     }
 
 
-    public List<TNBImageItem> getImageList() {
-        List<TNBImageItem> list = new ArrayList<>();
+    public List<ImageItem> getImageList() {
+        List<ImageItem> list = new ArrayList<>();
         getThumbnail();
         String columns[] = new String[]{Media._ID, Media.BUCKET_ID,
                 Media.PICASA_ID, Media.DATA, Media.DISPLAY_NAME, Media.TITLE,
@@ -65,7 +61,7 @@ public class TNBAlbumUtils {
                     String path = cur.getString(photoPathIndex);
 
                     // 某一张图片
-                    TNBImageItem imageItem = new TNBImageItem();
+                    ImageItem imageItem = new ImageItem();
                     imageItem.imageId = _id;// 图片索引id
                     imageItem.imagePath = path;// 原图片路径
 
@@ -77,7 +73,7 @@ public class TNBAlbumUtils {
             cur.close();
         }
 //        LogUtil.e("size=",list.size()+"");
-//        for (TNBImageItem item :list) {
+//        for (ImageItem item :list) {
 //            LogUtil.e("item=",item.imageId+" "+item.imagePath+" "+item.thumbnailPath);
 //        }
 
@@ -88,14 +84,14 @@ public class TNBAlbumUtils {
     /**
      * 得到图片集 以文件夹为单位 获得所有文件夹
      */
-    public List<TNBImageBucket> getImagesBucketList() {
+    public List<ImageBucket> getImagesBucketList() {
         buildImagesBucketList();
         if (bucketList != null) {
-            List<TNBImageBucket> tmpList = new ArrayList<TNBImageBucket>();
-            Iterator<Entry<String, TNBImageBucket>> itr = bucketList.entrySet()
+            List<ImageBucket> tmpList = new ArrayList<ImageBucket>();
+            Iterator<Entry<String, ImageBucket>> itr = bucketList.entrySet()
                     .iterator();
             while (itr.hasNext()) {
-                Map.Entry<String, TNBImageBucket> entry = (Map.Entry<String, TNBImageBucket>) itr
+                Map.Entry<String, ImageBucket> entry = (Map.Entry<String, ImageBucket>) itr
                         .next();
                 if (entry.getValue().imageList != null
                         && entry.getValue().imageList.size() > 0) {
@@ -146,10 +142,10 @@ public class TNBAlbumUtils {
                     String bucketId = cur.getString(bucketIdIndex);
 
                     // 一个文件夹对应的相册
-                    TNBImageBucket bucket = bucketList.get(bucketId);
+                    ImageBucket bucket = bucketList.get(bucketId);
                     if (bucket == null) {
                         // 创建该文件夹的相册
-                        bucket = new TNBImageBucket();
+                        bucket = new ImageBucket();
                         bucketList.put(bucketId, bucket);
                         // 该文件夹内所有图片的集合
                         bucket.imageList = new ArrayList<>();
@@ -158,7 +154,7 @@ public class TNBAlbumUtils {
                     }
                     bucket.count++;
                     // 某一张图片
-                    TNBImageItem imageItem = new TNBImageItem();
+                    ImageItem imageItem = new ImageItem();
                     imageItem.imageId = _id;// 图片索引id
                     imageItem.imagePath = path;// 原图片路径
 
@@ -216,7 +212,6 @@ public class TNBAlbumUtils {
                 // _id = cur.getInt(_idColumn);
                 image_id = cur.getInt(image_idColumn);
                 image_path = cur.getString(dataColumn);
-                // TNBLogUtil.info("缩略图路径----"+image_path);
                 if (!TextUtils.isEmpty(image_path)) {
                     thumbnailList.put("" + image_id, image_path);
                 }

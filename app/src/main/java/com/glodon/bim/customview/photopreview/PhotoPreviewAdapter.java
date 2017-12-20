@@ -5,12 +5,12 @@ import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.glodon.bim.R;
 import com.glodon.bim.basic.image.ImageLoader;
 import com.glodon.bim.business.qualityManage.util.UploadManger;
-import com.glodon.bim.customview.album.TNBImageItem;
+import com.glodon.bim.customview.album.ImageItem;
+import com.glodon.bim.customview.imageview.ScaleImageView;
 
 import java.util.List;
 
@@ -22,15 +22,15 @@ import java.util.List;
 
 public class PhotoPreviewAdapter extends PagerAdapter {
 
-    private List<TNBImageItem> mDataList;
+    private List<ImageItem> mDataList;
     private Activity mActivity;
 
-    public PhotoPreviewAdapter(List<TNBImageItem> mDataList, Activity mActivity) {
+    public PhotoPreviewAdapter(List<ImageItem> mDataList, Activity mActivity) {
         this.mDataList = mDataList;
         this.mActivity = mActivity;
     }
 
-    public void updateData(List<TNBImageItem> mDataList){
+    public void updateData(List<ImageItem> mDataList){
         this.mDataList = mDataList;
         notifyDataSetChanged();
     }
@@ -49,7 +49,7 @@ public class PhotoPreviewAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         View view = LayoutInflater.from(mActivity).inflate(R.layout.quality_photo_preview_item_view,null);
-        ImageView imageview = view.findViewById(R.id.photo_preview_item_view_iv);
+        ScaleImageView imageview = view.findViewById(R.id.photo_preview_item_view_iv);
         String url = mDataList.get(position).imagePath;
         if(url.startsWith("http")){
             UploadManger.loadOriginalUrl(mActivity,mDataList.get(position).objectId,imageview);

@@ -10,5 +10,5 @@ import com.glodon.bim.basic.utils.LinkedHashList;
 
 public interface OnAlbumChangeListener {
 
-    void onChange(LinkedHashList<String,TNBImageItem> map);
+    void onChange(LinkedHashList<String,ImageItem> map);
 }

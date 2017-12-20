@@ -7,9 +7,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 /**
- * Numeric Wheel adapter.
+ * 作者：zhourf on 2017/11/10
+ * 邮箱：zhourf@glodon.com
  */
-public class TNBNumericDateAdapter extends TNBAbstractDateTextAdapter {
+public class NumericDateAdapter extends AbstractDateTextAdapter {
     
     /** The default min value */
     public static final int DEFAULT_MAX_VALUE = 9;
@@ -30,7 +31,7 @@ public class TNBNumericDateAdapter extends TNBAbstractDateTextAdapter {
      * Constructor
      * @param context the current context
      */
-    public TNBNumericDateAdapter(Context context) {
+    public NumericDateAdapter(Context context) {
         this(context, DEFAULT_MIN_VALUE, DEFAULT_MAX_VALUE);
     }
 
@@ -40,7 +41,7 @@ public class TNBNumericDateAdapter extends TNBAbstractDateTextAdapter {
      * @param minValue the wheel min value
      * @param maxValue the wheel max value
      */
-    public TNBNumericDateAdapter(Context context, int minValue, int maxValue) {
+    public NumericDateAdapter(Context context, int minValue, int maxValue) {
         this(context, minValue, maxValue, null);
     }
 
@@ -51,7 +52,7 @@ public class TNBNumericDateAdapter extends TNBAbstractDateTextAdapter {
      * @param maxValue the wheel max value
      * @param format the format string
      */
-    public TNBNumericDateAdapter(Context context, int minValue, int maxValue, String format) {
+    public NumericDateAdapter(Context context, int minValue, int maxValue, String format) {
         super(context);
         
         this.minValue = minValue;

@@ -9,14 +9,10 @@ import java.util.List;
 
 /**
  * Description:重用items
- * Created by 周瑞峰
- * Job number:136597
- * Phone:15001340978
- * Email:zhouruifeng@syswin.com
- * Person in charge:周瑞峰
- * Leader:周瑞峰
+ * 作者：zhourf on 2017/11/10
+ * 邮箱：zhourf@glodon.com
  */
-public class TNBDateRecycle {
+public class DateRecycle {
 	// Cached items
 	private List<View> items;
 	
@@ -24,13 +20,13 @@ public class TNBDateRecycle {
 	private List<View> emptyItems;
 	
 	// Wheel view
-	private TNBDateView wheel;
+	private DateView wheel;
 	
 	/**
 	 * Constructor
 	 * @param wheel the wheel view
 	 */
-	public TNBDateRecycle(TNBDateView wheel) {
+	public DateRecycle(DateView wheel) {
 		this.wheel = wheel;
 	}
 
@@ -44,7 +40,7 @@ public class TNBDateRecycle {
 	 * @param range the range of current wheel items 
 	 * @return the new value of first item number
 	 */
-	public int recycleItems(LinearLayout layout, int firstItem, TNBItemsRange range) {
+	public int recycleItems(LinearLayout layout, int firstItem, ItemsRange range) {
 		int index = firstItem;
 		for (int i = 0; i < layout.getChildCount();) {
 			if (!range.contains(index)) {

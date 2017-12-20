@@ -18,10 +18,10 @@ package com.glodon.bim.customview.datepicker.adapter;
 import android.content.Context;
 
 /**
- * The simple Array wheel adapter
- * @param <T> the element type
+ * 作者：zhourf on 2017/11/10
+ * 邮箱：zhourf@glodon.com
  */
-public class TNBArrayDateAdapter<T> extends TNBAbstractDateTextAdapter {
+public class ArrayDateAdapter<T> extends AbstractDateTextAdapter {
     
     // items
     private T items[];
@@ -31,7 +31,7 @@ public class TNBArrayDateAdapter<T> extends TNBAbstractDateTextAdapter {
      * @param context the current context
      * @param items the items
      */
-    public TNBArrayDateAdapter(Context context, T items[]) {
+    public ArrayDateAdapter(Context context, T items[]) {
         super(context);
         
         //setEmptyItemResource(TEXT_VIEW_ITEM_RESOURCE);

@@ -32,7 +32,7 @@ import com.glodon.bim.common.config.CommonConfig;
 import com.glodon.bim.customview.ToastManager;
 import com.glodon.bim.customview.album.AlbumData;
 import com.glodon.bim.customview.album.AlbumEditActivity;
-import com.glodon.bim.customview.album.TNBImageItem;
+import com.glodon.bim.customview.album.ImageItem;
 import com.glodon.bim.customview.photopreview.PhotoPreviewActivity;
 
 import java.io.IOException;
@@ -80,7 +80,7 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
     private List<String> mPersonNameList;
     private int mPersonSelectPosition = -1;
     //图片
-    private LinkedHashList<String, TNBImageItem> mSelectedMap;
+    private LinkedHashList<String, ImageItem> mSelectedMap;
     //质检项目
     private ModuleListBeanItem mModuleSelectInfo;
     private String mCurrentModuleName;//当前的质检项目名称
@@ -219,6 +219,10 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
 
     //编辑状态或从图纸模型跳转过来时  图纸有值
     private void initBluePrint(String drawingGdocFileId, String drawingName, String drawingPositionX, String drawingPositionY) {
+        LogUtil.e("drawingGdocFileId="+drawingGdocFileId);
+        LogUtil.e("drawingName="+drawingName);
+        LogUtil.e("drawingPositionX="+drawingPositionX);
+        LogUtil.e("drawingPositionY="+drawingPositionY);
         mInitParams.drawingGdocFileId = drawingGdocFileId;
         mInitParams.drawingName = drawingName;
         mInitParams.drawingPositionX = drawingPositionX;
@@ -274,7 +278,7 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
     private void initImages() {
         if (mEditParams != null && mEditParams.files != null && mEditParams.files.size() > 0) {
             for (CreateCheckListParamsFile file : mEditParams.files) {
-                TNBImageItem item = new TNBImageItem();
+                ImageItem item = new ImageItem();
                 item.imagePath = file.url;
                 item.objectId = file.objectId;
                 item.urlFile = file;
@@ -492,8 +496,8 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
                     @Override
                     public void onUploadFinished(List<CreateCheckListParamsFile> list) {
                         int i = 0;
-                        for (TNBImageItem entry : mSelectedMap.getValueList()) {
-                            TNBImageItem item = entry;
+                        for (ImageItem entry : mSelectedMap.getValueList()) {
+                            ImageItem item = entry;
                             item.objectId = list.get(i).objectId;
                             item.urlFile = list.get(i);
                             i++;
@@ -617,9 +621,9 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
                     public void onUploadFinished(List<CreateCheckListParamsFile> list) {
                         params.files = list;
                         int i = 0;
-//                        LinkedHashMap<Integer,TNBImageItem>
-                        for (TNBImageItem entry : mSelectedMap.getValueList()) {
-                            TNBImageItem item = entry;
+//                        LinkedHashMap<Integer,ImageItem>
+                        for (ImageItem entry : mSelectedMap.getValueList()) {
+                            ImageItem item = entry;
                             item.objectId = list.get(i).objectId;
                             item.urlFile = list.get(i);
                             i++;
@@ -751,7 +755,7 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
     }
 
     @Override
-    public void setSelectedImages(LinkedHashList<String, TNBImageItem> map) {
+    public void setSelectedImages(LinkedHashList<String, ImageItem> map) {
         this.mSelectedMap = map;
     }
 
@@ -956,7 +960,7 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
             case REQUEST_CODE_PHOTO_EDIT:
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     mPhotoPath = data.getStringExtra(CommonConfig.IAMGE_SAVE_PATH);
-                    TNBImageItem item = new TNBImageItem();
+                    ImageItem item = new ImageItem();
                     item.imagePath = mPhotoPath;
                     mSelectedMap.put(mPhotoPath, item);
                     if (mView != null) {
@@ -1108,7 +1112,7 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
     private boolean isEqual(List<CreateCheckListParamsFile> a, List<CreateCheckListParamsFile> inputList) {
         List<CreateCheckListParamsFile> b = new ArrayList<>();
         if (mSelectedMap != null && mSelectedMap.size() > 0) {
-            for (TNBImageItem entry : mSelectedMap.getValueList()) {
+            for (ImageItem entry : mSelectedMap.getValueList()) {
                 CreateCheckListParamsFile file = new CreateCheckListParamsFile();
                 file.objectId = entry.objectId;
                 b.add(file);

@@ -2,7 +2,6 @@ package com.glodon.bim.customview.album;
 
 import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +10,6 @@ import android.widget.RelativeLayout;
 
 import com.glodon.bim.R;
 import com.glodon.bim.basic.image.ImageLoader;
-import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.basic.utils.LinkedHashList;
 import com.glodon.bim.basic.utils.ScreenUtil;
 
@@ -26,9 +24,9 @@ import java.util.List;
 
 public class AlbumEditAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Activity mActivity;
-    private List<TNBImageItem> mDataList;
+    private List<ImageItem> mDataList;
     private int w = 90;
-    private LinkedHashList<String,TNBImageItem> mSelectedMap ;
+    private LinkedHashList<String,ImageItem> mSelectedMap ;
     private int max = 3;
     private OnAlbumChangeListener mListener;
 
@@ -40,7 +38,7 @@ public class AlbumEditAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         mListener = listener;
     }
 
-    public void upateData(List<TNBImageItem> list){
+    public void upateData(List<ImageItem> list){
         if(list!=null){
             mDataList.clear();
             mDataList.addAll(list);
@@ -60,7 +58,7 @@ public class AlbumEditAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         holder.mParent.getLayoutParams().width = w;
         holder.mParent.getLayoutParams().height = w;
         //显示图片
-        final TNBImageItem item = mDataList.get(position);
+        final ImageItem item = mDataList.get(position);
         String url = item.imagePath;
 //        String url = item.thumbnailPath;
 //        if(TextUtils.isEmpty(url)){
