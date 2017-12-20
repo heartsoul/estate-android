@@ -124,6 +124,8 @@ public class ModelView implements View.OnClickListener, ModelContract.View {
 
         mSpecialName.setOnClickListener(this);
         mSingleName.setOnClickListener(this);
+        mSpecialTrangle.setOnClickListener(this);
+        mSingleTrangle.setOnClickListener(this);
     }
 
     private void initData() {
@@ -138,6 +140,7 @@ public class ModelView implements View.OnClickListener, ModelContract.View {
     public void onClick(View view) {
         int id = view.getId();
         switch (id) {
+            case R.id.model_special_trangle:
             case R.id.model_special_name://专业
                 if (mHintBg.getVisibility() == View.GONE) {
                     //关闭着的
@@ -173,6 +176,7 @@ public class ModelView implements View.OnClickListener, ModelContract.View {
 
                 }
                 break;
+            case R.id.model_single_trangle:
             case R.id.model_single_name://单体
                 if (mHintBg.getVisibility() == View.GONE) {
                     mSingleTrangle.setBackgroundResource(R.drawable.icon_blue_trangle_up);
