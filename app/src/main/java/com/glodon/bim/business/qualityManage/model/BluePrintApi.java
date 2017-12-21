@@ -46,4 +46,22 @@ public interface BluePrintApi {
             @Query("pageIndex") int pageIndex,
             @Header("cookie") String cookie);
 
+//    /**
+//     * 获取图纸项目列表
+//     */
+//    @GET("doc/{deptId}/doc/file/children")
+//    Observable<BluePrintBean> getBluePrint(
+//            @Path("deptId") long deptId,
+//            @Query("fileId") String fileId,
+//            @Query("pageIndex") int pageIndex,
+//            @Header("cookie") String cookie);
+//    /**
+//     * 获取图纸项目列表
+//     */
+//    @GET("doc/{deptId}/doc/file/children")
+//    Observable<BluePrintBean> getBluePrint(
+//            @Path("deptId") long deptId,
+//            @Query("pageIndex") int pageIndex,
+//            @Header("cookie") String cookie);
+
 }

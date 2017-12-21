@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:background="@color/black">
 
-    <ImageView
+    <com.glodon.bim.customview.imageview.ScaleImageView
         android:id="@+id/photo_preview_item_view_iv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -19,6 +19,7 @@ import com.glodon.bim.business.qualityManage.model.ModelModel;
 import com.glodon.bim.business.qualityManage.view.RelevantBluePrintActivity;
 import com.glodon.bim.common.config.CommonConfig;
 import com.glodon.bim.customview.ToastManager;
+import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -176,7 +177,45 @@ public class BluePrintPresenter implements BluePrintContract.Presenter {
                     @Override
                     public void onNext(ProjectVersionBean projectVersionBean) {
                         mLatestVersionInfo = projectVersionBean;
-                        getBluePrintData();
+                        getBluePrintRoot();
+                    }
+                });
+        mSubscription.add(sub);
+    }
+
+    private void getBluePrintRoot() {
+        Subscription sub = mModel.getBluePrint(mDeptId, mLatestVersionInfo.data.versionId, fileId, pageIndex)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<BluePrintBean>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        LogUtil.e(e.getMessage());
+                        if (mView != null) {
+                            mView.dismissLoadingDialog();
+                        }
+                    }
+
+                    @Override
+                    public void onNext(BluePrintBean bean) {
+                        mDataList.clear();
+                        if (bean != null && bean.data!=null && bean.data.items!=null &&bean.data.items.size()>0) {
+
+                            for(BlueprintListBeanItem item:bean.data.items){
+                                if("图纸文件".equals(item.name)){
+                                    fileId = item.fileId;
+                                    getBluePrintData();
+                                    break;
+                                }
+                            }
+
+                        }
+
                     }
                 });
         mSubscription.add(sub);
@@ -204,15 +243,15 @@ public class BluePrintPresenter implements BluePrintContract.Presenter {
                     public void onNext(BluePrintBean bean) {
                         mDataList.clear();
                         if (bean != null) {
-                            if (bean.data != null && bean.data.items != null && bean.data.items.size() > 0) {
-                                for (BlueprintListBeanItem item : bean.data.items) {
-                                    LogUtil.e("item=" + item.toString());
-                                }
-                            }
+                            LogUtil.e("bean="+new GsonBuilder().create().toJson(bean));
                             mContentList = bean.data.items;
+                            if(mContentList==null){
+                                mContentList = new ArrayList<>();
+                            }
                             if (mView != null) {
                                 mView.updateContentListView(mContentList, mSelectId);
                             }
+
 
                         }
                         if (mView != null) {

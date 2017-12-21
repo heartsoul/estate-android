@@ -48,5 +48,10 @@ public class BluePrintModel implements BluePrintContract.Model {
         }else {
             return NetRequest.getInstance().getCall(AppConfig.BASE_URL, BluePrintApi.class).getBluePrint(projectId, projectVersionId, fileId, pageIndex, cookie);
         }
+//        if(TextUtils.isEmpty(fileId)){
+//            return NetRequest.getInstance().getCall(AppConfig.BASE_URL, BluePrintApi.class).getBluePrint(projectId, pageIndex, cookie);
+//        }else {
+//            return NetRequest.getInstance().getCall(AppConfig.BASE_URL, BluePrintApi.class).getBluePrint(projectId, fileId, pageIndex, cookie);
+//        }
     }
 }

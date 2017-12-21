@@ -30,8 +30,8 @@ import com.glodon.bim.basic.log.LogUtil;
 public class ScaleImageView extends ImageView implements
 		View.OnTouchListener, ViewTreeObserver.OnGlobalLayoutListener {
 
-	private int BORDERDISTANCE_X = 10;
-	private int BORDERDISTANCE_Y = 10;
+	private int BORDERDISTANCE_X = 0;
+	private int BORDERDISTANCE_Y = 0;
 	public float DEFAULT_MAX_SCALE = 8.0f;
 	public float DEFAULT_MID_SCALE = 4.0f;
 	public float DEFAULT_MIN_SCALE = 1.0f;
@@ -86,6 +86,8 @@ public class ScaleImageView extends ImageView implements
 		final int drawableWidth = d.getIntrinsicWidth();
 		final int drawableHeight = d.getIntrinsicHeight();
 
+		LogUtil.e(""+viewWidth+" "+viewHeight+" "+drawableWidth+" "+drawableHeight);
+
 		borderlength_x = (int) (viewWidth - BORDERDISTANCE_X * 2);
 		borderlength_y = (int) (viewHeight - BORDERDISTANCE_Y * 2);
 		float scale = 1.0f;
@@ -95,7 +97,7 @@ public class ScaleImageView extends ImageView implements
 		// 图片宽度小于等于高度
 		if (drawableWidth <= drawableHeight) {
 			// 判断图片宽度是否小于边框, 缩放铺满裁剪边框
-			if (drawableWidth < borderlength_x) {
+			if (drawableWidth > borderlength_x) {
 				baseMatrix.reset();
 				// scale = 3.0f;
 				scale = (float) borderlength_x / drawableWidth;
@@ -104,13 +106,14 @@ public class ScaleImageView extends ImageView implements
 			}
 			// 图片宽度大于高度
 		} else {
-			if (drawableHeight < borderlength_y) {
+			if (drawableHeight > borderlength_y) {
 				baseMatrix.reset();
 				scale = (float) borderlength_y / drawableHeight;
 				// 缩放
 				baseMatrix.postScale(scale, scale);
 			}
 		}
+		LogUtil.e("scale="+scale);
 		// 移动居中
 		baseMatrix.postTranslate((viewWidth - drawableWidth * scale) / 2,
 				(viewHeight - drawableHeight * scale) / 2);
@@ -347,6 +350,7 @@ public class ScaleImageView extends ImageView implements
 		if (isJusted) {
 			return;
 		}
+
 		// 调整视图位置
 		configPosition();
 	}

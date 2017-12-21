@@ -16,7 +16,8 @@
         android:text="首开"
         android:textColor="@color/c_b5b5b5"
         android:textSize="@dimen/dimen_14"
-        android:layout_marginRight="@dimen/dimen_08"/>
+        android:layout_marginRight="@dimen/dimen_08"
+        android:background="@color/c_f9f9f9"/>
 
 
     <TextView
@@ -28,6 +29,7 @@
         android:textColor="@color/c_b5b5b5"
         android:textSize="@dimen/dimen_14"
         android:layout_marginRight="@dimen/dimen_08"
+        android:background="@color/c_f9f9f9"
         />
     <ImageView
         android:id="@+id/quality_module_catalog_item_icon_updown"
@@ -35,6 +37,7 @@
         android:layout_height="@dimen/dimen_05"
         android:background="@drawable/icon_blue_arrow_down"
         android:layout_gravity="center_vertical"
+
         />
 
 </LinearLayout>

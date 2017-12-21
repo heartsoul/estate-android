@@ -133,6 +133,14 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
     // 点击构件的回调
     class ModelEvent {
 
+
+        //取消选中构件
+        @JavascriptInterface
+        public void cancelPosition() {
+            LogUtil.e("cancelPosition");
+            component = null;
+        }
+
         //点击构件返回信息
         @JavascriptInterface
         public void getPosition(final String json) {
@@ -244,12 +252,14 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
 
                         break;
                     case 3:
-                        //跳转到检查单创建页
-                        Intent intent = new Intent(mActivity,CreateCheckListActivity.class);
-                        mModelSelectInfo.component = component;
-                        intent.putExtra(CommonConfig.RELEVANT_MODEL,mModelSelectInfo);
-                        startActivity(intent);
-                        finish();
+                        if(checkComponent()) {
+                            //跳转到检查单创建页
+                            Intent intent = new Intent(mActivity, CreateCheckListActivity.class);
+                            mModelSelectInfo.component = component;
+                            intent.putExtra(CommonConfig.RELEVANT_MODEL, mModelSelectInfo);
+                            startActivity(intent);
+                            finish();
+                        }
                         break;
                 }
 
@@ -259,7 +269,7 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
 
     //检测是否选择了构件
     private boolean checkComponent(){
-        if(component==null&&!"undefined".equals(component.elementId)) {
+        if(component==null||"undefined".equals(component.elementId)) {
             SaveDeleteDialog mHintDialog = new SaveDeleteDialog(getActivity());
             mHintDialog.getModelHintDialog("您还未选择构件!");
             mHintDialog.show();

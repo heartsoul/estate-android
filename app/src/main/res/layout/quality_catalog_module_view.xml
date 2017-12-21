@@ -10,8 +10,8 @@
         android:layout_height="@dimen/dimen_48"
         android:background="@color/c_f9f9f9"
         android:visibility="gone"
-        android:layout_marginLeft="@dimen/dimen_20"
-        android:layout_marginRight="@dimen/dimen_20"
+        android:paddingLeft="@dimen/dimen_20"
+        android:paddingRight="@dimen/dimen_20"
         />
 
     <RelativeLayout
