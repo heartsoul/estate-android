@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
 import com.glodon.bim.R;
 import com.glodon.bim.base.BaseActivity;
 import com.glodon.bim.basic.listener.ThrottleClickEvents;
+import com.glodon.bim.business.qualityManage.util.IntentManager;
 
 /**
  * 模型
@@ -66,7 +67,7 @@ public class ModelActivity extends BaseActivity implements View.OnClickListener{
                 mActivity.finish();
                 break;
             case R.id.model_list_nav_search://搜索
-
+                IntentManager.toBluePrintModelSearch(mActivity,1);
                 break;
 
 

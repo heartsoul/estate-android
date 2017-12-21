@@ -182,7 +182,7 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
                 mIsDrawerOpen = !mIsDrawerOpen;
                 break;
             case R.id.main_header_search_icon://点击搜索按钮
-
+                clickSearch();
                 break;
             case R.id.main_header_new_icon://点击创建
                 create();
@@ -244,6 +244,8 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
 
         }
     }
+
+
 
     private void changeProject() {
         Intent data = new Intent();
@@ -350,6 +352,28 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
             }else{
                 tv.setTextColor(getResources().getColor(R.color.c_d4d4d4));
             }
+        }
+    }
+
+    //点击搜索
+    private void clickSearch() {
+        BaseFragment currentFragment = null;
+        switch (mCurrentFragmentId) {
+            case mQualityCheckListFragmentId:
+                currentFragment = mQualityCheckListFragment;
+                break;
+            case mBluePrintFragmentId:
+                currentFragment = mBluePrintFragment;
+                break;
+            case mModelFragmentId:
+                currentFragment = mModelFragment;
+                break;
+            case mQualityCheckModuleFragmentId:
+                currentFragment = mQualityCheckModuleFragment;
+                break;
+        }
+        if(currentFragment!=null){
+            currentFragment.clickSearch();
         }
     }
 

@@ -1,40 +1,27 @@
 package com.glodon.bim.business.qualityManage.presenter;
 
 import android.content.Intent;
-import android.os.SystemClock;
+import android.os.Handler;
 import android.text.TextUtils;
 
-import com.glodon.bim.basic.config.AppConfig;
 import com.glodon.bim.basic.log.LogUtil;
-import com.glodon.bim.basic.network.NetRequest;
+import com.glodon.bim.basic.utils.LinkedHashList;
 import com.glodon.bim.basic.utils.NetWorkUtils;
 import com.glodon.bim.basic.utils.SharedPreferencesUtil;
-import com.glodon.bim.business.greendao.provider.DaoProvider;
 import com.glodon.bim.business.qualityManage.bean.ModelComponentWorldPosition;
 import com.glodon.bim.business.qualityManage.bean.ModelElementHistory;
 import com.glodon.bim.business.qualityManage.bean.ModelElementInfo;
 import com.glodon.bim.business.qualityManage.bean.ProjectVersionBean;
 import com.glodon.bim.business.qualityManage.bean.ProjectVersionData;
 import com.glodon.bim.business.qualityManage.bean.RelevantBluePrintToken;
-import com.glodon.bim.business.qualityManage.contract.RelevantBluePrintContract;
 import com.glodon.bim.business.qualityManage.contract.RelevantModelContract;
-import com.glodon.bim.business.qualityManage.model.RelevantBluePrintModel;
-import com.glodon.bim.business.qualityManage.model.RelevantModelApi;
 import com.glodon.bim.business.qualityManage.model.RelevantModelModel;
 import com.glodon.bim.common.config.CommonConfig;
 import com.glodon.bim.customview.ToastManager;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -56,12 +43,13 @@ public class RelevantModelPresenter implements RelevantModelContract.Presenter {
     private String mProjectVersionId;
     private String mFileId;
     private List<ModelElementHistory> mElementHistories;
+    private Handler mhandler =new Handler();
 
     public RelevantModelPresenter(RelevantModelContract.View mView) {
         this.mView = mView;
         mModel = new RelevantModelModel();
         mSubscription = new CompositeSubscription();
-        mPositionMap = new LinkedHashMap<>();
+        mPositionMap = new LinkedHashList<>();
     }
 
     @Override
@@ -142,34 +130,6 @@ public class RelevantModelPresenter implements RelevantModelContract.Presenter {
                     }
                 });
         mSubscription.add(sub);
-//        NetRequest.getInstance().getCall(AppConfig.BASE_URL,RelevantModelApi.class).getToken2(mProjectId,mProjectVersionId,mFileId,new DaoProvider().getCookie())
-//                .enqueue(new Callback<ResponseBody>() {
-//                    @Override
-//                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-//                        if(response.body()!=null)
-//                        {
-//                            try {
-//                                LogUtil.e("body="+response.body().string());
-//                            } catch (IOException e) {
-//                                e.printStackTrace();
-//                            }
-//                        }
-//
-//                        if(response.errorBody()!=null)
-//                        {
-//                            try {
-//                                LogUtil.e("errorbody="+response.errorBody().string());
-//                            } catch (IOException e) {
-//                                e.printStackTrace();
-//                            }
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Call<ResponseBody> call, Throwable t) {
-//
-//                    }
-//                });
     }
 
     public void getElements(){
@@ -192,12 +152,20 @@ public class RelevantModelPresenter implements RelevantModelContract.Presenter {
                         LogUtil.e("size="+(modelElementHistories==null));
                         if(modelElementHistories!=null){
                             LogUtil.e("size="+modelElementHistories.size());
+
                         }
                         if(modelElementHistories!=null && modelElementHistories.size()>0){
                             mElementHistories = modelElementHistories;
-                            for(ModelElementHistory element:modelElementHistories)
+                            int i = 0;
+                            for(final ModelElementHistory element:modelElementHistories)
                             {
-                                getElementName(element,element.gdocFileId,element.elementId);
+                                mhandler.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        getElementName(element,element.gdocFileId,element.elementId);
+                                    }
+                                },20*i);
+                                i++;
                             }
                         }
                     }
@@ -205,9 +173,10 @@ public class RelevantModelPresenter implements RelevantModelContract.Presenter {
         mSubscription.add(sub);
     }
 
-    private LinkedHashMap<String,ModelElementHistory> mPositionMap;
+    private LinkedHashList<String,ModelElementHistory> mPositionMap;
     //获取构件名称
     private void getElementName(final ModelElementHistory element, String fileId, final String elementId) {
+        LogUtil.e("fileId="+fileId);
         Subscription sub = mModel.getElementProperty(mProjectId, SharedPreferencesUtil.getString(mProjectId + "", ""), fileId, elementId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -225,6 +194,7 @@ public class RelevantModelPresenter implements RelevantModelContract.Presenter {
                     @Override
                     public void onNext(ModelElementInfo modelElementInfo) {
                         if (modelElementInfo != null && modelElementInfo.data != null && modelElementInfo.data.boundingBox!=null) {
+
                             ModelComponentWorldPosition min = modelElementInfo.data.boundingBox.min;
                             ModelComponentWorldPosition max = modelElementInfo.data.boundingBox.max;
                             if(max!=null && min!=null) {
@@ -234,8 +204,8 @@ public class RelevantModelPresenter implements RelevantModelContract.Presenter {
                                 mPositionMap.put(elementId, element);
                                 if (mPositionMap.size() == mElementHistories.size()) {
                                     List<ModelElementHistory> list = new ArrayList<>();
-                                    for(Map.Entry<String,ModelElementHistory> entry:mPositionMap.entrySet()){
-                                        list.add(entry.getValue());
+                                    for(ModelElementHistory history:mPositionMap.getValueList()){
+                                        list.add(history);
                                     }
                                     if(mView!=null)
                                     {

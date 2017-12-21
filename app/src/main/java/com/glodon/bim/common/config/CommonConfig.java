@@ -70,4 +70,5 @@ public class CommonConfig {
     public static final String DRAWINGPOSITIONX = "DRAWINGPOSITIONX";//从图纸模式进入检查单
     public static final String DRAWINGPOSITIONY = "DRAWINGPOSITIONY";//从图纸模式进入检查单
     public static final String RELEVANT_MODEL = "RELEVANT_MODEL";//从模型模式进入检查单
+    public static final String SEARCH_TYPE = "SEARCH_TYPE";//搜索类型 0图纸  1模型
 }

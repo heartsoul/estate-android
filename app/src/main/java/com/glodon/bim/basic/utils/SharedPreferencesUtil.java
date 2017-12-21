@@ -14,6 +14,10 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
+
+import static android.R.attr.id;
 
 /**
  * 描述：SharedPreference工具类
@@ -35,12 +39,16 @@ public class SharedPreferencesUtil {
     private static final String MODULE_INFO_NAME = "MODULE_INFO_NAME";
     private static final String MODULE_INFO_ID = "MODULE_INFO_ID";
     private static final String USER_NAME = "user_name";
+
     //权限
     public static String QUALITY_CHECK_BEAN = "QUALITY_CHECK_BEAN";//质量检查记录
     public static String QUALITY_ACCEPT_BEAN= "QUALITY_ACCEPT_BEAN";//质量验收记录
     public static String QUALITY_RISK_BEAN = "QUALITY_RISK_BEAN";//质量隐患记录
     public static String QUALITY_FACILITY_BEAN = "QUALITY_FACILITY_BEAN";//材料设备进场验收
     public static String QUALITY_RECTIFICATION_BEAN = "QUALITY_RECTIFICATION_BEAN";//质量整改记录
+    //搜索
+    private static final String SEARCH_KEY_BLUEPRINT = "SEARCH_KEY_BLUEPRINT";//图纸搜索历史
+    private static final String SEARCH_KEY_MODEL = "SEARCH_KEY_MODEL";//模型搜索历史
 
     /**
      * 保存字符串
@@ -79,6 +87,15 @@ public class SharedPreferencesUtil {
     public static long getProjectId(){
         SharedPreferences preferences= BaseApplication.getInstance().getSharedPreferences(NAME,Context.MODE_PRIVATE);
         return preferences.getLong(PROJECT_ID,-1);
+    }
+
+    /**
+     * 获取项目版本id
+     * @return
+     */
+    public static String getProjectVersionId(long projectId){
+        SharedPreferences preferences= BaseApplication.getInstance().getSharedPreferences(NAME,Context.MODE_PRIVATE);
+        return preferences.getString(projectId+"","");
     }
     /**
      * 获取项目名称
@@ -233,5 +250,86 @@ public class SharedPreferencesUtil {
     public static long getSelectModuleId(){
         SharedPreferences preferences= BaseApplication.getInstance().getSharedPreferences(NAME,Context.MODE_PRIVATE);
         return preferences.getLong(MODULE_INFO_ID,-1);
+    }
+
+    /**
+     * 保存搜索模型的记录
+     */
+    public static void saveModelSearchKey(String key){
+        saveSearchKey(SEARCH_KEY_MODEL,key);
+    }
+    /**
+     * 保存搜索图纸的记录
+     */
+    public static void saveBluePrintSearchKey(String key){
+        saveSearchKey(SEARCH_KEY_BLUEPRINT,key);
+    }
+
+    /**
+     * 获取模型搜索历史
+     */
+    public static List<String> getModelSearchKey(){
+        return getSearchKey(SEARCH_KEY_MODEL);
+    }
+
+    /**
+     * 获取图纸搜索历史
+     */
+    public static List<String> getBluePrintSearchKey(){
+        return getSearchKey(SEARCH_KEY_BLUEPRINT);
+    }
+
+    /**
+     * 保存搜索历史
+     */
+    private  static void saveSearchKey(String type,String key){
+        int max = 20;
+        SharedPreferences preferences= BaseApplication.getInstance().getSharedPreferences(NAME,Context.MODE_PRIVATE);
+        Editor editor=preferences.edit();
+        List<String> list = getSearchKey(type);
+        if(list==null){
+            list = new ArrayList<>();
+        }
+        if(!list.contains(key)) {
+            if (list.size() == max) {
+                list.remove(max - 1);
+            }
+            list.add(0, key);
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < list.size(); i++) {
+                if (i == 0) {
+                    sb.append(list.get(i));
+                } else {
+                    sb.append("," + list.get(i));
+                }
+            }
+            editor.putString(type, sb.toString());
+            editor.commit();
+        }else{
+            list.remove(key);
+            list.add(0,key);
+        }
+    }
+
+    /**
+     * 获取搜索历史
+     */
+    private static List<String> getSearchKey(String type){
+        SharedPreferences preferences= BaseApplication.getInstance().getSharedPreferences(NAME,Context.MODE_PRIVATE);
+        String keyStr = preferences.getString(type,"");
+        if(TextUtils.isEmpty(keyStr)){
+            return null;
+        }else{
+            List<String> list = new ArrayList<>();
+            if(keyStr.contains(",")){
+                String[] keys = keyStr.split(",");
+                for(String key :keys){
+                    list.add(key);
+                }
+            }else{
+                list.add(keyStr);
+            }
+            return list;
+        }
     }
 }

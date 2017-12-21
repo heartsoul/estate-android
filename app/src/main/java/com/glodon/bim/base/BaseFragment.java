@@ -38,4 +38,8 @@ public class BaseFragment extends Fragment {
     public View inflate(int layoutId) {
         return LayoutInflater.from(getActivity()).inflate(layoutId, null);
     }
+
+    public void clickSearch(){
+
+    }
 }

@@ -3,6 +3,7 @@ package com.glodon.bim.business.qualityManage.util;
 import android.app.Activity;
 import android.content.Intent;
 
+import com.glodon.bim.business.qualityManage.view.BluePrintModelSearchActivity;
 import com.glodon.bim.business.qualityManage.view.ModuleStandardActivity;
 import com.glodon.bim.common.config.CommonConfig;
 
@@ -19,6 +20,16 @@ public class IntentManager {
     public static void toModuleStandard(Activity activity,long templateId){
         Intent intent = new Intent(activity, ModuleStandardActivity.class);
         intent.putExtra(CommonConfig.MODULE_TEMPLATEID,templateId);
+        activity.startActivity(intent);
+    }
+
+    /**
+     * 跳转到搜索模型或图纸
+     * @param type  0图纸  1模型
+     */
+    public static void toBluePrintModelSearch(Activity activity,int type){
+        Intent intent = new Intent(activity,BluePrintModelSearchActivity.class);
+        intent.putExtra(CommonConfig.SEARCH_TYPE,type);
         activity.startActivity(intent);
     }
 }

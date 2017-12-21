@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/quality_blueprint_model_search_history_name"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_52"
+        android:paddingLeft="@dimen/dimen_20"
+        android:paddingRight="@dimen/dimen_20"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="首开"
+        android:gravity="center_vertical"
+        android:textColor="@color/black"
+        android:textSize="@dimen/dimen_16" />
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_0.5"
+        android:layout_marginLeft="@dimen/dimen_20"
+        android:background="@color/c_a3cccccc" />
+</LinearLayout>

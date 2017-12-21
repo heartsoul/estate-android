@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <View
+        android:id="@+id/blueprint_model_search_statusview"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_20"
+        android:background="@color/c_00baf3" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_44"
+        android:background="@color/c_00baf3"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="@dimen/dimen_0"
+            android:layout_height="@dimen/dimen_28"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/dimen_11"
+            android:layout_weight="1"
+            android:background="@drawable/corner_radius_33_white_bg"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="@dimen/dimen_20"
+                android:layout_height="@dimen/dimen_20"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/dimen_07"
+                android:background="@drawable/icon_search_gray" />
+
+            <EditText
+                android:id="@+id/blueprint_model_search_input"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_28"
+                android:layout_marginLeft="@dimen/dimen_05"
+                android:layout_marginRight="@dimen/dimen_15"
+                android:background="@color/white"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:hint="搜索"
+                android:maxLines="1"
+                android:textColor="@color/black"
+                android:textColorHint="@color/c_5b5b5b"
+                android:textCursorDrawable="@drawable/edit_cursor_color"
+
+                android:textSize="@dimen/dimen_14" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/blueprint_model_search_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/dimen_12"
+            android:layout_marginRight="@dimen/dimen_13"
+            android:text="取消"
+            android:textColor="@color/white"
+            android:textSize="@dimen/dimen_14" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <LinearLayout
+            android:id="@+id/blueprint_model_search_defaultbg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/dimen_94"
+                android:background="@drawable/icon_model_empty_bg" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/dimen_16"
+                android:text="抱歉，未找到您要的内容"
+                android:textColor="@color/c_999992"
+                android:textSize="@dimen/dimen_12" />
+        </LinearLayout>
+
+      <!--  <include
+            android:id="@+id/blueprint_model_search_content"
+            layout="@layout/view_pullrefresh_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:visibility="gone"/>-->
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/blueprint_model_search_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"/>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/blueprint_model_search_history"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"/>
+    </RelativeLayout>
+</LinearLayout>
+

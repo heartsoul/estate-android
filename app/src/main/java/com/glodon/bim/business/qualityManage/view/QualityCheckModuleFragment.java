@@ -255,4 +255,9 @@ public class QualityCheckModuleFragment extends BaseFragment implements QulityCh
             mQualityCheckListView.onDestroyView();
         }
     }
+
+    @Override
+    public void clickSearch(){
+
+    }
 }

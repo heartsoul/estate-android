@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import com.glodon.bim.R;
 import com.glodon.bim.base.BaseFragment;
+import com.glodon.bim.business.qualityManage.util.IntentManager;
 
 /**
  * 描述：图纸
@@ -43,5 +44,10 @@ public class BluePrintFragment extends BaseFragment {
         {
             mBluePrintView.onActivityResult(requestCode, resultCode, data);
         }
+    }
+
+    @Override
+    public void clickSearch(){
+        IntentManager.toBluePrintModelSearch(getActivity(),0);
     }
 }

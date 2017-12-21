@@ -25,6 +25,7 @@ import com.glodon.bim.business.qualityManage.bean.ClassifyNum;
 import com.glodon.bim.business.qualityManage.bean.QualityCheckListBeanItem;
 import com.glodon.bim.business.qualityManage.contract.QualityCheckListContract;
 import com.glodon.bim.business.qualityManage.presenter.QualityCheckListPresenter;
+import com.glodon.bim.business.qualityManage.util.IntentManager;
 import com.glodon.bim.common.config.CommonConfig;
 import com.glodon.bim.customview.dialog.PhotoAlbumDialog;
 import com.glodon.bim.customview.pullrefreshview.OnPullRefreshListener;
@@ -76,4 +77,8 @@ public class QualityCheckListFragment extends BaseFragment{
         }
     }
 
+    @Override
+    public void clickSearch(){
+
+    }
 }
