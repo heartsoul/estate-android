@@ -11,9 +11,11 @@ import android.widget.TextView;
 
 import com.glodon.bim.R;
 import com.glodon.bim.basic.image.ImageLoader;
+import com.glodon.bim.basic.utils.SharedPreferencesUtil;
 import com.glodon.bim.business.qualityManage.bean.BlueprintListBeanItem;
 import com.glodon.bim.business.qualityManage.listener.OnChooseBlueprintCataListener;
 import com.glodon.bim.business.qualityManage.listener.OnChooseBlueprintObjListener;
+import com.glodon.bim.business.qualityManage.util.ThumbnailUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,7 +79,9 @@ public class BluePrintContentAdapter extends RecyclerView.Adapter<RecyclerView.V
         if(holder instanceof ObjHolder){
             final ObjHolder lHolder = (ObjHolder) holder;
             lHolder.mNameView.setText(item.name);
-            ImageLoader.showImageCenterCrop(mActivity,item.thumbnail,lHolder.mThumbnailView,R.drawable.icon_blueprint_default);
+            long projectId = SharedPreferencesUtil.getProjectId();
+            String projectVerson = SharedPreferencesUtil.getProjectVersionId(projectId);
+            ThumbnailUtil.getThumbnail(mActivity,projectId,projectVerson,item.fileId,lHolder.mThumbnailView);
 
             lHolder.mParentView.setOnClickListener(new View.OnClickListener() {
                 @Override

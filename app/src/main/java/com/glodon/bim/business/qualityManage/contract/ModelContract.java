@@ -40,6 +40,10 @@ public interface ModelContract {
 
         void setIsFragment();
 
+        /**
+         * 跳转到搜索
+         */
+        void toSearch();
     }
 
     interface View extends IBaseView {

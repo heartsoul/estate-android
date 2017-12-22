@@ -2,6 +2,7 @@ package com.glodon.bim.business.qualityManage.view;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -134,7 +135,7 @@ public class QualityCheckListDetailView implements QualityCheckListDetailViewCon
         if (info.commitTime > 0) {
             mSubmitTimeView.setText(DateUtil.getNormalTime(info.commitTime));
         }
-        mBluePrintView.setText(info.drawingName);
+        mBluePrintView.setText(Html.fromHtml(info.drawingName));
         mBluePrintView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -148,7 +149,7 @@ public class QualityCheckListDetailView implements QualityCheckListDetailViewCon
                 mActivity.startActivity(intent);
             }
         });
-        mModelView.setText(info.elementName);
+        mModelView.setText(Html.fromHtml(info.elementName));
         LogUtil.e("elementName="+info.elementName);
         LogUtil.e("elementId="+info.elementId);
         LogUtil.e("buildingName="+info.buildingName);

@@ -287,4 +287,7 @@ public class ModelView implements View.OnClickListener, ModelContract.View {
         }
     }
 
+    public void toSearch() {
+        mPresenter.toSearch();
+    }
 }

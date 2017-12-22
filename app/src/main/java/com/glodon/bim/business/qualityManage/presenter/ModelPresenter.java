@@ -13,6 +13,7 @@ import com.glodon.bim.business.qualityManage.bean.ProjectVersionBean;
 import com.glodon.bim.business.qualityManage.contract.ModelContract;
 import com.glodon.bim.business.qualityManage.model.ModelModel;
 import com.glodon.bim.business.qualityManage.model.OnModelSelectListener;
+import com.glodon.bim.business.qualityManage.view.BluePrintModelSearchActivity;
 import com.glodon.bim.business.qualityManage.view.RelevantModelActivity;
 import com.glodon.bim.common.config.CommonConfig;
 
@@ -33,6 +34,7 @@ import rx.subscriptions.CompositeSubscription;
 
 public class ModelPresenter implements ModelContract.Presenter {
     private static final int REQUEST_CODE_OPEN_MODEL = 0;
+    private static final int REQUEST_CODE_TO_SEARCH = 1;
     private ModelContract.View mView;
     private ModelContract.Model mModel;
     private CompositeSubscription mSubscription;
@@ -60,30 +62,41 @@ public class ModelPresenter implements ModelContract.Presenter {
                 Intent intent = new Intent(mView.getActivity(), RelevantModelActivity.class);
                 intent.putExtra(CommonConfig.BLUE_PRINT_FILE_ID,item.fileId);
                 intent.putExtra(CommonConfig.BLUE_PRINT_FILE_NAME,item.fileName);
-                if(mModelSelectInfo==null){
-                    mModelSelectInfo = new ModelListBeanItem();
-                    if(mIsFragment){
-                        type = 3;
-                    }else {
-                        type = 0;
-                    }
-                }else{
-                    if(item.fileId.equals(mModelSelectInfo.fileId)){
-                        //同一个模型
-                        type = 1;
-                    }else{
-                        //不同的模型
-                        type = 0;
-                    }
-                }
-                intent.putExtra(CommonConfig.RELEVANT_TYPE, type);
-                mModelSelectInfo.fileId = item.fileId;
-                mModelSelectInfo.fileName = item.fileName;
+
+                ModelListBeanItem modelInfo = new ModelListBeanItem();
+                modelInfo.fileId = item.fileId;
+                modelInfo.fileName = item.fileName;
                 if(mCurrentSingle!=null) {
-                    mModelSelectInfo.buildingId = mCurrentSingle.id;
-                    mModelSelectInfo.buildingName = mCurrentSingle.name;
+                    modelInfo.buildingId = mCurrentSingle.id;
+                    modelInfo.buildingName = mCurrentSingle.name;
                 }
-                intent.putExtra(CommonConfig.MODEL_SELECT_INFO, mModelSelectInfo);
+                switch (type)
+                {
+                    case 0:
+
+                        intent.putExtra(CommonConfig.RELEVANT_TYPE, type);
+                        break;
+                    case 1:
+                        if(item.fileId.equals(mModelSelectInfo.fileId)){
+                            //同一个模型
+                            intent.putExtra(CommonConfig.RELEVANT_TYPE, 1);
+                            modelInfo.buildingId = mModelSelectInfo.buildingId;
+                            modelInfo.buildingName = mModelSelectInfo.buildingName;
+                            modelInfo.component = mModelSelectInfo.component;
+                        }else{
+                            //不同的模型
+                            intent.putExtra(CommonConfig.RELEVANT_TYPE, 0);
+                        }
+                        break;
+                    case 2:
+
+                        break;
+                    case 3:
+                        intent.putExtra(CommonConfig.RELEVANT_TYPE, type);
+                        break;
+                }
+
+                intent.putExtra(CommonConfig.MODEL_SELECT_INFO, modelInfo);
 
                 mView.getActivity().startActivityForResult(intent,REQUEST_CODE_OPEN_MODEL);
             }
@@ -98,10 +111,6 @@ public class ModelPresenter implements ModelContract.Presenter {
                 mView.showSingle(item);
             }
             //刷新模型列表
-//            mModelList = getModelList(mSpecialSelectId,mSingleSelectId);
-//            if(mView!=null) {
-//                mView.updateModelList(mModelList);
-//            }
             getModelData();
         }
 
@@ -114,10 +123,6 @@ public class ModelPresenter implements ModelContract.Presenter {
                 mView.showSpecial(item);
             }
             //刷新模型列表
-//            mModelList = getModelList(mSpecialSelectId,mSingleSelectId);
-//            if(mView!=null) {
-//                mView.updateModelList(mModelList);
-//            }
             getModelData();
         }
     };
@@ -130,7 +135,11 @@ public class ModelPresenter implements ModelContract.Presenter {
     @Override
     public void setIsFragment() {
         mIsFragment = true;
+        type = 3;
+        LogUtil.e("setIsFragment,type="+type);
     }
+
+
 
     public ModelPresenter(ModelContract.View mView) {
         this.mView = mView;
@@ -148,6 +157,7 @@ public class ModelPresenter implements ModelContract.Presenter {
     public void initData(Intent intent) {
         mModelSelectInfo = (ModelListBeanItem) intent.getSerializableExtra(CommonConfig.MODEL_SELECT_INFO);
         type = intent.getIntExtra(CommonConfig.RELEVANT_TYPE,0);
+        LogUtil.e("inidData,type="+type);
         //编辑状态直接进入预览
         if(type==1){
             toModelPreview();
@@ -166,6 +176,20 @@ public class ModelPresenter implements ModelContract.Presenter {
             intent.putExtra(CommonConfig.MODEL_SELECT_INFO, mModelSelectInfo);
             mView.getActivity().startActivityForResult(intent, REQUEST_CODE_OPEN_MODEL);
         }
+    }
+
+    @Override
+    public void toSearch() {
+        Intent intent = new Intent(mView.getActivity(),BluePrintModelSearchActivity.class);
+        intent.putExtra(CommonConfig.SEARCH_TYPE,1);//表示模型
+        //0新建检查单 1检查单编辑状态 2详情查看  3图纸模式
+        if(type==1){
+            //编辑状态 传递其他数据
+            intent.putExtra(CommonConfig.MODEL_SELECT_INFO, mModelSelectInfo);
+        }
+        intent.putExtra(CommonConfig.RELEVANT_TYPE_MODEL,type);
+        LogUtil.e("toSearch type="+type);
+        mView.getActivity().startActivityForResult(intent,REQUEST_CODE_TO_SEARCH);
     }
 
     //获取最新版本
@@ -298,6 +322,12 @@ public class ModelPresenter implements ModelContract.Presenter {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode){
             case REQUEST_CODE_OPEN_MODEL:
+                if(resultCode == Activity.RESULT_OK && mView!=null) {
+                    mView.getActivity().setResult(Activity.RESULT_OK, data);
+                    mView.getActivity().finish();
+                }
+                break;
+            case REQUEST_CODE_TO_SEARCH:
                 if(resultCode == Activity.RESULT_OK && mView!=null) {
                     mView.getActivity().setResult(Activity.RESULT_OK, data);
                     mView.getActivity().finish();

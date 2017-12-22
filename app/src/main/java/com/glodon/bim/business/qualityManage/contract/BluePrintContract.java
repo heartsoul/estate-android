@@ -47,6 +47,12 @@ public interface BluePrintContract {
          * 表示当前是fragment
          */
         void setIsFragment();
+
+        /**
+         * 调整到搜索
+         */
+        void toSearch();
+
     }
 
     interface View extends IBaseView {

@@ -48,6 +48,6 @@ public class BluePrintFragment extends BaseFragment {
 
     @Override
     public void clickSearch(){
-        IntentManager.toBluePrintModelSearch(getActivity(),0);
+        mBluePrintView.toSearch();
     }
 }

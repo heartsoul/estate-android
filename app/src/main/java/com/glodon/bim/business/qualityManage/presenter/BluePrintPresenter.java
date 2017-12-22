@@ -16,6 +16,9 @@ import com.glodon.bim.business.qualityManage.listener.OnChooseBlueprintCataListe
 import com.glodon.bim.business.qualityManage.listener.OnChooseBlueprintObjListener;
 import com.glodon.bim.business.qualityManage.model.BluePrintModel;
 import com.glodon.bim.business.qualityManage.model.ModelModel;
+import com.glodon.bim.business.qualityManage.util.IntentManager;
+import com.glodon.bim.business.qualityManage.view.BluePrintModelSearchActivity;
+import com.glodon.bim.business.qualityManage.view.ModuleStandardActivity;
 import com.glodon.bim.business.qualityManage.view.RelevantBluePrintActivity;
 import com.glodon.bim.common.config.CommonConfig;
 import com.glodon.bim.customview.ToastManager;
@@ -38,6 +41,7 @@ import rx.subscriptions.CompositeSubscription;
 
 public class BluePrintPresenter implements BluePrintContract.Presenter {
     private static final int REQUEST_CODE_TO_RELEVANT = 0;
+    private static final int REQUEST_CODE_TO_SEARCH = 1;
     private BluePrintContract.View mView;
     private BluePrintContract.Model mModel;
     private List<BlueprintListBeanItem> mDataList;
@@ -49,12 +53,12 @@ public class BluePrintPresenter implements BluePrintContract.Presenter {
     private String mSelectFileName;
     private String drawingPositionX;//位置的x信息
     private String drawingPositionY;//位置的y信息
+    private int type = 0;//0新建检查单 1检查单编辑状态 2详情查看  3图纸模式
     private long mDeptId;//项目id
     private BlueprintListBeanItem mClickedItem;
     private ProjectVersionBean mLatestVersionInfo;//最新版本信息
     private String fileId = "";
     private int pageIndex = 0;
-    private int type = 0;//0新建检查单 1检查单编辑状态 2详情查看  3图纸模式
     private boolean mIsFragment = false;
     private OnBlueprintHintClickListener mHintClickListener = new OnBlueprintHintClickListener() {
         @Override
@@ -116,9 +120,6 @@ public class BluePrintPresenter implements BluePrintContract.Presenter {
             Intent intent = new Intent(mView.getActivity(), RelevantBluePrintActivity.class);
             intent.putExtra(CommonConfig.BLUE_PRINT_FILE_NAME, item.name);
             intent.putExtra(CommonConfig.BLUE_PRINT_FILE_ID, item.fileId);
-            if (mIsFragment) {
-                type = 3;
-            }
             intent.putExtra(CommonConfig.RELEVANT_TYPE, type);
             if (item.fileId.equals(mSelectId)) {
                 intent.putExtra(CommonConfig.BLUE_PRINT_POSITION_X, drawingPositionX);
@@ -159,14 +160,30 @@ public class BluePrintPresenter implements BluePrintContract.Presenter {
     }
 
     private void toBluePrintPreview() {
-        //新建检查单时
+        //编辑检查单时
         Intent intent = new Intent(mView.getActivity(), RelevantBluePrintActivity.class);
+        intent.putExtra(CommonConfig.RELEVANT_TYPE, type);
         intent.putExtra(CommonConfig.BLUE_PRINT_FILE_NAME, mSelectFileName);
         intent.putExtra(CommonConfig.BLUE_PRINT_FILE_ID, mSelectId);
-        intent.putExtra(CommonConfig.RELEVANT_TYPE, type);
         intent.putExtra(CommonConfig.BLUE_PRINT_POSITION_X, drawingPositionX);
         intent.putExtra(CommonConfig.BLUE_PRINT_POSITION_Y, drawingPositionY);
         mView.getActivity().startActivityForResult(intent, REQUEST_CODE_TO_RELEVANT);
+    }
+
+    @Override
+    public void toSearch() {
+        Intent intent = new Intent(mView.getActivity(),BluePrintModelSearchActivity.class);
+        intent.putExtra(CommonConfig.SEARCH_TYPE,0);//表示图纸
+        //0新建检查单 1检查单编辑状态 2详情查看  3图纸模式
+        if(type==1){
+            //编辑状态 传递其他数据
+            intent.putExtra(CommonConfig.BLUE_PRINT_FILE_NAME, mSelectFileName);
+            intent.putExtra(CommonConfig.BLUE_PRINT_FILE_ID, mSelectId);
+            intent.putExtra(CommonConfig.BLUE_PRINT_POSITION_X, drawingPositionX);
+            intent.putExtra(CommonConfig.BLUE_PRINT_POSITION_Y, drawingPositionY);
+        }
+        intent.putExtra(CommonConfig.RELEVANT_TYPE,type);
+        mView.getActivity().startActivityForResult(intent,REQUEST_CODE_TO_SEARCH);
     }
 
     //获取最新版本
@@ -194,49 +211,49 @@ public class BluePrintPresenter implements BluePrintContract.Presenter {
                     @Override
                     public void onNext(ProjectVersionBean projectVersionBean) {
                         mLatestVersionInfo = projectVersionBean;
-                        getBluePrintRoot();
+                        getBluePrintData();
                     }
                 });
         mSubscription.add(sub);
     }
 
-    private void getBluePrintRoot() {
-        Subscription sub = mModel.getBluePrint(mDeptId, mLatestVersionInfo.data.versionId, fileId, pageIndex)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<BluePrintBean>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        LogUtil.e(e.getMessage());
-                        if (mView != null) {
-                            mView.dismissLoadingDialog();
-                        }
-                    }
-
-                    @Override
-                    public void onNext(BluePrintBean bean) {
-                        mDataList.clear();
-                        if (bean != null && bean.data != null && bean.data.items != null && bean.data.items.size() > 0) {
-
-                            for (BlueprintListBeanItem item : bean.data.items) {
-                                if ("图纸文件".equals(item.name)) {
-                                    fileId = item.fileId;
-                                    getBluePrintData();
-                                    break;
-                                }
-                            }
-
-                        }
-
-                    }
-                });
-        mSubscription.add(sub);
-    }
+//    private void getBluePrintRoot() {
+//        Subscription sub = mModel.getBluePrint(mDeptId, mLatestVersionInfo.data.versionId, fileId, pageIndex)
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Subscriber<BluePrintBean>() {
+//                    @Override
+//                    public void onCompleted() {
+//
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//                        LogUtil.e(e.getMessage());
+//                        if (mView != null) {
+//                            mView.dismissLoadingDialog();
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onNext(BluePrintBean bean) {
+//                        mDataList.clear();
+//                        if (bean != null && bean.data != null && bean.data.items != null && bean.data.items.size() > 0) {
+//
+//                            for (BlueprintListBeanItem item : bean.data.items) {
+//                                if ("图纸文件".equals(item.name)) {
+//                                    fileId = item.fileId;
+//                                    getBluePrintData();
+//                                    break;
+//                                }
+//                            }
+//
+//                        }
+//
+//                    }
+//                });
+//        mSubscription.add(sub);
+//    }
 
     private void getBluePrintData() {
         Subscription sub = mModel.getBluePrint(mDeptId, mLatestVersionInfo.data.versionId, fileId, pageIndex)
@@ -262,6 +279,21 @@ public class BluePrintPresenter implements BluePrintContract.Presenter {
                         if (bean != null) {
                             LogUtil.e("bean=" + new GsonBuilder().create().toJson(bean));
                             mContentList = bean.data.items;
+                            if(mContentList!=null && mContentList.size()>0){
+                                //删除模型文件
+                                int i = 0;
+                                boolean isRemove = false;
+                                for(BlueprintListBeanItem item:mContentList){
+                                    if("模型文件".equals(item.name)){
+                                        isRemove = true;
+                                        break;
+                                    }
+                                    i++;
+                                }
+                                if(isRemove) {
+                                    mContentList.remove(i);
+                                }
+                            }
                             if (mContentList == null) {
                                 mContentList = new ArrayList<>();
                             }
@@ -311,7 +343,7 @@ public class BluePrintPresenter implements BluePrintContract.Presenter {
                             }
                             mHintList.clear();
                             for (BlueprintListBeanItem item : bean.data.items) {
-                                if (item.folder) {
+                                if (item.folder && !"模型文件".equals(item.name)) {
                                     mHintList.add(item);
                                 }
                             }
@@ -332,6 +364,12 @@ public class BluePrintPresenter implements BluePrintContract.Presenter {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case REQUEST_CODE_TO_RELEVANT:
+                if (resultCode == Activity.RESULT_OK) {
+                    mView.getActivity().setResult(Activity.RESULT_OK, data);
+                    mView.getActivity().finish();
+                }
+                break;
+            case REQUEST_CODE_TO_SEARCH:
                 if (resultCode == Activity.RESULT_OK) {
                     mView.getActivity().setResult(Activity.RESULT_OK, data);
                     mView.getActivity().finish();
@@ -370,5 +408,8 @@ public class BluePrintPresenter implements BluePrintContract.Presenter {
     @Override
     public void setIsFragment() {
         mIsFragment = true;
+        type = 3;
     }
+
+
 }

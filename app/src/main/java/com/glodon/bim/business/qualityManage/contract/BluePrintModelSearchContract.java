@@ -6,6 +6,7 @@ import com.glodon.bim.business.qualityManage.bean.BluePrintBean;
 import com.glodon.bim.business.qualityManage.bean.BluePrintModelSearchBean;
 import com.glodon.bim.business.qualityManage.bean.BluePrintModelSearchBeanItem;
 import com.glodon.bim.business.qualityManage.bean.BlueprintListBeanItem;
+import com.glodon.bim.business.qualityManage.listener.OnBluePrintModelSearchResultClickListener;
 import com.glodon.bim.business.qualityManage.listener.OnBlueprintCatalogClickListener;
 import com.glodon.bim.business.qualityManage.listener.OnBlueprintHintClickListener;
 import com.glodon.bim.business.qualityManage.listener.OnChooseBlueprintCataListener;
@@ -34,6 +35,12 @@ public interface BluePrintModelSearchContract {
          * 根据关键字搜索
          */
         void search(String key);
+
+        /**
+         * 获取点击的监听
+         */
+        OnBluePrintModelSearchResultClickListener getmListener();
+
     }
 
     interface View extends IBaseView {

@@ -7,6 +7,7 @@ import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Html;
 import android.text.TextUtils;
 import android.view.View;
 import android.webkit.JavascriptInterface;
@@ -177,7 +178,7 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
         //title名字
         mFileName = getIntent().getStringExtra(CommonConfig.BLUE_PRINT_FILE_NAME);
         mFileId = getIntent().getStringExtra(CommonConfig.BLUE_PRINT_FILE_ID);
-        mTitleView.setText(mFileName);
+        mTitleView.setText(Html.fromHtml(mFileName));
         //隐藏提示
         new Handler().postDelayed(new Runnable() {
             @Override

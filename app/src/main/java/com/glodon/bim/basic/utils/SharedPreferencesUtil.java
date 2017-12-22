@@ -8,6 +8,7 @@ import android.icu.text.DisplayContext;
 import android.text.TextUtils;
 
 import com.glodon.bim.base.BaseApplication;
+import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.business.authority.AuthorityBean;
 import com.glodon.bim.business.main.bean.ProjectListItem;
 import com.google.gson.GsonBuilder;
@@ -283,6 +284,7 @@ public class SharedPreferencesUtil {
      * 保存搜索历史
      */
     private  static void saveSearchKey(String type,String key){
+        LogUtil.e("保存key="+key);
         int max = 20;
         SharedPreferences preferences= BaseApplication.getInstance().getSharedPreferences(NAME,Context.MODE_PRIVATE);
         Editor editor=preferences.edit();
@@ -295,20 +297,21 @@ public class SharedPreferencesUtil {
                 list.remove(max - 1);
             }
             list.add(0, key);
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < list.size(); i++) {
-                if (i == 0) {
-                    sb.append(list.get(i));
-                } else {
-                    sb.append("," + list.get(i));
-                }
-            }
-            editor.putString(type, sb.toString());
-            editor.commit();
         }else{
-            list.remove(key);
+            int position = list.indexOf(key);
+            list.remove(position);
             list.add(0,key);
         }
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < list.size(); i++) {
+            if (i == 0) {
+                sb.append(list.get(i));
+            } else {
+                sb.append("," + list.get(i));
+            }
+        }
+        editor.putString(type, sb.toString());
+        editor.commit();
     }
 
     /**
@@ -317,6 +320,7 @@ public class SharedPreferencesUtil {
     private static List<String> getSearchKey(String type){
         SharedPreferences preferences= BaseApplication.getInstance().getSharedPreferences(NAME,Context.MODE_PRIVATE);
         String keyStr = preferences.getString(type,"");
+        LogUtil.e("获取历史："+keyStr);
         if(TextUtils.isEmpty(keyStr)){
             return null;
         }else{

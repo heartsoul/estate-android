@@ -1,6 +1,7 @@
 package com.glodon.bim.business.qualityManage.view;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -151,9 +152,22 @@ public class BluePrintModelSearchActivity extends BaseActivity implements View.O
                         search(key);
                     }
                 }
-                return false;
+                return true;
             }
         });
+
+        mInputView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if(hasFocus){
+                    showSearchHistory();
+                }else{
+                    hideHistory();
+                }
+            }
+        });
+
+
     }
 
     //保存搜索历史
@@ -200,7 +214,9 @@ public class BluePrintModelSearchActivity extends BaseActivity implements View.O
             @Override
             public void click(String key) {
                 mInputView.setText(key);
+                saveKey(key);
                 search(key);
+
             }
         });
         mHistoryRecyclerView.setAdapter(mHistoryAdapter);
@@ -210,6 +226,8 @@ public class BluePrintModelSearchActivity extends BaseActivity implements View.O
 
         mPresenter = new BluePrintModelSearchPresenter(this);
         mPresenter.initData(getIntent());
+
+        mResultAdapter.setmListener(mPresenter.getmListener());
     }
 
     private void search(String key){
@@ -266,6 +284,23 @@ public class BluePrintModelSearchActivity extends BaseActivity implements View.O
             mDefaultBg.setVisibility(View.VISIBLE);
             mHistoryRecyclerView.setVisibility(View.GONE);
             mContentRecyclerView.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(mPresenter!=null){
+            mPresenter.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(mPresenter!=null){
+            mPresenter.onDestroy();
+            mPresenter = null;
         }
     }
 }

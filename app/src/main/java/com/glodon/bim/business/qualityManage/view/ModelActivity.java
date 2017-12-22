@@ -67,7 +67,7 @@ public class ModelActivity extends BaseActivity implements View.OnClickListener{
                 mActivity.finish();
                 break;
             case R.id.model_list_nav_search://搜索
-                IntentManager.toBluePrintModelSearch(mActivity,1);
+                mModelView.toSearch();
                 break;
 
 

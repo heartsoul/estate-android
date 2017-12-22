@@ -13,7 +13,10 @@ import com.glodon.bim.R;
 import com.glodon.bim.basic.image.ImageLoader;
 import com.glodon.bim.basic.listener.ThrottleClickEvents;
 import com.glodon.bim.basic.log.LogUtil;
+import com.glodon.bim.basic.utils.SharedPreferencesUtil;
 import com.glodon.bim.business.qualityManage.bean.BluePrintModelSearchBeanItem;
+import com.glodon.bim.business.qualityManage.listener.OnBluePrintModelSearchResultClickListener;
+import com.glodon.bim.business.qualityManage.util.ThumbnailUtil;
 import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
@@ -28,6 +31,11 @@ import java.util.List;
 public class BluePrintModelSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Activity mActivity;
     private List<BluePrintModelSearchBeanItem> mDataList;
+    private OnBluePrintModelSearchResultClickListener mListener;
+
+    public void setmListener(OnBluePrintModelSearchResultClickListener mListener) {
+        this.mListener = mListener;
+    }
 
     public BluePrintModelSearchAdapter(Activity mActivity) {
         this.mActivity = mActivity;
@@ -57,11 +65,16 @@ public class BluePrintModelSearchAdapter extends RecyclerView.Adapter<RecyclerVi
             BluePrintHolder bHolder = (BluePrintHolder) holder;
             bHolder.mNameView.setText(Html.fromHtml(item.name));
             bHolder.mSelectView.setVisibility(View.GONE);
-            ImageLoader.showImageCenterCrop(mActivity,item.thumbnail,bHolder.mThumbnailView,R.drawable.icon_blueprint_default);
+            long projectId = SharedPreferencesUtil.getProjectId();
+            String projectVerson = SharedPreferencesUtil.getProjectVersionId(projectId);
+            ThumbnailUtil.getThumbnail(mActivity,projectId,projectVerson,item.fileId,bHolder.mThumbnailView);
             ThrottleClickEvents.throttleClick(bHolder.mParentView, new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     //图纸展示
+                    if(mListener!=null){
+                        mListener.onSelectBluePrint(item);
+                    }
                 }
             });
         }
@@ -72,6 +85,9 @@ public class BluePrintModelSearchAdapter extends RecyclerView.Adapter<RecyclerVi
                 @Override
                 public void onClick(View view) {
                     //模型展示
+                    if(mListener!=null){
+                        mListener.onSelectModel(item);
+                    }
                 }
             });
         }

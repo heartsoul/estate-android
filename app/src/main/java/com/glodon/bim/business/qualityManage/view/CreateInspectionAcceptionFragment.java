@@ -6,6 +6,7 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
+import android.text.Html;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -565,12 +566,12 @@ public class CreateInspectionAcceptionFragment extends BaseFragment implements V
 
     @Override
     public void showBluePrintName(String name, String id) {
-        mBluePrintName.setText(name);
+        mBluePrintName.setText(Html.fromHtml(name));
     }
 
     @Override
     public void showModelName(String name) {
-        mModelName.setText(name);
+        mModelName.setText(Html.fromHtml(name));
     }
 
     @Override

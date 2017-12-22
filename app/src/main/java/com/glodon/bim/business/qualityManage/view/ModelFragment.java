@@ -49,6 +49,6 @@ public class ModelFragment extends BaseFragment {
 
     @Override
     public void clickSearch(){
-        IntentManager.toBluePrintModelSearch(getActivity(),1);
+        mModelView.toSearch();
     }
 }

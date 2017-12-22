@@ -23,7 +23,10 @@
             android:layout_marginLeft="@dimen/dimen_11"
             android:layout_weight="1"
             android:background="@drawable/corner_radius_33_white_bg"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:focusableInTouchMode="true"
+            android:focusable="true"
+            >
 
             <ImageView
                 android:layout_width="@dimen/dimen_20"
@@ -46,7 +49,7 @@
                 android:textColor="@color/black"
                 android:textColorHint="@color/c_5b5b5b"
                 android:textCursorDrawable="@drawable/edit_cursor_color"
-
+                android:imeOptions="actionNext"
                 android:textSize="@dimen/dimen_14" />
         </LinearLayout>
 

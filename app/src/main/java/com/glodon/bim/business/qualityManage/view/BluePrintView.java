@@ -168,4 +168,8 @@ public class BluePrintView implements BluePrintContract.View {
         }
     }
 
+    //调整到搜索
+    public void toSearch() {
+        mPresenter.toSearch();
+    }
 }
