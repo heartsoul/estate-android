@@ -148,9 +148,24 @@ public class ModelPresenter implements ModelContract.Presenter {
     public void initData(Intent intent) {
         mModelSelectInfo = (ModelListBeanItem) intent.getSerializableExtra(CommonConfig.MODEL_SELECT_INFO);
         type = intent.getIntExtra(CommonConfig.RELEVANT_TYPE,0);
+        //编辑状态直接进入预览
+        if(type==1){
+            toModelPreview();
+        }
         getLatestVersion();
         getSpecialData();
         getSingleData();
+    }
+
+    private void toModelPreview(){
+        if(mModelSelectInfo!=null) {
+            Intent intent = new Intent(mView.getActivity(), RelevantModelActivity.class);
+            intent.putExtra(CommonConfig.BLUE_PRINT_FILE_ID, mModelSelectInfo.fileId);
+            intent.putExtra(CommonConfig.BLUE_PRINT_FILE_NAME, mModelSelectInfo.fileName);
+            intent.putExtra(CommonConfig.RELEVANT_TYPE, type);
+            intent.putExtra(CommonConfig.MODEL_SELECT_INFO, mModelSelectInfo);
+            mView.getActivity().startActivityForResult(intent, REQUEST_CODE_OPEN_MODEL);
+        }
     }
 
     //获取最新版本

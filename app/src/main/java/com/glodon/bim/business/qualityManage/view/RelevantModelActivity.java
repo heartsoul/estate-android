@@ -296,6 +296,54 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
     //设置多个点
     @Override
     public void showModelHistory(List<ModelElementHistory> list) {
+//        if(list==null){
+//            String str = " {\n" +
+//                    "        \"drawingPositionX\": -9795.7915,\n" +
+//                    "        \"drawingPositionY\": -1652.2905,\n" +
+//                    "        \"drawingPositionZ\": 2145,\n" +
+//                    "        \"elementId\": \"332707\",\n" +
+//                    "        \"elementName\": \"1200 x 2100mm\",\n" +
+//                    "        \"gdocFileId\": \"bfaee9baba154c3b9a8343dc1ff48845\",\n" +
+//                    "        \"inspectionId\": 5200069,\n" +
+//                    "        \"inspectionUserId\": 5200003,\n" +
+//                    "        \"qcState\": \"unrectified\",\n" +
+//                    "        \"rectificationId\": 0,\n" +
+//                    "        \"responsibleUserId\": 5200013,\n" +
+//                    "        \"reviewId\": 0\n" +
+//                    "    }";
+//            String str2 = "{\n" +
+//                    "        \"drawingPositionX\": -1638.2932,\n" +
+//                    "        \"drawingPositionY\": 6979.591,\n" +
+//                    "        \"drawingPositionZ\": 2723.249,\n" +
+//                    "        \"elementId\": \"333105\",\n" +
+//                    "        \"elementName\": \"百叶窗\",\n" +
+//                    "        \"gdocFileId\": \"bfaee9baba154c3b9a8343dc1ff48845\",\n" +
+//                    "        \"inspectionId\": 5200071,\n" +
+//                    "        \"inspectionUserId\": 5200003,\n" +
+//                    "        \"qcState\": \"unrectified\",\n" +
+//                    "        \"rectificationId\": 0,\n" +
+//                    "        \"responsibleUserId\": 5200013,\n" +
+//                    "        \"reviewId\": 0\n" +
+//                    "    }";
+//            String str3 = "{\n" +
+//                    "        \"drawingPositionX\": -3738.2915000000003,\n" +
+//                    "        \"drawingPositionY\": 7147.709,\n" +
+//                    "        \"drawingPositionZ\": 2760,\n" +
+//                    "        \"elementId\": \"313507\",\n" +
+//                    "        \"elementName\": \"墙面\",\n" +
+//                    "        \"gdocFileId\": \"bfaee9baba154c3b9a8343dc1ff48845\",\n" +
+//                    "        \"inspectionId\": 5200070,\n" +
+//                    "        \"inspectionUserId\": 5200003,\n" +
+//                    "        \"qcState\": \"unrectified\",\n" +
+//                    "        \"rectificationId\": 0,\n" +
+//                    "        \"responsibleUserId\": 5200013,\n" +
+//                    "        \"reviewId\": 0\n" +
+//                    "    }";
+//            list =  new ArrayList<>();
+//            list.add(new GsonBuilder().create().fromJson(str,ModelElementHistory.class));
+//            list.add(new GsonBuilder().create().fromJson(str2,ModelElementHistory.class));
+//            list.add(new GsonBuilder().create().fromJson(str3,ModelElementHistory.class));
+//        }
         //设置多点
         String param = new GsonBuilder().create().toJson(list);
         LogUtil.e("设置多点 params="+param);
@@ -411,6 +459,7 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
                     break;
                 case 3:
                     mPresenter.getElements();
+//                    showModelHistory(null);
                     break;
             }
             dismissLoadingDialog();

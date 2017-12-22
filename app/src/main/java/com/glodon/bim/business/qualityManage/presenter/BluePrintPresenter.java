@@ -46,6 +46,7 @@ public class BluePrintPresenter implements BluePrintContract.Presenter {
     private List<BlueprintListBeanItem> mHintList;
     private CompositeSubscription mSubscription;
     private String mSelectId;
+    private String mSelectFileName;
     private String drawingPositionX;//位置的x信息
     private String drawingPositionY;//位置的y信息
     private long mDeptId;//项目id
@@ -113,17 +114,17 @@ public class BluePrintPresenter implements BluePrintContract.Presenter {
         public void onSelect(BlueprintListBeanItem item, String position) {
             //新建检查单时
             Intent intent = new Intent(mView.getActivity(), RelevantBluePrintActivity.class);
-            intent.putExtra(CommonConfig.BLUE_PRINT_FILE_NAME,item.name);
-            intent.putExtra(CommonConfig.BLUE_PRINT_FILE_ID,item.fileId);
-            if(mIsFragment){
+            intent.putExtra(CommonConfig.BLUE_PRINT_FILE_NAME, item.name);
+            intent.putExtra(CommonConfig.BLUE_PRINT_FILE_ID, item.fileId);
+            if (mIsFragment) {
                 type = 3;
             }
-            intent.putExtra(CommonConfig.RELEVANT_TYPE,type);
-            if(item.fileId.equals(mSelectId)){
+            intent.putExtra(CommonConfig.RELEVANT_TYPE, type);
+            if (item.fileId.equals(mSelectId)) {
                 intent.putExtra(CommonConfig.BLUE_PRINT_POSITION_X, drawingPositionX);
                 intent.putExtra(CommonConfig.BLUE_PRINT_POSITION_Y, drawingPositionY);
             }
-            mView.getActivity().startActivityForResult(intent,REQUEST_CODE_TO_RELEVANT);
+            mView.getActivity().startActivityForResult(intent, REQUEST_CODE_TO_RELEVANT);
         }
     };
 
@@ -142,14 +143,30 @@ public class BluePrintPresenter implements BluePrintContract.Presenter {
     @Override
     public void initData(Intent intent) {
         mSelectId = intent.getStringExtra(CommonConfig.MODULE_LIST_POSITION);
+        mSelectFileName = intent.getStringExtra(CommonConfig.MODULE_LIST_NAME);
         drawingPositionX = intent.getStringExtra(CommonConfig.BLUE_PRINT_POSITION_X);
         drawingPositionY = intent.getStringExtra(CommonConfig.BLUE_PRINT_POSITION_Y);
-        type = intent.getIntExtra(CommonConfig.RELEVANT_TYPE,0);
+        type = intent.getIntExtra(CommonConfig.RELEVANT_TYPE, 0);
+        //编辑状态直接进入预览
+        if (type == 1) {
+            toBluePrintPreview();
+        }
         if (NetWorkUtils.isNetworkAvailable(mView.getActivity())) {
             getLatestVersion();
         } else {
             ToastManager.showNetWorkToast();
         }
+    }
+
+    private void toBluePrintPreview() {
+        //新建检查单时
+        Intent intent = new Intent(mView.getActivity(), RelevantBluePrintActivity.class);
+        intent.putExtra(CommonConfig.BLUE_PRINT_FILE_NAME, mSelectFileName);
+        intent.putExtra(CommonConfig.BLUE_PRINT_FILE_ID, mSelectId);
+        intent.putExtra(CommonConfig.RELEVANT_TYPE, type);
+        intent.putExtra(CommonConfig.BLUE_PRINT_POSITION_X, drawingPositionX);
+        intent.putExtra(CommonConfig.BLUE_PRINT_POSITION_Y, drawingPositionY);
+        mView.getActivity().startActivityForResult(intent, REQUEST_CODE_TO_RELEVANT);
     }
 
     //获取最新版本
@@ -204,10 +221,10 @@ public class BluePrintPresenter implements BluePrintContract.Presenter {
                     @Override
                     public void onNext(BluePrintBean bean) {
                         mDataList.clear();
-                        if (bean != null && bean.data!=null && bean.data.items!=null &&bean.data.items.size()>0) {
+                        if (bean != null && bean.data != null && bean.data.items != null && bean.data.items.size() > 0) {
 
-                            for(BlueprintListBeanItem item:bean.data.items){
-                                if("图纸文件".equals(item.name)){
+                            for (BlueprintListBeanItem item : bean.data.items) {
+                                if ("图纸文件".equals(item.name)) {
                                     fileId = item.fileId;
                                     getBluePrintData();
                                     break;
@@ -243,9 +260,9 @@ public class BluePrintPresenter implements BluePrintContract.Presenter {
                     public void onNext(BluePrintBean bean) {
                         mDataList.clear();
                         if (bean != null) {
-                            LogUtil.e("bean="+new GsonBuilder().create().toJson(bean));
+                            LogUtil.e("bean=" + new GsonBuilder().create().toJson(bean));
                             mContentList = bean.data.items;
-                            if(mContentList==null){
+                            if (mContentList == null) {
                                 mContentList = new ArrayList<>();
                             }
                             if (mView != null) {
@@ -263,7 +280,7 @@ public class BluePrintPresenter implements BluePrintContract.Presenter {
     }
 
     private void getBluePrintHintData(final BlueprintListBeanItem item) {
-        if(mView!=null) {
+        if (mView != null) {
             mView.showLoadingDialog();
         }
         Subscription sub = mModel.getBluePrint(mDeptId, mLatestVersionInfo.data.versionId, item.parentId, pageIndex)
@@ -293,8 +310,8 @@ public class BluePrintPresenter implements BluePrintContract.Presenter {
                                 }
                             }
                             mHintList.clear();
-                            for(BlueprintListBeanItem item:bean.data.items){
-                                if(item.folder){
+                            for (BlueprintListBeanItem item : bean.data.items) {
+                                if (item.folder) {
                                     mHintList.add(item);
                                 }
                             }
@@ -313,11 +330,10 @@ public class BluePrintPresenter implements BluePrintContract.Presenter {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode)
-        {
+        switch (requestCode) {
             case REQUEST_CODE_TO_RELEVANT:
-                if(resultCode == Activity.RESULT_OK){
-                    mView.getActivity().setResult(Activity.RESULT_OK,data);
+                if (resultCode == Activity.RESULT_OK) {
+                    mView.getActivity().setResult(Activity.RESULT_OK, data);
                     mView.getActivity().finish();
                 }
                 break;

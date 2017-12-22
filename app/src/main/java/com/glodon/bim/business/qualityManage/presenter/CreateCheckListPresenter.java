@@ -111,7 +111,8 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
 
     private String mInspectionType;
 
-    private int type = 0;//0新建检查单 1检查单编辑状态 2详情查看  3图纸模式
+    private int mBluePrintType = 0;//0新建检查单 1检查单编辑状态 2详情查看  3图纸模式
+    private int mModelType = 0;//0新建检查单 1检查单编辑状态 2详情查看  3图纸模式
 
     @Override
     public boolean isChange() {
@@ -180,6 +181,7 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
                 mModelSelectInfo.component = new ModelComponent();
                 mModelSelectInfo.component.elementId = mEditParams.elementId;
                 mView.showModelName(mEditParams.elementName);
+                mModelType = 1;
             }
         } else {
             //当从质检项目列表创建检查单时  取传递的质检项目name和id
@@ -214,6 +216,7 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
             mInitParams.buildingId = mModelSelectInfo.buildingId;
             mInitParams.buildingName = mModelSelectInfo.buildingName;
             getElementName(mModelSelectInfo.fileId,mModelSelectInfo.component.elementId);
+            mModelType = 1;
         }
     }
 
@@ -236,7 +239,7 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
             mBluePrintSelectInfo.drawingPositionX = mInitParams.drawingPositionX;
             mBluePrintSelectInfo.drawingPositionY = mInitParams.drawingPositionY;
         }
-        type = 1;//编辑状态
+        mBluePrintType = 1;//编辑状态
     }
 
     //编辑状态或从模型跳转过来时  模型有值
@@ -881,12 +884,13 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
         if (!TextUtils.isEmpty(mCurrentBluePrintName) && !TextUtils.isEmpty(mBluePrintSelectInfo.name) && mBluePrintSelectInfo.fileId != null) {
             mCurrentBluePrintName = mView.getBluePrintName();
             if (mCurrentBluePrintName.equals(mBluePrintSelectInfo.name)) {
+                intent.putExtra(CommonConfig.MODULE_LIST_NAME, mBluePrintSelectInfo.name);
                 intent.putExtra(CommonConfig.MODULE_LIST_POSITION, mBluePrintSelectInfo.fileId);
                 intent.putExtra(CommonConfig.BLUE_PRINT_POSITION_X, mBluePrintSelectInfo.drawingPositionX);
                 intent.putExtra(CommonConfig.BLUE_PRINT_POSITION_Y, mBluePrintSelectInfo.drawingPositionY);
             }
         }
-        intent.putExtra(CommonConfig.RELEVANT_TYPE, type);
+        intent.putExtra(CommonConfig.RELEVANT_TYPE, mBluePrintType);
         mView.getActivity().startActivityForResult(intent, REQUEST_CODE_CHOOSE_BLUE_PRINT);
     }
 
@@ -897,6 +901,7 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
             intent.putExtra(CommonConfig.MODULE_LIST_POSITION, mModelSelectInfo.fileId);
             intent.putExtra(CommonConfig.MODEL_SELECT_INFO, mModelSelectInfo);
         }
+        intent.putExtra(CommonConfig.RELEVANT_TYPE,mModelType);
         mView.getActivity().startActivityForResult(intent, REQUEST_CODE_CHOOSE_MODEL);
     }
 
@@ -923,7 +928,7 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
                     if (mView != null && mBluePrintSelectInfo != null) {
                         mView.showBluePrintName(mBluePrintSelectInfo.name, mBluePrintSelectInfo.fileId);
                     }
-                    type = 1;
+                    mBluePrintType = 1;
                 }
                 break;
             case REQUEST_CODE_CHOOSE_MODEL:
@@ -931,6 +936,7 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
                     mModelSelectInfo = (ModelListBeanItem) data.getSerializableExtra(CommonConfig.MODEL_SELECT_INFO);
                     if (mModelSelectInfo.component != null) {
                         getElementName(mModelSelectInfo.fileId, mModelSelectInfo.component.elementId);
+                        mModelType = 1;
                     }
                 }
                 break;
