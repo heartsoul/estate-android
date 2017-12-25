@@ -30,6 +30,7 @@ import com.glodon.bim.business.qualityManage.contract.QualityMangeMainContract;
 import com.glodon.bim.business.qualityManage.listener.OnTitleChangerListener;
 import com.glodon.bim.business.qualityManage.presenter.QualityMangeMainPresenter;
 import com.glodon.bim.common.config.CommonConfig;
+import com.glodon.bim.common.config.RequestCodeConfig;
 import com.glodon.bim.customview.dialog.PhotoAlbumDialog;
 
 import java.util.ArrayList;
@@ -48,7 +49,7 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
 
     private QualityMangeMainContract.Presenter mPresenter;
 
-    private final int REQUEST_CAMERA = 1;
+
 
     //drawer
     private LinearLayout mDrawerView;
@@ -286,7 +287,7 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
             String[] PERMISSIONS_STORAGE = {
                     Manifest.permission.CAMERA
             };
-            requestPermission(PERMISSIONS_STORAGE, REQUEST_CAMERA);
+            requestPermission(PERMISSIONS_STORAGE, RequestCodeConfig.REQUEST_CODE_CAMERA);
         }
 
         LogUtil.d("====", new DaoProvider().getCookie());
@@ -512,7 +513,7 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
-            case REQUEST_CAMERA:
+            case RequestCodeConfig.REQUEST_CODE_CAMERA:
                 if (grantResults != null && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     //授权允许
                 } else {

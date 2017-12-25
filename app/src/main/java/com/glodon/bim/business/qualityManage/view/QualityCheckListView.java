@@ -147,6 +147,8 @@ public class QualityCheckListView implements QualityCheckListContract.View {
 //                {"",   "staged",  "unrectified","unreviewed","inspected","reviewed","delayed","accepted"};
                 if(keyList.contains(item.qcState)) {
                     map.put(item.qcState, item.count);
+                }else{
+                    map.put(item.qcState,0);
                 }
             }
             if(mDataList!=null && mDataList.size()>0){

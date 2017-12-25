@@ -17,6 +17,7 @@ import com.glodon.bim.base.BaseActivity;
 import com.glodon.bim.basic.listener.ThrottleClickEvents;
 import com.glodon.bim.business.qualityManage.bean.CreateCheckListParams;
 import com.glodon.bim.common.config.CommonConfig;
+import com.glodon.bim.common.config.RequestCodeConfig;
 
 /**
  * 描述：新建检查单
@@ -26,7 +27,6 @@ import com.glodon.bim.common.config.CommonConfig;
 public class CreateCheckListActivity extends BaseActivity implements View.OnClickListener {
 
 
-    private static final int REQUEST_CAMERA = 4;
 
     private LinearLayout mStatusView;//状态栏
     //导航栏
@@ -136,7 +136,7 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
                     Manifest.permission.WRITE_EXTERNAL_STORAGE,
                     Manifest.permission.READ_EXTERNAL_STORAGE
             };
-            requestPermission(PERMISSIONS_STORAGE, REQUEST_CAMERA);
+            requestPermission(PERMISSIONS_STORAGE, RequestCodeConfig.REQUEST_CODE_CAMERA);
         }
 
         //如果是编辑，则params不为空  此时就要设置编辑数据

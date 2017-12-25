@@ -15,6 +15,7 @@ import com.glodon.bim.business.qualityManage.model.BluePrintModelSearchModel;
 import com.glodon.bim.business.qualityManage.view.RelevantBluePrintActivity;
 import com.glodon.bim.business.qualityManage.view.RelevantModelActivity;
 import com.glodon.bim.common.config.CommonConfig;
+import com.glodon.bim.common.config.RequestCodeConfig;
 import com.glodon.bim.customview.ToastManager;
 import com.google.gson.GsonBuilder;
 
@@ -34,8 +35,7 @@ import rx.subscriptions.CompositeSubscription;
  */
 
 public class BluePrintModelSearchPresenter implements BluePrintModelSearchContract.Presenter{
-    private static final int REQUEST_CODE_TO_RELEVANT_BLUEPRINT = 0;
-    private static final int REQUEST_CODE_OPEN_MODEL = 1;
+
     private BluePrintModelSearchContract.View mView;
     private BluePrintModelSearchContract.Model mModel;
     private CompositeSubscription mSubscription;
@@ -81,7 +81,7 @@ public class BluePrintModelSearchPresenter implements BluePrintModelSearchContra
                     break;
             }
 
-            mView.getActivity().startActivityForResult(intent, REQUEST_CODE_TO_RELEVANT_BLUEPRINT);
+            mView.getActivity().startActivityForResult(intent, RequestCodeConfig.REQUEST_CODE_TO_RELEVANT_BLUEPRINT);
         }
 
         @Override
@@ -122,7 +122,7 @@ public class BluePrintModelSearchPresenter implements BluePrintModelSearchContra
 
             intent.putExtra(CommonConfig.MODEL_SELECT_INFO, modelInfo);
 
-            mView.getActivity().startActivityForResult(intent,REQUEST_CODE_OPEN_MODEL);
+            mView.getActivity().startActivityForResult(intent,RequestCodeConfig.REQUEST_CODE_OPEN_MODEL);
         }
     };
 
@@ -154,13 +154,13 @@ public class BluePrintModelSearchPresenter implements BluePrintModelSearchContra
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode)
         {
-            case REQUEST_CODE_TO_RELEVANT_BLUEPRINT://到图纸
+            case RequestCodeConfig.REQUEST_CODE_TO_RELEVANT_BLUEPRINT://到图纸
                 if (resultCode == Activity.RESULT_OK) {
                     mView.getActivity().setResult(Activity.RESULT_OK, data);
                     mView.getActivity().finish();
                 }
                 break;
-            case REQUEST_CODE_OPEN_MODEL:
+            case RequestCodeConfig.REQUEST_CODE_OPEN_MODEL:
                 if (resultCode == Activity.RESULT_OK) {
                     mView.getActivity().setResult(Activity.RESULT_OK, data);
                     mView.getActivity().finish();

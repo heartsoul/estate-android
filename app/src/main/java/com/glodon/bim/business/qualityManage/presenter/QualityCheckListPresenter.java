@@ -15,11 +15,9 @@ import com.glodon.bim.business.authority.AuthorityManager;
 import com.glodon.bim.business.main.bean.ProjectListItem;
 import com.glodon.bim.business.qualityManage.bean.ClassifyNum;
 import com.glodon.bim.business.qualityManage.bean.CreateCheckListParams;
-import com.glodon.bim.business.qualityManage.bean.CreateCheckListParamsFile;
 import com.glodon.bim.business.qualityManage.bean.ModuleListBeanItem;
 import com.glodon.bim.business.qualityManage.bean.QualityCheckListBean;
 import com.glodon.bim.business.qualityManage.bean.QualityCheckListBeanItem;
-import com.glodon.bim.business.qualityManage.bean.QualityCheckListBeanItemFile;
 import com.glodon.bim.business.qualityManage.bean.QualityCheckListDetailBean;
 import com.glodon.bim.business.qualityManage.bean.QualityCheckListDetailInspectionInfo;
 import com.glodon.bim.business.qualityManage.contract.QualityCheckListContract;
@@ -34,8 +32,10 @@ import com.glodon.bim.business.qualityManage.view.PhotoEditActivity;
 import com.glodon.bim.business.qualityManage.view.QualityCheckListDetailActivity;
 import com.glodon.bim.business.qualityManage.view.SaveDeleteDialog;
 import com.glodon.bim.common.config.CommonConfig;
+import com.glodon.bim.common.config.RequestCodeConfig;
 import com.glodon.bim.customview.ToastManager;
 import com.glodon.bim.customview.album.AlbumEditActivity;
+import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,13 +54,7 @@ import rx.subscriptions.CompositeSubscription;
  */
 
 public class QualityCheckListPresenter implements QualityCheckListContract.Presenter {
-    private final int REQUEST_CODE_CREATE_CHECK_LIST = 2;
-    public  final int REQUEST_CODE_DETAIL = 10;
-    private final int REQUEST_CODE_TAKE_PHOTO = 11;
-    private final int REQUEST_CODE_OPEN_ALBUM = 12;
-    private final int REQUEST_CODE_CREATE_REVIEW = 13;
-    private final int REQUEST_CODE_CREATE_REPAIR = 14;
-    private final int REQUEST_CODE_TO_EDIT = 15;
+
     private QualityCheckListContract.View mView;
     private QualityCheckListContract.Model mModel;
     private CompositeSubscription mSubscription;
@@ -162,7 +156,7 @@ public class QualityCheckListPresenter implements QualityCheckListContract.Prese
                                         QualityCheckListDetailInspectionInfo info = bean.inspectionInfo;
                                         Intent intent = new Intent(mView.getActivity(), CreateCheckListActivity.class);
                                         intent.putExtra(CommonConfig.CREATE_CHECK_LIST_PROPS, QualityMangeUtil.getProps(info));
-                                        mView.getActivity().startActivityForResult(intent, REQUEST_CODE_TO_EDIT);
+                                        mView.getActivity().startActivityForResult(intent, RequestCodeConfig.REQUEST_CODE_TO_EDIT);
                                     }
 
                                 }
@@ -176,7 +170,7 @@ public class QualityCheckListPresenter implements QualityCheckListContract.Prese
                 Intent intent = new Intent(mView.getActivity(), QualityCheckListDetailActivity.class);
                 intent.putExtra(CommonConfig.QUALITY_CHECK_LIST_DEPTID, SharedPreferencesUtil.getProjectId());
                 intent.putExtra(CommonConfig.QUALITY_CHECK_LIST_ID, mList.get(position).id);
-                mView.getActivity().startActivityForResult(intent, REQUEST_CODE_DETAIL);
+                mView.getActivity().startActivityForResult(intent, RequestCodeConfig.REQUEST_CODE_DETAIL);
             }
         }
 
@@ -429,7 +423,7 @@ public class QualityCheckListPresenter implements QualityCheckListContract.Prese
     @Override
     public void openPhoto() {
         mPhotoPath = CameraUtil.getFilePath();
-        CameraUtil.openCamera(mPhotoPath, mView.getActivity(), REQUEST_CODE_TAKE_PHOTO);
+        CameraUtil.openCamera(mPhotoPath, mView.getActivity(), RequestCodeConfig.REQUEST_CODE_TAKE_PHOTO);
     }
 
     @Override
@@ -438,7 +432,7 @@ public class QualityCheckListPresenter implements QualityCheckListContract.Prese
         intent.putExtra(CommonConfig.ALBUM_FROM_TYPE,0);
         intent.putExtra(CommonConfig.CREATE_TYPE,mCreateType);//表示创建什么单据
         intent.putExtra(CommonConfig.QUALITY_CHECK_LIST_ID,mList.get(mClickPosition).id);
-        mView.getActivity().startActivityForResult(intent,REQUEST_CODE_OPEN_ALBUM);
+        mView.getActivity().startActivityForResult(intent,RequestCodeConfig.REQUEST_CODE_OPEN_ALBUM);
     }
 
     @Override
@@ -450,9 +444,9 @@ public class QualityCheckListPresenter implements QualityCheckListContract.Prese
         intent.putExtra(CommonConfig.QUALITY_CHECK_LIST_ID,mList.get(mClickPosition).id);
         int requestCode = 0;
         if(mCreateType.equals(CommonConfig.CREATE_TYPE_REPAIR)){
-            requestCode = REQUEST_CODE_CREATE_REPAIR;
+            requestCode = RequestCodeConfig.REQUEST_CODE_CREATE_REPAIR;
         }else if(mCreateType.equals(CommonConfig.CREATE_TYPE_REVIEW)){
-            requestCode = REQUEST_CODE_CREATE_REVIEW;
+            requestCode = RequestCodeConfig.REQUEST_CODE_CREATE_REVIEW;
         }
         mView.getActivity().startActivityForResult(intent,requestCode);
     }
@@ -510,7 +504,21 @@ public class QualityCheckListPresenter implements QualityCheckListContract.Prese
     }
 
     private void updateNumber(List<ClassifyNum> classifyNa){
-        if(classifyNa!=null && classifyNa.size()>0){
+        if(classifyNa!=null){
+            if(classifyNa.size()==0){
+                //当从有数字切换到无数字时  需要把所有数字置为0
+                List<String> keyList = new ArrayList<>();
+                keyList.add(CommonConfig.QC_STATE_STAGED);
+                keyList.add(CommonConfig.QC_STATE_UNRECTIFIED);
+                keyList.add(CommonConfig.QC_STATE_UNREVIEWED);
+                keyList.add(CommonConfig.QC_STATE_DELAYED);
+                for(String state:keyList){
+                    ClassifyNum cn = new ClassifyNum();
+                    cn.count = 0;
+                    cn.qcState = state;
+                    classifyNa.add(cn);
+                }
+            }
             if(mView!=null)
             {
                 mView.updateClassifyCount(classifyNa);
@@ -522,17 +530,17 @@ public class QualityCheckListPresenter implements QualityCheckListContract.Prese
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode)
         {
-            case REQUEST_CODE_CREATE_CHECK_LIST:
+            case RequestCodeConfig.REQUEST_CODE_CREATE_CHECK_LIST:
                 if(resultCode==Activity.RESULT_OK) {
                     pullDown();
                 }
                 break;
-            case REQUEST_CODE_DETAIL://检查单详情
+            case RequestCodeConfig.REQUEST_CODE_DETAIL://检查单详情
                 if(resultCode==Activity.RESULT_OK) {
                     pullDown();
                 }
                 break;
-            case REQUEST_CODE_TAKE_PHOTO:
+            case RequestCodeConfig.REQUEST_CODE_TAKE_PHOTO:
                 if (resultCode == Activity.RESULT_OK) {
                     //正常返回
                     Intent intent = new Intent(mView.getActivity(), PhotoEditActivity.class);
@@ -541,28 +549,28 @@ public class QualityCheckListPresenter implements QualityCheckListContract.Prese
                     intent.putExtra(CommonConfig.QUALITY_CHECK_LIST_ID,mList.get(mClickPosition).id);
                     int code = 0;
                     if(mCreateType.equals(CommonConfig.CREATE_TYPE_REPAIR)){
-                        code = REQUEST_CODE_CREATE_REPAIR;
+                        code = RequestCodeConfig.REQUEST_CODE_CREATE_REPAIR;
                     }else if(mCreateType.equals(CommonConfig.CREATE_TYPE_REVIEW)){
-                        code = REQUEST_CODE_CREATE_REVIEW;
+                        code = RequestCodeConfig.REQUEST_CODE_CREATE_REVIEW;
                     }
                     mView.getActivity().startActivityForResult(intent,code);
 
                 }
                 break;
-            case REQUEST_CODE_OPEN_ALBUM:
+            case RequestCodeConfig.REQUEST_CODE_OPEN_ALBUM:
                 pullDown();
                 break;
-            case REQUEST_CODE_CREATE_REPAIR:
+            case RequestCodeConfig.REQUEST_CODE_CREATE_REPAIR:
                 if(resultCode==Activity.RESULT_OK) {
                     pullDown();
                 }
                 break;
-            case REQUEST_CODE_CREATE_REVIEW:
+            case RequestCodeConfig.REQUEST_CODE_CREATE_REVIEW:
                 if(resultCode==Activity.RESULT_OK) {
                     pullDown();
                 }
                 break;
-            case REQUEST_CODE_TO_EDIT:
+            case RequestCodeConfig.REQUEST_CODE_TO_EDIT:
                 pullDown();
                 break;
         }

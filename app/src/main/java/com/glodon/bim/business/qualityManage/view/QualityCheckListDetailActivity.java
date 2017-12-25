@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -20,6 +18,7 @@ import com.glodon.bim.business.qualityManage.contract.QualityCheckListDetailCont
 import com.glodon.bim.business.qualityManage.listener.OnShowQualityCheckDetailListener;
 import com.glodon.bim.business.qualityManage.presenter.QualityCheckListDetailPresenter;
 import com.glodon.bim.common.config.CommonConfig;
+import com.glodon.bim.common.config.RequestCodeConfig;
 
 /**
  * 描述：检查单详情
@@ -28,8 +27,6 @@ import com.glodon.bim.common.config.CommonConfig;
  */
 public class QualityCheckListDetailActivity extends BaseActivity implements View.OnClickListener,QualityCheckListDetailContract.View{
 
-    private static final int REQUESTCODE_CREATE_TYPE_REPAIR = 20;
-    private static final int REQUESTCODE_CREATE_TYPE_REVIEW = 21;
     //状态
     private View mStatusView;
     //导航
@@ -135,7 +132,7 @@ public class QualityCheckListDetailActivity extends BaseActivity implements View
                                         intent.putExtra(CommonConfig.QUALITY_CHECK_LIST_DEPTID, SharedPreferencesUtil.getProjectId());
                                         intent.putExtra(CommonConfig.QUALITY_CHECK_LIST_ID,id);
 
-                                        startActivityForResult(intent,REQUESTCODE_CREATE_TYPE_REPAIR);
+                                        startActivityForResult(intent, RequestCodeConfig.REQUEST_CODE_CREATE_TYPE_REPAIR);
                                     }
                                 });
                             }else{
@@ -155,7 +152,7 @@ public class QualityCheckListDetailActivity extends BaseActivity implements View
                                         intent.putExtra(CommonConfig.QUALITY_CHECK_LIST_DEPTID, SharedPreferencesUtil.getProjectId());
                                         intent.putExtra(CommonConfig.QUALITY_CHECK_LIST_ID,id);
 
-                                        startActivityForResult(intent,REQUESTCODE_CREATE_TYPE_REVIEW);
+                                        startActivityForResult(intent, RequestCodeConfig.REQUEST_CODE_CREATE_TYPE_REVIEW);
                                     }
                                 });
                             }else{
@@ -174,13 +171,13 @@ public class QualityCheckListDetailActivity extends BaseActivity implements View
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch(requestCode){
-            case REQUESTCODE_CREATE_TYPE_REPAIR:
+            case RequestCodeConfig.REQUEST_CODE_CREATE_TYPE_REPAIR:
                 if(resultCode == RESULT_OK){
                     mIsChange = true;
                     mDetailView.updateInfo(deptId,id);
                 }
                 break;
-            case REQUESTCODE_CREATE_TYPE_REVIEW:
+            case RequestCodeConfig.REQUEST_CODE_CREATE_TYPE_REVIEW:
                 if(resultCode == RESULT_OK){
                     mIsChange = true;
                     mDetailView.updateInfo(deptId,id);

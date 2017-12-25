@@ -29,6 +29,7 @@ import com.glodon.bim.business.qualityManage.view.ChooseModuleActivity;
 import com.glodon.bim.business.qualityManage.view.ModelActivity;
 import com.glodon.bim.business.qualityManage.view.PhotoEditActivity;
 import com.glodon.bim.common.config.CommonConfig;
+import com.glodon.bim.common.config.RequestCodeConfig;
 import com.glodon.bim.customview.ToastManager;
 import com.glodon.bim.customview.album.AlbumData;
 import com.glodon.bim.customview.album.AlbumEditActivity;
@@ -54,13 +55,7 @@ import rx.subscriptions.CompositeSubscription;
 
 public class CreateCheckListPresenter implements CreateCheckListContract.Presenter {
 
-    private final int REQUEST_CODE_CHOOSE_MODULE = 0;//跳转到选择质检项目
-    private final int REQUEST_CODE_OPEN_ALBUM = 1;
-    private final int REQUEST_CODE_TAKE_PHOTO = 2;
-    private final int REQUEST_CODE_PHOTO_EDIT = 3;
-    private static final int REQUEST_CODE_PHOTO_PREVIEW = 4;//图片预览
-    private final int REQUEST_CODE_CHOOSE_BLUE_PRINT = 5;//跳转到选择图纸
-    private final int REQUEST_CODE_CHOOSE_MODEL = 6;//跳转到选择模型
+
     private CreateCheckListContract.Model mModel;
     private CreateCheckListContract.View mView;
     private CompositeSubscription mSubscritption;
@@ -169,6 +164,7 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
             //图纸
             initBluePrint(mEditParams.drawingGdocFileId, mEditParams.drawingName, mEditParams.drawingPositionX, mEditParams.drawingPositionY);
             //模型
+            LogUtil.e("gdocfileId="+mEditParams.gdocFileId);
             if(!TextUtils.isEmpty(mEditParams.gdocFileId)) {
                 mInitParams.gdocFileId = mEditParams.gdocFileId;
                 mInitParams.elementId = mEditParams.elementId;
@@ -197,27 +193,31 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
                     mView.showModuleName(mCurrentModuleName, mCurrentModuleId);
                 }
             }
+
+            //判断是否从图纸过来
+            String drawingGdocFileId = intent.getStringExtra(CommonConfig.DRAWINGGDOCFILEID);
+            String drawingName = intent.getStringExtra(CommonConfig.DRAWINGNAME);
+            String drawingPositionX = intent.getStringExtra(CommonConfig.DRAWINGPOSITIONX);
+            String drawingPositionY = intent.getStringExtra(CommonConfig.DRAWINGPOSITIONY);
+            if (!TextUtils.isEmpty(drawingGdocFileId)) {
+                initBluePrint(drawingGdocFileId, drawingName, drawingPositionX, drawingPositionY);
+            }
+            //判断是否从模型列表过来
+            if(mModelSelectInfo==null || TextUtils.isEmpty(mModelSelectInfo.fileId)) {
+                mModelSelectInfo = (ModelListBeanItem) intent.getSerializableExtra(CommonConfig.RELEVANT_MODEL);
+                if (mModelSelectInfo != null) {
+                    mInitParams.gdocFileId = mModelSelectInfo.fileId;
+                    mInitParams.elementId = mModelSelectInfo.component.elementId;
+                    mInitParams.buildingId = mModelSelectInfo.buildingId;
+                    mInitParams.buildingName = mModelSelectInfo.buildingName;
+                    getElementName(mModelSelectInfo.fileId, mModelSelectInfo.component.elementId);
+                    mModelType = 1;
+                }
+            }
         }
         initInspectionCompany(mEditParams);
         getCompanyList(mEditParams);
-        //判断是否从图纸过来
-        String drawingGdocFileId = intent.getStringExtra(CommonConfig.DRAWINGGDOCFILEID);
-        String drawingName = intent.getStringExtra(CommonConfig.DRAWINGNAME);
-        String drawingPositionX = intent.getStringExtra(CommonConfig.DRAWINGPOSITIONX);
-        String drawingPositionY = intent.getStringExtra(CommonConfig.DRAWINGPOSITIONY);
-        if (!TextUtils.isEmpty(drawingGdocFileId)) {
-            initBluePrint(drawingGdocFileId, drawingName, drawingPositionX, drawingPositionY);
-        }
-        //判断是否从模型列表过来
-        mModelSelectInfo = (ModelListBeanItem) intent.getSerializableExtra(CommonConfig.RELEVANT_MODEL);
-        if(mModelSelectInfo!=null){
-            mInitParams.gdocFileId = mModelSelectInfo.fileId;
-            mInitParams.elementId = mModelSelectInfo.component.elementId;
-            mInitParams.buildingId = mModelSelectInfo.buildingId;
-            mInitParams.buildingName = mModelSelectInfo.buildingName;
-            getElementName(mModelSelectInfo.fileId,mModelSelectInfo.component.elementId);
-            mModelType = 1;
-        }
+
     }
 
     //编辑状态或从图纸模型跳转过来时  图纸有值
@@ -733,7 +733,7 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
         Intent intent = new Intent(mView.getActivity(), AlbumEditActivity.class);
         intent.putExtra(CommonConfig.ALBUM_FROM_TYPE, 1);
         intent.putExtra(CommonConfig.ALBUM_DATA, new AlbumData(mSelectedMap));
-        mView.getActivity().startActivityForResult(intent, REQUEST_CODE_OPEN_ALBUM);
+        mView.getActivity().startActivityForResult(intent, RequestCodeConfig.REQUEST_CODE_OPEN_ALBUM);
     }
 
 
@@ -747,14 +747,14 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
         Intent intent = new Intent(mView.getActivity(), PhotoPreviewActivity.class);
         intent.putExtra(CommonConfig.ALBUM_DATA, new AlbumData(mSelectedMap));
         intent.putExtra(CommonConfig.ALBUM_POSITION, position);
-        mView.getActivity().startActivityForResult(intent, REQUEST_CODE_PHOTO_PREVIEW);
+        mView.getActivity().startActivityForResult(intent, RequestCodeConfig.REQUEST_CODE_PHOTO_PREVIEW);
     }
 
 
     @Override
     public void takePhoto() {
         mPhotoPath = CameraUtil.getFilePath();
-        CameraUtil.openCamera(mPhotoPath, mView.getActivity(), REQUEST_CODE_TAKE_PHOTO);
+        CameraUtil.openCamera(mPhotoPath, mView.getActivity(), RequestCodeConfig.REQUEST_CODE_TAKE_PHOTO);
     }
 
     @Override
@@ -875,7 +875,7 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
                 intent.putExtra(CommonConfig.MODULE_LIST_POSITION, mModuleSelectInfo.id);
             }
         }
-        mView.getActivity().startActivityForResult(intent, REQUEST_CODE_CHOOSE_MODULE);
+        mView.getActivity().startActivityForResult(intent, RequestCodeConfig.REQUEST_CODE_CHOOSE_MODULE);
     }
 
     @Override
@@ -891,24 +891,26 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
             }
         }
         intent.putExtra(CommonConfig.RELEVANT_TYPE, mBluePrintType);
-        mView.getActivity().startActivityForResult(intent, REQUEST_CODE_CHOOSE_BLUE_PRINT);
+        mView.getActivity().startActivityForResult(intent, RequestCodeConfig.REQUEST_CODE_CHOOSE_BLUE_PRINT);
     }
 
     @Override
     public void toModelList() {
         Intent intent = new Intent(mView.getActivity(), ModelActivity.class);
+        LogUtil.e("modelSelectInfo==null?"+(mModelSelectInfo==null));
         if (mModelSelectInfo!=null && !TextUtils.isEmpty(mModelSelectInfo.fileId)) {
             intent.putExtra(CommonConfig.MODULE_LIST_POSITION, mModelSelectInfo.fileId);
             intent.putExtra(CommonConfig.MODEL_SELECT_INFO, mModelSelectInfo);
         }
+        LogUtil.e("modelType="+mModelType);
         intent.putExtra(CommonConfig.RELEVANT_TYPE,mModelType);
-        mView.getActivity().startActivityForResult(intent, REQUEST_CODE_CHOOSE_MODEL);
+        mView.getActivity().startActivityForResult(intent, RequestCodeConfig.REQUEST_CODE_CHOOSE_MODEL);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
-            case REQUEST_CODE_CHOOSE_MODULE:
+            case RequestCodeConfig.REQUEST_CODE_CHOOSE_MODULE:
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     mModuleSelectInfo = (ModuleListBeanItem) data.getSerializableExtra(CommonConfig.MODULE_LIST_NAME);
                     mCurrentModuleName = mModuleSelectInfo.name;
@@ -918,7 +920,7 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
                     }
                 }
                 break;
-            case REQUEST_CODE_CHOOSE_BLUE_PRINT:
+            case RequestCodeConfig.REQUEST_CODE_CHOOSE_BLUE_PRINT:
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     mBluePrintSelectInfo = (BlueprintListBeanItem) data.getSerializableExtra(CommonConfig.MODULE_LIST_NAME);
                     mCurrentBluePrintName = mBluePrintSelectInfo.name;
@@ -931,7 +933,7 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
                     mBluePrintType = 1;
                 }
                 break;
-            case REQUEST_CODE_CHOOSE_MODEL:
+            case RequestCodeConfig.REQUEST_CODE_CHOOSE_MODEL:
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     mModelSelectInfo = (ModelListBeanItem) data.getSerializableExtra(CommonConfig.MODEL_SELECT_INFO);
                     if (mModelSelectInfo.component != null) {
@@ -940,7 +942,7 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
                     }
                 }
                 break;
-            case REQUEST_CODE_OPEN_ALBUM:
+            case RequestCodeConfig.REQUEST_CODE_OPEN_ALBUM:
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     AlbumData album = (AlbumData) data.getSerializableExtra(CommonConfig.ALBUM_DATA);
                     if (album != null) {
@@ -951,19 +953,19 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
                     }
                 }
                 break;
-            case REQUEST_CODE_TAKE_PHOTO:
+            case RequestCodeConfig.REQUEST_CODE_TAKE_PHOTO:
                 if (resultCode == Activity.RESULT_OK) {
                     //正常返回
                     Intent intent = new Intent(mView.getActivity(), PhotoEditActivity.class);
                     intent.putExtra(CommonConfig.IMAGE_PATH, mPhotoPath);
                     intent.putExtra(CommonConfig.FROM_CREATE_CHECK_LIST, true);
-                    mView.getActivity().startActivityForResult(intent, REQUEST_CODE_PHOTO_EDIT);
+                    mView.getActivity().startActivityForResult(intent, RequestCodeConfig.REQUEST_CODE_PHOTO_EDIT);
 
                 } else if (resultCode == Activity.RESULT_CANCELED) {
                     //返回键返回
                 }
                 break;
-            case REQUEST_CODE_PHOTO_EDIT:
+            case RequestCodeConfig.REQUEST_CODE_PHOTO_EDIT:
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     mPhotoPath = data.getStringExtra(CommonConfig.IAMGE_SAVE_PATH);
                     ImageItem item = new ImageItem();
@@ -974,7 +976,7 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
                     }
                 }
                 break;
-            case REQUEST_CODE_PHOTO_PREVIEW:
+            case RequestCodeConfig.REQUEST_CODE_PHOTO_PREVIEW:
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     AlbumData album = (AlbumData) data.getSerializableExtra(CommonConfig.ALBUM_DATA);
                     if (album != null) {

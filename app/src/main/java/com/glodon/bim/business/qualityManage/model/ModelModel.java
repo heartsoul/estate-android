@@ -44,7 +44,7 @@ public class ModelModel implements ModelContract.Model {
      */
     @Override
     public Observable<List<ModelSpecialListItem>> getSpecialList() {
-        return NetRequest.getInstance().getCall(AppConfig.BASE_URL, ModelApi.class).getSpecialList(cookie);
+        return NetRequest.getInstance().getCall(AppConfig.BASE_URL, ModelApi.class).getSpecialList(false,cookie);
     }
 
     /**

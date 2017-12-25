@@ -29,6 +29,7 @@ import com.glodon.bim.basic.utils.SharedPreferencesUtil;
 import com.glodon.bim.business.qualityManage.listener.OnDragTextListener;
 import com.glodon.bim.business.qualityManage.listener.OnPhotoEditChangeListener;
 import com.glodon.bim.common.config.CommonConfig;
+import com.glodon.bim.common.config.RequestCodeConfig;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -43,7 +44,6 @@ import java.util.List;
  */
 public class PhotoEditActivity extends BaseActivity implements View.OnClickListener {
 
-    private final int REQUEST_CODE_CREATE_CHECK_LIST = 0;
     private String mImagePath;
     private String mSavePath;
 
@@ -226,7 +226,7 @@ public class PhotoEditActivity extends BaseActivity implements View.OnClickListe
                             case CommonConfig.CREATE_TYPE_CHECK:
                                 Intent intent = new Intent(mActivity, CreateCheckListActivity.class);
                                 intent.putExtra(CommonConfig.IAMGE_SAVE_PATH, mSavePath);
-                                mActivity.startActivityForResult(intent, REQUEST_CODE_CREATE_CHECK_LIST);
+                                mActivity.startActivityForResult(intent, RequestCodeConfig.REQUEST_CODE_CREATE_CHECK_LIST);
                                 mActivity.finish();
                                 break;
                             case CommonConfig.CREATE_TYPE_REPAIR:
@@ -236,7 +236,7 @@ public class PhotoEditActivity extends BaseActivity implements View.OnClickListe
                                 reviewIntent.putExtra(CommonConfig.CREATE_TYPE,mCreateType);
                                 reviewIntent.putExtra(CommonConfig.QUALITY_CHECK_LIST_DEPTID, SharedPreferencesUtil.getProjectId());
                                 reviewIntent.putExtra(CommonConfig.QUALITY_CHECK_LIST_ID,getIntent().getLongExtra(CommonConfig.QUALITY_CHECK_LIST_ID,-1));
-                                mActivity.startActivityForResult(reviewIntent, REQUEST_CODE_CREATE_CHECK_LIST);
+                                mActivity.startActivityForResult(reviewIntent, RequestCodeConfig.REQUEST_CODE_CREATE_CHECK_LIST);
                                 mActivity.finish();
 
                                 break;
@@ -565,7 +565,7 @@ public class PhotoEditActivity extends BaseActivity implements View.OnClickListe
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
-            case REQUEST_CODE_CREATE_CHECK_LIST:
+            case RequestCodeConfig.REQUEST_CODE_CREATE_CHECK_LIST:
                 setResult(RESULT_OK, data);
                 finish();
                 break;

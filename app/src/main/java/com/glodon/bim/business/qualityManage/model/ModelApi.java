@@ -34,7 +34,7 @@ public interface ModelApi {
      * 查询专业列表
      */
     @GET("pmbasic/specialty")
-    Observable<List<ModelSpecialListItem>> getSpecialList(@Header("cookie") String cookie);
+    Observable<List<ModelSpecialListItem>> getSpecialList(@Query("includeChildren") boolean includeChildren,@Header("cookie") String cookie);
 
     /**
      * 获取当前已发布的最新版本

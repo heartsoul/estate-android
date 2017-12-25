@@ -3,23 +3,33 @@ package com.glodon.bim.business.qualityManage.presenter;
 import android.app.Activity;
 import android.content.Intent;
 
+import com.glodon.bim.basic.config.AppConfig;
 import com.glodon.bim.basic.log.LogUtil;
+import com.glodon.bim.basic.network.NetRequest;
 import com.glodon.bim.basic.utils.CameraUtil;
 import com.glodon.bim.basic.utils.NetWorkUtils;
 import com.glodon.bim.basic.utils.SharedPreferencesUtil;
+import com.glodon.bim.business.greendao.provider.DaoProvider;
 import com.glodon.bim.business.qualityManage.bean.ModuleListBeanItem;
 import com.glodon.bim.business.qualityManage.contract.ChooseModuleContract;
 import com.glodon.bim.business.qualityManage.contract.QulityCheckModuleContract;
 import com.glodon.bim.business.qualityManage.model.ChooseModuleModel;
+import com.glodon.bim.business.qualityManage.model.CreateCheckListApi;
 import com.glodon.bim.business.qualityManage.view.CreateCheckListActivity;
 import com.glodon.bim.business.qualityManage.view.PhotoEditActivity;
 import com.glodon.bim.common.config.CommonConfig;
+import com.glodon.bim.common.config.RequestCodeConfig;
 import com.glodon.bim.customview.ToastManager;
 import com.glodon.bim.customview.album.AlbumEditActivity;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -27,16 +37,14 @@ import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
 /**
- * 描述：
+ * 描述：质检项目
  * 作者：zhourf on 2017/11/24
  * 邮箱：zhourf@glodon.com
  */
 
 public class QualityCheckModulePresenter implements QulityCheckModuleContract.Presenter {
 
-    private final int REQUEST_CODE_TAKE_PHOTO = 0;
-    private final int REQUEST_CODE_OPEN_ALBUM = 1;
-    private final int REQUEST_CODE_CREATE_CHECK_LIST = 2;
+
 
     private ChooseModuleContract.Model mModel;
     private QulityCheckModuleContract.View mView;
@@ -99,6 +107,20 @@ public class QualityCheckModulePresenter implements QulityCheckModuleContract.Pr
                         }
                     });
             mSubscription.add(sub);
+
+            NetRequest.getInstance().getCall(AppConfig.BASE_URL,CreateCheckListApi.class).getModuleList2(mDeptId,SharedPreferencesUtil.getProjectVersionId(mDeptId),new DaoProvider().getCookie())
+                    .enqueue(new Callback<ResponseBody>() {
+                        @Override
+                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                            LogUtil.response(response);
+                        }
+
+                        @Override
+                        public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                        }
+                    });
+
         } else {
             ToastManager.showNetWorkToast();
         }
@@ -110,40 +132,40 @@ public class QualityCheckModulePresenter implements QulityCheckModuleContract.Pr
     }
 
 
-    private List<ModuleListBeanItem> getList(){
-        List<ModuleListBeanItem> list = new ArrayList<>();
-        long count = 1;
-        int size = 10;
-        for(long i = 1;i<=size;i++){
-            ModuleListBeanItem item = new ModuleListBeanItem();
-            item.id = count;
-            item.parentId = 0;
-            item.name = "fileId="+i+"  parentId=0";
-            list.add(item);
-            count++;
-        }
-        for(long i = 1;i<=size;i++){
-            for(long j = 1;j<size;j++) {
-                ModuleListBeanItem item = new ModuleListBeanItem();
-                item.id = count;
-                item.parentId = i;
-                item.name = "fileId="+count+"  parentId="+i;
-                count++;
-                list.add(item);
-            }
-        }
-        for(long i=size+1;i<=size*size;i++){
-            for(int j=0;j<5;j++) {
-                ModuleListBeanItem item = new ModuleListBeanItem();
-                item.id = count;
-                item.parentId = i;
-                item.name = "fileId="+count+"  parentId="+i;
-                count++;
-                list.add(item);
-            }
-        }
-        return list;
-    }
+//    private List<ModuleListBeanItem> getList(){
+//        List<ModuleListBeanItem> list = new ArrayList<>();
+//        long count = 1;
+//        int size = 10;
+//        for(long i = 1;i<=size;i++){
+//            ModuleListBeanItem item = new ModuleListBeanItem();
+//            item.id = count;
+//            item.parentId = 0;
+//            item.name = "fileId="+i+"  parentId=0";
+//            list.add(item);
+//            count++;
+//        }
+//        for(long i = 1;i<=size;i++){
+//            for(long j = 1;j<size;j++) {
+//                ModuleListBeanItem item = new ModuleListBeanItem();
+//                item.id = count;
+//                item.parentId = i;
+//                item.name = "fileId="+count+"  parentId="+i;
+//                count++;
+//                list.add(item);
+//            }
+//        }
+//        for(long i=size+1;i<=size*size;i++){
+//            for(int j=0;j<5;j++) {
+//                ModuleListBeanItem item = new ModuleListBeanItem();
+//                item.id = count;
+//                item.parentId = i;
+//                item.name = "fileId="+count+"  parentId="+i;
+//                count++;
+//                list.add(item);
+//            }
+//        }
+//        return list;
+//    }
 
     private List<ModuleListBeanItem> getListByParentId(long parentId){
         List<ModuleListBeanItem> list = new ArrayList<>();
@@ -166,7 +188,7 @@ public class QualityCheckModulePresenter implements QulityCheckModuleContract.Pr
     @Override
     public void openPhoto() {
         mPhotoPath = CameraUtil.getFilePath();
-        CameraUtil.openCamera(mPhotoPath, mView.getActivity(), REQUEST_CODE_TAKE_PHOTO);
+        CameraUtil.openCamera(mPhotoPath, mView.getActivity(), RequestCodeConfig.REQUEST_CODE_TAKE_PHOTO);
     }
 
     @Override
@@ -174,33 +196,33 @@ public class QualityCheckModulePresenter implements QulityCheckModuleContract.Pr
         Intent intent = new Intent(mView.getActivity(), AlbumEditActivity.class);
         intent.putExtra(CommonConfig.ALBUM_FROM_TYPE,0);
         intent.putExtra(CommonConfig.CREATE_TYPE,CommonConfig.CREATE_TYPE_CHECK);//表示创建检查单
-        mView.getActivity().startActivityForResult(intent,REQUEST_CODE_OPEN_ALBUM);
+        mView.getActivity().startActivityForResult(intent,RequestCodeConfig.REQUEST_CODE_OPEN_ALBUM);
     }
 
     @Override
     public void toCreate() {
         Intent intent = new Intent(mView.getActivity(), CreateCheckListActivity.class);
         intent.putExtra(CommonConfig.SHOW_PHOTO,false);
-        mView.getActivity().startActivityForResult(intent,REQUEST_CODE_CREATE_CHECK_LIST);
+        mView.getActivity().startActivityForResult(intent,RequestCodeConfig.REQUEST_CODE_CREATE_CHECK_LIST);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
-            case REQUEST_CODE_TAKE_PHOTO://拍照返回
+            case RequestCodeConfig.REQUEST_CODE_TAKE_PHOTO://拍照返回
                 if (resultCode == Activity.RESULT_OK) {
                     //正常返回
                     Intent intent = new Intent(mView.getActivity(), PhotoEditActivity.class);
                     intent.putExtra(CommonConfig.IMAGE_PATH,mPhotoPath);
                     intent.putExtra(CommonConfig.CREATE_TYPE,CommonConfig.CREATE_TYPE_CHECK);//表示创建检查单
-                    mView.getActivity().startActivityForResult(intent,REQUEST_CODE_CREATE_CHECK_LIST);
+                    mView.getActivity().startActivityForResult(intent,RequestCodeConfig.REQUEST_CODE_CREATE_CHECK_LIST);
 
                 }
                 break;
-            case REQUEST_CODE_OPEN_ALBUM://打开相册
+            case RequestCodeConfig.REQUEST_CODE_OPEN_ALBUM://打开相册
 
                 break;
-            case REQUEST_CODE_CREATE_CHECK_LIST:
+            case RequestCodeConfig.REQUEST_CODE_CREATE_CHECK_LIST:
 
                 break;
         }

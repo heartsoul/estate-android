@@ -16,6 +16,7 @@ import com.glodon.bim.business.qualityManage.model.OnModelSelectListener;
 import com.glodon.bim.business.qualityManage.view.BluePrintModelSearchActivity;
 import com.glodon.bim.business.qualityManage.view.RelevantModelActivity;
 import com.glodon.bim.common.config.CommonConfig;
+import com.glodon.bim.common.config.RequestCodeConfig;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,8 +34,7 @@ import rx.subscriptions.CompositeSubscription;
  */
 
 public class ModelPresenter implements ModelContract.Presenter {
-    private static final int REQUEST_CODE_OPEN_MODEL = 0;
-    private static final int REQUEST_CODE_TO_SEARCH = 1;
+
     private ModelContract.View mView;
     private ModelContract.Model mModel;
     private CompositeSubscription mSubscription;
@@ -98,7 +98,7 @@ public class ModelPresenter implements ModelContract.Presenter {
 
                 intent.putExtra(CommonConfig.MODEL_SELECT_INFO, modelInfo);
 
-                mView.getActivity().startActivityForResult(intent,REQUEST_CODE_OPEN_MODEL);
+                mView.getActivity().startActivityForResult(intent, RequestCodeConfig.REQUEST_CODE_MODEL_OPEN_MODEL);
             }
         }
 
@@ -174,7 +174,7 @@ public class ModelPresenter implements ModelContract.Presenter {
             intent.putExtra(CommonConfig.BLUE_PRINT_FILE_NAME, mModelSelectInfo.fileName);
             intent.putExtra(CommonConfig.RELEVANT_TYPE, type);
             intent.putExtra(CommonConfig.MODEL_SELECT_INFO, mModelSelectInfo);
-            mView.getActivity().startActivityForResult(intent, REQUEST_CODE_OPEN_MODEL);
+            mView.getActivity().startActivityForResult(intent, RequestCodeConfig.REQUEST_CODE_MODEL_OPEN_MODEL);
         }
     }
 
@@ -189,7 +189,7 @@ public class ModelPresenter implements ModelContract.Presenter {
         }
         intent.putExtra(CommonConfig.RELEVANT_TYPE_MODEL,type);
         LogUtil.e("toSearch type="+type);
-        mView.getActivity().startActivityForResult(intent,REQUEST_CODE_TO_SEARCH);
+        mView.getActivity().startActivityForResult(intent, RequestCodeConfig.REQUEST_CODE_MODEL_TO_SEARCH);
     }
 
     //获取最新版本
@@ -321,13 +321,13 @@ public class ModelPresenter implements ModelContract.Presenter {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode){
-            case REQUEST_CODE_OPEN_MODEL:
+            case RequestCodeConfig.REQUEST_CODE_MODEL_OPEN_MODEL:
                 if(resultCode == Activity.RESULT_OK && mView!=null) {
                     mView.getActivity().setResult(Activity.RESULT_OK, data);
                     mView.getActivity().finish();
                 }
                 break;
-            case REQUEST_CODE_TO_SEARCH:
+            case RequestCodeConfig.REQUEST_CODE_MODEL_TO_SEARCH:
                 if(resultCode == Activity.RESULT_OK && mView!=null) {
                     mView.getActivity().setResult(Activity.RESULT_OK, data);
                     mView.getActivity().finish();

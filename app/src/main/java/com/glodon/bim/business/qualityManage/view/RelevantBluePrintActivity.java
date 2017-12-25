@@ -33,6 +33,7 @@ import com.glodon.bim.business.qualityManage.bean.BlueprintListBeanItem;
 import com.glodon.bim.business.qualityManage.contract.RelevantBluePrintContract;
 import com.glodon.bim.business.qualityManage.presenter.RelevantBluePrintPresenter;
 import com.glodon.bim.common.config.CommonConfig;
+import com.glodon.bim.customview.ToastManager;
 import com.google.gson.GsonBuilder;
 
 import java.lang.reflect.Method;
@@ -336,6 +337,12 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
 
     class ModelEvent {
 
+        //token失效的情况
+        @JavascriptInterface
+        public void invalidateToken() {
+            LogUtil.e("invalidateToken");
+            ToastManager.show("抱歉，您目前没有查看此图纸的权限，请联系系统管理员。");
+        }
         //长按图纸 返回点的信息
         @JavascriptInterface
         public void getPosition(final String json) {

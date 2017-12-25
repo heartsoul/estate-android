@@ -12,6 +12,7 @@ import com.glodon.bim.business.qualityManage.bean.SaveBean;
 import java.util.List;
 
 import okhttp3.ResponseBody;
+import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
@@ -46,8 +47,14 @@ public interface CreateCheckListApi {
     /**
      * 获取质检项目列表
      */
-    @GET("quality/{deptId}/quality/checkpoints/project/{projectId}")
-    Observable<List<ModuleListBeanItem>> getModuleList(@Path("deptId") long deptId,@Path("projectId") long projectId,@Header("cookie") String cookie);
+    @GET("quality/{deptId}/quality/checkpoints")
+    Observable<List<ModuleListBeanItem>> getModuleList(@Path("deptId") long deptId,@Header("cookie") String cookie);
+
+    /**
+     * 获取质检项目列表
+     */
+    @GET("quality/{deptId}/quality/checkpoints/summary")
+    Call<ResponseBody> getModuleList2(@Path("deptId") long deptId, @Query("versionId")String versionId,@Header("cookie") String cookie);
 
     /**
      * 获取质检项目标准

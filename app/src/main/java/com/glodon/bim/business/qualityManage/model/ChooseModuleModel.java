@@ -20,6 +20,6 @@ public class ChooseModuleModel implements ChooseModuleContract.Model {
 
     @Override
     public Observable<List<ModuleListBeanItem>> getModuleList(long deptId,long projectId){
-        return NetRequest.getInstance().getCall(AppConfig.BASE_URL,CreateCheckListApi.class).getModuleList(deptId,projectId,new DaoProvider().getCookie());
+        return NetRequest.getInstance().getCall(AppConfig.BASE_URL,CreateCheckListApi.class).getModuleList(deptId,new DaoProvider().getCookie());
     }
 }

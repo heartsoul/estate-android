@@ -9,8 +9,6 @@ import android.widget.RelativeLayout;
 import com.glodon.bim.R;
 import com.glodon.bim.base.BaseActivity;
 import com.glodon.bim.basic.listener.ThrottleClickEvents;
-import com.glodon.bim.business.qualityManage.util.IntentManager;
-import com.glodon.bim.common.config.CommonConfig;
 
 /**
  * 描述：图纸目录
@@ -25,8 +23,6 @@ public class BluePrintActivity extends BaseActivity implements View.OnClickListe
 
     private BluePrintView mBluePrintView;
     private View mParent;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

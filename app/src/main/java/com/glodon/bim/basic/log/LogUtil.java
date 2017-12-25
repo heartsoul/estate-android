@@ -4,6 +4,11 @@ import android.util.Log;
 
 import com.glodon.bim.basic.config.AppConfig;
 
+import java.io.IOException;
+
+import okhttp3.ResponseBody;
+import retrofit2.Response;
+
 /**
  * 描述：控制台日志打印类
  * 作者：zhourf on 2017/9/8
@@ -85,5 +90,22 @@ public class LogUtil {
      */
     private static boolean isShowLog() {
         return AppConfig.LOGCAT_SHOW;
+    }
+
+    public static void response(Response<ResponseBody> response){
+        if(response.body()!=null){
+            try {
+                LogUtil.e("body="+response.body().string());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        if(response.errorBody()!=null){
+            try {
+                LogUtil.e("errorBody="+response.errorBody().string());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

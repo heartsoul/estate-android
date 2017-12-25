@@ -24,6 +24,7 @@ import com.glodon.bim.business.qualityManage.model.CreateReviewModel;
 import com.glodon.bim.business.qualityManage.util.UploadManger;
 import com.glodon.bim.business.qualityManage.view.PhotoEditActivity;
 import com.glodon.bim.common.config.CommonConfig;
+import com.glodon.bim.common.config.RequestCodeConfig;
 import com.glodon.bim.customview.ToastManager;
 import com.glodon.bim.customview.album.AlbumData;
 import com.glodon.bim.customview.album.AlbumEditActivity;
@@ -50,11 +51,6 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter {
     private CreateReviewContract.View mView;
     private CreateReviewContract.Model mModel;
     private CompositeSubscription mSubscription;
-
-    private final int REQUEST_CODE_OPEN_ALBUM = 1;
-    private final int REQUEST_CODE_TAKE_PHOTO = 2;
-    private final int REQUEST_CODE_PHOTO_EDIT = 3;
-    private static final int REQUEST_CODE_PHOTO_PREVIEW = 4;//图片预览
 
     private String mPhotoPath;//拍照的路径
 
@@ -147,7 +143,7 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter {
     @Override
     public void takePhoto() {
         mPhotoPath = CameraUtil.getFilePath();
-        CameraUtil.openCamera(mPhotoPath, mView.getActivity(), REQUEST_CODE_TAKE_PHOTO);
+        CameraUtil.openCamera(mPhotoPath, mView.getActivity(), RequestCodeConfig.REQUEST_CODE_TAKE_PHOTO);
     }
 
     @Override
@@ -155,7 +151,7 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter {
         Intent intent = new Intent(mView.getActivity(), AlbumEditActivity.class);
         intent.putExtra(CommonConfig.ALBUM_FROM_TYPE, 1);
         intent.putExtra(CommonConfig.ALBUM_DATA, new AlbumData(mSelectedMap));
-        mView.getActivity().startActivityForResult(intent, REQUEST_CODE_OPEN_ALBUM);
+        mView.getActivity().startActivityForResult(intent, RequestCodeConfig.REQUEST_CODE_OPEN_ALBUM);
     }
 
     @Override
@@ -301,7 +297,7 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter {
         Intent intent = new Intent(mView.getActivity(), PhotoPreviewActivity.class);
         intent.putExtra(CommonConfig.ALBUM_DATA, new AlbumData(mSelectedMap));
         intent.putExtra(CommonConfig.ALBUM_POSITION, position);
-        mView.getActivity().startActivityForResult(intent, REQUEST_CODE_PHOTO_PREVIEW);
+        mView.getActivity().startActivityForResult(intent, RequestCodeConfig.REQUEST_CODE_PHOTO_PREVIEW);
     }
 
     private boolean mIsShowUploadErrorToast = true;
@@ -877,7 +873,7 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
-            case REQUEST_CODE_OPEN_ALBUM:
+            case RequestCodeConfig.REQUEST_CODE_OPEN_ALBUM:
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     AlbumData album = (AlbumData) data.getSerializableExtra(CommonConfig.ALBUM_DATA);
                     if (album != null) {
@@ -888,19 +884,19 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter {
                     }
                 }
                 break;
-            case REQUEST_CODE_TAKE_PHOTO:
+            case RequestCodeConfig.REQUEST_CODE_TAKE_PHOTO:
                 if (resultCode == Activity.RESULT_OK) {
                     //正常返回
                     Intent intent = new Intent(mView.getActivity(), PhotoEditActivity.class);
                     intent.putExtra(CommonConfig.IMAGE_PATH, mPhotoPath);
                     intent.putExtra(CommonConfig.FROM_CREATE_CHECK_LIST, true);
-                    mView.getActivity().startActivityForResult(intent, REQUEST_CODE_PHOTO_EDIT);
+                    mView.getActivity().startActivityForResult(intent, RequestCodeConfig.REQUEST_CODE_PHOTO_EDIT);
 
                 } else if (resultCode == Activity.RESULT_CANCELED) {
                     //返回键返回
                 }
                 break;
-            case REQUEST_CODE_PHOTO_EDIT:
+            case RequestCodeConfig.REQUEST_CODE_PHOTO_EDIT:
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     mPhotoPath = data.getStringExtra(CommonConfig.IAMGE_SAVE_PATH);
                     ImageItem item = new ImageItem();
@@ -911,7 +907,7 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter {
                     }
                 }
                 break;
-            case REQUEST_CODE_PHOTO_PREVIEW:
+            case RequestCodeConfig.REQUEST_CODE_PHOTO_PREVIEW:
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     AlbumData album = (AlbumData) data.getSerializableExtra(CommonConfig.ALBUM_DATA);
                     if (album != null) {

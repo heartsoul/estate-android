@@ -23,10 +23,10 @@ public class QualityCheckListDetailInspectionInfo {
 
     public List<QualityCheckListBeanItemFile> files; //图片
 
-    public int id;
+    public long id;
     public long inspectionCompanyId;
     public String inspectionCompanyName;
-    public String inspectionDate;   //检查日期
+    public long inspectionDate;   //检查日期
     //检查  或 验收
     public String inspectionType;//inspection检查  acceptance验收
     //岗位
@@ -35,7 +35,7 @@ public class QualityCheckListDetailInspectionInfo {
     public long lastRectificationDate;   //整改期限
     public boolean needRectification;  //是否需要整改
 
-    public int projectId;
+    public long projectId;
     public String projectName;
     public String qcState;
     //质检项目

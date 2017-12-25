@@ -46,6 +46,11 @@ public interface QualityCheckListApi {
      */
     @GET("quality/{deptId}/qualityInspection/{fileId}/detail")
     Observable<QualityCheckListDetailBean> getQualityCheckListDetail(@Path("deptId") long deptId, @Path("fileId") long id, @Header("cookie") String cookie);
+    /**
+     * 获取检查单详情
+     */
+    @GET("quality/{deptId}/qualityInspection/{fileId}/detail")
+    Call<ResponseBody> getQualityCheckListDetail2(@Path("deptId") long deptId, @Path("fileId") long id, @Header("cookie") String cookie);
 
     /**
      * 获取检查单详情

@@ -27,6 +27,7 @@ import com.glodon.bim.business.qualityManage.bean.ModelListBeanItem;
 import com.glodon.bim.business.qualityManage.contract.RelevantModelContract;
 import com.glodon.bim.business.qualityManage.presenter.RelevantModelPresenter;
 import com.glodon.bim.common.config.CommonConfig;
+import com.glodon.bim.customview.ToastManager;
 import com.google.gson.GsonBuilder;
 
 import java.lang.reflect.Method;
@@ -133,6 +134,12 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
     // 点击构件的回调
     class ModelEvent {
 
+        //token失效的情况
+        @JavascriptInterface
+        public void invalidateToken() {
+            LogUtil.e("invalidateToken");
+            ToastManager.show("抱歉，您目前没有查看此模型的权限，请联系系统管理员。");
+        }
 
         //取消选中构件
         @JavascriptInterface

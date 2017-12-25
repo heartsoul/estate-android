@@ -16,11 +16,10 @@ import com.glodon.bim.business.qualityManage.listener.OnChooseBlueprintCataListe
 import com.glodon.bim.business.qualityManage.listener.OnChooseBlueprintObjListener;
 import com.glodon.bim.business.qualityManage.model.BluePrintModel;
 import com.glodon.bim.business.qualityManage.model.ModelModel;
-import com.glodon.bim.business.qualityManage.util.IntentManager;
 import com.glodon.bim.business.qualityManage.view.BluePrintModelSearchActivity;
-import com.glodon.bim.business.qualityManage.view.ModuleStandardActivity;
 import com.glodon.bim.business.qualityManage.view.RelevantBluePrintActivity;
 import com.glodon.bim.common.config.CommonConfig;
+import com.glodon.bim.common.config.RequestCodeConfig;
 import com.glodon.bim.customview.ToastManager;
 import com.google.gson.GsonBuilder;
 
@@ -40,8 +39,7 @@ import rx.subscriptions.CompositeSubscription;
  */
 
 public class BluePrintPresenter implements BluePrintContract.Presenter {
-    private static final int REQUEST_CODE_TO_RELEVANT = 0;
-    private static final int REQUEST_CODE_TO_SEARCH = 1;
+
     private BluePrintContract.View mView;
     private BluePrintContract.Model mModel;
     private List<BlueprintListBeanItem> mDataList;
@@ -125,7 +123,7 @@ public class BluePrintPresenter implements BluePrintContract.Presenter {
                 intent.putExtra(CommonConfig.BLUE_PRINT_POSITION_X, drawingPositionX);
                 intent.putExtra(CommonConfig.BLUE_PRINT_POSITION_Y, drawingPositionY);
             }
-            mView.getActivity().startActivityForResult(intent, REQUEST_CODE_TO_RELEVANT);
+            mView.getActivity().startActivityForResult(intent, RequestCodeConfig.REQUEST_CODE_TO_RELEVANT);
         }
     };
 
@@ -167,7 +165,7 @@ public class BluePrintPresenter implements BluePrintContract.Presenter {
         intent.putExtra(CommonConfig.BLUE_PRINT_FILE_ID, mSelectId);
         intent.putExtra(CommonConfig.BLUE_PRINT_POSITION_X, drawingPositionX);
         intent.putExtra(CommonConfig.BLUE_PRINT_POSITION_Y, drawingPositionY);
-        mView.getActivity().startActivityForResult(intent, REQUEST_CODE_TO_RELEVANT);
+        mView.getActivity().startActivityForResult(intent, RequestCodeConfig.REQUEST_CODE_TO_RELEVANT);
     }
 
     @Override
@@ -183,7 +181,7 @@ public class BluePrintPresenter implements BluePrintContract.Presenter {
             intent.putExtra(CommonConfig.BLUE_PRINT_POSITION_Y, drawingPositionY);
         }
         intent.putExtra(CommonConfig.RELEVANT_TYPE,type);
-        mView.getActivity().startActivityForResult(intent,REQUEST_CODE_TO_SEARCH);
+        mView.getActivity().startActivityForResult(intent,RequestCodeConfig.REQUEST_CODE_TO_SEARCH);
     }
 
     //获取最新版本
@@ -297,6 +295,7 @@ public class BluePrintPresenter implements BluePrintContract.Presenter {
                             if (mContentList == null) {
                                 mContentList = new ArrayList<>();
                             }
+                            mContentList = getSortedList(mContentList);
                             if (mView != null) {
                                 mView.updateContentListView(mContentList, mSelectId);
                             }
@@ -309,6 +308,24 @@ public class BluePrintPresenter implements BluePrintContract.Presenter {
                     }
                 });
         mSubscription.add(sub);
+    }
+
+    private List<BlueprintListBeanItem> getSortedList(List<BlueprintListBeanItem> contentlist){
+        List<BlueprintListBeanItem> cataList = new ArrayList<>();
+        List<BlueprintListBeanItem> objList = new ArrayList<>();
+        if(contentlist!=null&&contentlist.size()>0){
+            for(BlueprintListBeanItem item:contentlist){
+                if(item.folder){
+                    cataList.add(item);
+                }else{
+                    objList.add(item);
+                }
+            }
+        }
+        if(objList.size()>0) {
+            cataList.addAll(objList);
+        }
+        return cataList;
     }
 
     private void getBluePrintHintData(final BlueprintListBeanItem item) {
@@ -363,13 +380,13 @@ public class BluePrintPresenter implements BluePrintContract.Presenter {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
-            case REQUEST_CODE_TO_RELEVANT:
+            case RequestCodeConfig.REQUEST_CODE_TO_RELEVANT:
                 if (resultCode == Activity.RESULT_OK) {
                     mView.getActivity().setResult(Activity.RESULT_OK, data);
                     mView.getActivity().finish();
                 }
                 break;
-            case REQUEST_CODE_TO_SEARCH:
+            case RequestCodeConfig.REQUEST_CODE_TO_SEARCH:
                 if (resultCode == Activity.RESULT_OK) {
                     mView.getActivity().setResult(Activity.RESULT_OK, data);
                     mView.getActivity().finish();

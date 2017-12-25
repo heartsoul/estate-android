@@ -2,11 +2,21 @@ package com.glodon.bim.business.qualityManage.presenter;
 
 import android.content.Intent;
 
+import com.glodon.bim.basic.config.AppConfig;
 import com.glodon.bim.basic.log.LogUtil;
+import com.glodon.bim.basic.network.NetRequest;
+import com.glodon.bim.business.greendao.provider.DaoProvider;
 import com.glodon.bim.business.qualityManage.bean.QualityCheckListDetailBean;
 import com.glodon.bim.business.qualityManage.contract.QualityCheckListDetailViewContract;
+import com.glodon.bim.business.qualityManage.model.QualityCheckListApi;
 import com.glodon.bim.business.qualityManage.model.QualityCheckListDetailViewModel;
 
+import java.io.IOException;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -53,8 +63,32 @@ public class QualityCheckListDetailViewPresenter implements QualityCheckListDeta
                             mView.updateData(bean);
                         }
                     }
-                })
-                ;
+                });
+        NetRequest.getInstance().getCall(AppConfig.BASE_URL, QualityCheckListApi.class).getQualityCheckListDetail2(deptId,id,new DaoProvider().getCookie())
+                .enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        if(response.body()!=null){
+                            try {
+                                LogUtil.e("body="+response.body().string());
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        if(response.errorBody()!=null){
+                            try {
+                                LogUtil.e("errorBody="+response.errorBody().string());
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                    }
+                });
         mSubscription.add( sub);
 
 
