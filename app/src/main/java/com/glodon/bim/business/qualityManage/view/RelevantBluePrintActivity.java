@@ -10,6 +10,8 @@ import android.os.Handler;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.View;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
@@ -22,6 +24,7 @@ import android.widget.TextView;
 
 import com.glodon.bim.R;
 import com.glodon.bim.base.BaseActivity;
+import com.glodon.bim.base.BaseApplication;
 import com.glodon.bim.basic.config.AppConfig;
 import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.basic.utils.SharedPreferencesUtil;
@@ -128,6 +131,7 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
         setting.setAppCacheEnabled(false);
         setting.setDatabaseEnabled(false);
         setting.setUseWideViewPort(true);
+        setting.setCacheMode(WebSettings.LOAD_NO_CACHE);
 //        setting.setCacheMode(WebSettings.LOAD_DEFAULT);
         // 1、LayoutAlgorithm.NARROW_COLUMNS ： 适应内容大小
         // 2、LayoutAlgorithm.SINGLE_COLUMN:适应屏幕，内容将自动缩放
@@ -502,5 +506,22 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
     @Override
     public Activity getActivity() {
         return mActivity;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(mWebview!=null){
+            //清空所有Cookie
+            CookieSyncManager.createInstance(BaseApplication.getInstance());  //Create a singleton CookieSyncManager within a context
+            CookieManager cookieManager = CookieManager.getInstance(); // the singleton CookieManager instance
+            cookieManager.removeAllCookie();// Removes all cookies.
+            CookieSyncManager.getInstance().sync(); // forces sync manager to sync now
+
+            mWebview.setWebChromeClient(null);
+            mWebview.setWebViewClient(null);
+            mWebview.getSettings().setJavaScriptEnabled(false);
+            mWebview.clearCache(true);
+        }
     }
 }

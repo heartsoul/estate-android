@@ -7,6 +7,8 @@ import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
@@ -17,6 +19,7 @@ import android.widget.RelativeLayout;
 
 import com.glodon.bim.R;
 import com.glodon.bim.base.BaseActivity;
+import com.glodon.bim.base.BaseApplication;
 import com.glodon.bim.basic.config.AppConfig;
 import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.basic.utils.SharedPreferencesUtil;
@@ -33,6 +36,8 @@ import com.google.gson.GsonBuilder;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.glodon.bim.R.id.webView;
 
 /**
  * 描述：关联模型-模型展示
@@ -114,6 +119,7 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
         setting.setAppCacheEnabled(false);
         setting.setDatabaseEnabled(false);
         setting.setUseWideViewPort(true);
+        setting.setCacheMode(WebSettings.LOAD_NO_CACHE);
 //        setting.setCacheMode(WebSettings.LOAD_DEFAULT);
         // 1、LayoutAlgorithm.NARROW_COLUMNS ： 适应内容大小
         // 2、LayoutAlgorithm.SINGLE_COLUMN:适应屏幕，内容将自动缩放
@@ -133,6 +139,8 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
 
     // 点击构件的回调
     class ModelEvent {
+
+
 
         //token失效的情况
         @JavascriptInterface
@@ -355,6 +363,7 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
         String param = new GsonBuilder().create().toJson(list);
         LogUtil.e("设置多点 params="+param);
         mWebview.loadUrl("javascript:loadCircleItems('" + param + "')");
+//        mWebview.loadUrl("javascript:loadCircleItems()");
 
         //设置多个构件选中
 //        List<String> dotList = new ArrayList<>();
@@ -497,5 +506,23 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
     @Override
     public Activity getActivity() {
         return mActivity;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(mWebview!=null){
+            LogUtil.e("ondestroy");
+            //清空所有Cookie
+            CookieSyncManager.createInstance(BaseApplication.getInstance());  //Create a singleton CookieSyncManager within a context
+            CookieManager cookieManager = CookieManager.getInstance(); // the singleton CookieManager instance
+            cookieManager.removeAllCookie();// Removes all cookies.
+            CookieSyncManager.getInstance().sync(); // forces sync manager to sync now
+
+            mWebview.setWebChromeClient(null);
+            mWebview.setWebViewClient(null);
+            mWebview.getSettings().setJavaScriptEnabled(false);
+            mWebview.clearCache(true);
+        }
     }
 }
