@@ -334,14 +334,17 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
         }).show();
     }
 
-
+    @Override
+    public void showTokenError() {
+        ToastManager.show("抱歉，您目前没有查看此图纸的权限，请联系系统管理员。");
+    }
     class ModelEvent {
 
         //token失效的情况
         @JavascriptInterface
         public void invalidateToken() {
             LogUtil.e("invalidateToken");
-            ToastManager.show("抱歉，您目前没有查看此图纸的权限，请联系系统管理员。");
+            showTokenError();
         }
         //长按图纸 返回点的信息
         @JavascriptInterface

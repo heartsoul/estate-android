@@ -43,6 +43,10 @@ public interface RelevantBluePrintContract {
          * 设置多点数据
          */
         void setDotsData(List<BluePrintDotItem> bluePrintDotItems);
+        /**
+         * 获取token失败
+         */
+        void showTokenError();
     }
 
     interface Model {

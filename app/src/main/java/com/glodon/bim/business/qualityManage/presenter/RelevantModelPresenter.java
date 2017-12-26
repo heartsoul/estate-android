@@ -4,10 +4,13 @@ import android.content.Intent;
 import android.os.Handler;
 import android.text.TextUtils;
 
+import com.glodon.bim.basic.config.AppConfig;
 import com.glodon.bim.basic.log.LogUtil;
+import com.glodon.bim.basic.network.NetRequest;
 import com.glodon.bim.basic.utils.LinkedHashList;
 import com.glodon.bim.basic.utils.NetWorkUtils;
 import com.glodon.bim.basic.utils.SharedPreferencesUtil;
+import com.glodon.bim.business.greendao.provider.DaoProvider;
 import com.glodon.bim.business.qualityManage.bean.ModelComponentWorldPosition;
 import com.glodon.bim.business.qualityManage.bean.ModelElementHistory;
 import com.glodon.bim.business.qualityManage.bean.ModelElementInfo;
@@ -15,6 +18,7 @@ import com.glodon.bim.business.qualityManage.bean.ProjectVersionBean;
 import com.glodon.bim.business.qualityManage.bean.ProjectVersionData;
 import com.glodon.bim.business.qualityManage.bean.RelevantBluePrintToken;
 import com.glodon.bim.business.qualityManage.contract.RelevantModelContract;
+import com.glodon.bim.business.qualityManage.model.RelevantModelApi;
 import com.glodon.bim.business.qualityManage.model.RelevantModelModel;
 import com.glodon.bim.common.config.CommonConfig;
 import com.glodon.bim.customview.ToastManager;
@@ -22,6 +26,10 @@ import com.glodon.bim.customview.ToastManager;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -99,9 +107,6 @@ public class RelevantModelPresenter implements RelevantModelContract.Presenter {
     }
 
     private void getTokey(long mProjectId, String mProjectVersionId, String mFileId) {
-        LogUtil.e("projectId="+mProjectId);
-        LogUtil.e("mProjectVersionId="+mProjectVersionId);
-        LogUtil.e("mFileId="+mFileId);
         Subscription sub = mModel.getToken(mProjectId, mProjectVersionId, mFileId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -114,6 +119,9 @@ public class RelevantModelPresenter implements RelevantModelContract.Presenter {
                     @Override
                     public void onError(Throwable e) {
                         LogUtil.e(e.getMessage());
+                        if(mView!=null){
+                            mView.showTokenError();
+                        }
                     }
 
                     @Override

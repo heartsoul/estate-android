@@ -112,6 +112,9 @@ public class RelevantBluePrintPresenter implements RelevantBluePrintContract.Pre
                     @Override
                     public void onError(Throwable e) {
                         LogUtil.e(e.getMessage());
+                        if(mView!=null){
+                            mView.showTokenError();
+                        }
                     }
 
                     @Override

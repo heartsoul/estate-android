@@ -186,6 +186,8 @@ public class LoginActivity extends BaseActivity implements LoginContract.View, V
 //        mUsernameEt.setText("13693275997");//付小静
 //        mPasswordEt.setText("123qwe");
 
+//                    mUsernameEt.setText("18330117163");//施工
+//        mPasswordEt.setText("123qwe");
         }
     }
 

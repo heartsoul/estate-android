@@ -39,6 +39,11 @@ public interface RelevantModelContract {
          * 展示历史构件信息
          */
         void showModelHistory(List<ModelElementHistory> list);
+
+        /**
+         * 获取token失败
+         */
+        void showTokenError();
     }
 
     interface Model {

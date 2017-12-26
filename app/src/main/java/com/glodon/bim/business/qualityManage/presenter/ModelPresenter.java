@@ -17,6 +17,7 @@ import com.glodon.bim.business.qualityManage.view.BluePrintModelSearchActivity;
 import com.glodon.bim.business.qualityManage.view.RelevantModelActivity;
 import com.glodon.bim.common.config.CommonConfig;
 import com.glodon.bim.common.config.RequestCodeConfig;
+import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -285,7 +286,7 @@ public class ModelPresenter implements ModelContract.Presenter {
                         mModelList.clear();
                         LogUtil.e("bean==null?"+(bean==null));
                         if(bean!=null){
-                            LogUtil.e("bean.tostring="+bean.toString());
+                            LogUtil.e("bean.tostring="+new GsonBuilder().create().toJson(bean));
                             if(bean.data!=null) {
                                 LogUtil.e("bean.size=" + bean.data.size());
                             }

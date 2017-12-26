@@ -138,7 +138,7 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
         @JavascriptInterface
         public void invalidateToken() {
             LogUtil.e("invalidateToken");
-            ToastManager.show("抱歉，您目前没有查看此模型的权限，请联系系统管理员。");
+            showTokenError();
         }
 
         //取消选中构件
@@ -357,11 +357,16 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
         mWebview.loadUrl("javascript:loadCircleItems('" + param + "')");
 
         //设置多个构件选中
-        List<String> dotList = new ArrayList<>();
-        for(ModelElementHistory history:list){
-            dotList.add(history.elementId);
-        }
-        showSelectedComponent(dotList);
+//        List<String> dotList = new ArrayList<>();
+//        for(ModelElementHistory history:list){
+//            dotList.add(history.elementId);
+//        }
+//        showSelectedComponent(dotList);
+    }
+
+    @Override
+    public void showTokenError() {
+        ToastManager.show("抱歉，您目前没有查看此模型的权限，请联系系统管理员。");
     }
 
 
