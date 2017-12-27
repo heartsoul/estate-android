@@ -108,4 +108,17 @@ public class LogUtil {
             }
         }
     }
+
+    //                NetRequest.getInstance().getCall(AppConfig.BASE_URL,LoginApi.class).getPhoneCode(account,code,mSignupKey)
+//                .enqueue(new Callback<ResponseBody>() {
+//                    @Override
+//                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+//                        LogUtil.response(response);
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+//
+//                    }
+//                });
 }

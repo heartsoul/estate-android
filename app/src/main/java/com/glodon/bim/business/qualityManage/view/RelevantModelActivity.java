@@ -140,7 +140,12 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
     // 点击构件的回调
     class ModelEvent {
 
-
+        //模型加载完毕后的回调
+        @JavascriptInterface
+        public void loadDotsData() {
+            LogUtil.e("loadDotsData");
+            pageFinished();
+        }
 
         //token失效的情况
         @JavascriptInterface
@@ -439,7 +444,40 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
         return temp;
     }
 
+     private void pageFinished(){
+         //0新建检查单 1检查单编辑状态 2详情查看  3图纸模式
+         LogUtil.e("pageFinish type="+type);
+         switch (type){
+             case 0:
 
+                 break;
+             case 1:
+                 if(mModelSelectInfo!=null){
+                     component = mModelSelectInfo.component;
+                     if(component!=null) {
+                         List<String> list = new ArrayList<>();
+                         list.add(mModelSelectInfo.component.elementId);
+                         showSelectedComponent(list);
+                     }
+                 }
+                 break;
+             case 2:
+                 if(mModelSelectInfo!=null){
+                     component = mModelSelectInfo.component;
+                     if(component!=null) {
+                         List<String> list = new ArrayList<>();
+                         list.add(mModelSelectInfo.component.elementId);
+                         showSelectedComponent(list);
+                     }
+                 }
+                 break;
+             case 3:
+                 mPresenter.getElements();
+//                    showModelHistory(null);
+                 break;
+         }
+         dismissLoadingDialog();
+     }
 
     class CustomWebViewClient extends WebViewClient {
 
@@ -452,38 +490,7 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
-            //0新建检查单 1检查单编辑状态 2详情查看  3图纸模式
-            LogUtil.e("pageFinish type="+type);
-            switch (type){
-                case 0:
-
-                    break;
-                case 1:
-                    if(mModelSelectInfo!=null){
-                        component = mModelSelectInfo.component;
-                        if(component!=null) {
-                            List<String> list = new ArrayList<>();
-                            list.add(mModelSelectInfo.component.elementId);
-                            showSelectedComponent(list);
-                        }
-                    }
-                    break;
-                case 2:
-                    if(mModelSelectInfo!=null){
-                        component = mModelSelectInfo.component;
-                        if(component!=null) {
-                            List<String> list = new ArrayList<>();
-                            list.add(mModelSelectInfo.component.elementId);
-                            showSelectedComponent(list);
-                        }
-                    }
-                    break;
-                case 3:
-                    mPresenter.getElements();
-//                    showModelHistory(null);
-                    break;
-            }
-            dismissLoadingDialog();
+//            pageFinished();
         }
 
         @Override

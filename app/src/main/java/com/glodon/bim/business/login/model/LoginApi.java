@@ -1,5 +1,6 @@
 package com.glodon.bim.business.login.model;
 
+import com.glodon.bim.business.login.bean.CheckAccountBean;
 import com.glodon.bim.common.login.User;
 
 import okhttp3.ResponseBody;
@@ -9,6 +10,8 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
+import retrofit2.http.Streaming;
 import retrofit2.http.Url;
 import rx.Observable;
 
@@ -87,4 +90,36 @@ public interface LoginApi {
      */
     @GET("uaa/user")
     Observable<User> getUserInfo(@Header("cookie") String cookie);
+
+    /**
+     * 获取图片验证码
+     */
+    @GET("uaa/user/password/forgot/captcha")
+    Call<ResponseBody> getPictureCode();//Signup-Key
+
+    /**
+     * 验证用户是否存在
+     */
+    @GET("uaa/user/password/forgot/check")
+    Observable<CheckAccountBean> checkAccount(@Query("identity") String identity);
+
+    /**
+     * 获取手机验证码
+     */
+    @GET("uaa/user/password/forgot/code")
+    Observable<CheckAccountBean> getPhoneCode(@Query("mobile") String mobile,@Query("captcha")String captcha,@Query("signupKey")String signupKey);
+
+    /**
+     * 验证短信验证码
+     */
+    @GET("uaa/user/password/forgot/code/verify")
+    Observable<CheckAccountBean> checkSmsCode(@Query("mobile") String mobile,@Query("verifyCode")String verifyCode);
+
+
+    /**
+     * 重置密码
+     */
+    @POST("uaa/user/password/forgot/reset")
+    Observable<CheckAccountBean> resetPwd(@Query("mobile") String mobile,@Query("code")String code,@Query("pwd")String pwd);
+
 }

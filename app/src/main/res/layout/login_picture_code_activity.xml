@@ -60,7 +60,7 @@
             />
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/dimen_25"
             android:orientation="horizontal"
             android:background="@color/white"
             android:layout_marginTop="@dimen/dimen_15">
@@ -68,7 +68,7 @@
                 android:id="@+id/picture_code_name"
                 android:layout_width="@dimen/dimen_0"
                 android:layout_weight="1"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:textSize="@dimen/dimen_18"
                 android:textColor="@color/c_898989"
                 android:maxLines="1"
@@ -80,7 +80,7 @@
             <RelativeLayout
                 android:id="@+id/picture_code_name_delete"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:paddingLeft="@dimen/dimen_15"
                 android:layout_gravity="center_vertical"
                 android:background="@color/white"
@@ -89,6 +89,7 @@
                     android:layout_width="@dimen/dimen_18"
                     android:layout_height="@dimen/dimen_18"
                     android:background="@drawable/icon_login_password_delete"
+                    android:layout_centerVertical="true"
                     />
             </RelativeLayout>
 
@@ -121,7 +122,7 @@
             />
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/dimen_25"
             android:layout_marginTop="@dimen/dimen_15"
             android:background="@color/white"
             android:orientation="horizontal">
@@ -129,7 +130,7 @@
                 android:id="@+id/picture_code_code_text"
                 android:layout_width="@dimen/dimen_0"
                 android:layout_weight="1"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:textSize="@dimen/dimen_18"
                 android:textColor="@color/black"
                 android:maxLength="4"
@@ -142,7 +143,7 @@
             <RelativeLayout
                 android:id="@+id/picture_code_code_text_delete"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
                 android:paddingLeft="@dimen/dimen_15"
                 android:background="@color/white"
@@ -151,19 +152,15 @@
                     android:layout_width="@dimen/dimen_18"
                     android:layout_height="@dimen/dimen_18"
                     android:background="@drawable/icon_login_password_delete"
+                    android:layout_centerVertical="true"
                     />
             </RelativeLayout>
 
-            <TextView
-                android:id="@+id/picture_code_code_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/c_00baf3"
-                android:textSize="@dimen/dimen_18"
+            <ImageView
+                android:id="@+id/picture_code_icon"
+                android:layout_width="@dimen/dimen_46"
+                android:layout_height="@dimen/dimen_25"
                 android:layout_gravity="center_vertical"
-                android:text="a b c d"
-                android:layout_marginLeft="@dimen/dimen_15"
-                android:background="@color/white"
                 />
         </LinearLayout>
 
@@ -193,6 +190,7 @@
             android:background="@drawable/corner_radius_33_gray_bg"
             android:textSize="@dimen/dimen_16"
             />
+
     </LinearLayout>
 
 

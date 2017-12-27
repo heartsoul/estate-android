@@ -1,6 +1,7 @@
 package com.glodon.bim.basic.utils;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 
 /**
@@ -24,5 +25,22 @@ public class BitmapUtil {
         }
         // 在低版本中用一行的字节x高度
         return bitmap.getRowBytes() * bitmap.getHeight();                //earlier version
+    }
+
+    /**
+     * base64编码的字符串转为bitmap
+     */
+    public static Bitmap stringtoBitmap(String string){
+        //将字符串转换成Bitmap类型
+        Bitmap bitmap=null;
+        try {
+            byte[]bitmapArray;
+            bitmapArray=android.util.Base64.decode(string, android.util.Base64.DEFAULT);
+            bitmap= BitmapFactory.decodeByteArray(bitmapArray, 0, bitmapArray.length);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return bitmap;
     }
 }

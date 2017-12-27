@@ -1,5 +1,7 @@
 package com.glodon.bim.business.login.view;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -15,6 +17,8 @@ import android.widget.TextView;
 
 import com.glodon.bim.R;
 import com.glodon.bim.base.BaseActivity;
+import com.glodon.bim.business.login.contract.ResetPasswordContract;
+import com.glodon.bim.business.login.presenter.ResetPasswordPresenter;
 
 import java.lang.reflect.Field;
 
@@ -23,7 +27,7 @@ import java.lang.reflect.Field;
  * 作者：zhourf on 2017/9/8
  * 邮箱：zhourf@glodon.com
  */
-public class ResetPasswordActivity extends BaseActivity implements View.OnClickListener{
+public class ResetPasswordActivity extends BaseActivity implements View.OnClickListener,ResetPasswordContract.View{
 
     private View mStatusView;
     private RelativeLayout mBackView;
@@ -42,6 +46,7 @@ public class ResetPasswordActivity extends BaseActivity implements View.OnClickL
 
     private Button mSubmitView;
 
+    private ResetPasswordContract.Presenter mPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -186,7 +191,8 @@ public class ResetPasswordActivity extends BaseActivity implements View.OnClickL
     }
 
     private void initData() {
-
+        mPresenter = new ResetPasswordPresenter(this);
+        mPresenter.initData(getIntent());
     }
 
 
@@ -264,6 +270,7 @@ public class ResetPasswordActivity extends BaseActivity implements View.OnClickL
         String confirmPsd = mConfirmText.getText().toString().trim();
         if(newPsd.equals(confirmPsd)){
             hideError();
+            mPresenter.resetPwd(newPsd);
         }else{
             showError();
         }
@@ -297,6 +304,28 @@ public class ResetPasswordActivity extends BaseActivity implements View.OnClickL
             f.setAccessible(true);
             f.set(mConfirmText, R.drawable.edit_cursor_color);
         } catch (Exception ignored) {
+        }
+    }
+
+    @Override
+    public void showLoadingDialog() {
+        showLoadDialog(true);
+    }
+
+    @Override
+    public void dismissLoadingDialog() {
+        dismissLoadDialog();
+    }
+
+    @Override
+    public Activity getActivity() {
+        return mActivity;
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(mPresenter!=null){
+            mPresenter.onActivityResult(requestCode, resultCode, data);
         }
     }
 }

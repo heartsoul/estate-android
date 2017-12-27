@@ -1,5 +1,6 @@
 package com.glodon.bim.business.login.view;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -13,6 +14,9 @@ import android.widget.TextView;
 
 import com.glodon.bim.R;
 import com.glodon.bim.base.BaseActivity;
+import com.glodon.bim.basic.utils.RegularUtil;
+import com.glodon.bim.business.login.contract.SmsCodeContract;
+import com.glodon.bim.business.login.presenter.SmsCodePresenter;
 
 import java.util.concurrent.TimeUnit;
 
@@ -27,7 +31,7 @@ import rx.functions.Func1;
  * 作者：zhourf on 2017/9/8
  * 邮箱：zhourf@glodon.com
  */
-public class SmsCodeActivity extends BaseActivity implements View.OnClickListener {
+public class SmsCodeActivity extends BaseActivity implements View.OnClickListener,SmsCodeContract.View {
 
     private View mStatusView;
     private RelativeLayout mBackView;
@@ -41,6 +45,8 @@ public class SmsCodeActivity extends BaseActivity implements View.OnClickListene
     private Button mSubmitView;
 
     private String mCurrentCode = "";
+
+    private SmsCodeContract.Presenter mPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,7 +113,9 @@ public class SmsCodeActivity extends BaseActivity implements View.OnClickListene
     }
 
     private void initData() {
-        sendSms();
+        mPresenter = new SmsCodePresenter(this);
+        mPresenter.initData(getIntent());
+//        sendSms();
     }
 
     private void showNextButton() {
@@ -132,7 +140,7 @@ public class SmsCodeActivity extends BaseActivity implements View.OnClickListene
                 mCodeText.setText("");
                 break;
             case R.id.sms_code_view://获取验证码
-                sendSms();
+//                sendSms();
                 break;
             case R.id.sms_code_next://下一步
                 toNext();
@@ -197,12 +205,40 @@ public class SmsCodeActivity extends BaseActivity implements View.OnClickListene
 
     private void toNext() {
         String code = mCodeText.getText().toString().trim();
-//        if (!TextUtils.isEmpty(code) && code.equals(mCurrentCode)) {
-            Intent intent = new Intent(mActivity, ResetPasswordActivity.class);
-            startActivity(intent);
-//        } else {
-//            ToastManager.show("验证码错误，请重试！");
-//            mCodeText.setText("");
-//        }
+        mPresenter.checkCode(code);
+    }
+
+    @Override
+    public void showLoadingDialog() {
+        showLoadDialog(true);
+    }
+
+    @Override
+    public void dismissLoadingDialog() {
+        dismissLoadDialog();
+    }
+
+    @Override
+    public Activity getActivity() {
+        return mActivity;
+    }
+
+    @Override
+    public void showHint(String mMobile) {
+        if(!TextUtils.isEmpty(mMobile) && RegularUtil.checkMobileNumber(mMobile)) {
+            String pre = mMobile.substring(0,3);
+            String pos = mMobile.substring(7);
+            mHintView.setText("请输入" + pre+"****"+pos + "收到的短信验证码");
+        }else{
+            mHintView.setText("请输入验证码");
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(mPresenter!=null){
+            mPresenter.onActivityResult(requestCode, resultCode, data);
+        }
     }
 }

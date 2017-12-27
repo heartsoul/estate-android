@@ -1,6 +1,8 @@
 package com.glodon.bim.business.login.view;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -8,11 +10,14 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.glodon.bim.R;
 import com.glodon.bim.base.BaseActivity;
+import com.glodon.bim.business.login.contract.PictureCodeContract;
+import com.glodon.bim.business.login.presenter.PictureCodePresenter;
 import com.glodon.bim.customview.ToastManager;
 
 import java.util.Random;
@@ -22,7 +27,7 @@ import java.util.Random;
  * 作者：zhourf on 2017/9/8
  * 邮箱：zhourf@glodon.com
  */
-public class PictureCodeActivity extends BaseActivity implements View.OnClickListener{
+public class PictureCodeActivity extends BaseActivity implements View.OnClickListener,PictureCodeContract.View{
     private View mStatusView;
     private RelativeLayout mBackView;
     private EditText mNameView;
@@ -32,10 +37,12 @@ public class PictureCodeActivity extends BaseActivity implements View.OnClickLis
     private TextView mCodeName;
     private EditText mCodeText;
     private RelativeLayout mCodeDelete;
-    private TextView mCodeView;
     private View mCodeLineGray,mCodeLineBlue;
+    private ImageView mCodeIcon;
 
     private Button mSubmitView;
+
+    private PictureCodeContract.Presenter mPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,9 +66,9 @@ public class PictureCodeActivity extends BaseActivity implements View.OnClickLis
         mCodeName = (TextView) findViewById(R.id.picture_code_code_name);
         mCodeText= (EditText) findViewById(R.id.picture_code_code_text);
         mCodeDelete= (RelativeLayout) findViewById(R.id.picture_code_code_text_delete);
-        mCodeView= (TextView) findViewById(R.id.picture_code_code_view);
         mCodeLineGray = findViewById(R.id.picture_code_code_line_gray);
         mCodeLineBlue = findViewById(R.id.picture_code_code_line_blue);
+        mCodeIcon = (ImageView) findViewById(R.id.picture_code_icon);
 
         mSubmitView= (Button) findViewById(R.id.picture_code_next);
     }
@@ -72,7 +79,7 @@ public class PictureCodeActivity extends BaseActivity implements View.OnClickLis
 
         mNameDelete.setOnClickListener(this);
         mCodeDelete.setOnClickListener(this);
-        mCodeView.setOnClickListener(this);
+        mCodeIcon.setOnClickListener(this);
 
         mNameView.addTextChangedListener(new TextWatcher() {
             @Override
@@ -166,7 +173,9 @@ public class PictureCodeActivity extends BaseActivity implements View.OnClickLis
     }
 
     private void initData() {
-        changeCode();
+
+        mPresenter = new PictureCodePresenter(this);
+        mPresenter.initData(getIntent());
     }
 
     private void showNextButton(){
@@ -194,8 +203,8 @@ public class PictureCodeActivity extends BaseActivity implements View.OnClickLis
             case R.id.picture_code_code_text_delete://图片验证码删除
                 mCodeText.setText("");
                 break;
-            case R.id.picture_code_code_view://图片验证码
-                changeCode();
+            case R.id.picture_code_icon://图片验证码
+                mPresenter.getPictureCode();
                 break;
             case R.id.picture_code_next://下一步
                 toNext();
@@ -206,30 +215,53 @@ public class PictureCodeActivity extends BaseActivity implements View.OnClickLis
 
     private void toNext() {
        String code = mCodeText.getText().toString().trim();
-        if(!TextUtils.isEmpty(code) && code.equals(mCurrentCode)){
-            Intent intent = new Intent(mActivity,SmsCodeActivity.class);
-            startActivity(intent);
-        }else{
-            ToastManager.show("图片验证错误，请重试！");
-            mCodeText.setText("");
-        }
+        String account = mNameView.getText().toString().trim();
+        mPresenter.checkAccount(account,code);
+//        ToastManager.show("图片验证错误，请重试！");
     }
 
-    private String[] letters = {"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"};
-    private String mCurrentCode = "";
+//    private String[] letters = {"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"};
+//    private String mCurrentCode = "";
     //改变验证码
-    private void changeCode() {
-        int size = letters.length;
-        StringBuilder code =new StringBuilder();
-        StringBuilder codeText =new StringBuilder();
-        for(int i = 0;i<4;i++){
-            int random = new Random().nextInt(size);
-            code.append(letters[random]);
-            codeText.append(letters[random]+" ");
-        }
-        mCurrentCode = code.toString();
-        mCodeView.setText(codeText.toString().trim());
+//    private void changeCode() {
+//        int size = letters.length;
+//        StringBuilder code =new StringBuilder();
+//        StringBuilder codeText =new StringBuilder();
+//        for(int i = 0;i<4;i++){
+//            int random = new Random().nextInt(size);
+//            code.append(letters[random]);
+//            codeText.append(letters[random]+" ");
+//        }
+//        mCurrentCode = code.toString();
+//        mCodeView.setText(codeText.toString().trim());
+//    }
+
+
+    @Override
+    public void showLoadingDialog() {
+        showLoadDialog(true);
     }
 
+    @Override
+    public void dismissLoadingDialog() {
+        dismissLoadDialog();
+    }
 
+    @Override
+    public Activity getActivity() {
+        return mActivity;
+    }
+
+    @Override
+    public void showPictureCode(Bitmap bm) {
+        mCodeIcon.setImageBitmap(bm);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(mPresenter!=null){
+            mPresenter.onActivityResult(requestCode, resultCode, data);
+        }
+    }
 }

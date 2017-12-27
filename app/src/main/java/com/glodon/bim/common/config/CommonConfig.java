@@ -72,4 +72,6 @@ public class CommonConfig {
     public static final String RELEVANT_MODEL = "RELEVANT_MODEL";//从模型模式进入检查单
     public static final String SEARCH_TYPE = "SEARCH_TYPE";//搜索类型 0图纸  1模型
     public static final String RELEVANT_TYPE_MODEL = "RELEVANT_TYPE_MODEL";
+    public static final String SMSCODE_MOBILE = "SMSCODE_MOBILE";
+    public static final String SMSCODE_CODE = "SMSCODE_CODE";
 }
