@@ -33,7 +33,7 @@ public class ThumbnailUtil {
      * @param fileId  图纸或模型id
      * @param view  展示的view
      */
-    public static void getThumbnail(final Activity mActivity, long projectId, String projectVersionId, String fileId, final ImageView view){
+    public static void getThumbnail(final Activity mActivity, long projectId, String projectVersionId, String fileId, final ImageView view,final int defaultIcon){
         NetRequest.getInstance().getCall(AppConfig.BASE_URL, ThumbnailApi.class).getBluePrint(projectId,projectVersionId,fileId,new DaoProvider().getCookie())
                 .enqueue(new Callback<ThumbnailBean>() {
                     @Override
@@ -46,16 +46,10 @@ public class ThumbnailUtil {
                                 if(bean.data!=null&&!TextUtils.isEmpty(bean.data.thumbnailUrl)){
                                     url = bean.data.thumbnailUrl;
                                 }
-                                ImageLoader.showImageCenterCrop(mActivity,url,view, R.drawable.icon_blueprint_default);
+                                ImageLoader.showImageCenterCrop(mActivity,url,view, defaultIcon);
 
                             }
-//                            if(response.body()!=null){
-//                                try {
-//                                    LogUtil.e("body="+response.body().string());
-//                                } catch (IOException e) {
-//                                    e.printStackTrace();
-//                                }
-//                            }
+
                             if(response.errorBody()!=null){
                                 try {
                                     LogUtil.e("getthumbnail error = "+response.errorBody().string());

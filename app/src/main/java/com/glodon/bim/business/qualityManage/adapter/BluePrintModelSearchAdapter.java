@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.glodon.bim.R;
-import com.glodon.bim.basic.image.ImageLoader;
 import com.glodon.bim.basic.listener.ThrottleClickEvents;
 import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.basic.utils.SharedPreferencesUtil;
@@ -67,7 +66,7 @@ public class BluePrintModelSearchAdapter extends RecyclerView.Adapter<RecyclerVi
             bHolder.mSelectView.setVisibility(View.GONE);
             long projectId = SharedPreferencesUtil.getProjectId();
             String projectVerson = SharedPreferencesUtil.getProjectVersionId(projectId);
-            ThumbnailUtil.getThumbnail(mActivity,projectId,projectVerson,item.fileId,bHolder.mThumbnailView);
+            ThumbnailUtil.getThumbnail(mActivity,projectId,projectVerson,item.fileId,bHolder.mThumbnailView,R.drawable.icon_default_blueprint);
             ThrottleClickEvents.throttleClick(bHolder.mParentView, new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -81,6 +80,9 @@ public class BluePrintModelSearchAdapter extends RecyclerView.Adapter<RecyclerVi
         if(holder instanceof ModelHolder){
             ModelHolder mHolder = (ModelHolder) holder;
             mHolder.mNameView.setText(Html.fromHtml(item.name));
+            long projectId = SharedPreferencesUtil.getProjectId();
+            String projectVerson = SharedPreferencesUtil.getProjectVersionId(projectId);
+            ThumbnailUtil.getThumbnail(mActivity,projectId,projectVerson,item.fileId,mHolder.mThumbView,R.drawable.icon_default_model);
             ThrottleClickEvents.throttleClick(mHolder.mParentView, new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -114,10 +116,11 @@ public class BluePrintModelSearchAdapter extends RecyclerView.Adapter<RecyclerVi
 
         TextView mNameView;
         View mParentView;
-
+        ImageView mThumbView;
         public ModelHolder(View itemView) {
             super(itemView);
             mNameView = itemView.findViewById(R.id.quality_model_list_item_name);
+            mThumbView = itemView.findViewById(R.id.quality_model_list_item_icon);
             mParentView = itemView;
         }
     }

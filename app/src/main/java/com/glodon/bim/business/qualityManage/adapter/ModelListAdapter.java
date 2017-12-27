@@ -10,8 +10,10 @@ import android.widget.TextView;
 
 import com.glodon.bim.R;
 import com.glodon.bim.basic.log.LogUtil;
+import com.glodon.bim.basic.utils.SharedPreferencesUtil;
 import com.glodon.bim.business.qualityManage.bean.ModelListBeanItem;
 import com.glodon.bim.business.qualityManage.model.OnModelSelectListener;
+import com.glodon.bim.business.qualityManage.util.ThumbnailUtil;
 import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
@@ -56,34 +58,18 @@ public class ModelListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         if (holder instanceof ObjHolder) {
             final ObjHolder lHolder = (ObjHolder) holder;
             lHolder.mNameView.setText(item.fileName);
-
+            long projectId = SharedPreferencesUtil.getProjectId();
+            String projectVerson = SharedPreferencesUtil.getProjectVersionId(projectId);
+            ThumbnailUtil.getThumbnail(mActivity,projectId,projectVerson,item.fileId,lHolder.mThumbView,R.drawable.icon_default_model);
             lHolder.mParentView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-//                    if (mLastView != null) {
-//                        mLastView.setVisibility(View.INVISIBLE);
-//                        mLastTextView.setTextColor(mActivity.getResources().getColor(R.color.c_333333));
-//                    }
-//                    lHolder.mSelectView.setVisibility(View.VISIBLE);
-//                    lHolder.mNameView.setTextColor(mActivity.getResources().getColor(R.color.c_00baf3));
-//                    mLastView = lHolder.mSelectView;
-//                    mLastTextView = lHolder.mNameView;
-//                    mSelectId = position;
                     if (mListener != null) {
                         mListener.selectModel(item);
                     }
                 }
             });
 
-//            if (item != null && mSelectId == item.fileId) {
-//                lHolder.mSelectView.setVisibility(View.VISIBLE);
-//                lHolder.mNameView.setTextColor(mActivity.getResources().getColor(R.color.c_00baf3));
-//                mLastView = lHolder.mSelectView;
-//                mLastTextView = lHolder.mNameView;
-//            } else {
-//                lHolder.mSelectView.setVisibility(View.INVISIBLE);
-//                lHolder.mNameView.setTextColor(mActivity.getResources().getColor(R.color.c_333333));
-//            }
         }
 
     }
@@ -101,10 +87,11 @@ public class ModelListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
         TextView mNameView;
         View mParentView;
-
+        ImageView mThumbView;
         public ObjHolder(View itemView) {
             super(itemView);
             mNameView = itemView.findViewById(R.id.quality_model_list_item_name);
+            mThumbView = itemView.findViewById(R.id.quality_model_list_item_icon);
             mParentView = itemView;
         }
     }

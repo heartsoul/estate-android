@@ -10,12 +10,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.glodon.bim.R;
-import com.glodon.bim.basic.image.ImageLoader;
+import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.basic.utils.SharedPreferencesUtil;
 import com.glodon.bim.business.qualityManage.bean.BlueprintListBeanItem;
 import com.glodon.bim.business.qualityManage.listener.OnChooseBlueprintCataListener;
 import com.glodon.bim.business.qualityManage.listener.OnChooseBlueprintObjListener;
 import com.glodon.bim.business.qualityManage.util.ThumbnailUtil;
+import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,6 +64,7 @@ public class BluePrintContentAdapter extends RecyclerView.Adapter<RecyclerView.V
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if(holder==null) return;
         final BlueprintListBeanItem item = mDataList.get(position);
+        LogUtil.e("图纸item="+new GsonBuilder().create().toJson(item));
         if(holder instanceof CataHolder){
             final CataHolder cHolder = (CataHolder) holder;
             cHolder.mNameView.setText(item.name);
@@ -81,7 +83,7 @@ public class BluePrintContentAdapter extends RecyclerView.Adapter<RecyclerView.V
             lHolder.mNameView.setText(item.name);
             long projectId = SharedPreferencesUtil.getProjectId();
             String projectVerson = SharedPreferencesUtil.getProjectVersionId(projectId);
-            ThumbnailUtil.getThumbnail(mActivity,projectId,projectVerson,item.fileId,lHolder.mThumbnailView);
+            ThumbnailUtil.getThumbnail(mActivity,projectId,projectVerson,item.fileId,lHolder.mThumbnailView,R.drawable.icon_default_blueprint);
 
             lHolder.mParentView.setOnClickListener(new View.OnClickListener() {
                 @Override

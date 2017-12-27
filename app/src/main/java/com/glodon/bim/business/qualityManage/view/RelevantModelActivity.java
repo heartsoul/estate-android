@@ -476,7 +476,7 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
 //                    showModelHistory(null);
                  break;
          }
-         dismissLoadingDialog();
+
      }
 
     class CustomWebViewClient extends WebViewClient {
@@ -491,6 +491,7 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
 //            pageFinished();
+            dismissLoadingDialog();
         }
 
         @Override

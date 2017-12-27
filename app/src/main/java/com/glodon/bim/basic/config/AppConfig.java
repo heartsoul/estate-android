@@ -45,16 +45,16 @@ public class AppConfig {
 //    public static String BASE_URL = "http://bimcop.glodon.com/"; //正式环境
 
       //测试环境
-    public static String BASE_UPLOAD_URL =  "http://172.16.233.183:8093/";//图片上传  测试
-    public static String BASE_URL = "http://192.168.81.30/"; //测试
-    public static final String BASE_URL_FEEDBACK = "http://192.168.81.30/";//意见反馈的url
-    public static final String BASE_URL_BLUEPRINT_TOKEN = "http://47.95.204.243/app.html?param=";//图纸的url地址
+//    public static String BASE_UPLOAD_URL =  "http://172.16.233.183:8093/";//图片上传  测试
+//    public static String BASE_URL = "http://192.168.81.30/"; //测试
+//    public static final String BASE_URL_FEEDBACK = "http://192.168.81.30/";//意见反馈的url
+//    public static final String BASE_URL_BLUEPRINT_TOKEN = "http://47.95.204.243/app.html?param=";//图纸的url地址
 
     //预生产 47.95.204.243
-//    public static String BASE_UPLOAD_URL =  "https://api.glodon.com/nss/";//图片上传
-//    public static String BASE_URL = "http://47.95.204.243/";
-//    public static final String BASE_URL_FEEDBACK = "http://47.95.204.243/";//意见反馈的url
-//    public static final String BASE_URL_BLUEPRINT_TOKEN = "http://47.95.204.243/app.html?param=";//图纸的url地址
+    public static String BASE_UPLOAD_URL =  "https://api.glodon.com/nss/";//图片上传
+    public static String BASE_URL = "http://47.95.204.243/";
+    public static final String BASE_URL_FEEDBACK = "http://47.95.204.243/";//意见反馈的url
+    public static final String BASE_URL_BLUEPRINT_TOKEN = "http://47.95.204.243/app.html?param=";//图纸的url地址
 
     //生产 47.95.204.243
 //    public static String BASE_UPLOAD_URL =  "https://api.glodon.com/nss/";//图片上传
