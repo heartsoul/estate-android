@@ -75,6 +75,6 @@ public interface ChooseModuleContract {
         /**
          * 获取质检项目列表
          */
-        Observable<List<ModuleListBeanItem>> getModuleList(long deptId,long projectId);
+        Observable<List<ModuleListBeanItem>> getModuleList(long deptId);
     }
 }

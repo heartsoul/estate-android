@@ -28,7 +28,7 @@ public interface BluePrintModelSearchApi {
      * @return
      */
     @POST("model/{projectId}/{projectVersionId}/bim/file/query")
-    Observable<BluePrintModelSearchBean> search(@Path("projectId")long projectId, @Path("projectVersionId")String projectVersionId, @Query("name") String name, @Query("suffix") String suffix, @Header("cookie")String cookie);
+    Observable<BluePrintModelSearchBean> search(@Path("projectId")long projectId, @Path("projectVersionId")String projectVersionId, @Query("inspectItem") String name, @Query("suffix") String suffix, @Header("cookie")String cookie);
 
     /**
      * 搜索模型或图纸
@@ -39,6 +39,6 @@ public interface BluePrintModelSearchApi {
      * @return
      */
     @POST("model/{projectId}/{projectVersionId}/bim/file/query")
-    Call<ResponseBody> search2(@Path("projectId")long projectId, @Path("projectVersionId")String projectVersionId, @Query("name") String name, @Query("suffix") String suffix, @Header("cookie")String cookie);
+    Call<ResponseBody> search2(@Path("projectId")long projectId, @Path("projectVersionId")String projectVersionId, @Query("inspectItem") String name, @Query("suffix") String suffix, @Header("cookie")String cookie);
 
 }

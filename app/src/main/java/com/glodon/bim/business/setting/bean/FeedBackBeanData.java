@@ -18,7 +18,7 @@ public class FeedBackBeanData {
         return "FeedBackBeanData{" +
                 "content='" + content + '\'' +
                 ", email='" + email + '\'' +
-                ", name='" + name + '\'' +
+                ", inspectItem='" + name + '\'' +
                 ", title='" + title + '\'' +
                 ", id=" + id +
                 '}';

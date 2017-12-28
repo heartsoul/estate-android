@@ -3,18 +3,14 @@ package com.glodon.bim.business.qualityManage.presenter;
 import android.app.Activity;
 import android.content.Intent;
 
-import com.glodon.bim.basic.config.AppConfig;
 import com.glodon.bim.basic.log.LogUtil;
-import com.glodon.bim.basic.network.NetRequest;
 import com.glodon.bim.basic.utils.CameraUtil;
 import com.glodon.bim.basic.utils.NetWorkUtils;
 import com.glodon.bim.basic.utils.SharedPreferencesUtil;
-import com.glodon.bim.business.greendao.provider.DaoProvider;
 import com.glodon.bim.business.qualityManage.bean.ModuleListBeanItem;
 import com.glodon.bim.business.qualityManage.contract.ChooseModuleContract;
 import com.glodon.bim.business.qualityManage.contract.QulityCheckModuleContract;
 import com.glodon.bim.business.qualityManage.model.ChooseModuleModel;
-import com.glodon.bim.business.qualityManage.model.CreateCheckListApi;
 import com.glodon.bim.business.qualityManage.view.CreateCheckListActivity;
 import com.glodon.bim.business.qualityManage.view.PhotoEditActivity;
 import com.glodon.bim.common.config.CommonConfig;
@@ -22,14 +18,9 @@ import com.glodon.bim.common.config.RequestCodeConfig;
 import com.glodon.bim.customview.ToastManager;
 import com.glodon.bim.customview.album.AlbumEditActivity;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -69,7 +60,7 @@ public class QualityCheckModulePresenter implements QulityCheckModuleContract.Pr
             if (mView != null) {
                 mView.showLoadingDialog();
             }
-            Subscription sub = mModel.getModuleList(mDeptId,mDeptId)
+            Subscription sub = mModel.getModuleList(mDeptId)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Subscriber<List<ModuleListBeanItem>>() {
@@ -108,19 +99,6 @@ public class QualityCheckModulePresenter implements QulityCheckModuleContract.Pr
                     });
             mSubscription.add(sub);
 
-            NetRequest.getInstance().getCall(AppConfig.BASE_URL,CreateCheckListApi.class).getModuleList2(mDeptId,SharedPreferencesUtil.getProjectVersionId(mDeptId),new DaoProvider().getCookie())
-                    .enqueue(new Callback<ResponseBody>() {
-                        @Override
-                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                            LogUtil.response(response);
-                        }
-
-                        @Override
-                        public void onFailure(Call<ResponseBody> call, Throwable t) {
-
-                        }
-                    });
-
         } else {
             ToastManager.showNetWorkToast();
         }
@@ -140,7 +118,7 @@ public class QualityCheckModulePresenter implements QulityCheckModuleContract.Pr
 //            ModuleListBeanItem item = new ModuleListBeanItem();
 //            item.id = count;
 //            item.parentId = 0;
-//            item.name = "fileId="+i+"  parentId=0";
+//            item.inspectItem = "fileId="+i+"  parentId=0";
 //            list.add(item);
 //            count++;
 //        }
@@ -149,7 +127,7 @@ public class QualityCheckModulePresenter implements QulityCheckModuleContract.Pr
 //                ModuleListBeanItem item = new ModuleListBeanItem();
 //                item.id = count;
 //                item.parentId = i;
-//                item.name = "fileId="+count+"  parentId="+i;
+//                item.inspectItem = "fileId="+count+"  parentId="+i;
 //                count++;
 //                list.add(item);
 //            }
@@ -159,7 +137,7 @@ public class QualityCheckModulePresenter implements QulityCheckModuleContract.Pr
 //                ModuleListBeanItem item = new ModuleListBeanItem();
 //                item.id = count;
 //                item.parentId = i;
-//                item.name = "fileId="+count+"  parentId="+i;
+//                item.inspectItem = "fileId="+count+"  parentId="+i;
 //                count++;
 //                list.add(item);
 //            }

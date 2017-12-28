@@ -44,17 +44,17 @@ public interface CreateCheckListApi {
     Observable<List<PersonItem>> getPersonList(@Path("fileId") long id, @Path("coperationCorpId") long coperationCorpId, @Query("active") boolean active,@Header("cookie") String cookie);
 
 
-    /**
-     * 获取质检项目列表
-     */
-    @GET("quality/{deptId}/quality/checkpoints")
-    Observable<List<ModuleListBeanItem>> getModuleList(@Path("deptId") long deptId,@Header("cookie") String cookie);
+//    /**
+//     * 获取质检项目列表
+//     */
+//    @GET("quality/{deptId}/quality/checkpoints")
+//    Observable<List<ModuleListBeanItem>> getModuleList(@Path("deptId") long deptId,@Header("cookie") String cookie);
 
     /**
      * 获取质检项目列表
      */
     @GET("quality/{deptId}/quality/checkpoints/summary")
-    Call<ResponseBody> getModuleList2(@Path("deptId") long deptId, @Query("versionId")String versionId,@Header("cookie") String cookie);
+    Observable<List<ModuleListBeanItem>> getModuleList(@Path("deptId") long deptId, @Query("versionId")String versionId,@Header("cookie") String cookie);
 
     /**
      * 获取质检项目标准

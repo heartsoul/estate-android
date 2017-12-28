@@ -72,7 +72,7 @@ public class QualityCheckModuleFragment extends BaseFragment implements QulityCh
         {
             mTitleListener.onTitleChange(mCurrentTitle);
             if(mCurrentModuleInfo!=null){
-                SharedPreferencesUtil.setSelectModuleInfo(mCurrentModuleInfo.id.longValue(),mCurrentModuleInfo.name);
+                SharedPreferencesUtil.setSelectModuleInfo(mCurrentModuleInfo.id.longValue(),mCurrentModuleInfo.inspectItem);
             }
         }
     }
@@ -132,7 +132,7 @@ public class QualityCheckModuleFragment extends BaseFragment implements QulityCh
         //子view的父
         final LinearLayout mChildParent = view.findViewById(R.id.quality_model_list_item_catalog_child_parent);
 
-        mNameView.setText(item.name);
+        mNameView.setText(item.inspectItem);
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -163,7 +163,7 @@ public class QualityCheckModuleFragment extends BaseFragment implements QulityCh
         //创建检查单
         RelativeLayout mCreateView = view.findViewById(R.id.quality_model_list_item_obj_create);
 
-        mNameView.setText(item.name);
+        mNameView.setText(item.inspectItem);
         mStandardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -175,7 +175,7 @@ public class QualityCheckModuleFragment extends BaseFragment implements QulityCh
             public void onClick(View view) {
                 //新建检查单
                 create();
-                SharedPreferencesUtil.setSelectModuleInfo(item.id.longValue(),item.name);
+                SharedPreferencesUtil.setSelectModuleInfo(item.id.longValue(),item.inspectItem);
             }
         });
         view.setOnClickListener(new View.OnClickListener() {
@@ -185,10 +185,10 @@ public class QualityCheckModuleFragment extends BaseFragment implements QulityCh
                 mCheckPointParent.setVisibility(View.GONE);
                 mListParent.setVisibility(View.VISIBLE);
                 mQualityCheckListView.initData(item);
-                mCurrentTitle = item.name;
+                mCurrentTitle = item.inspectItem;
                 mCurrentModuleInfo = item;
                 changeTitle();
-                SharedPreferencesUtil.setSelectModuleInfo(item.id.longValue(),item.name);
+                SharedPreferencesUtil.setSelectModuleInfo(item.id.longValue(),item.inspectItem);
             }
         });
         parent.addView(view);

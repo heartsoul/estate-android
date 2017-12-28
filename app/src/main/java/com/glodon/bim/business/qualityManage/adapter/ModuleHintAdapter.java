@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.glodon.bim.R;
 import com.glodon.bim.business.qualityManage.bean.ModuleListBeanItem;
-import com.glodon.bim.business.qualityManage.listener.OnChooseModuleObjListener;
 import com.glodon.bim.business.qualityManage.listener.OnModuleHintClickListener;
 
 import java.util.ArrayList;
@@ -54,7 +53,7 @@ public class ModuleHintAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         final ListHolder lHolder = (ListHolder) holder;
         final ModuleListBeanItem item = mDataList.get(position);
-        lHolder.mNameView.setText(item.name);
+        lHolder.mNameView.setText(item.inspectItem);
         lHolder.mParentView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -35,7 +35,6 @@ import com.glodon.bim.common.config.CommonConfig;
 import com.glodon.bim.common.config.RequestCodeConfig;
 import com.glodon.bim.customview.ToastManager;
 import com.glodon.bim.customview.album.AlbumEditActivity;
-import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -297,9 +296,9 @@ public class QualityCheckListPresenter implements QualityCheckListContract.Prese
             if (mView != null) {
                 mView.showLoadingDialog();
             }
-            if(mSelectModuleInfo!=null &&(mSelectModuleInfo.id>0 || !TextUtils.isEmpty(mSelectModuleInfo.name))){
+            if(mSelectModuleInfo!=null &&(mSelectModuleInfo.id>0 || !TextUtils.isEmpty(mSelectModuleInfo.inspectItem))){
                 if (mProjectInfo != null) {
-                    Subscription sub = mModel.getQualityCheckList(mProjectInfo.deptId, mQcState, mCurrentPage, mSize,mSelectModuleInfo.id,mSelectModuleInfo.name)
+                    Subscription sub = mModel.getQualityCheckList(mProjectInfo.deptId, mQcState, mCurrentPage, mSize,mSelectModuleInfo.id,mSelectModuleInfo.inspectItem)
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(new Subscriber<QualityCheckListBean>() {
@@ -458,8 +457,8 @@ public class QualityCheckListPresenter implements QualityCheckListContract.Prese
     }
 
     private void updateStatusNum(){
-        if(mSelectModuleInfo!=null &&(mSelectModuleInfo.id>0 || !TextUtils.isEmpty(mSelectModuleInfo.name))) {
-            Subscription sub = mModel.getStatusNum(mProjectInfo.deptId,mSelectModuleInfo.id,mSelectModuleInfo.name)
+        if(mSelectModuleInfo!=null &&(mSelectModuleInfo.id>0 || !TextUtils.isEmpty(mSelectModuleInfo.inspectItem))) {
+            Subscription sub = mModel.getStatusNum(mProjectInfo.deptId,mSelectModuleInfo.id,mSelectModuleInfo.inspectItem)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Subscriber<List<ClassifyNum>>() {

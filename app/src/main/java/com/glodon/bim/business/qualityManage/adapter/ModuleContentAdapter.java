@@ -6,12 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.glodon.bim.R;
-import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.business.qualityManage.bean.ModuleListBeanItem;
 import com.glodon.bim.business.qualityManage.listener.OnChooseModuleCataListener;
 import com.glodon.bim.business.qualityManage.listener.OnChooseModuleObjListener;
@@ -65,7 +63,7 @@ public class ModuleContentAdapter extends RecyclerView.Adapter<RecyclerView.View
         final ModuleListBeanItem item = mDataList.get(position);
         if(holder instanceof CataHolder){
             final CataHolder cHolder = (CataHolder) holder;
-            cHolder.mNameView.setText(item.name);
+            cHolder.mNameView.setText(item.inspectItem);
             cHolder.mParentView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -78,7 +76,7 @@ public class ModuleContentAdapter extends RecyclerView.Adapter<RecyclerView.View
 
         if(holder instanceof ObjHolder){
             final ObjHolder lHolder = (ObjHolder) holder;
-            lHolder.mNameView.setText(item.name);
+            lHolder.mNameView.setText(item.inspectItem);
             lHolder.mBenchMarkView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

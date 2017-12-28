@@ -9,6 +9,7 @@ import com.glodon.bim.business.qualityManage.contract.ModuleStandardContract;
 import com.glodon.bim.business.qualityManage.model.ModuleStandardModel;
 import com.glodon.bim.common.config.CommonConfig;
 import com.glodon.bim.customview.ToastManager;
+import com.google.gson.GsonBuilder;
 
 import java.util.List;
 
@@ -41,6 +42,7 @@ public class ModuleStandardPresenter implements ModuleStandardContract.Presenter
         if(NetWorkUtils.isNetworkAvailable(mView.getActivity())) {
             mView.showLoadingDialog();
             long templateId = intent.getLongExtra(CommonConfig.MODULE_TEMPLATEID, -1);
+            LogUtil.e("templateId="+templateId);
             Subscription sub = mModel.getModuleStandardList(templateId)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -61,6 +63,7 @@ public class ModuleStandardPresenter implements ModuleStandardContract.Presenter
 
                         @Override
                         public void onNext(List<ModuleStandardItem> list) {
+                            LogUtil.e("standardList = "+new GsonBuilder().create().toJson(list));
                             if(list!=null && list.size()>0){
                                 if(mView!=null)
                                 {
