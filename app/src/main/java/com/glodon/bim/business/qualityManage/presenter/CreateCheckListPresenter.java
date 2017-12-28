@@ -35,6 +35,7 @@ import com.glodon.bim.customview.album.AlbumData;
 import com.glodon.bim.customview.album.AlbumEditActivity;
 import com.glodon.bim.customview.album.ImageItem;
 import com.glodon.bim.customview.photopreview.PhotoPreviewActivity;
+import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -936,6 +937,7 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
             case RequestCodeConfig.REQUEST_CODE_CHOOSE_MODEL:
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     mModelSelectInfo = (ModelListBeanItem) data.getSerializableExtra(CommonConfig.MODEL_SELECT_INFO);
+                    LogUtil.e("model="+new GsonBuilder().create().toJson(mModelSelectInfo));
                     if (mModelSelectInfo.component != null) {
                         getElementName(mModelSelectInfo.fileId, mModelSelectInfo.component.elementId);
                         mModelType = 1;

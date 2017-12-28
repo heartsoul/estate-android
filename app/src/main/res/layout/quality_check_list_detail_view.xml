@@ -19,6 +19,7 @@
             android:layout_marginTop="@dimen/dimen_20">
 
             <TextView
+                android:id="@+id/quality_check_list_detail_inspection_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="检查单位："

@@ -43,7 +43,7 @@ public class QualityCheckListDetailView implements QualityCheckListDetailViewCon
 
     //检查单问题
     private LinearLayout mParent;
-    private TextView mInspectionCompanyView, mCompanyView, mPersonView, mModuleView, mSiteDescription, mSaveTimeView, mSubmitTimeView, mBluePrintView, mModelView;
+    private TextView mInspectionCompanyTitle,mInspectionCompanyView, mCompanyView, mPersonView, mModuleView, mSiteDescription, mSaveTimeView, mSubmitTimeView, mBluePrintView, mModelView;
     private ImageView mModuleBenchMarkView;
 
     private QualityCheckListDetailBean mBean;
@@ -75,6 +75,7 @@ public class QualityCheckListDetailView implements QualityCheckListDetailViewCon
         mParent = view.findViewById(R.id.quality_check_list_detail_list);
         mModuleBenchMarkView = view.findViewById(R.id.quality_check_list_detail_benchmark);
         mInspectionCompanyView = view.findViewById(R.id.quality_check_list_detail_inspection_company);
+        mInspectionCompanyTitle = view.findViewById(R.id.quality_check_list_detail_inspection_title);
         mCompanyView = view.findViewById(R.id.quality_check_list_detail_company);
         mPersonView = view.findViewById(R.id.quality_check_list_detail_person);
         mModuleView = view.findViewById(R.id.quality_check_list_detail_module);
@@ -115,6 +116,14 @@ public class QualityCheckListDetailView implements QualityCheckListDetailViewCon
     //添加基本信息
     private void addBasicInfo() {
         final QualityCheckListDetailInspectionInfo info = mBean.inspectionInfo;
+        switch (info.inspectionType){
+            case CommonConfig.TYPE_INSPECTION:
+                mInspectionCompanyTitle.setText("检查单位");
+                break;
+            case CommonConfig.TYPE_ACCEPTANCE:
+                mInspectionCompanyTitle.setText("验收单位");
+                break;
+        }
         mInspectionCompanyView.setText(info.inspectionCompanyName);
         mCompanyView.setText(info.constructionCompanyName);
         mPersonView.setText(info.responsibleUserName);
