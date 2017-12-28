@@ -233,7 +233,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View, V
                 mPresenter.clickLoginBtn(mUsernameEt.getText().toString(), mPasswordEt.getText().toString());
                 break;
             case R.id.login_forget_password:
-                mPresenter.forgetPassword();
+                mPresenter.forgetPassword(mUsernameEt.getText().toString().trim());
                 break;
         }
     }
@@ -328,7 +328,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View, V
                 @Override
                 public void onClick(View view) {
                     hideErrorDialog();
-                    mPresenter.forgetPassword();
+                    mPresenter.forgetPassword(mUsernameEt.getText().toString().trim());
                 }
             });
         }

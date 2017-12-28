@@ -123,7 +123,7 @@ public class ResetPasswordActivity extends BaseActivity implements View.OnClickL
                     mNewLineBlue.setVisibility(View.VISIBLE);
                     mNewTop.setVisibility(View.VISIBLE);
                     if(TextUtils.isEmpty(text)){
-                        mNewText.setHint("6-20位，不能与旧密码相同");
+                        mNewText.setHint("6-20位");
                         mNewDelete.setVisibility(View.GONE);
                     }else{
                         mNewDelete.setVisibility(View.VISIBLE);
@@ -256,7 +256,7 @@ public class ResetPasswordActivity extends BaseActivity implements View.OnClickL
     private void showNextButton() {
         String newPsd = mNewText.getText().toString().trim();
         String confirmPsd = mConfirmText.getText().toString().trim();
-        if (!TextUtils.isEmpty(newPsd) && !TextUtils.isEmpty(confirmPsd)) {
+        if (!TextUtils.isEmpty(newPsd) && !TextUtils.isEmpty(confirmPsd) && newPsd.length()>=6 && confirmPsd.length()>=6 && newPsd.length() == confirmPsd.length()) {
             mSubmitView.setBackgroundResource(R.drawable.corner_radius_33_blue_bg);
             mSubmitView.setOnClickListener(this);
         } else {

@@ -18,6 +18,7 @@ import com.glodon.bim.R;
 import com.glodon.bim.base.BaseActivity;
 import com.glodon.bim.business.login.contract.PictureCodeContract;
 import com.glodon.bim.business.login.presenter.PictureCodePresenter;
+import com.glodon.bim.common.config.CommonConfig;
 import com.glodon.bim.customview.ToastManager;
 
 import java.util.Random;
@@ -173,7 +174,10 @@ public class PictureCodeActivity extends BaseActivity implements View.OnClickLis
     }
 
     private void initData() {
-
+        String username = getIntent().getStringExtra(CommonConfig.RESET_USERNAME);
+        if(!TextUtils.isEmpty(username)){
+            mNameView.setText(username);
+        }
         mPresenter = new PictureCodePresenter(this);
         mPresenter.initData(getIntent());
     }

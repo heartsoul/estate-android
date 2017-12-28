@@ -74,4 +74,5 @@ public class CommonConfig {
     public static final String RELEVANT_TYPE_MODEL = "RELEVANT_TYPE_MODEL";
     public static final String SMSCODE_MOBILE = "SMSCODE_MOBILE";
     public static final String SMSCODE_CODE = "SMSCODE_CODE";
+    public static final String RESET_USERNAME = "RESET_USERNAME";
 }

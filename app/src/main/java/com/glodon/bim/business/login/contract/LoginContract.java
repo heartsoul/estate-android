@@ -28,7 +28,7 @@ public interface LoginContract {
         /**
          * 点击忘记密码
          */
-        void forgetPassword();
+        void forgetPassword(String username);
     }
 
     interface View extends IBaseView {

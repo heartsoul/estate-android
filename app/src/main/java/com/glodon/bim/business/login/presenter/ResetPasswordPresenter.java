@@ -77,7 +77,11 @@ public class ResetPasswordPresenter implements ResetPasswordContract.Presenter{
                                     mView.getActivity().finish();
                                 } else {
                                     //密码重置失败
-                                    ToastManager.show(bean.errorMessage);
+                                    if("630".equals(bean.statusCode)){
+                                        ToastManager.show("密码太简单！");
+                                    }else {
+                                        ToastManager.show(bean.errorMessage);
+                                    }
                                 }
                             }
                             if(mView!=null){
