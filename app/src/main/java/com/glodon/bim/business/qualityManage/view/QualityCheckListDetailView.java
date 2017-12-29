@@ -133,7 +133,7 @@ public class QualityCheckListDetailView implements QualityCheckListDetailViewCon
             mModuleBenchMarkView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    IntentManager.toModuleStandard(getActivity(), info.qualityCheckpointId.longValue());
+                    IntentManager.toModuleStandard(getActivity(), info.qualityCheckpointId.longValue(),info.qualityCheckpointName);
                 }
             });
         } else {

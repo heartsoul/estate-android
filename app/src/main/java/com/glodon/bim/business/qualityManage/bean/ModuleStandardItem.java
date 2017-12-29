@@ -11,7 +11,10 @@ public class ModuleStandardItem {
     public String content;
     public long id;
     public String name;
-    public long parentId;
+    public Long parentId;
     public String projectProperty;
     public long standardId;
+
+    public boolean hasChild = true;
+    public int level;
 }

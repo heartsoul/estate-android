@@ -17,9 +17,10 @@ public class IntentManager {
     /**
      * 跳转到质检标准
      */
-    public static void toModuleStandard(Activity activity,long templateId){
+    public static void toModuleStandard(Activity activity,long templateId,String title){
         Intent intent = new Intent(activity, ModuleStandardActivity.class);
         intent.putExtra(CommonConfig.MODULE_TEMPLATEID,templateId);
+        intent.putExtra(CommonConfig.MODULE_TITLE,title);
         activity.startActivity(intent);
     }
 

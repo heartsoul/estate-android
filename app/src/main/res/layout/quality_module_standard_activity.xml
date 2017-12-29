@@ -5,48 +5,84 @@
     android:background="@color/white"
     android:orientation="vertical">
 
+
     <LinearLayout
         android:id="@+id/module_standard_status"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/c_00baf3"
+        android:background="@color/white"
         android:orientation="vertical"></LinearLayout>
-    <!--导航栏-->
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_44"
-        android:background="@color/c_00baf3">
 
-        <RelativeLayout
-            android:id="@+id/module_standard_nav_back"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent">
-            <ImageView
-                android:layout_width="@dimen/dimen_09"
-                android:layout_height="@dimen/dimen_20"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/dimen_10"
-                android:layout_marginRight="@dimen/dimen_10"
-                android:background="@drawable/icon_back_white" />
-        </RelativeLayout>
-
-
-        <TextView
-            android:id="@+id/module_standard_nav_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="质检标准"
-            android:textColor="@color/white"
-            android:textSize="@dimen/dimen_17" />
-
-
-
-    </RelativeLayout>
-    <include layout="@layout/view_pullrefresh_view"
-        android:id="@+id/module_standard_recyclerview"
+    <ImageView
+        android:id="@+id/module_standard_cancel"
+        android:layout_width="@dimen/dimen_20"
+        android:layout_height="@dimen/dimen_20"
+        android:background="@drawable/icon_module_standard_cancel"
+        android:layout_marginLeft="@dimen/dimen_20"/>
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-         />
+        android:fillViewport="true">
+        <LinearLayout
+            android:id="@+id/module_standard_content_parent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/module_standard_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dimen_20"
+                android:layout_marginTop="@dimen/dimen_50"
+                android:text="质检标准"
+                android:textColor="@color/black"
+                android:textSize="@dimen/dimen_24" />
+        </LinearLayout>
+    </ScrollView>
+
+
+
+    <!--<LinearLayout-->
+    <!--android:id="@+id/module_standard_status"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:background="@color/c_00baf3"-->
+    <!--android:orientation="vertical"></LinearLayout>-->
+    <!--&lt;!&ndash;导航栏&ndash;&gt;-->
+    <!--<RelativeLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="@dimen/dimen_44"-->
+    <!--android:background="@color/c_00baf3">-->
+
+    <!--<RelativeLayout-->
+    <!--android:id="@+id/module_standard_nav_back"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="match_parent">-->
+    <!--<ImageView-->
+    <!--android:layout_width="@dimen/dimen_09"-->
+    <!--android:layout_height="@dimen/dimen_20"-->
+    <!--android:layout_centerVertical="true"-->
+    <!--android:layout_marginLeft="@dimen/dimen_10"-->
+    <!--android:layout_marginRight="@dimen/dimen_10"-->
+    <!--android:background="@drawable/icon_back_white" />-->
+    <!--</RelativeLayout>-->
+
+
+    <!--<TextView-->
+    <!--android:id="@+id/module_standard_nav_title"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_centerInParent="true"-->
+    <!--android:text="质检标准"-->
+    <!--android:textColor="@color/white"-->
+    <!--android:textSize="@dimen/dimen_17" />-->
+
+
+    <!--</RelativeLayout>-->
+    <!--<include layout="@layout/view_pullrefresh_view"-->
+    <!--android:id="@+id/module_standard_recyclerview"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--/>-->
 
 </LinearLayout>

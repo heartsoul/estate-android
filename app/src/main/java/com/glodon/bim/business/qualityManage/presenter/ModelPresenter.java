@@ -9,7 +9,6 @@ import com.glodon.bim.business.qualityManage.bean.ModelListBean;
 import com.glodon.bim.business.qualityManage.bean.ModelListBeanItem;
 import com.glodon.bim.business.qualityManage.bean.ModelSingleListItem;
 import com.glodon.bim.business.qualityManage.bean.ModelSpecialListItem;
-import com.glodon.bim.business.qualityManage.bean.ProjectVersionBean;
 import com.glodon.bim.business.qualityManage.contract.ModelContract;
 import com.glodon.bim.business.qualityManage.model.ModelModel;
 import com.glodon.bim.business.qualityManage.model.OnModelSelectListener;
@@ -49,9 +48,9 @@ public class ModelPresenter implements ModelContract.Presenter {
     private ModelSpecialListItem mCurrentSpecial;
     private ModelSingleListItem mCurrentSingle;
 
-    private long projectId;
-
-    private ProjectVersionBean mLatestVersionInfo;//最新版本信息
+    private long mProjectId;
+    private String mProjectVersionId;
+//    private ProjectVersionBean mLatestVersionInfo;//最新版本信息
 
     private ModelListBeanItem mModelSelectInfo;//编辑时有过这个item
     private int type = 0;//0新建检查单 1检查单编辑状态 2详情查看  3模型模式
@@ -81,8 +80,8 @@ public class ModelPresenter implements ModelContract.Presenter {
                         if(item.fileId.equals(mModelSelectInfo.fileId)){
                             //同一个模型
                             intent.putExtra(CommonConfig.RELEVANT_TYPE, 1);
-                            modelInfo.buildingId = mModelSelectInfo.buildingId;
-                            modelInfo.buildingName = mModelSelectInfo.buildingName;
+//                            modelInfo.buildingId = mModelSelectInfo.buildingId;
+//                            modelInfo.buildingName = mModelSelectInfo.buildingName;
                             modelInfo.component = mModelSelectInfo.component;
                         }else{
                             //不同的模型
@@ -149,7 +148,8 @@ public class ModelPresenter implements ModelContract.Presenter {
         mModelList = new ArrayList<>();
         mSpecialList = new ArrayList<>();
         mSingleList = new ArrayList<>();
-        projectId = SharedPreferencesUtil.getProjectId();
+        mProjectId = SharedPreferencesUtil.getProjectId();
+        mProjectVersionId = SharedPreferencesUtil.getProjectVersionId(mProjectId);
         mCurrentSingle = new ModelSingleListItem();
         mCurrentSpecial = new ModelSpecialListItem();
     }
@@ -163,7 +163,7 @@ public class ModelPresenter implements ModelContract.Presenter {
         if(type==1){
             toModelPreview();
         }
-        getLatestVersion();
+//        getLatestVersion();
         getSpecialData();
         getSingleData();
     }
@@ -194,28 +194,28 @@ public class ModelPresenter implements ModelContract.Presenter {
     }
 
     //获取最新版本
-    private void getLatestVersion(){
-        Subscription sub = mModel.getLatestVersion(projectId)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<ProjectVersionBean>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        LogUtil.e(e.getMessage());
-                    }
-
-                    @Override
-                    public void onNext(ProjectVersionBean projectVersionBean) {
-                        mLatestVersionInfo = projectVersionBean;
-                    }
-                });
-        mSubscription.add(sub);
-    }
+//    private void getLatestVersion(){
+//        Subscription sub = mModel.getLatestVersion(mProjectId)
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Subscriber<ProjectVersionBean>() {
+//                    @Override
+//                    public void onCompleted() {
+//
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//                        LogUtil.e(e.getMessage());
+//                    }
+//
+//                    @Override
+//                    public void onNext(ProjectVersionBean projectVersionBean) {
+//                        mLatestVersionInfo = projectVersionBean;
+//                    }
+//                });
+//        mSubscription.add(sub);
+//    }
 
     //专业列表
     private void getSpecialData(){
@@ -243,7 +243,7 @@ public class ModelPresenter implements ModelContract.Presenter {
 
     //单体列表
     private void getSingleData(){
-        Subscription sub = mModel.getSingleList(projectId)
+        Subscription sub = mModel.getSingleList(mProjectId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<List<ModelSingleListItem>>() {
@@ -267,7 +267,7 @@ public class ModelPresenter implements ModelContract.Presenter {
 
     //模型列表
     private void getModelData(){
-        Subscription sub = mModel.getModelList(projectId,mLatestVersionInfo.data.versionId,mCurrentSingle.id,mCurrentSpecial.code)
+        Subscription sub = mModel.getModelList(mProjectId,mProjectVersionId,mCurrentSingle.id,mCurrentSpecial.code)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<ModelListBean>() {

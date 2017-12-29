@@ -15,6 +15,7 @@ import com.glodon.bim.business.qualityManage.listener.OnModuleHintClickListener;
 import com.glodon.bim.business.qualityManage.model.ChooseModuleModel;
 import com.glodon.bim.common.config.CommonConfig;
 import com.glodon.bim.customview.ToastManager;
+import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -154,6 +155,7 @@ public class ChooseModulePresenter implements ChooseModuleContract.Presenter {
 
                         @Override
                         public void onNext(List<ModuleListBeanItem> list) {
+                            LogUtil.e("质检项目列表="+new GsonBuilder().create().toJson(list));
                             if (list != null && list.size()>0) {
 //                                for(ModuleListBeanItem item:list) {
 //                                    LogUtil.e("item=" +item.toString());

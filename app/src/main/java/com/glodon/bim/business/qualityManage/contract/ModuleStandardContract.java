@@ -17,9 +17,15 @@ import rx.Observable;
 public interface ModuleStandardContract {
 
     interface Presenter extends IBasePresenter {
+        /**
+         * 查询第一层
+         */
+        List<ModuleStandardItem> getRootList();
 
-
-
+        /**
+         * 查询子层
+         */
+        List<ModuleStandardItem> getListByParentId(long parentId);
     }
 
     interface View extends IBaseView {

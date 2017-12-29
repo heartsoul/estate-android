@@ -167,7 +167,7 @@ public class QualityCheckModuleFragment extends BaseFragment implements QulityCh
         mStandardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                IntentManager.toModuleStandard(getActivity(),item.id);
+                IntentManager.toModuleStandard(getActivity(),item.id,item.inspectItem);
             }
         });
         mCreateView.setOnClickListener(new View.OnClickListener() {

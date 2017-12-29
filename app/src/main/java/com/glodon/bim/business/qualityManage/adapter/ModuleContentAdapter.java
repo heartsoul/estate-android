@@ -80,7 +80,7 @@ public class ModuleContentAdapter extends RecyclerView.Adapter<RecyclerView.View
             lHolder.mBenchMarkView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    IntentManager.toModuleStandard(mActivity,item.id.longValue());
+                    IntentManager.toModuleStandard(mActivity,item.id.longValue(),item.inspectItem);
                 }
             });
             lHolder.mParentView.setOnClickListener(new View.OnClickListener() {

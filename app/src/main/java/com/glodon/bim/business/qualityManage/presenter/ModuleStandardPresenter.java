@@ -11,6 +11,7 @@ import com.glodon.bim.common.config.CommonConfig;
 import com.glodon.bim.customview.ToastManager;
 import com.google.gson.GsonBuilder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import rx.Subscriber;
@@ -29,7 +30,7 @@ public class ModuleStandardPresenter implements ModuleStandardContract.Presenter
     private ModuleStandardContract.View mView;
     private ModuleStandardContract.Model mModel;
     private CompositeSubscription mSubscription;
-
+    private List<ModuleStandardItem> mDataList;
 
     public ModuleStandardPresenter(ModuleStandardContract.View mView) {
         this.mView = mView;
@@ -63,8 +64,11 @@ public class ModuleStandardPresenter implements ModuleStandardContract.Presenter
 
                         @Override
                         public void onNext(List<ModuleStandardItem> list) {
-                            LogUtil.e("standardList = "+new GsonBuilder().create().toJson(list));
+//                            list =getList();
+//                            LogUtil.e("standardList = "+new GsonBuilder().create().toJson(list));
                             if(list!=null && list.size()>0){
+                                mDataList = list;
+                                handleDataList();
                                 if(mView!=null)
                                 {
                                     mView.updateListView(list);
@@ -80,6 +84,111 @@ public class ModuleStandardPresenter implements ModuleStandardContract.Presenter
         }else{
             ToastManager.showNetWorkToast();
         }
+    }
+
+    private void handleDataList(){
+        List<ModuleStandardItem> list = getRootList();
+        for(ModuleStandardItem item : list){
+           handleLevel(item);
+        }
+//        LogUtil.e("standardList = "+new GsonBuilder().create().toJson(mDataList));
+    }
+
+    private void handleLevel(ModuleStandardItem item){
+        List<ModuleStandardItem> list = getListByParentId(item.id);
+        if(list.size()>0){
+            for(ModuleStandardItem i : list){
+                handleLevel(i);
+            }
+        }else{
+            for(int i = 0;i<mDataList.size();i++){
+                if(item.id == mDataList.get(i).id){
+                    if(item.parentId!=null && getItemById(item.parentId)!=null) {
+                        mDataList.get(i).level = getItemById(item.parentId).level + 1;
+                    }
+                    mDataList.get(i).hasChild = false;
+                }
+            }
+        }
+    }
+
+    private ModuleStandardItem getItemById(long id){
+        for(ModuleStandardItem item :mDataList){
+            if(id == item.id){
+                return item;
+            }
+        }
+        return null;
+    }
+
+    public List<ModuleStandardItem> getRootList(){
+        List<ModuleStandardItem> list = new ArrayList<>();
+        for(ModuleStandardItem item : mDataList){
+            if(item.parentId == null || item.parentId.longValue() == 0){
+                list.add(item);
+            }
+        }
+        return list;
+    }
+
+    public List<ModuleStandardItem> getListByParentId(long parentId){
+        List<ModuleStandardItem> list = new ArrayList<>();
+        for(ModuleStandardItem item : mDataList){
+            if(item.parentId != null && item.parentId.longValue() == parentId){
+                list.add(item);
+            }
+        }
+        return list;
+    }
+
+
+    private List<ModuleStandardItem> getList(){
+        List<ModuleStandardItem> list = new ArrayList<>();
+
+        for(long i = 100 ;i<106;i++){
+            ModuleStandardItem item = new ModuleStandardItem();
+            item.parentId = null;
+            item.level = 0;
+            item.id = i;
+            item.name = "根部"+i;
+            item.content =  " 内容内容内容内容内容内容内容内容内容内容内容内容内容内容 "+i;
+            list.add(item);
+        }
+        int count = 106;
+        for(long j = 100;j<106;j++){
+            for(long i =106;i<111;i++){
+                ModuleStandardItem item = new ModuleStandardItem();
+                item.parentId = j;
+                item.id = count;
+                item.name = "名字名字名字名字名字="+i;
+                item.content =  item.name+" 内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容 "+i;
+                list.add(item);
+                count++;
+            }
+        }
+
+        int num = 200;
+        for(long j = 106;j<120;j++){
+            for(int i=0;i<5;i++){
+                ModuleStandardItem item = new ModuleStandardItem();
+                item.parentId = j;
+                item.id = num;
+                item.name = "名字名字名字名字名字="+i;
+                item.content =  item.name+" 内容内容内容内容内容内容内容内容内容内容内容内容内容内容 "+i;
+                list.add(item);
+                num++;
+            }
+        }
+        for(long i = 95 ;i<100;i++){
+            ModuleStandardItem item = new ModuleStandardItem();
+            item.parentId = null;
+            item.level = 0;
+            item.id = i;
+            item.name = "根部"+i;
+            item.content =  " 内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容 "+i;
+            list.add(item);
+        }
+        return list;
     }
 
     @Override

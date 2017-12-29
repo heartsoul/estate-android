@@ -3,6 +3,7 @@ package com.glodon.bim.basic.log;
 import android.util.Log;
 
 import com.glodon.bim.basic.config.AppConfig;
+import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
 
@@ -90,6 +91,10 @@ public class LogUtil {
      */
     private static boolean isShowLog() {
         return AppConfig.LOGCAT_SHOW;
+    }
+
+    public static void toJson(Object obj){
+        e("json="+new GsonBuilder().create().toJson(obj));
     }
 
     public static void response(Response<ResponseBody> response){

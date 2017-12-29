@@ -325,7 +325,7 @@ public class CreateInspectionAcceptionFragment extends BaseFragment implements V
                 mModuleBenchmark.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        IntentManager.toModuleStandard(getActivity(),mParams.qualityCheckpointId.longValue());
+                        IntentManager.toModuleStandard(getActivity(),mParams.qualityCheckpointId.longValue(),mParams.qualityCheckpointName);
                     }
                 });
             }else{
@@ -543,13 +543,13 @@ public class CreateInspectionAcceptionFragment extends BaseFragment implements V
     }
 
     @Override
-    public void showModuleName(String name, final long id) {
+    public void showModuleName(final String name, final long id) {
         mModuleName.setText(name);
         showBenchMark();
         mModuleBenchmark.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                IntentManager.toModuleStandard(getActivity(),id);
+                IntentManager.toModuleStandard(getActivity(),id,name);
             }
         });
     }
@@ -648,7 +648,7 @@ public class CreateInspectionAcceptionFragment extends BaseFragment implements V
             mModuleBenchmark.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    IntentManager.toModuleStandard(getActivity(),templateId);
+                    IntentManager.toModuleStandard(getActivity(),templateId,getModuleName());
                 }
             });
 
