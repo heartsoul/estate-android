@@ -47,6 +47,11 @@ public interface ChooseCategoryItemContract {
          * @param type 0 质检清单   1质检项目
          */
         void toQualityChickList(int type);
+
+        /**
+         * 跳转到账户设置
+         */
+        void toSetting();
     }
 
     interface Model{

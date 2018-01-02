@@ -18,10 +18,17 @@
                 android:layout_height="@dimen/dimen_252"
                 android:orientation="vertical"
                 android:background="@drawable/icon_choose_category_item_bg">
+                <ImageView
+                    android:id="@+id/choose_category_item_setting"
+                    android:layout_width="@dimen/dimen_24"
+                    android:layout_height="@dimen/dimen_24"
+                    android:background="@drawable/icon_setting_input"
+                    android:layout_marginLeft="@dimen/dimen_10"
+                    android:layout_marginTop="@dimen/dimen_10"/>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dimen_78"
+                    android:layout_marginTop="@dimen/dimen_44"
                     android:textColor="@color/white"
                     android:textSize="@dimen/dimen_24"
                     android:text="让您的建筑工程更简单！"

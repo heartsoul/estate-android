@@ -10,6 +10,7 @@ import com.glodon.bim.business.main.contract.ChooseCategoryItemContract;
 import com.glodon.bim.business.qualityManage.view.CreateCheckListActivity;
 import com.glodon.bim.business.qualityManage.view.PhotoEditActivity;
 import com.glodon.bim.business.qualityManage.view.QualityMangeMainActivity;
+import com.glodon.bim.business.setting.view.SettingActivity;
 import com.glodon.bim.common.config.CommonConfig;
 import com.glodon.bim.common.config.RequestCodeConfig;
 import com.glodon.bim.customview.album.AlbumEditActivity;
@@ -35,20 +36,6 @@ public class ChooseCategoryItemPresenter implements ChooseCategoryItemContract.P
         mProjectInfo = (ProjectListItem) intent.getSerializableExtra(CommonConfig.PROJECT_LIST_ITEM);
         SharedPreferencesUtil.setProjectInfo(mProjectInfo);
     }
-
-
-
-//    //跳转到图纸
-//    public void toBluePrint() {
-//        Intent intent = new Intent(mView.getActivity(), BluePrintActivity.class);
-//        mView.getActivity().startActivity(intent);
-//    }
-//
-//    //跳转到模型
-//    public void toModel() {
-//        Intent intent = new Intent(mView.getActivity(), ModelActivity.class);
-//        mView.getActivity().startActivity(intent);
-//    }
 
     @Override
     public void openPhoto() {
@@ -77,6 +64,13 @@ public class ChooseCategoryItemPresenter implements ChooseCategoryItemContract.P
         intent.putExtra(CommonConfig.PROJECT_LIST_ITEM,mProjectInfo);
         intent.putExtra(CommonConfig.MAIN_FROM_TYPE,type);
         mView.getActivity().startActivityForResult(intent,RequestCodeConfig.REQUEST_CODE_CHANGE_PROJECT);
+    }
+
+    @Override
+    public void toSetting() {
+        Intent intent = new Intent(mView.getActivity(), SettingActivity.class);
+        intent.putExtra(CommonConfig.PROJECT_LIST_ITEM,mProjectInfo);
+        mView.getActivity().startActivity(intent);
     }
 
     @Override

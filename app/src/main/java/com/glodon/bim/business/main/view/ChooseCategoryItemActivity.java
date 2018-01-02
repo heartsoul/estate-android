@@ -9,7 +9,10 @@ import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.glodon.bim.R;
@@ -33,6 +36,7 @@ public class ChooseCategoryItemActivity extends BaseActivity implements ChooseCa
     private ChooseCategoryItemContract.Presenter mPresenter;
     private LinearLayout mQualityCheckListView, mModelView, mBluePrintView, mQualityCheckModuleVIew, mCreateView;
     private PhotoAlbumDialog mPhotoAlbumDialog;//拍照相册弹出框
+    private ImageView mSetView;
     private final int REQUEST_CAMERA = 1;
     private BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
@@ -65,6 +69,23 @@ public class ChooseCategoryItemActivity extends BaseActivity implements ChooseCa
 
     }
 
+    protected void initSetView() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Window w = getWindow();
+            w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,  //设置StatusBar透明
+                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            int id = 0;
+            id = getResources().getIdentifier("status_bar_height", "dimen", //获取状态栏的高度
+                    "android");
+            if (id > 0) {
+                LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams)mSetView.getLayoutParams();
+                int height = getResources() //设置状态栏的高度
+                        .getDimensionPixelOffset(id);
+                lp.topMargin = height+ScreenUtil.dp2px(10);
+            }
+        }
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -77,7 +98,7 @@ public class ChooseCategoryItemActivity extends BaseActivity implements ChooseCa
         mBluePrintView = (LinearLayout) findViewById(R.id.choose_category_item_item_tz);
         mQualityCheckModuleVIew = (LinearLayout) findViewById(R.id.choose_category_item_item_zjxm);
         mCreateView = (LinearLayout) findViewById(R.id.choose_category_item_item_create);
-
+        mSetView = (ImageView) findViewById(R.id.choose_category_item_setting);
         //计算每个方形的宽度
         int width = (ScreenUtil.getScreenInfo()[0] - ScreenUtil.dp2px(44)) / 3;
         mQualityCheckListView.getLayoutParams().height = width;
@@ -90,6 +111,8 @@ public class ChooseCategoryItemActivity extends BaseActivity implements ChooseCa
         mQualityCheckModuleVIew.getLayoutParams().width = width;
         mCreateView.getLayoutParams().height = width;
         mCreateView.getLayoutParams().width = width;
+
+        initSetView();
     }
 
     private void setListener() {
@@ -98,6 +121,7 @@ public class ChooseCategoryItemActivity extends BaseActivity implements ChooseCa
         ThrottleClickEvents.throttleClick(mBluePrintView, this);
         ThrottleClickEvents.throttleClick(mQualityCheckModuleVIew, this);
         ThrottleClickEvents.throttleClick(mCreateView, this);
+        ThrottleClickEvents.throttleClick(mSetView, this);
     }
 
     @Override
@@ -124,6 +148,9 @@ public class ChooseCategoryItemActivity extends BaseActivity implements ChooseCa
                 break;
             case R.id.choose_category_item_item_create://点击新建
                 create();
+                break;
+            case R.id.choose_category_item_setting://点击账户设置
+                mPresenter.toSetting();
                 break;
         }
     }

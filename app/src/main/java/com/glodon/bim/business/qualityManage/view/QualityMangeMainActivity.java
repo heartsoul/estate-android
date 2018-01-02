@@ -237,7 +237,7 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
                     mIsDrawerOpen = false;
                 }
                 break;
-            case R.id.main_drawer_setting:
+            case R.id.main_drawer_setting://点击进入设置
                 if(AppConfig.isShow) {
                     mPresenter.toSetting(mProjectInfo);
                 }

@@ -16,6 +16,7 @@ import com.glodon.bim.R;
 import com.glodon.bim.base.BaseActivity;
 import com.glodon.bim.basic.listener.ThrottleClickEvents;
 import com.glodon.bim.basic.utils.SharedPreferencesUtil;
+import com.glodon.bim.business.login.view.PictureCodeActivity;
 import com.glodon.bim.business.main.bean.ProjectListItem;
 import com.glodon.bim.business.setting.contract.SettingContract;
 import com.glodon.bim.business.setting.presenter.SettingPresenter;
@@ -93,7 +94,11 @@ public class SettingActivity extends BaseActivity implements SettingContract.Vie
                 finish();
                 break;
             case R.id.setting_change_password:
-                showToast();
+                Intent intent = new Intent(mActivity, PictureCodeActivity.class);
+                String username = SharedPreferencesUtil.getString(CommonConfig.USERNAME,"");
+                intent.putExtra(CommonConfig.RESET_USERNAME,username);
+                intent.putExtra(CommonConfig.RESET_PASSWORD_TITLE,1);//1 设置  0登录
+                startActivity(intent);
                 break;
             case R.id.setting_version_info:
 

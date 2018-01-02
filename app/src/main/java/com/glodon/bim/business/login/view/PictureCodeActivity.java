@@ -36,6 +36,7 @@ public class PictureCodeActivity extends BaseActivity implements View.OnClickLis
     private RelativeLayout mNameDelete;
 
     private TextView mCodeName;
+    private TextView mTitleView;
     private EditText mCodeText;
     private RelativeLayout mCodeDelete;
     private View mCodeLineGray,mCodeLineBlue;
@@ -44,6 +45,8 @@ public class PictureCodeActivity extends BaseActivity implements View.OnClickLis
     private Button mSubmitView;
 
     private PictureCodeContract.Presenter mPresenter;
+
+    private int type = 0;//1设置  0登录
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +60,7 @@ public class PictureCodeActivity extends BaseActivity implements View.OnClickLis
     }
 
     private void initView() {
+        mTitleView = (TextView) findViewById(R.id.picture_code_title);
         mStatusView = findViewById(R.id.picture_code_statusview);
         mBackView = (RelativeLayout) findViewById(R.id.picture_code_back);
         mNameView = (EditText) findViewById(R.id.picture_code_name);
@@ -177,6 +181,12 @@ public class PictureCodeActivity extends BaseActivity implements View.OnClickLis
         String username = getIntent().getStringExtra(CommonConfig.RESET_USERNAME);
         if(!TextUtils.isEmpty(username)){
             mNameView.setText(username);
+        }
+        type = getIntent().getIntExtra(CommonConfig.RESET_PASSWORD_TITLE,0);
+        if(type == 1){
+            mTitleView.setText("修改密码");
+        }else{
+            mTitleView.setText("找回密码");
         }
         mPresenter = new PictureCodePresenter(this);
         mPresenter.initData(getIntent());
