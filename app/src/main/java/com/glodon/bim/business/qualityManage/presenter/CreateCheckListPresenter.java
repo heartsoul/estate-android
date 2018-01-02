@@ -35,7 +35,6 @@ import com.glodon.bim.customview.album.AlbumData;
 import com.glodon.bim.customview.album.AlbumEditActivity;
 import com.glodon.bim.customview.album.ImageItem;
 import com.glodon.bim.customview.photopreview.PhotoPreviewActivity;
-import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -185,7 +184,7 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
             String name = SharedPreferencesUtil.getSelectModuleName();
             if (!TextUtils.isEmpty(name)) {
                 mModuleSelectInfo.id = SharedPreferencesUtil.getSelectModuleId();
-                mModuleSelectInfo.inspectItem = SharedPreferencesUtil.getSelectModuleName();
+                mModuleSelectInfo.name = SharedPreferencesUtil.getSelectModuleName();
                 mCurrentModuleName = SharedPreferencesUtil.getSelectModuleName();
                 mCurrentModuleId = SharedPreferencesUtil.getSelectModuleId();
                 mInitParams.qualityCheckpointId = mCurrentModuleId;
@@ -239,8 +238,8 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
             mBluePrintSelectInfo.fileId = mInitParams.drawingGdocFileId;
             mBluePrintSelectInfo.drawingPositionX = mInitParams.drawingPositionX;
             mBluePrintSelectInfo.drawingPositionY = mInitParams.drawingPositionY;
+            mBluePrintType = 1;//编辑状态
         }
-        mBluePrintType = 1;//编辑状态
     }
 
     //编辑状态或从模型跳转过来时  模型有值
@@ -346,9 +345,9 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
         if (mEditParams != null) {
 
             //设置质检项目
-            mModuleSelectInfo.inspectItem = mEditParams.qualityCheckpointName;
+            mModuleSelectInfo.name = mEditParams.qualityCheckpointName;
             mModuleSelectInfo.id = mEditParams.qualityCheckpointId;
-            mCurrentModuleName = mModuleSelectInfo.inspectItem;
+            mCurrentModuleName = mModuleSelectInfo.name;
             mCurrentModuleId = mModuleSelectInfo.id;
             //设置责任人
             Subscription sub = mModel.gePersonList(mProjectId, mCompanyList.get(mCompanySelectPosition).coperationId)
@@ -837,8 +836,8 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
         }
         //质检项目
         if (mModuleSelectInfo != null) {
-            if (mCurrentModuleName.equals(mModuleSelectInfo.inspectItem)) {
-                mInput.qualityCheckpointName = mModuleSelectInfo.inspectItem;
+            if (mCurrentModuleName.equals(mModuleSelectInfo.name)) {
+                mInput.qualityCheckpointName = mModuleSelectInfo.name;
                 mInput.qualityCheckpointId = mModuleSelectInfo.id;
             } else {
                 mInput.qualityCheckpointName = mCurrentModuleName;
@@ -870,9 +869,9 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
     @Override
     public void toModuleList() {
         Intent intent = new Intent(mView.getActivity(), ChooseModuleActivity.class);
-        if (!TextUtils.isEmpty(mCurrentModuleName) && !TextUtils.isEmpty(mModuleSelectInfo.inspectItem) && mModuleSelectInfo.id != null) {
+        if (!TextUtils.isEmpty(mCurrentModuleName) && !TextUtils.isEmpty(mModuleSelectInfo.name) && mModuleSelectInfo.id != null) {
             mCurrentModuleName = mView.getModuleName();
-            if (mCurrentModuleName.equals(mModuleSelectInfo.inspectItem)) {
+            if (mCurrentModuleName.equals(mModuleSelectInfo.name)) {
                 intent.putExtra(CommonConfig.MODULE_LIST_POSITION, mModuleSelectInfo.id);
             }
         }
@@ -914,10 +913,10 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
             case RequestCodeConfig.REQUEST_CODE_CHOOSE_MODULE:
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     mModuleSelectInfo = (ModuleListBeanItem) data.getSerializableExtra(CommonConfig.MODULE_LIST_NAME);
-                    mCurrentModuleName = mModuleSelectInfo.inspectItem;
+                    mCurrentModuleName = mModuleSelectInfo.name;
                     mCurrentModuleId = mModuleSelectInfo.id;
                     if (mView != null && mModuleSelectInfo != null) {
-                        mView.showModuleName(mModuleSelectInfo.inspectItem, mModuleSelectInfo.id.longValue());
+                        mView.showModuleName(mModuleSelectInfo.name, mModuleSelectInfo.id.longValue());
                     }
                 }
                 break;
@@ -928,7 +927,7 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
                     mCurrentBluePrintId = mBluePrintSelectInfo.fileId;
                     drawingPositionX = mBluePrintSelectInfo.drawingPositionX;
                     drawingPositionY = mBluePrintSelectInfo.drawingPositionY;
-                    if (mView != null && mBluePrintSelectInfo != null) {
+                    if (mView != null) {
                         mView.showBluePrintName(mBluePrintSelectInfo.name, mBluePrintSelectInfo.fileId);
                     }
                     mBluePrintType = 1;
@@ -937,7 +936,6 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
             case RequestCodeConfig.REQUEST_CODE_CHOOSE_MODEL:
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     mModelSelectInfo = (ModelListBeanItem) data.getSerializableExtra(CommonConfig.MODEL_SELECT_INFO);
-                    LogUtil.e("model="+new GsonBuilder().create().toJson(mModelSelectInfo));
                     if (mModelSelectInfo.component != null) {
                         getElementName(mModelSelectInfo.fileId, mModelSelectInfo.component.elementId);
                         mModelType = 1;

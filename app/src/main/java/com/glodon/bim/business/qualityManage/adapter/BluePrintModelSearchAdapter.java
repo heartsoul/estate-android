@@ -3,6 +3,7 @@ package com.glodon.bim.business.qualityManage.adapter;
 import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,7 +63,11 @@ public class BluePrintModelSearchAdapter extends RecyclerView.Adapter<RecyclerVi
         LogUtil.e("item="+new GsonBuilder().create().toJson(item));
         if(holder instanceof BluePrintHolder){
             BluePrintHolder bHolder = (BluePrintHolder) holder;
-            bHolder.mNameView.setText(Html.fromHtml(item.name));
+            if(!TextUtils.isEmpty(item.name)) {
+                bHolder.mNameView.setText(Html.fromHtml(item.name));
+            }else{
+                bHolder.mNameView.setText("");
+            }
             bHolder.mSelectView.setVisibility(View.GONE);
             long projectId = SharedPreferencesUtil.getProjectId();
             String projectVerson = SharedPreferencesUtil.getProjectVersionId(projectId);
@@ -79,7 +84,12 @@ public class BluePrintModelSearchAdapter extends RecyclerView.Adapter<RecyclerVi
         }
         if(holder instanceof ModelHolder){
             ModelHolder mHolder = (ModelHolder) holder;
-            mHolder.mNameView.setText(Html.fromHtml(item.name));
+            if(!TextUtils.isEmpty(item.name)) {
+                mHolder.mNameView.setText(Html.fromHtml(item.name));
+            }else{
+                mHolder.mNameView.setText("");
+            }
+
             long projectId = SharedPreferencesUtil.getProjectId();
             String projectVerson = SharedPreferencesUtil.getProjectVersionId(projectId);
             ThumbnailUtil.getThumbnail(mActivity,projectId,projectVerson,item.fileId,mHolder.mThumbView,R.drawable.icon_default_model);

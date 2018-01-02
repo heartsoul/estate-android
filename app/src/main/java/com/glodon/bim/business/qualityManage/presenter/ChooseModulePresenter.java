@@ -188,7 +188,7 @@ public class ChooseModulePresenter implements ChooseModuleContract.Presenter {
             ModuleListBeanItem item = new ModuleListBeanItem();
             item.id = count;
             item.parentId = 0;
-            item.inspectItem = "fileId="+i+"  parentId=0";
+            item.name = "fileId="+i+"  parentId=0";
             list.add(item);
             count++;
         }
@@ -197,7 +197,7 @@ public class ChooseModulePresenter implements ChooseModuleContract.Presenter {
                 ModuleListBeanItem item = new ModuleListBeanItem();
                 item.id = count;
                 item.parentId = i;
-                item.inspectItem = "fileId="+count+"  parentId="+i;
+                item.name = "fileId="+count+"  parentId="+i;
                 count++;
                 list.add(item);
             }
@@ -207,7 +207,7 @@ public class ChooseModulePresenter implements ChooseModuleContract.Presenter {
                 ModuleListBeanItem item = new ModuleListBeanItem();
                 item.id = count;
                 item.parentId = i;
-                item.inspectItem = "fileId="+count+"  parentId="+i;
+                item.name = "fileId="+count+"  parentId="+i;
                 count++;
                 list.add(item);
             }

@@ -53,7 +53,7 @@ public class ModuleHintAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         final ListHolder lHolder = (ListHolder) holder;
         final ModuleListBeanItem item = mDataList.get(position);
-        lHolder.mNameView.setText(item.inspectItem);
+        lHolder.mNameView.setText(item.name);
         lHolder.mParentView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

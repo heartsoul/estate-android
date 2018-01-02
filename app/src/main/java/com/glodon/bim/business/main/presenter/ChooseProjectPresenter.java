@@ -125,7 +125,7 @@ public class ChooseProjectPresenter implements ChooseProjectContract.Presenter {
 
                         @Override
                         public void onNext(ProjectListBean bean) {
-
+                            LogUtil.e("项目列表="+new GsonBuilder().create().toJson(bean));
                             if (bean != null && bean.content != null && bean.content.size() > 0) {
                                 mDataList.addAll(bean.content);
                                 mView.setStyle(mDataList.size());

@@ -58,6 +58,7 @@ public class ChooseTenantPresenter implements ChooseTenantContract.Presenter {
 
     @Override
     public void clickTenant(UserTenant tenant) {
+        LogUtil.toJson(tenant);
         if(NetWorkUtils.isNetworkAvailable(mView.getActivity())) {
             //保存当前的租户下的用户id
             SharedPreferencesUtil.setUserId(tenant.id);

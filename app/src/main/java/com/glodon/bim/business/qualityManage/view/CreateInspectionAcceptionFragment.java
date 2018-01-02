@@ -566,12 +566,21 @@ public class CreateInspectionAcceptionFragment extends BaseFragment implements V
 
     @Override
     public void showBluePrintName(String name, String id) {
-        mBluePrintName.setText(Html.fromHtml(name));
+        if(!TextUtils.isEmpty(name)) {
+            mBluePrintName.setText(Html.fromHtml(name));
+        }else{
+            mBluePrintName.setText("");
+        }
+
     }
 
     @Override
     public void showModelName(String name) {
-        mModelName.setText(Html.fromHtml(name));
+        if(!TextUtils.isEmpty(name)) {
+            mModelName.setText(Html.fromHtml(name));
+        }else{
+            mModelName.setText("");
+        }
     }
 
     @Override

@@ -85,7 +85,11 @@ public class ModuleStandardActivity extends BaseActivity implements View.OnClick
         mTextView.setTextSize(18-item.level*2);
         if(!TextUtils.isEmpty(item.content)){
             mTextView.setVisibility(View.VISIBLE);
-            mTextView.setText(Html.fromHtml(item.content));
+            if(!TextUtils.isEmpty(item.content)) {
+                mTextView.setText(Html.fromHtml(item.content));
+            }else{
+                mTextView.setText(Html.fromHtml(""));
+            }
         }else{
             mTextView.setVisibility(View.GONE);
         }
@@ -132,7 +136,12 @@ public class ModuleStandardActivity extends BaseActivity implements View.OnClick
         TextView mTextView = view.findViewById(R.id.module_standard_obj_text);
         mTitleView.setText(item.name);
         if(!TextUtils.isEmpty(item.content)){
-            mTextView.setText(Html.fromHtml(item.content));
+            if(!TextUtils.isEmpty(item.content)) {
+                mTextView.setText(Html.fromHtml(item.content));
+            }else{
+                mTextView.setText(Html.fromHtml(""));
+            }
+
             mTextView.setVisibility(View.VISIBLE);
         }else{
             mTextView.setVisibility(View.GONE);

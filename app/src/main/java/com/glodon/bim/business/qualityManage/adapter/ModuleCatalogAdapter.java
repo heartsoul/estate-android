@@ -49,7 +49,7 @@ public class ModuleCatalogAdapter extends RecyclerView.Adapter<RecyclerView.View
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         final ListHolder lHolder = (ListHolder) holder;
         final ModuleListBeanItem item = mDataList.get(position);
-        lHolder.mNameView.setText(item.inspectItem);
+        lHolder.mNameView.setText(item.name);
         LogUtil.e("position=--"+position);
         if(position == getItemCount()-1){
             lHolder.mIconUpdown.setVisibility(View.VISIBLE);

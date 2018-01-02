@@ -10,38 +10,48 @@ import java.io.Serializable;
 
 public class ModuleListBeanItem implements Serializable {
 
+    public String code;
+    public boolean hasRule;
     public Long id;
+    public String name;
     public long parentId;
+    public String projectType;
+    public String requirement;
     public long specialtyId;
+    public String specialtyName;
     public String treePath;
-//
-//    public String code;
-//    public String inspectItem;
-//    public String projectType;
-//    public String requirement;
-//    public String specialtyName;
 
-//    public int id;
-//    public int parentId;
-//    public int specialtyId;
+//    public Long id;
+//    public long parentId;
+//    public long specialtyId;
 //    public String treePath;
-    public String inspectItem;
-    public String inspectItemDesc;
-    public String specialty;
+//    public String name;
+//    public String inspectItemDesc;
+//    public String specialty;
 
+//    public Long id;
+//    public long parentId;
+//    public long specialtyId;
+//    public String treePath;
+//    public String name;
+//    public String inspectItemDesc;
+//    public String specialty;
 
     public int viewType = 1;//0目录，1具体的项
 
     @Override
     public String toString() {
         return "ModuleListBeanItem{" +
-                "id=" + id +
+                "code='" + code + '\'' +
+                ", hasRule=" + hasRule +
+                ", id=" + id +
+                ", name='" + name + '\'' +
                 ", parentId=" + parentId +
+                ", projectType='" + projectType + '\'' +
+                ", requirement='" + requirement + '\'' +
                 ", specialtyId=" + specialtyId +
+                ", specialtyName='" + specialtyName + '\'' +
                 ", treePath='" + treePath + '\'' +
-                ", inspectItem='" + inspectItem + '\'' +
-                ", inspectItemDesc='" + inspectItemDesc + '\'' +
-                ", specialty='" + specialty + '\'' +
                 ", viewType=" + viewType +
                 '}';
     }

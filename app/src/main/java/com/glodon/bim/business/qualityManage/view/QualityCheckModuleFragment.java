@@ -72,7 +72,7 @@ public class QualityCheckModuleFragment extends BaseFragment implements QulityCh
         {
             mTitleListener.onTitleChange(mCurrentTitle);
             if(mCurrentModuleInfo!=null){
-                SharedPreferencesUtil.setSelectModuleInfo(mCurrentModuleInfo.id.longValue(),mCurrentModuleInfo.inspectItem);
+                SharedPreferencesUtil.setSelectModuleInfo(mCurrentModuleInfo.id.longValue(),mCurrentModuleInfo.name);
             }
         }
     }
@@ -132,7 +132,7 @@ public class QualityCheckModuleFragment extends BaseFragment implements QulityCh
         //子view的父
         final LinearLayout mChildParent = view.findViewById(R.id.quality_model_list_item_catalog_child_parent);
 
-        mNameView.setText(item.inspectItem);
+        mNameView.setText(item.name);
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -163,11 +163,11 @@ public class QualityCheckModuleFragment extends BaseFragment implements QulityCh
         //创建检查单
         RelativeLayout mCreateView = view.findViewById(R.id.quality_model_list_item_obj_create);
 
-        mNameView.setText(item.inspectItem);
+        mNameView.setText(item.name);
         mStandardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                IntentManager.toModuleStandard(getActivity(),item.id,item.inspectItem);
+                IntentManager.toModuleStandard(getActivity(),item.id,item.name);
             }
         });
         mCreateView.setOnClickListener(new View.OnClickListener() {
@@ -175,7 +175,7 @@ public class QualityCheckModuleFragment extends BaseFragment implements QulityCh
             public void onClick(View view) {
                 //新建检查单
                 create();
-                SharedPreferencesUtil.setSelectModuleInfo(item.id.longValue(),item.inspectItem);
+                SharedPreferencesUtil.setSelectModuleInfo(item.id.longValue(),item.name);
             }
         });
         view.setOnClickListener(new View.OnClickListener() {
@@ -185,10 +185,10 @@ public class QualityCheckModuleFragment extends BaseFragment implements QulityCh
                 mCheckPointParent.setVisibility(View.GONE);
                 mListParent.setVisibility(View.VISIBLE);
                 mQualityCheckListView.initData(item);
-                mCurrentTitle = item.inspectItem;
+                mCurrentTitle = item.name;
                 mCurrentModuleInfo = item;
                 changeTitle();
-                SharedPreferencesUtil.setSelectModuleInfo(item.id.longValue(),item.inspectItem);
+                SharedPreferencesUtil.setSelectModuleInfo(item.id.longValue(),item.name);
             }
         });
         parent.addView(view);

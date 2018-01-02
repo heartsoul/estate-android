@@ -48,7 +48,7 @@ public class QualityMangeMainPresenter implements QualityMangeMainContract.Prese
     @Override
     public void openPhoto() {
         mPhotoPath = CameraUtil.getFilePath();
-        CameraUtil.openCamera(mPhotoPath, mView.getActivity(), RequestCodeConfig.REQUEST_CODE_TAKE_PHOTO);
+        CameraUtil.openCamera(mPhotoPath, mView.getActivity(), RequestCodeConfig.REQUEST_CODE_TAKE_PHOTO_MAIN);
     }
 
     @Override
@@ -81,14 +81,13 @@ public class QualityMangeMainPresenter implements QualityMangeMainContract.Prese
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
-            case RequestCodeConfig.REQUEST_CODE_TAKE_PHOTO://拍照返回
+            case RequestCodeConfig.REQUEST_CODE_TAKE_PHOTO_MAIN://拍照返回
                 if (resultCode == Activity.RESULT_OK) {
                     //正常返回
                     Intent intent = new Intent(mView.getActivity(), PhotoEditActivity.class);
                     intent.putExtra(CommonConfig.IMAGE_PATH,mPhotoPath);
                     intent.putExtra(CommonConfig.CREATE_TYPE,CommonConfig.CREATE_TYPE_CHECK);//表示创建检查单
                     mView.getActivity().startActivityForResult(intent,RequestCodeConfig.REQUEST_CODE_CREATE_CHECK_LIST);
-
                 }
                 break;
             case RequestCodeConfig.REQUEST_CODE_OPEN_ALBUM://打开相册

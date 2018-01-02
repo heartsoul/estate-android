@@ -239,7 +239,7 @@ public class BluePrintPresenter implements BluePrintContract.Presenter {
 //                        if (bean != null && bean.data != null && bean.data.items != null && bean.data.items.size() > 0) {
 //
 //                            for (BlueprintListBeanItem item : bean.data.items) {
-//                                if ("图纸文件".equals(item.inspectItem)) {
+//                                if ("图纸文件".equals(item.name)) {
 //                                    fileId = item.fileId;
 //                                    getBluePrintData();
 //                                    break;

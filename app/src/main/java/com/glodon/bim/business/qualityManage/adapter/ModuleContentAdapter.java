@@ -63,7 +63,7 @@ public class ModuleContentAdapter extends RecyclerView.Adapter<RecyclerView.View
         final ModuleListBeanItem item = mDataList.get(position);
         if(holder instanceof CataHolder){
             final CataHolder cHolder = (CataHolder) holder;
-            cHolder.mNameView.setText(item.inspectItem);
+            cHolder.mNameView.setText(item.name);
             cHolder.mParentView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -76,11 +76,11 @@ public class ModuleContentAdapter extends RecyclerView.Adapter<RecyclerView.View
 
         if(holder instanceof ObjHolder){
             final ObjHolder lHolder = (ObjHolder) holder;
-            lHolder.mNameView.setText(item.inspectItem);
+            lHolder.mNameView.setText(item.name);
             lHolder.mBenchMarkView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    IntentManager.toModuleStandard(mActivity,item.id.longValue(),item.inspectItem);
+                    IntentManager.toModuleStandard(mActivity,item.id.longValue(),item.name);
                 }
             });
             lHolder.mParentView.setOnClickListener(new View.OnClickListener() {

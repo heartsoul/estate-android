@@ -145,7 +145,12 @@ public class QualityCheckListDetailView implements QualityCheckListDetailViewCon
             mSubmitTimeView.setText(DateUtil.getNormalTime(info.commitTime));
         }
         if(!TextUtils.isEmpty(info.drawingName)) {
-            mBluePrintView.setText(Html.fromHtml(info.drawingName));
+            if(!TextUtils.isEmpty(info.drawingName)) {
+                mBluePrintView.setText(Html.fromHtml(info.drawingName));
+            }else{
+                mBluePrintView.setText("");
+            }
+
         }
         mBluePrintView.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -296,9 +296,9 @@ public class QualityCheckListPresenter implements QualityCheckListContract.Prese
             if (mView != null) {
                 mView.showLoadingDialog();
             }
-            if(mSelectModuleInfo!=null &&(mSelectModuleInfo.id>0 || !TextUtils.isEmpty(mSelectModuleInfo.inspectItem))){
+            if(mSelectModuleInfo!=null &&(mSelectModuleInfo.id>0 || !TextUtils.isEmpty(mSelectModuleInfo.name))){
                 if (mProjectInfo != null) {
-                    Subscription sub = mModel.getQualityCheckList(mProjectInfo.deptId, mQcState, mCurrentPage, mSize,mSelectModuleInfo.id,mSelectModuleInfo.inspectItem)
+                    Subscription sub = mModel.getQualityCheckList(mProjectInfo.deptId, mQcState, mCurrentPage, mSize,mSelectModuleInfo.id,mSelectModuleInfo.name)
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(new Subscriber<QualityCheckListBean>() {
@@ -457,8 +457,8 @@ public class QualityCheckListPresenter implements QualityCheckListContract.Prese
     }
 
     private void updateStatusNum(){
-        if(mSelectModuleInfo!=null &&(mSelectModuleInfo.id>0 || !TextUtils.isEmpty(mSelectModuleInfo.inspectItem))) {
-            Subscription sub = mModel.getStatusNum(mProjectInfo.deptId,mSelectModuleInfo.id,mSelectModuleInfo.inspectItem)
+        if(mSelectModuleInfo!=null &&(mSelectModuleInfo.id>0 || !TextUtils.isEmpty(mSelectModuleInfo.name))) {
+            Subscription sub = mModel.getStatusNum(mProjectInfo.deptId,mSelectModuleInfo.id,mSelectModuleInfo.name)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Subscriber<List<ClassifyNum>>() {

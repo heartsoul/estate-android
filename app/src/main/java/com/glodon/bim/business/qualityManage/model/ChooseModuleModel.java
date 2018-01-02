@@ -21,7 +21,8 @@ public class ChooseModuleModel implements ChooseModuleContract.Model {
 
     @Override
     public Observable<List<ModuleListBeanItem>> getModuleList(long deptId){
-        String versionId = SharedPreferencesUtil.getProjectVersionId(deptId);
-        return NetRequest.getInstance().getCall(AppConfig.BASE_URL,CreateCheckListApi.class).getModuleList(deptId,versionId,new DaoProvider().getCookie());
+        return NetRequest.getInstance().getCall(AppConfig.BASE_URL,CreateCheckListApi.class).getModuleList(deptId,new DaoProvider().getCookie());
+//        String versionId = SharedPreferencesUtil.getProjectVersionId(deptId);
+//        return NetRequest.getInstance().getCall(AppConfig.BASE_URL,CreateCheckListApi.class).getModuleList(deptId,versionId,new DaoProvider().getCookie());
     }
 }
