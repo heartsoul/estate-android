@@ -409,14 +409,10 @@ public class CreateInspectionAcceptionFragment extends BaseFragment implements V
                 mPresenter.toModuleList();
                 break;
             case R.id.create_check_list_blueprint://关联图纸
-                if(AppConfig.isShow) {
                     mPresenter.toBluePrint();
-                }
                 break;
             case R.id.create_check_list_model://关联模型
-                if(AppConfig.isShow) {
                     mPresenter.toModelList();
-                }
                 break;
             case R.id.create_check_list_save://保存
                 save();

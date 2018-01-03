@@ -19,7 +19,6 @@ import android.widget.TextView;
 import com.glodon.bim.R;
 import com.glodon.bim.base.BaseActivity;
 import com.glodon.bim.base.BaseFragment;
-import com.glodon.bim.basic.config.AppConfig;
 import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.basic.utils.ScreenUtil;
 import com.glodon.bim.basic.utils.SharedPreferencesUtil;
@@ -50,19 +49,18 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
     private QualityMangeMainContract.Presenter mPresenter;
 
 
-
     //drawer
     private LinearLayout mDrawerView;
     private TextView mProjectNameView;
     private ImageView mProjectNameIcon;
     private TextView mQualityCheckListTv, mBluePrintTv, mModelTv, mQualityCheckModuleTv;
-    private RelativeLayout mQualityManagerView,mSettingView;
+    private RelativeLayout mQualityManagerView, mSettingView;
     private LinearLayout mQualityContentView;
     //content
     private LinearLayout mContentView;
 
-    private RelativeLayout  mBackView,mMenuView;
-    private ImageView  mSearchView, mCreateView;
+    private RelativeLayout mBackView, mMenuView;
+    private ImageView mSearchView, mCreateView;
     private TextView mTitleView;
 
     private boolean mIsDrawerOpen = false;
@@ -97,7 +95,7 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
         mActivity = this;
         mProjectInfo = (ProjectListItem) getIntent().getSerializableExtra(CommonConfig.PROJECT_LIST_ITEM);
 
-        mFromType = getIntent().getIntExtra(CommonConfig.MAIN_FROM_TYPE,0);
+        mFromType = getIntent().getIntExtra(CommonConfig.MAIN_FROM_TYPE, 0);
         initView();
         setListener();
         initDataForActivity();
@@ -136,14 +134,13 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
         hideDrawer(1);
 
         //权限控制  是否显示新检检查单按钮
-        if(AuthorityManager.isShowCreateButton()){
+        if (AuthorityManager.isShowCreateButton()) {
             mCreateView.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             mCreateView.setVisibility(View.GONE);
         }
 
     }
-
 
 
     private void setListener() {
@@ -159,10 +156,10 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
         back();
     }
 
-    private void back(){
-        if(mCurrentFragmentId == mQualityCheckModuleFragmentId){
+    private void back() {
+        if (mCurrentFragmentId == mQualityCheckModuleFragmentId) {
             mQualityCheckModuleFragment.back();
-        }else{
+        } else {
             mActivity.finish();
         }
     }
@@ -195,9 +192,9 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
                 changeProject();
                 break;
             case R.id.main_drawer_quality://点击质量管理
-                if(mQualityContentView.getVisibility() == View.VISIBLE){
+                if (mQualityContentView.getVisibility() == View.VISIBLE) {
                     mQualityContentView.setVisibility(View.GONE);
-                }else{
+                } else {
                     mQualityContentView.setVisibility(View.VISIBLE);
                 }
                 break;
@@ -207,51 +204,42 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
                 hideDrawer(300);
                 mIsDrawerOpen = false;
                 mTitleView.setText("质检清单");
-                SharedPreferencesUtil.setSelectModuleInfo(-1,"");
+                SharedPreferencesUtil.setSelectModuleInfo(-1, "");
                 break;
             case R.id.main_drawer_quality_blueprint://点击图纸
-                if(AppConfig.isShow) {
-                    setSelect(1);
-                    showFragmentById(mBluePrintFragmentId);
-                    hideDrawer(300);
-                    mIsDrawerOpen = false;
-                    mTitleView.setText("图纸");
-                    SharedPreferencesUtil.setSelectModuleInfo(-1, "");
-                }
+                setSelect(1);
+                showFragmentById(mBluePrintFragmentId);
+                hideDrawer(300);
+                mIsDrawerOpen = false;
+                mTitleView.setText("图纸");
+                SharedPreferencesUtil.setSelectModuleInfo(-1, "");
                 break;
             case R.id.main_drawer_quality_model://点击模型
-                if(AppConfig.isShow) {
-                    setSelect(2);
-                    showFragmentById(mModelFragmentId);
-                    hideDrawer(300);
-                    mIsDrawerOpen = false;
-                    mTitleView.setText("模型");
-                    SharedPreferencesUtil.setSelectModuleInfo(-1, "");//清空当前选中的质检项目
-                }
+                setSelect(2);
+                showFragmentById(mModelFragmentId);
+                hideDrawer(300);
+                mIsDrawerOpen = false;
+                mTitleView.setText("模型");
+                SharedPreferencesUtil.setSelectModuleInfo(-1, "");//清空当前选中的质检项目
                 break;
             case R.id.main_drawer_quality_module://点击质检项目
-                if(AppConfig.isShow) {
-                    setSelect(3);
-                    showFragmentById(mQualityCheckModuleFragmentId);
-                    hideDrawer(300);
-                    mIsDrawerOpen = false;
-                }
+                setSelect(3);
+                showFragmentById(mQualityCheckModuleFragmentId);
+                hideDrawer(300);
+                mIsDrawerOpen = false;
                 break;
             case R.id.main_drawer_setting://点击进入设置
-                if(AppConfig.isShow) {
-                    mPresenter.toSetting(mProjectInfo);
-                }
+                mPresenter.toSetting(mProjectInfo);
                 break;
 
         }
     }
 
 
-
     private void changeProject() {
         Intent data = new Intent();
-        data.putExtra(CommonConfig.CHANGE_PROJECT,true);
-        setResult(RESULT_OK,data);
+        data.putExtra(CommonConfig.CHANGE_PROJECT, true);
+        setResult(RESULT_OK, data);
         finish();
     }
 
@@ -298,10 +286,9 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
         initDrawer();
     }
 
-    private void setNavTitle(int fromType){
+    private void setNavTitle(int fromType) {
         String title = "";
-        switch (fromType)
-        {
+        switch (fromType) {
             case 0:
                 title = "质检清单";
                 break;
@@ -320,7 +307,7 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
 
     //初始化drawer数据
     private void initDrawer() {
-        if(mProjectInfo!=null) {
+        if (mProjectInfo != null) {
             mProjectNameView.setText(mProjectInfo.name);
         }
 
@@ -345,12 +332,12 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
         setSelect(mFromType);
     }
 
-    private void setSelect(int position){
-        for(int i = 0;i<mContentList.size();i++){
+    private void setSelect(int position) {
+        for (int i = 0; i < mContentList.size(); i++) {
             TextView tv = mContentList.get(i);
-            if(i == position){
+            if (i == position) {
                 tv.setTextColor(getResources().getColor(R.color.c_00b5f2));
-            }else{
+            } else {
                 tv.setTextColor(getResources().getColor(R.color.c_d4d4d4));
             }
         }
@@ -373,7 +360,7 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
                 currentFragment = mQualityCheckModuleFragment;
                 break;
         }
-        if(currentFragment!=null){
+        if (currentFragment != null) {
             currentFragment.clickSearch();
         }
     }
@@ -492,7 +479,7 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(mPresenter!=null) {
+        if (mPresenter != null) {
             mPresenter.onActivityResult(requestCode, resultCode, data);
         }
         mFragmentMap.get(mCurrentFragmentId).onActivityResult(requestCode, resultCode, data);

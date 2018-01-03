@@ -22,7 +22,6 @@ import android.widget.TextView;
 
 import com.glodon.bim.R;
 import com.glodon.bim.base.BaseActivity;
-import com.glodon.bim.basic.config.AppConfig;
 import com.glodon.bim.basic.listener.ThrottleClickEvents;
 import com.glodon.bim.basic.utils.ScreenUtil;
 import com.glodon.bim.basic.utils.SharedPreferencesUtil;
@@ -174,7 +173,6 @@ public class LoginActivity extends BaseActivity implements LoginContract.View, V
         String password = SharedPreferencesUtil.getString(CommonConfig.PASSWORD, "");
         mUsernameEt.setText(username);
         mPasswordEt.setText(password);
-        if (AppConfig.isShow) {
 //            mUsernameEt.setText("15822320523");//徐园
 //            mPasswordEt.setText("123qwe");
 //        mUsernameEt.setText("15001340978");
@@ -190,7 +188,6 @@ public class LoginActivity extends BaseActivity implements LoginContract.View, V
 //        mPasswordEt.setText("123qwe!@#");
 //                    mUsernameEt.setText("18330117163");//施工
 //        mPasswordEt.setText("123qwe");
-        }
     }
 
     //更改登录按钮的显示

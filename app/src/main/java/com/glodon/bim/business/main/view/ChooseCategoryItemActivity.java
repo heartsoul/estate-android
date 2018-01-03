@@ -78,10 +78,10 @@ public class ChooseCategoryItemActivity extends BaseActivity implements ChooseCa
             id = getResources().getIdentifier("status_bar_height", "dimen", //获取状态栏的高度
                     "android");
             if (id > 0) {
-                LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams)mSetView.getLayoutParams();
+                LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) mSetView.getLayoutParams();
                 int height = getResources() //设置状态栏的高度
                         .getDimensionPixelOffset(id);
-                lp.topMargin = height+ScreenUtil.dp2px(10);
+                lp.topMargin = height + ScreenUtil.dp2px(10);
             }
         }
     }
@@ -132,19 +132,13 @@ public class ChooseCategoryItemActivity extends BaseActivity implements ChooseCa
                 mPresenter.toQualityChickList(0);
                 break;
             case R.id.choose_category_item_item_tz://点击图纸
-                if(AppConfig.isShow) {
-                    mPresenter.toQualityChickList(1);
-                }
+                mPresenter.toQualityChickList(1);
                 break;
             case R.id.choose_category_item_item_mx://点击模型
-                if(AppConfig.isShow) {
-                    mPresenter.toQualityChickList(2);
-                }
+                mPresenter.toQualityChickList(2);
                 break;
             case R.id.choose_category_item_item_zjxm://点击质检项目
-                if(AppConfig.isShow) {
-                    mPresenter.toQualityChickList(3);
-                }
+                mPresenter.toQualityChickList(3);
                 break;
             case R.id.choose_category_item_item_create://点击新建
                 create();

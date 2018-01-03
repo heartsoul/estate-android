@@ -16,6 +16,6 @@ import rx.Observable;
 
 public class FeedBackModel implements FeedBackContract.Model{
     public Observable<FeedBackBean> addFeedBack(FeedBackParams props){
-        return NetRequest.getInstance().getCall(AppConfig.BASE_URL_FEEDBACK,FeedBackApi.class).addFeedBack(props);
+        return NetRequest.getInstance().getCall(AppConfig.BASE_URL,FeedBackApi.class).addFeedBack(props);
     }
 }

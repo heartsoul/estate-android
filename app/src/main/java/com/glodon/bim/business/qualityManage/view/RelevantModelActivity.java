@@ -6,12 +6,15 @@ import android.graphics.Bitmap;
 import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
+import android.text.TextUtils;
 import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -164,8 +167,39 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
         //点击构件返回信息
         @JavascriptInterface
         public void getPosition(final String json) {
-            LogUtil.e("getPosition json="+json);
-            component = new GsonBuilder().create().fromJson(json, ModelComponent.class);
+            LogUtil.e("getPosition json="+json+" type="+type);
+            if(TextUtils.isEmpty(json)){
+                component = null;
+            }else {
+                component = new GsonBuilder().create().fromJson(json, ModelComponent.class);
+            }
+
+            //0新建检查单 1检查单编辑状态 2详情查看  3模型模式
+            switch (type){
+                case 0:
+                    if(checkComponent()){
+                        backData();
+                    }
+                    break;
+                case 1:
+                    if(checkComponent()){
+                        backData();
+                    }
+                    break;
+                case 2:
+
+                    break;
+                case 3:
+                    if(checkComponent()) {
+                        //跳转到检查单创建页
+                        Intent intent = new Intent(mActivity, CreateCheckListActivity.class);
+                        mModelSelectInfo.component = component;
+                        intent.putExtra(CommonConfig.RELEVANT_MODEL, mModelSelectInfo);
+                        startActivity(intent);
+                        finish();
+                    }
+                    break;
+            }
         }
 
         //点击圆点 返回信息
@@ -202,6 +236,12 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
         mBackView.setOnClickListener(this);
         mFinishView.setOnClickListener(this);
 
+    }
+
+    //获取选中的构件信息
+    private void getSelectedComponent(){
+        LogUtil.e("javascript:getSelectedComponent()");
+        mWebview.loadUrl("javascript:getSelectedComponent()");
     }
 
     private void initData() {
@@ -256,40 +296,14 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
                 mActivity.finish();
                 break;
             case R.id.relevant_model_finish://+号
-                //0新建检查单 1检查单编辑状态 2详情查看  3模型模式
-                switch (type){
-                    case 0:
-                        if(checkComponent()){
-                            backData();
-                        }
-                        break;
-                    case 1:
-                        if(checkComponent()){
-                            backData();
-                        }
-                        break;
-                    case 2:
-
-                        break;
-                    case 3:
-                        if(checkComponent()) {
-                            //跳转到检查单创建页
-                            Intent intent = new Intent(mActivity, CreateCheckListActivity.class);
-                            mModelSelectInfo.component = component;
-                            intent.putExtra(CommonConfig.RELEVANT_MODEL, mModelSelectInfo);
-                            startActivity(intent);
-                            finish();
-                        }
-                        break;
-                }
-
+                getSelectedComponent();
                 break;
         }
     }
 
     //检测是否选择了构件
     private boolean checkComponent(){
-        if(component==null||"undefined".equals(component.elementId)) {
+        if(component==null||TextUtils.isEmpty(component.elementId)||"undefined".equals(component.elementId)) {
             SaveDeleteDialog mHintDialog = new SaveDeleteDialog(getActivity());
             mHintDialog.getModelHintDialog("您还未选择构件!");
             mHintDialog.show();
@@ -309,9 +323,17 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
 
 
     //设定选中的构件  单个和多个
-    private void showSelectedComponent(List<String> list){
-        String param = new GsonBuilder().create().toJson(list);
-        mWebview.loadUrl("javascript:showSelectedComponent('" + param + "')");
+    private void showSelectedComponent(final List<String> list){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                String param = new GsonBuilder().create().toJson(list);
+                LogUtil.e("设置选中构件 param="+param);
+                mWebview.loadUrl("javascript:showSelectedComponent('" + param + "')");
+            }
+        });
+
+
     }
     //设置多个点
     @Override
@@ -445,7 +467,7 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
     }
 
      private void pageFinished(){
-         //0新建检查单 1检查单编辑状态 2详情查看  3图纸模式
+         //0新建检查单 1检查单编辑状态 2详情查看  3模型模式
          LogUtil.e("pageFinish type="+type);
          switch (type){
              case 0:

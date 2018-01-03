@@ -3,15 +3,12 @@ package com.glodon.bim.business.login.presenter;
 import android.content.Intent;
 import android.text.TextUtils;
 
-import com.glodon.bim.basic.config.AppConfig;
-import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.basic.utils.NetWorkUtils;
 import com.glodon.bim.basic.utils.SharedPreferencesUtil;
 import com.glodon.bim.business.login.contract.LoginContract;
 import com.glodon.bim.business.login.listener.OnLoginListener;
 import com.glodon.bim.business.login.model.LoginModel;
 import com.glodon.bim.business.login.view.PictureCodeActivity;
-import com.glodon.bim.business.login.view.ResetPasswordActivity;
 import com.glodon.bim.business.main.view.ChooseTenantActivity;
 import com.glodon.bim.common.config.CommonConfig;
 import com.glodon.bim.common.login.User;
@@ -44,20 +41,20 @@ public class LoginPresenter implements LoginContract.Presenter {
 
     @Override
     public void initData(Intent intent) {
-        String username = SharedPreferencesUtil.getString(CommonConfig.USERNAME,"");
-        String password = SharedPreferencesUtil.getString(CommonConfig.PASSWORD,"");
-        if(!TextUtils.isEmpty(username)&&!TextUtils.isEmpty(password)){
-            login(username,password);
+        String username = SharedPreferencesUtil.getString(CommonConfig.USERNAME, "");
+        String password = SharedPreferencesUtil.getString(CommonConfig.PASSWORD, "");
+        if (!TextUtils.isEmpty(username) && !TextUtils.isEmpty(password)) {
+            login(username, password);
         }
     }
 
     @Override
     public void clickLoginBtn(final String username, final String password) {
-        login(username,password);
+        login(username, password);
     }
 
-    private void login(final String username, final String password){
-        if(NetWorkUtils.isNetworkAvailable(mView.getActivity())) {
+    private void login(final String username, final String password) {
+        if (NetWorkUtils.isNetworkAvailable(mView.getActivity())) {
             mView.showLoadingDialog();
             mModel.login(username, password, new OnLoginListener() {
                 @Override
@@ -112,21 +109,18 @@ public class LoginPresenter implements LoginContract.Presenter {
                     }
                 }
             });
-        }else{
+        } else {
             ToastManager.showNetWorkToast();
         }
     }
 
     @Override
     public void forgetPassword(String username) {
-        if (AppConfig.isShow) {
-            Intent intent = new Intent(mView.getActivity(), PictureCodeActivity.class);
-//            Intent intent = new Intent(mView.getActivity(), ResetPasswordActivity.class);
-            if(!TextUtils.isEmpty(username)){
-                intent.putExtra(CommonConfig.RESET_USERNAME,username);
-            }
-            mView.getActivity().startActivity(intent);
+        Intent intent = new Intent(mView.getActivity(), PictureCodeActivity.class);
+        if (!TextUtils.isEmpty(username)) {
+            intent.putExtra(CommonConfig.RESET_USERNAME, username);
         }
+        mView.getActivity().startActivity(intent);
     }
 
     @Override
@@ -147,8 +141,8 @@ public class LoginPresenter implements LoginContract.Presenter {
     /**
      * 保存用户名密码
      */
-    private void saveUserInfo(String username,String password){
-        SharedPreferencesUtil.setString(CommonConfig.USERNAME,username);
-        SharedPreferencesUtil.setString(CommonConfig.PASSWORD,password);
+    private void saveUserInfo(String username, String password) {
+        SharedPreferencesUtil.setString(CommonConfig.USERNAME, username);
+        SharedPreferencesUtil.setString(CommonConfig.PASSWORD, password);
     }
 }
