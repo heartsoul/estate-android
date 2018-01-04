@@ -45,18 +45,54 @@ public class AppConfig {
 //    public static String BASE_URL = "http://bimcop.glodon.com/"; //正式环境
 
       //测试环境
-//    public static String BASE_UPLOAD_URL =  "http://172.16.233.183:8093/";//图片上传  测试
-//    public static String BASE_URL = "http://192.168.81.30/"; //测试
-//    public static final String BASE_URL_BLUEPRINT_TOKEN = "http://47.95.204.243/app.html?param=";//图纸的url地址
+    public static String BASE_UPLOAD_URL =  "http://172.16.233.183:8093/";//图片上传  测试
+    public static String BASE_URL = "http://192.168.81.30/"; //测试
+    public static final String BASE_URL_BLUEPRINT_TOKEN = "http://47.95.204.243/app.html?param=";//图纸的url地址
 
     //预生产 47.95.204.243
-    public static String BASE_UPLOAD_URL =  "https://api.glodon.com/nss/";//图片上传
-    public static String BASE_URL = "http://47.95.204.243/";
-    public static final String BASE_URL_BLUEPRINT_TOKEN = "http://47.95.204.243/app.html?param=";//图纸的url地址
+//    public static String BASE_UPLOAD_URL =  "https://api.glodon.com/nss/";//图片上传
+//    public static String BASE_URL = "http://47.95.204.243/";
+//    public static final String BASE_URL_BLUEPRINT_TOKEN = "http://47.95.204.243/app.html?param=";//图纸的url地址
 
     //生产 47.95.204.243
 //    public static String BASE_UPLOAD_URL =  "https://api.glodon.com/nss/";//图片上传
 //    public static String BASE_URL = "http://bimcop.glodon.com/";
 //    public static final String BASE_URL_BLUEPRINT_TOKEN = "http://bimcop.glodon.com/app.html?param=";//图纸的url地址
 
+
+    /*
+ 测试：
+192.168.81.30
+/usr/share/nginx/html/app
+root
+123qwe!@#
+
+预发
+47.95.204.243
+/usr/share/nginx/html/app
+deploy
+jfbim+pmdeploy
+
+生产：
+ 60.205.213.168
+ /usr/share/nginx/html/app
+ deploy
+ jfbim+pmdeploy
+
+
+二维码：
+
+测试：192.168.81.30
+1，生成http://192.168.81.30/app/bimcop_app_test_v1.1.0.apk二维码
+2，覆盖/usr/share/nginx/html/daily/imgs/app_qr_code.png图片
+
+预发：
+1，生成http://bimcop-test.glodon.com/app/文件名  二维码
+2，覆盖/usr/share/nginx/html/最新版本号/imgs/app_qr_code.png图片
+
+
+生产：
+1，生成http://bimcop.glodon.com/app/文件名 二维码
+2，覆盖/usr/share/nginx/html/最新版本号/imgs/app_qr_code.png图片
+     */
 }
