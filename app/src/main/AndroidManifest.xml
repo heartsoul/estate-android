@@ -296,6 +296,10 @@
         <!--搜索模型或图纸-->
         <activity android:name="com.glodon.bim.business.qualityManage.view.BluePrintModelSearchActivity"
             android:screenOrientation="portrait"/>
+        <!--创建材设进场记录-必填项页面-->
+        <activity android:name="com.glodon.bim.business.equipment.view.CreateEquipmentMandatoryActivity"
+            android:screenOrientation="portrait"/>
+
     </application>
 
 </manifest>

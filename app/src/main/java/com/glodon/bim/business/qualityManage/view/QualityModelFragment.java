@@ -12,12 +12,12 @@ import com.glodon.bim.base.BaseFragment;
 import com.glodon.bim.business.qualityManage.util.IntentManager;
 
 /**
- * 描述：模型
+ * 描述：质量下模型
  * 作者：zhourf on 2017/9/29
  * 邮箱：zhourf@glodon.com
  */
 
-public class ModelFragment extends BaseFragment {
+public class QualityModelFragment extends BaseFragment {
     private ModelView mModelView;
     @Nullable
     @Override

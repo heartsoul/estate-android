@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 
 import com.glodon.bim.basic.utils.CameraUtil;
+import com.glodon.bim.business.equipment.view.CreateEquipmentMandatoryActivity;
 import com.glodon.bim.business.main.bean.ProjectListItem;
 import com.glodon.bim.business.qualityManage.contract.QualityMangeMainContract;
 import com.glodon.bim.business.qualityManage.view.CreateCheckListActivity;
@@ -71,6 +72,12 @@ public class QualityMangeMainPresenter implements QualityMangeMainContract.Prese
         Intent intent = new Intent(mView.getActivity(), SettingActivity.class);
         intent.putExtra(CommonConfig.PROJECT_LIST_ITEM,mProjectInfo);
         mView.getActivity().startActivity(intent);
+    }
+
+    @Override
+    public void toCreateEquipment() {
+        Intent intent = new Intent(mView.getActivity(), CreateEquipmentMandatoryActivity.class);
+        mView.getActivity().startActivityForResult(intent,RequestCodeConfig.REQUEST_CODE_CREATE_EQUIPMENT_MANDATORY);
     }
 
     @Override

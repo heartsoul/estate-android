@@ -10,8 +10,9 @@ import java.util.Date;
 import java.util.Locale;
 
 /**
- * Description : Created by 程磊 on 2016/7/12. Job number：139268 Phone
- * ：13141390126 Email：chenglei@syswin.com Person in charge : Leader：李晓
+ * 描述：日期处理
+ * 作者：zhourf on 2017/9/19
+ * 邮箱：zhourf@glodon.com
  */
 public class DateUtils {
     public static final String FORMAT_DATE = "yyyy-MM-dd HH:mm:ss";

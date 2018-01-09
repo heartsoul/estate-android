@@ -23,6 +23,8 @@ import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.basic.utils.ScreenUtil;
 import com.glodon.bim.basic.utils.SharedPreferencesUtil;
 import com.glodon.bim.business.authority.AuthorityManager;
+import com.glodon.bim.business.equipment.view.EquipmentListFragment;
+import com.glodon.bim.business.equipment.view.EquipmentModelFragment;
 import com.glodon.bim.business.greendao.provider.DaoProvider;
 import com.glodon.bim.business.main.bean.ProjectListItem;
 import com.glodon.bim.business.qualityManage.contract.QualityMangeMainContract;
@@ -53,9 +55,15 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
     private LinearLayout mDrawerView;
     private TextView mProjectNameView;
     private ImageView mProjectNameIcon;
+    //质检
     private TextView mQualityCheckListTv, mBluePrintTv, mModelTv, mQualityCheckModuleTv;
     private RelativeLayout mQualityManagerView, mSettingView;
     private LinearLayout mQualityContentView;
+    //材设
+    private RelativeLayout mEquipmentView;
+    private TextView mEquipmentListTv,mEquipmentModelTv;
+    private LinearLayout mEquipmentContentView;
+
     //content
     private LinearLayout mContentView;
 
@@ -71,11 +79,15 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
     private final int mBluePrintFragmentId = 1;
     private final int mModelFragmentId = 2;
     private final int mQualityCheckModuleFragmentId = 3;
+    private final int mEquipmentListFragmentId = 4;
+    private final int mEquipmentModelFragmentId = 5;
 
     private QualityCheckListFragment mQualityCheckListFragment;
     private BluePrintFragment mBluePrintFragment;
-    private ModelFragment mModelFragment;
+    private QualityModelFragment mQualityModelFragment;
     private QualityCheckModuleFragment mQualityCheckModuleFragment;
+    private EquipmentListFragment mEquipmentListFragment;
+    private EquipmentModelFragment mEquipmentModelFragment;
 
     private Map<Integer, BaseFragment> mFragmentMap;
 
@@ -102,9 +114,11 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
     }
 
     private void initView() {
+        //侧边栏
         mDrawerView = (LinearLayout) findViewById(R.id.main_drawer);
         mProjectNameView = (TextView) findViewById(R.id.main_drawer_project_name);
         mProjectNameIcon = (ImageView) findViewById(R.id.main_drawer_project_name_icon);
+        //质量
         mQualityManagerView = (RelativeLayout) findViewById(R.id.main_drawer_quality);
         mSettingView = (RelativeLayout) findViewById(R.id.main_drawer_setting);
         mQualityContentView = (LinearLayout) findViewById(R.id.main_drawer_quality_content);
@@ -127,6 +141,12 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
         mBluePrintTv = (TextView) findViewById(R.id.main_drawer_quality_blueprint);
         mModelTv = (TextView) findViewById(R.id.main_drawer_quality_model);
         mQualityCheckModuleTv = (TextView) findViewById(R.id.main_drawer_quality_module);
+
+        //材设
+        mEquipmentView = (RelativeLayout) findViewById(R.id.main_drawer_equipment);
+        mEquipmentListTv = (TextView) findViewById(R.id.main_drawer_equipment_list);
+        mEquipmentModelTv = (TextView) findViewById(R.id.main_drawer_equipment_model);
+        mEquipmentContentView = (LinearLayout) findViewById(R.id.main_drawer_equipment_content);
 
         initStatusBar(mStatusRight);
         initStatusBar(mStatusLeft);
@@ -228,10 +248,46 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
                 hideDrawer(300);
                 mIsDrawerOpen = false;
                 break;
+            case R.id.main_drawer_equipment://点击材设进场
+                if (mEquipmentContentView.getVisibility() == View.VISIBLE) {
+                    mEquipmentContentView.setVisibility(View.GONE);
+                } else {
+                    mEquipmentContentView.setVisibility(View.VISIBLE);
+                }
+                break;
+            case R.id.main_drawer_equipment_list://点击材设进场清单
+                setSelect(4);
+                showFragmentById(mEquipmentListFragmentId);
+                hideDrawer(300);
+                mIsDrawerOpen = false;
+                break;
+            case R.id.main_drawer_equipment_model://点击材设进场下模型
+                setSelect(5);
+                showFragmentById(mEquipmentModelFragmentId);
+                hideDrawer(300);
+                mIsDrawerOpen = false;
+                break;
             case R.id.main_drawer_setting://点击进入设置
                 mPresenter.toSetting(mProjectInfo);
                 break;
 
+        }
+    }
+
+    //不同的页面创建不同的内容
+    private void create() {
+        switch (mCurrentFragmentId)
+        {
+            case mQualityCheckListFragmentId:
+            case mBluePrintFragmentId:
+            case mModelFragmentId:
+            case mQualityCheckModuleFragmentId:
+                createQuality();
+                break;
+            case mEquipmentListFragmentId:
+            case mEquipmentModelFragmentId:
+                createEquipment();
+                break;
         }
     }
 
@@ -243,9 +299,13 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
         finish();
     }
 
+    //创建材设进场记录
+    private void createEquipment(){
+        mPresenter.toCreateEquipment();
+    }
+
     //弹出照片选择框
-    @Override
-    public void create() {
+    public void createQuality() {
         if (mPhotoAlbumDialog == null) {
             mPhotoAlbumDialog = new PhotoAlbumDialog(this).builder(new View.OnClickListener() {
                 @Override
@@ -313,6 +373,7 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
 
         mProjectNameView.setOnClickListener(this);
         mProjectNameIcon.setOnClickListener(this);
+        //质量
         mQualityManagerView.setOnClickListener(this);
 
         mQualityCheckListTv.setOnClickListener(this);
@@ -320,6 +381,11 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
         mModelTv.setOnClickListener(this);
         mQualityCheckModuleTv.setOnClickListener(this);
 
+        //材设
+        mEquipmentView.setOnClickListener(this);
+        mEquipmentListTv.setOnClickListener(this);
+        mEquipmentModelTv.setOnClickListener(this);
+        //设置
         mSettingView.setOnClickListener(this);
 
         mContentList = new ArrayList<>();
@@ -327,6 +393,8 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
         mContentList.add(mBluePrintTv);
         mContentList.add(mModelTv);
         mContentList.add(mQualityCheckModuleTv);
+        mContentList.add(mEquipmentListTv);
+        mContentList.add(mEquipmentModelTv);
 
         //设置选中颜色
         setSelect(mFromType);
@@ -354,10 +422,16 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
                 currentFragment = mBluePrintFragment;
                 break;
             case mModelFragmentId:
-                currentFragment = mModelFragment;
+                currentFragment = mQualityModelFragment;
                 break;
             case mQualityCheckModuleFragmentId:
                 currentFragment = mQualityCheckModuleFragment;
+                break;
+            case mEquipmentListFragmentId:
+                currentFragment = mEquipmentListFragment;
+                break;
+            case mEquipmentModelFragmentId:
+                currentFragment = mEquipmentModelFragment;
                 break;
         }
         if (currentFragment != null) {
@@ -391,11 +465,11 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
                 currentFragment = mBluePrintFragment;
                 break;
             case mModelFragmentId:
-                if (mModelFragment == null) {
-                    mModelFragment = new ModelFragment();
-                    transaction.add(R.id.main_fragment_content, mModelFragment);
+                if (mQualityModelFragment == null) {
+                    mQualityModelFragment = new QualityModelFragment();
+                    transaction.add(R.id.main_fragment_content, mQualityModelFragment);
                 }
-                currentFragment = mModelFragment;
+                currentFragment = mQualityModelFragment;
                 break;
             case mQualityCheckModuleFragmentId:
                 if (mQualityCheckModuleFragment == null) {
@@ -411,6 +485,36 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
                 });
                 mQualityCheckModuleFragment.changeTitle();
                 currentFragment = mQualityCheckModuleFragment;
+                break;
+            case mEquipmentListFragmentId:
+                if (mEquipmentListFragment == null) {
+                    mEquipmentListFragment = new EquipmentListFragment();
+                    transaction.add(R.id.main_fragment_content, mEquipmentListFragment);
+                }
+                mEquipmentListFragment.setProjectInfo(mProjectInfo);
+                mEquipmentListFragment.setTitleChangeListener(new OnTitleChangerListener() {
+                    @Override
+                    public void onTitleChange(String name) {
+                        mTitleView.setText(name);
+                    }
+                });
+                mEquipmentListFragment.changeTitle();
+                currentFragment = mEquipmentListFragment;
+                break;
+            case mEquipmentModelFragmentId:
+                if (mEquipmentModelFragment == null) {
+                    mEquipmentModelFragment = new EquipmentModelFragment();
+                    transaction.add(R.id.main_fragment_content, mEquipmentModelFragment);
+                }
+                mEquipmentModelFragment.setProjectInfo(mProjectInfo);
+                mEquipmentModelFragment.setTitleChangeListener(new OnTitleChangerListener() {
+                    @Override
+                    public void onTitleChange(String name) {
+                        mTitleView.setText(name);
+                    }
+                });
+                mEquipmentModelFragment.changeTitle();
+                currentFragment = mEquipmentModelFragment;
                 break;
         }
 

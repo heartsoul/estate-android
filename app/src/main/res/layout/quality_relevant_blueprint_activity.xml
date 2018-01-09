@@ -90,7 +90,7 @@
             android:background="@drawable/corner_radius_6_blue_bg"
             android:gravity="center_horizontal"
             android:padding="@dimen/dimen_10"
-            android:text="手指长按屏幕可以再当前位\n置新建检查单或者质检单哦"
+            android:text="手指长按屏幕可以在当前位\n置新建检查单或者质检单哦"
             android:textColor="@color/white"
             android:textSize="@dimen/dimen_16"
             android:layout_below="@id/relevant_blueprint_trangle"/>

@@ -43,13 +43,18 @@ public interface QualityMangeMainContract {
          * 设置界面
          */
         void toSetting(ProjectListItem mProjectInfo);
+
+        /**
+         * 创建材设进场记录
+         */
+        void toCreateEquipment();
     }
 
     interface View extends IBaseView {
-        /**
-         * 打开相册拍照
-         */
-        void create();
+//        /**
+//         * 打开相册拍照
+//         */
+//        void create();
     }
 
     interface Model {

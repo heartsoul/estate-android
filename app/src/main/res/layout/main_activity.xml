@@ -58,10 +58,11 @@
                     android:layout_height="wrap_content">
 
                     <ImageView
-                        android:layout_width="@dimen/dimen_18"
+                        android:layout_width="@dimen/dimen_20"
                         android:layout_height="@dimen/dimen_20"
                         android:layout_marginLeft="@dimen/dimen_22"
-                        android:background="@drawable/icon_drawer_quality" />
+                        android:background="@drawable/icon_drawer_quality"
+                        android:layout_centerVertical="true"/>
 
                     <ImageView
                         android:id="@+id/main_drawer_quality_check_list_arrow_down"
@@ -139,10 +140,82 @@
                     android:background="@color/c_3bcccccc" />
 
                 <RelativeLayout
+                    android:id="@+id/main_drawer_equipment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_16">
+
+                    <ImageView
+                        android:layout_width="@dimen/dimen_16"
+                        android:layout_height="@dimen/dimen_16"
+                        android:layout_marginLeft="@dimen/dimen_22"
+                        android:background="@drawable/icon_drawer_equipment"
+                        android:layout_centerVertical="true"/>
+
+                    <ImageView
+                        android:id="@+id/main_drawer_equipment_arrow_down"
+                        android:layout_width="@dimen/dimen_12"
+                        android:layout_height="@dimen/dimen_05"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/dimen_18"
+                        android:background="@drawable/icon_drawer_arrow_down" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/dimen_54"
+                        android:text="材设进场"
+                        android:textColor="@color/c_d4d4d4"
+                        android:textSize="@dimen/dimen_16" />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/main_drawer_equipment_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    >
+
+                    <TextView
+                        android:id="@+id/main_drawer_equipment_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen_13"
+                        android:paddingLeft="@dimen/dimen_54"
+                        android:text="材设清单"
+                        android:textColor="@color/c_d4d4d4"
+                        android:textSize="@dimen/dimen_16" />
+
+
+                    <TextView
+                        android:id="@+id/main_drawer_equipment_model"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen_13"
+                        android:paddingLeft="@dimen/dimen_54"
+                        android:text="模型"
+                        android:textColor="@color/c_d4d4d4"
+                        android:textSize="@dimen/dimen_16" />
+
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_0.5"
+                    android:layout_marginLeft="@dimen/dimen_20"
+                    android:layout_marginRight="@dimen/dimen_08"
+                    android:layout_marginTop="@dimen/dimen_13"
+                    android:background="@color/c_3bcccccc" />
+
+                <RelativeLayout
                     android:id="@+id/main_drawer_setting"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dimen_13">
+                    android:layout_marginTop="@dimen/dimen_16">
 
                     <ImageView
                         android:layout_width="@dimen/dimen_20"

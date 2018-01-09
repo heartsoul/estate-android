@@ -7,13 +7,9 @@ import java.util.Date;
 import java.util.Locale;
 
 /**
- * Description : 圈子列表的日期
- * Created by 贾鹏程 on 2016/8/15.
- * Job number：143269
- * Phone ：18810813946
- * Email：jiapengcheng@syswin.com
- * Person in charge : 贾鹏程
- * Leader：刘一博
+ * 描述：日期处理
+ * 作者：zhourf on 2017/9/19
+ * 邮箱：zhourf@glodon.com
  */
 
 public class DateUtil {
