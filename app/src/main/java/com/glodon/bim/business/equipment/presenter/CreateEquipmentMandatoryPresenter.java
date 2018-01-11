@@ -2,7 +2,11 @@ package com.glodon.bim.business.equipment.presenter;
 
 import android.content.Intent;
 
+import com.glodon.bim.business.equipment.bean.MandatoryInfo;
 import com.glodon.bim.business.equipment.contract.CreateEquipmentMandatoryContract;
+import com.glodon.bim.business.equipment.view.CreateEquipmentNotMandatoryActivity;
+import com.glodon.bim.common.config.CommonConfig;
+import com.glodon.bim.common.config.RequestCodeConfig;
 
 /**
  * 描述：创建材设进场记录-必填项页面
@@ -31,5 +35,12 @@ public class CreateEquipmentMandatoryPresenter implements CreateEquipmentMandato
     @Override
     public void onDestroy() {
 
+    }
+
+    @Override
+    public void toNotMandatory(MandatoryInfo info) {
+        Intent intent = new Intent(mView.getActivity(), CreateEquipmentNotMandatoryActivity.class);
+        intent.putExtra(CommonConfig.EQUIPMENT_MANDATORYINFO,info);
+        mView.getActivity().startActivityForResult(intent, RequestCodeConfig.REQUEST_CODE_EQUIPMENT_MANDATORY);
     }
 }

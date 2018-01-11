@@ -2,6 +2,7 @@ package com.glodon.bim.business.equipment.contract;
 
 import com.glodon.bim.base.IBasePresenter;
 import com.glodon.bim.base.IBaseView;
+import com.glodon.bim.business.equipment.bean.MandatoryInfo;
 import com.glodon.bim.common.login.UserTenant;
 
 import java.util.List;
@@ -24,6 +25,11 @@ public interface CreateEquipmentMandatoryContract {
 
     interface Presenter extends IBasePresenter{
 
+        /**
+         * 进入下一个页面
+         * @param info  当前参数
+         */
+        void toNotMandatory(MandatoryInfo info);
     }
 
     interface Model{

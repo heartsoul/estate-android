@@ -27,11 +27,11 @@ import java.util.Date;
 import java.util.Map;
 
 /**
- * 描述：创建材设进场记录-必填项页面
+ * 描述：创建材设进场记录-非必填项页面
  * 作者：zhourf on 2017/9/8
  * 邮箱：zhourf@glodon.com
  */
-public class CreateEquipmentMandatoryActivity extends BaseActivity implements View.OnClickListener ,CreateEquipmentMandatoryContract.View{
+public class CreateEquipmentNotMandatoryActivity extends BaseActivity implements View.OnClickListener ,CreateEquipmentMandatoryContract.View{
 
     private View mStatusView;
     private RelativeLayout mBackView;
@@ -46,7 +46,7 @@ public class CreateEquipmentMandatoryActivity extends BaseActivity implements Vi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.equipment_create_mandatory_activity);
+        setContentView(R.layout.equipment_create_not_mandatory_activity);
 
         initView();
         initStatusBar(mStatusView);
@@ -104,9 +104,6 @@ public class CreateEquipmentMandatoryActivity extends BaseActivity implements Vi
         String date = mDateTv.getText().toString().trim();
         String code = mCodeEt.getText().toString().trim();
         String name = mNameEt.getText().toString().trim();
-        mIndexDelete.setVisibility(TextUtils.isEmpty(index)?View.GONE:View.VISIBLE);
-        mCodeDelete.setVisibility(TextUtils.isEmpty(code)?View.GONE:View.VISIBLE);
-        mNameDelete.setVisibility(TextUtils.isEmpty(name)?View.GONE:View.VISIBLE);
         if(!TextUtils.isEmpty(index)&&!TextUtils.isEmpty(date)&&!TextUtils.isEmpty(code)&&!TextUtils.isEmpty(name)){
             mNextBtn.setOnClickListener(this);
         }else{

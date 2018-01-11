@@ -60,7 +60,6 @@
             android:textColor="@color/c_00b5f2"
             android:textSize="@dimen/dimen_14"
             android:text="请依次完成下列内容输入"
-            android:layout_marginLeft="@dimen/dimen_05"
             />
     </LinearLayout>
     <View
@@ -230,19 +229,14 @@
             android:textCursorDrawable="@drawable/edit_cursor_color"
             android:layout_marginRight="@dimen/dimen_10"
             />
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <ImageView
+            android:id="@+id/create_equipment_mandatory_name_delete"
+            android:layout_width="@dimen/dimen_18"
+            android:layout_height="@dimen/dimen_18"
+            android:background="@drawable/icon_login_password_delete"
             android:layout_gravity="center_vertical"
-            android:layout_marginRight="@dimen/dimen_10">
-            <ImageView
-                android:id="@+id/create_equipment_mandatory_name_delete"
-                android:layout_width="@dimen/dimen_18"
-                android:layout_height="@dimen/dimen_18"
-                android:background="@drawable/icon_login_password_delete"
-                android:visibility="gone"/>
-        </RelativeLayout>
-
+            android:layout_marginRight="@dimen/dimen_10"
+            android:visibility="gone"/>
     </LinearLayout>
     <View
         android:layout_width="match_parent"

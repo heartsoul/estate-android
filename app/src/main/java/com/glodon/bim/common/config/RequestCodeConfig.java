@@ -34,4 +34,5 @@ public class RequestCodeConfig {
     public static final int REQUEST_CODE_TORESET = REQUEST_CODE_TOSMS + 1;
     public static final int REQUEST_CODE_TAKE_PHOTO_MAIN = REQUEST_CODE_TORESET+1;
     public static final int REQUEST_CODE_CREATE_EQUIPMENT_MANDATORY = REQUEST_CODE_TAKE_PHOTO_MAIN+1;
+    public static final int REQUEST_CODE_EQUIPMENT_MANDATORY = REQUEST_CODE_CREATE_EQUIPMENT_MANDATORY+1;
 }
