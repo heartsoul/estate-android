@@ -84,28 +84,36 @@
             android:text="批次编号"
             android:textColor="@color/black"
             android:layout_marginRight="@dimen/dimen_20"
+            android:textSize="@dimen/dimen_16"
 
             />
         <EditText
             android:id="@+id/create_equipment_mandatory_index"
             android:layout_width="@dimen/dimen_0"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
             android:textColor="@color/c_666666"
             android:textSize="@dimen/dimen_16"
             android:background="@color/white"
             android:textCursorDrawable="@drawable/edit_cursor_color"
-            android:layout_marginRight="@dimen/dimen_10"
             />
-        <ImageView
+        <RelativeLayout
             android:id="@+id/create_equipment_mandatory_index_delete"
-            android:layout_width="@dimen/dimen_18"
-            android:layout_height="@dimen/dimen_18"
-            android:background="@drawable/icon_login_password_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
-            android:layout_marginRight="@dimen/dimen_10"
-            android:visibility="gone"/>
+            android:paddingRight="@dimen/dimen_10"
+            android:paddingLeft="@dimen/dimen_10"
+            android:background="@color/white"
+            android:visibility="gone">
+            <ImageView
+                android:layout_width="@dimen/dimen_18"
+                android:layout_height="@dimen/dimen_18"
+                android:background="@drawable/icon_login_password_delete"
+                android:layout_centerVertical="true"/>
+        </RelativeLayout>
     </LinearLayout>
     <View
         android:layout_width="match_parent"
@@ -129,6 +137,7 @@
             android:text="进场日期"
             android:textColor="@color/black"
             android:layout_marginRight="@dimen/dimen_20"
+            android:textSize="@dimen/dimen_16"
 
             />
         <TextView
@@ -172,28 +181,36 @@
             android:text="材设编码"
             android:textColor="@color/black"
             android:layout_marginRight="@dimen/dimen_20"
+            android:textSize="@dimen/dimen_16"
 
             />
         <EditText
             android:id="@+id/create_equipment_mandatory_code"
             android:layout_width="@dimen/dimen_0"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
             android:textColor="@color/c_666666"
             android:textSize="@dimen/dimen_16"
             android:background="@color/white"
             android:textCursorDrawable="@drawable/edit_cursor_color"
-            android:layout_marginRight="@dimen/dimen_10"
             />
-        <ImageView
+        <RelativeLayout
             android:id="@+id/create_equipment_mandatory_code_delete"
-            android:layout_width="@dimen/dimen_18"
-            android:layout_height="@dimen/dimen_18"
-            android:background="@drawable/icon_login_password_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
-            android:layout_marginRight="@dimen/dimen_10"
-            android:visibility="gone"/>
+            android:paddingRight="@dimen/dimen_10"
+            android:paddingLeft="@dimen/dimen_10"
+            android:background="@color/white"
+            android:visibility="gone">
+            <ImageView
+                android:layout_width="@dimen/dimen_18"
+                android:layout_height="@dimen/dimen_18"
+                android:background="@drawable/icon_login_password_delete"
+                android:layout_centerVertical="true"/>
+        </RelativeLayout>
     </LinearLayout>
     <View
         android:layout_width="match_parent"
@@ -216,31 +233,35 @@
             android:text="材设名称"
             android:textColor="@color/black"
             android:layout_marginRight="@dimen/dimen_20"
+            android:textSize="@dimen/dimen_16"
 
             />
         <EditText
             android:id="@+id/create_equipment_mandatory_name"
             android:layout_width="@dimen/dimen_0"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
             android:textColor="@color/c_666666"
             android:textSize="@dimen/dimen_16"
             android:background="@color/white"
             android:textCursorDrawable="@drawable/edit_cursor_color"
-            android:layout_marginRight="@dimen/dimen_10"
             />
         <RelativeLayout
+            android:id="@+id/create_equipment_mandatory_name_delete"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
-            android:layout_marginRight="@dimen/dimen_10">
+            android:paddingRight="@dimen/dimen_10"
+            android:paddingLeft="@dimen/dimen_10"
+            android:background="@color/white"
+            android:visibility="gone">
             <ImageView
-                android:id="@+id/create_equipment_mandatory_name_delete"
                 android:layout_width="@dimen/dimen_18"
                 android:layout_height="@dimen/dimen_18"
                 android:background="@drawable/icon_login_password_delete"
-                android:visibility="gone"/>
+                android:layout_centerVertical="true"/>
         </RelativeLayout>
 
     </LinearLayout>
@@ -254,6 +275,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:background="@color/c_f9f9f9">
+
         <Button
             android:id="@+id/create_equipment_mandatory_next"
             android:layout_width="match_parent"
@@ -261,11 +283,10 @@
             android:layout_marginLeft="@dimen/dimen_40"
             android:layout_marginRight="@dimen/dimen_40"
             android:layout_marginTop="@dimen/dimen_40"
-            android:background="@drawable/corner_radius_33_blue_bg"
-            android:textColor="@color/white"
+            android:background="@drawable/corner_radius_33_gray_bg"
             android:text="下一步"
-            android:textSize="@dimen/dimen_16"
-            />
+            android:textColor="@color/white"
+            android:textSize="@dimen/dimen_16" />
     </LinearLayout>
 
 </LinearLayout>

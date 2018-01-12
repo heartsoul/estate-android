@@ -17,4 +17,6 @@ public class ModelComponent implements Serializable{
     public ModelComponentWorldPosition worldPosition;
     public ModelComponentClientPosition clientPosition;
     public String eventType;
+
+    public String elementName;//构件name
 }

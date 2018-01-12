@@ -63,7 +63,7 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
 
     private ModelListBeanItem mModelSelectInfo;//编辑时有过这个item
     private ModelComponent component;//选中的构件
-    private int type = 0;//0新建检查单 1检查单编辑状态 2详情查看  3模型模式
+    private int type = 0;//0新建检查单 1检查单编辑状态 2详情查看  3模型模式  4新建材设进场 5新增材设进场编辑状态
     private boolean show = false;//true  不相应长按事件  false相应长按事件
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -174,7 +174,7 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
                 component = new GsonBuilder().create().fromJson(json, ModelComponent.class);
             }
 
-            //0新建检查单 1检查单编辑状态 2详情查看  3模型模式
+            //0新建检查单 1检查单编辑状态 2详情查看  3模型模式   4新建材设进场 5新增材设进场编辑状态
             switch (type){
                 case 0:
                     if(checkComponent()){
@@ -197,6 +197,16 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
                         intent.putExtra(CommonConfig.RELEVANT_MODEL, mModelSelectInfo);
                         startActivity(intent);
                         finish();
+                    }
+                    break;
+                case 4:
+                    if(checkComponent()){
+                        backData();
+                    }
+                    break;
+                case 5:
+                    if(checkComponent()){
+                        backData();
                     }
                     break;
             }
@@ -282,6 +292,12 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
                     show = true;//不响应点击事件
                     mFinishView.setVisibility(View.GONE);
                 }
+                break;
+            case 4:
+                show = false;
+                break;
+            case 5:
+                show = false;
                 break;
         }
     }
@@ -496,6 +512,19 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
              case 3:
                  mPresenter.getElements();
 //                    showModelHistory(null);
+                 break;
+             case 4:
+
+                 break;
+             case 5:
+                 if(mModelSelectInfo!=null){
+                     component = mModelSelectInfo.component;
+                     if(component!=null) {
+                         List<String> list = new ArrayList<>();
+                         list.add(mModelSelectInfo.component.elementId);
+                         showSelectedComponent(list);
+                     }
+                 }
                  break;
          }
 

@@ -9,7 +9,6 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -17,31 +16,25 @@ import android.widget.TextView;
 import com.glodon.bim.R;
 import com.glodon.bim.base.BaseActivity;
 import com.glodon.bim.business.equipment.bean.MandatoryInfo;
-import com.glodon.bim.business.equipment.contract.CreateEquipmentMandatoryContract;
-import com.glodon.bim.business.equipment.presenter.CreateEquipmentMandatoryPresenter;
-import com.glodon.bim.customview.datepicker.CustomDatePickerUtils;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Map;
+import com.glodon.bim.business.equipment.bean.MandatoryNotInfo;
+import com.glodon.bim.business.equipment.contract.CreateEquipmentNotMandatoryContract;
+import com.glodon.bim.business.equipment.presenter.CreateEquipmentNotMandatoryPresenter;
 
 /**
  * 描述：创建材设进场记录-非必填项页面
  * 作者：zhourf on 2017/9/8
  * 邮箱：zhourf@glodon.com
  */
-public class CreateEquipmentNotMandatoryActivity extends BaseActivity implements View.OnClickListener ,CreateEquipmentMandatoryContract.View{
+public class CreateEquipmentNotMandatoryActivity extends BaseActivity implements View.OnClickListener, CreateEquipmentNotMandatoryContract.View {
 
     private View mStatusView;
     private RelativeLayout mBackView;
-    private EditText mIndexEt,mCodeEt,mNameEt;
-    private ImageView mIndexDelete,mCodeDelete,mNameDelete;
-    private LinearLayout mDateParent;
-    private TextView mDateTv;
+    private EditText mNumEt, mUnitEt, mSpecEt, mModelNumEt, mFactoryEt, mMakeEt, mSupplierEt;
+    private RelativeLayout mNumDelete, mUnitDelete, mSpecDelete, mModelNumDelete, mFactoryDelete, mMakeDelete, mSupplierDelete;
+    private LinearLayout mModelParent;
+    private TextView mModelTv, mSkipTv;
     private Button mNextBtn;
-    private CreateEquipmentMandatoryContract.Presenter mPresenter;
-    private String mDate;
+    private CreateEquipmentNotMandatoryContract.Presenter mPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,28 +48,57 @@ public class CreateEquipmentNotMandatoryActivity extends BaseActivity implements
     }
 
     private void initView() {
-        mStatusView = findViewById(R.id.create_equipment_mandatory_header_top);
-        mBackView = (RelativeLayout) findViewById(R.id.create_equipment_mandatory_header_back);
-        mIndexEt = (EditText) findViewById(R.id.create_equipment_mandatory_index);
-        mCodeEt = (EditText) findViewById(R.id.create_equipment_mandatory_code);
-        mNameEt = (EditText) findViewById(R.id.create_equipment_mandatory_name);
-        mIndexDelete = (ImageView) findViewById(R.id.create_equipment_mandatory_index_delete);
-        mCodeDelete = (ImageView) findViewById(R.id.create_equipment_mandatory_code_delete);
-        mNameDelete = (ImageView) findViewById(R.id.create_equipment_mandatory_name_delete);
-        mDateParent = (LinearLayout) findViewById(R.id.create_equipment_mandatory_date_parent);
-        mDateTv = (TextView) findViewById(R.id.create_equipment_mandatory_date);
-        mNextBtn = (Button) findViewById(R.id.create_equipment_mandatory_next);
+        mStatusView = findViewById(R.id.create_equipment_not_mandatory_header_top);
+        mBackView = (RelativeLayout) findViewById(R.id.create_equipment_not_mandatory_header_back);
+        mNumEt = (EditText) findViewById(R.id.create_equipment_not_mandatory_num);
+        mUnitEt = (EditText) findViewById(R.id.create_equipment_not_mandatory_unit);
+        mSpecEt = (EditText) findViewById(R.id.create_equipment_not_mandatory_spec);
+        mModelNumEt = (EditText) findViewById(R.id.create_equipment_not_mandatory_modelnum);
+        mFactoryEt = (EditText) findViewById(R.id.create_equipment_not_mandatory_factory);
+        mMakeEt = (EditText) findViewById(R.id.create_equipment_not_mandatory_make);
+        mSupplierEt = (EditText) findViewById(R.id.create_equipment_not_mandatory_supplier);
+
+        mNumDelete = (RelativeLayout) findViewById(R.id.create_equipment_not_mandatory_num_delete);
+        mUnitDelete = (RelativeLayout) findViewById(R.id.create_equipment_not_mandatory_unit_delete);
+        mSpecDelete = (RelativeLayout) findViewById(R.id.create_equipment_not_mandatory_spec_delete);
+        mModelNumDelete = (RelativeLayout) findViewById(R.id.create_equipment_not_mandatory_modelnum_delete);
+        mFactoryDelete = (RelativeLayout) findViewById(R.id.create_equipment_not_mandatory_factory_delete);
+        mMakeDelete = (RelativeLayout) findViewById(R.id.create_equipment_not_mandatory_make_delete);
+        mSupplierDelete = (RelativeLayout) findViewById(R.id.create_equipment_not_mandatory_supplier_delete);
+
+        mModelParent = (LinearLayout) findViewById(R.id.create_equipment_not_mandatory_model_parent);
+        mModelTv = (TextView) findViewById(R.id.create_equipment_not_mandatory_model);
+        mNextBtn = (Button) findViewById(R.id.create_equipment_not_mandatory_next);
+        mSkipTv = (TextView) findViewById(R.id.create_equipment_not_mandatory_skip);
     }
 
 
     private void setListener() {
         mBackView.setOnClickListener(this);
-        mIndexDelete.setOnClickListener(this);
-        mCodeDelete.setOnClickListener(this);
-        mNameDelete.setOnClickListener(this);
-        mDateParent.setOnClickListener(this);
 
-        TextWatcher mTextWatcher = new TextWatcher() {
+        mNumDelete.setOnClickListener(this);
+        mUnitDelete.setOnClickListener(this);
+        mSpecDelete.setOnClickListener(this);
+        mModelNumDelete.setOnClickListener(this);
+        mFactoryDelete.setOnClickListener(this);
+        mMakeDelete.setOnClickListener(this);
+        mSupplierDelete.setOnClickListener(this);
+
+        mModelParent.setOnClickListener(this);
+        mNextBtn.setOnClickListener(this);
+        mSkipTv.setOnClickListener(this);
+
+        addTextWatcher(mNumEt,mNumDelete);
+        addTextWatcher(mUnitEt,mUnitDelete);
+        addTextWatcher(mSpecEt,mSpecDelete);
+        addTextWatcher(mModelNumEt,mModelNumDelete);
+        addTextWatcher(mFactoryEt,mFactoryDelete);
+        addTextWatcher(mMakeEt,mMakeDelete);
+        addTextWatcher(mSupplierEt,mSupplierDelete);
+    }
+
+    private void addTextWatcher(final EditText et, final RelativeLayout delete) {
+        et.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -89,80 +111,78 @@ public class CreateEquipmentNotMandatoryActivity extends BaseActivity implements
 
             @Override
             public void afterTextChanged(Editable editable) {
-                showNext();
+                String content = et.getText().toString().trim();
+                delete.setVisibility(TextUtils.isEmpty(content) ? View.GONE : View.VISIBLE);
             }
-        };
-
-        mIndexEt.addTextChangedListener(mTextWatcher);
-        mCodeEt.addTextChangedListener(mTextWatcher);
-        mNameEt.addTextChangedListener(mTextWatcher);
-    }
-
-    //控制是否显示下一步按钮
-    private void showNext() {
-        String index = mIndexEt.getText().toString().trim();
-        String date = mDateTv.getText().toString().trim();
-        String code = mCodeEt.getText().toString().trim();
-        String name = mNameEt.getText().toString().trim();
-        if(!TextUtils.isEmpty(index)&&!TextUtils.isEmpty(date)&&!TextUtils.isEmpty(code)&&!TextUtils.isEmpty(name)){
-            mNextBtn.setOnClickListener(this);
-        }else{
-            mNextBtn.setOnClickListener(null);
-        }
+        });
     }
 
     private void initData() {
-        mPresenter = new CreateEquipmentMandatoryPresenter(this);
+        mPresenter = new CreateEquipmentNotMandatoryPresenter(this);
         mPresenter.initData(getIntent());
     }
 
     @Override
     public void onClick(View view) {
         int id = view.getId();
-        switch (id)
-        {
-            case R.id.create_equipment_mandatory_header_back:
+        switch (id) {
+            case R.id.create_equipment_not_mandatory_header_back:
                 mActivity.finish();
                 break;
-            case R.id.create_equipment_mandatory_index_delete:
-                mIndexEt.setText("");
+            case R.id.create_equipment_not_mandatory_num_delete:
+                mNumEt.setText("");
                 break;
-            case R.id.create_equipment_mandatory_code_delete:
-                mCodeEt.setText("");
+            case R.id.create_equipment_not_mandatory_unit_delete:
+                mUnitEt.setText("");
                 break;
-            case R.id.create_equipment_mandatory_name_delete:
-                mNameEt.setText("");
+            case R.id.create_equipment_not_mandatory_spec_delete:
+                mSpecEt.setText("");
                 break;
-            case R.id.create_equipment_mandatory_date_parent:
-                chooseDate();
+            case R.id.create_equipment_not_mandatory_modelnum_delete:
+                mModelNumEt.setText("");
                 break;
-            case R.id.create_equipment_mandatory_next:
+            case R.id.create_equipment_not_mandatory_factory_delete:
+                mFactoryEt.setText("");
+                break;
+            case R.id.create_equipment_not_mandatory_make_delete:
+                mMakeEt.setText("");
+                break;
+            case R.id.create_equipment_not_mandatory_supplier_delete:
+                mSupplierEt.setText("");
+                break;
+            case R.id.create_equipment_not_mandatory_model_parent://构件位置
+                mPresenter.toModel();
+                break;
+            case R.id.create_equipment_not_mandatory_next:
                 toNext();
+                break;
+            case R.id.create_equipment_not_mandatory_skip:
+                toSkip();
                 break;
         }
     }
 
-    private void chooseDate() {
-        CustomDatePickerUtils.showDayDialog(getActivity(), new CustomDatePickerUtils.OnDateSelectedListener() {
-            @Override
-            public void onDateSelected(Map<String, Integer> map) {
-                Calendar calendar = Calendar.getInstance();
-                calendar.set(map.get("year"), map.get("month") - 1, map.get("date"));
-                Date date = calendar.getTime();
-                String time = (new SimpleDateFormat("yyyy-MM-dd")).format(date);
-                mDateTv.setText(time);
-                mDate = calendar.getTimeInMillis() + "";
-            }
-        });
+    private void toSkip() {
+        mPresenter.toSkip();
     }
 
+
     private void toNext() {
-        MandatoryInfo info = new MandatoryInfo();
-        info.index = mIndexEt.getText().toString().trim();
-        info.date = mDate;
-        info.code = mCodeEt.getText().toString().trim();
-        info.name = mNameEt.getText().toString().trim();
-        mPresenter.toNotMandatory(info);
+        MandatoryNotInfo info = new MandatoryNotInfo();
+        String num = mNumEt.getText().toString().trim();
+        if(TextUtils.isEmpty(num)){
+            info.num = 0;
+        }else{
+            info.num = Long.parseLong(num);
+        }
+        info.unit = mUnitEt.getText().toString().trim();
+        info.spec = mSpecEt.getText().toString().trim();
+        info.modelnum = mModelNumEt.getText().toString().trim();
+        info.factory = mFactoryEt.getText().toString().trim();
+        info.make = mMakeEt.getText().toString().trim();
+        info.supplier = mSupplierEt.getText().toString().trim();
+        mPresenter.toNext(info);
+
     }
 
     @Override
@@ -181,11 +201,10 @@ public class CreateEquipmentNotMandatoryActivity extends BaseActivity implements
     }
 
 
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(mPresenter!=null) {
+        if (mPresenter != null) {
             mPresenter.onActivityResult(requestCode, resultCode, data);
         }
     }
@@ -197,5 +216,10 @@ public class CreateEquipmentNotMandatoryActivity extends BaseActivity implements
             mPresenter.onDestroy();
             mPresenter = null;
         }
+    }
+
+    @Override
+    public void showModelName(String elementName) {
+        mModelTv.setText(elementName);
     }
 }

@@ -6,7 +6,7 @@
     android:orientation="vertical">
 
     <View
-        android:id="@+id/create_equipment_mandatory_header_top"
+        android:id="@+id/create_equipment_not_mandatory_header_top"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_20"
         android:background="@color/c_00baf3" />
@@ -17,9 +17,10 @@
         android:background="@color/c_00baf3">
 
         <RelativeLayout
-            android:id="@+id/create_equipment_mandatory_header_back"
+            android:id="@+id/create_equipment_not_mandatory_header_back"
             android:layout_width="wrap_content"
             android:layout_height="match_parent">
+
             <ImageView
                 android:layout_width="@dimen/dimen_09"
                 android:layout_height="@dimen/dimen_20"
@@ -41,225 +42,504 @@
 
     </RelativeLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_48"
-        android:orientation="horizontal"
-        android:paddingLeft="@dimen/dimen_20"
-        android:background="@color/c_f9f9f9">
-        <View
-            android:layout_width="@dimen/dimen_02"
-            android:layout_height="@dimen/dimen_14"
-            android:layout_gravity="center_vertical"
-            android:background="@color/c_00b5f2"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:textColor="@color/c_00b5f2"
-            android:textSize="@dimen/dimen_14"
-            android:text="请依次完成下列内容输入"
-            />
-    </LinearLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_0.5"
-        android:layout_marginLeft="@dimen/dimen_20"
-        android:background="@color/c_e9e9e9"
-        />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_48"
-        android:orientation="horizontal"
-        android:paddingLeft="@dimen/dimen_20"
-        android:background="@color/white"
-        android:focusable="true"
-        android:focusableInTouchMode="true">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:text="批次编号"
-            android:textColor="@color/black"
-            android:layout_marginRight="@dimen/dimen_20"
-
-            />
-        <EditText
-            android:id="@+id/create_equipment_mandatory_index"
-            android:layout_width="@dimen/dimen_0"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_gravity="center_vertical"
-            android:textColor="@color/c_666666"
-            android:textSize="@dimen/dimen_16"
-            android:background="@color/white"
-            android:textCursorDrawable="@drawable/edit_cursor_color"
-            android:layout_marginRight="@dimen/dimen_10"
-            />
-        <ImageView
-            android:id="@+id/create_equipment_mandatory_index_delete"
-            android:layout_width="@dimen/dimen_18"
-            android:layout_height="@dimen/dimen_18"
-            android:background="@drawable/icon_login_password_delete"
-            android:layout_gravity="center_vertical"
-            android:layout_marginRight="@dimen/dimen_10"
-            android:visibility="gone"/>
-    </LinearLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_0.5"
-        android:layout_marginLeft="@dimen/dimen_20"
-        android:background="@color/c_e9e9e9"
-        />
-    <LinearLayout
-        android:id="@+id/create_equipment_mandatory_date_parent"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_48"
-        android:orientation="horizontal"
-        android:paddingLeft="@dimen/dimen_20"
-        android:background="@color/white"
-        android:focusable="true"
-        android:focusableInTouchMode="true">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:text="进场日期"
-            android:textColor="@color/black"
-            android:layout_marginRight="@dimen/dimen_20"
-
-            />
-        <TextView
-            android:id="@+id/create_equipment_mandatory_date"
-            android:layout_width="@dimen/dimen_0"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_gravity="center_vertical"
-            android:textColor="@color/c_666666"
-            android:textSize="@dimen/dimen_16"
-            android:background="@color/white"
-            android:textCursorDrawable="@drawable/edit_cursor_color"
-            android:layout_marginRight="@dimen/dimen_10"
-            />
-        <ImageView
-            android:layout_width="@dimen/dimen_05"
-            android:layout_height="@dimen/dimen_12"
-            android:background="@drawable/icon_arrow_right_gray"
-            android:layout_gravity="center_vertical"
-            android:layout_marginRight="@dimen/dimen_15"
-            />
-    </LinearLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_0.5"
-        android:layout_marginLeft="@dimen/dimen_20"
-        android:background="@color/c_e9e9e9"
-        />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_48"
-        android:orientation="horizontal"
-        android:paddingLeft="@dimen/dimen_20"
-        android:background="@color/white"
-        android:focusable="true"
-        android:focusableInTouchMode="true">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:text="材设编码"
-            android:textColor="@color/black"
-            android:layout_marginRight="@dimen/dimen_20"
-
-            />
-        <EditText
-            android:id="@+id/create_equipment_mandatory_code"
-            android:layout_width="@dimen/dimen_0"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_gravity="center_vertical"
-            android:textColor="@color/c_666666"
-            android:textSize="@dimen/dimen_16"
-            android:background="@color/white"
-            android:textCursorDrawable="@drawable/edit_cursor_color"
-            android:layout_marginRight="@dimen/dimen_10"
-            />
-        <ImageView
-            android:id="@+id/create_equipment_mandatory_code_delete"
-            android:layout_width="@dimen/dimen_18"
-            android:layout_height="@dimen/dimen_18"
-            android:background="@drawable/icon_login_password_delete"
-            android:layout_gravity="center_vertical"
-            android:layout_marginRight="@dimen/dimen_10"
-            android:visibility="gone"/>
-    </LinearLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_0.5"
-        android:layout_marginLeft="@dimen/dimen_20"
-        android:background="@color/c_e9e9e9"
-        />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_48"
-        android:orientation="horizontal"
-        android:paddingLeft="@dimen/dimen_20"
-        android:background="@color/white"
-        android:focusable="true"
-        android:focusableInTouchMode="true">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:text="材设名称"
-            android:textColor="@color/black"
-            android:layout_marginRight="@dimen/dimen_20"
-
-            />
-        <EditText
-            android:id="@+id/create_equipment_mandatory_name"
-            android:layout_width="@dimen/dimen_0"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_gravity="center_vertical"
-            android:textColor="@color/c_666666"
-            android:textSize="@dimen/dimen_16"
-            android:background="@color/white"
-            android:textCursorDrawable="@drawable/edit_cursor_color"
-            android:layout_marginRight="@dimen/dimen_10"
-            />
-        <ImageView
-            android:id="@+id/create_equipment_mandatory_name_delete"
-            android:layout_width="@dimen/dimen_18"
-            android:layout_height="@dimen/dimen_18"
-            android:background="@drawable/icon_login_password_delete"
-            android:layout_gravity="center_vertical"
-            android:layout_marginRight="@dimen/dimen_10"
-            android:visibility="gone"/>
-    </LinearLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_0.5"
-        android:background="@color/c_e9e9e9"
-        />
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="@color/c_f9f9f9">
-        <Button
-            android:id="@+id/create_equipment_mandatory_next"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dimen_40"
-            android:layout_marginLeft="@dimen/dimen_40"
-            android:layout_marginRight="@dimen/dimen_40"
-            android:layout_marginTop="@dimen/dimen_40"
-            android:background="@drawable/corner_radius_33_blue_bg"
-            android:textColor="@color/white"
-            android:text="下一步"
-            android:textSize="@dimen/dimen_16"
-            />
-    </LinearLayout>
+        android:fillViewport="true">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_48"
+                android:background="@color/c_f9f9f9"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/dimen_20">
+
+                <View
+                    android:layout_width="@dimen/dimen_02"
+                    android:layout_height="@dimen/dimen_14"
+                    android:layout_gravity="center_vertical"
+                    android:background="@color/c_00b5f2" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/dimen_05"
+                    android:text="请根据需要选择完成下列内容输入"
+                    android:textColor="@color/c_00b5f2"
+                    android:textSize="@dimen/dimen_14" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_0.5"
+                android:layout_marginLeft="@dimen/dimen_20"
+                android:background="@color/c_e9e9e9" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_48"
+                android:background="@color/white"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/dimen_20">
+
+                <TextView
+                    android:layout_width="@dimen/dimen_64"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/dimen_14"
+                    android:text="进场数量"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_16" />
+
+                <EditText
+                    android:id="@+id/create_equipment_not_mandatory_num"
+                    android:layout_width="@dimen/dimen_0"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:background="@color/white"
+                    android:inputType="number"
+                    android:textColor="@color/c_666666"
+                    android:textCursorDrawable="@drawable/edit_cursor_color"
+                    android:textSize="@dimen/dimen_16" />
+
+                <RelativeLayout
+                    android:id="@+id/create_equipment_not_mandatory_num_delete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:background="@color/white"
+                    android:paddingLeft="@dimen/dimen_10"
+                    android:paddingRight="@dimen/dimen_10"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="@dimen/dimen_18"
+                        android:layout_height="@dimen/dimen_18"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/icon_login_password_delete" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_0.5"
+                android:layout_marginLeft="@dimen/dimen_20"
+                android:background="@color/c_e9e9e9" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_48"
+                android:background="@color/white"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/dimen_20">
+
+                <TextView
+                    android:layout_width="@dimen/dimen_64"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/dimen_14"
+                    android:text="单位"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_16" />
+
+                <EditText
+                    android:id="@+id/create_equipment_not_mandatory_unit"
+                    android:layout_width="@dimen/dimen_0"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:background="@color/white"
+                    android:textColor="@color/c_666666"
+                    android:textCursorDrawable="@drawable/edit_cursor_color"
+                    android:textSize="@dimen/dimen_16" />
+
+                <RelativeLayout
+                    android:id="@+id/create_equipment_not_mandatory_unit_delete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:background="@color/white"
+                    android:paddingLeft="@dimen/dimen_10"
+                    android:paddingRight="@dimen/dimen_10"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="@dimen/dimen_18"
+                        android:layout_height="@dimen/dimen_18"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/icon_login_password_delete" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_0.5"
+                android:layout_marginLeft="@dimen/dimen_20"
+                android:background="@color/c_e9e9e9" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_48"
+                android:background="@color/white"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/dimen_20">
+
+                <TextView
+                    android:layout_width="@dimen/dimen_64"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/dimen_14"
+                    android:text="规格"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_16" />
+
+                <EditText
+                    android:id="@+id/create_equipment_not_mandatory_spec"
+                    android:layout_width="@dimen/dimen_0"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:background="@color/white"
+                    android:textColor="@color/c_666666"
+                    android:textCursorDrawable="@drawable/edit_cursor_color"
+                    android:textSize="@dimen/dimen_16" />
+
+                <RelativeLayout
+                    android:id="@+id/create_equipment_not_mandatory_spec_delete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:background="@color/white"
+                    android:paddingLeft="@dimen/dimen_10"
+                    android:paddingRight="@dimen/dimen_10"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="@dimen/dimen_18"
+                        android:layout_height="@dimen/dimen_18"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/icon_login_password_delete" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_0.5"
+                android:layout_marginLeft="@dimen/dimen_20"
+                android:background="@color/c_e9e9e9" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_48"
+                android:background="@color/white"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/dimen_20">
+
+                <TextView
+                    android:layout_width="@dimen/dimen_64"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/dimen_14"
+                    android:text="型号"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_16" />
+
+                <EditText
+                    android:id="@+id/create_equipment_not_mandatory_modelnum"
+                    android:layout_width="@dimen/dimen_0"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:background="@color/white"
+                    android:textColor="@color/c_666666"
+                    android:textCursorDrawable="@drawable/edit_cursor_color"
+                    android:textSize="@dimen/dimen_16" />
+
+                <RelativeLayout
+                    android:id="@+id/create_equipment_not_mandatory_modelnum_delete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:background="@color/white"
+                    android:paddingLeft="@dimen/dimen_10"
+                    android:paddingRight="@dimen/dimen_10"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="@dimen/dimen_18"
+                        android:layout_height="@dimen/dimen_18"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/icon_login_password_delete" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_0.5"
+                android:layout_marginLeft="@dimen/dimen_20"
+                android:background="@color/c_e9e9e9" />
+
+            <LinearLayout
+                android:id="@+id/create_equipment_not_mandatory_model_parent"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_48"
+                android:background="@color/white"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/dimen_20">
+
+                <TextView
+                    android:layout_width="@dimen/dimen_64"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/dimen_14"
+                    android:text="构件位置"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_16"
+
+                    />
+
+                <TextView
+                    android:id="@+id/create_equipment_not_mandatory_model"
+                    android:layout_width="@dimen/dimen_0"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"
+                    android:layout_marginRight="@dimen/dimen_10"
+                    android:layout_weight="1"
+                    android:background="@color/white"
+                    android:textColor="@color/c_666666"
+                    android:textCursorDrawable="@drawable/edit_cursor_color"
+                    android:textSize="@dimen/dimen_16" />
+
+                <ImageView
+                    android:layout_width="@dimen/dimen_05"
+                    android:layout_height="@dimen/dimen_12"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/dimen_15"
+                    android:background="@drawable/icon_arrow_right_gray" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_0.5"
+                android:layout_marginLeft="@dimen/dimen_20"
+                android:background="@color/c_e9e9e9" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_48"
+                android:background="@color/white"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/dimen_20">
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="@dimen/dimen_64"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/dimen_14"
+                    android:text="厂家"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_16" />
+
+                <EditText
+                    android:id="@+id/create_equipment_not_mandatory_factory"
+                    android:layout_width="@dimen/dimen_0"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:background="@color/white"
+                    android:textColor="@color/c_666666"
+                    android:textCursorDrawable="@drawable/edit_cursor_color"
+                    android:textSize="@dimen/dimen_16" />
+
+                <RelativeLayout
+                    android:id="@+id/create_equipment_not_mandatory_factory_delete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:background="@color/white"
+                    android:paddingLeft="@dimen/dimen_10"
+                    android:paddingRight="@dimen/dimen_10"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="@dimen/dimen_18"
+                        android:layout_height="@dimen/dimen_18"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/icon_login_password_delete" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_0.5"
+                android:layout_marginLeft="@dimen/dimen_20"
+                android:background="@color/c_e9e9e9" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_48"
+                android:background="@color/white"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/dimen_20">
+
+                <TextView
+                    android:layout_width="@dimen/dimen_64"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/dimen_14"
+                    android:text="品牌"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_16" />
+
+                <EditText
+                    android:id="@+id/create_equipment_not_mandatory_make"
+                    android:layout_width="@dimen/dimen_0"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:background="@color/white"
+                    android:textColor="@color/c_666666"
+                    android:textCursorDrawable="@drawable/edit_cursor_color"
+                    android:textSize="@dimen/dimen_16" />
+
+                <RelativeLayout
+                    android:id="@+id/create_equipment_not_mandatory_make_delete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:background="@color/white"
+                    android:paddingLeft="@dimen/dimen_10"
+                    android:paddingRight="@dimen/dimen_10"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="@dimen/dimen_18"
+                        android:layout_height="@dimen/dimen_18"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/icon_login_password_delete" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_0.5"
+                android:layout_marginLeft="@dimen/dimen_20"
+                android:background="@color/c_e9e9e9" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_48"
+                android:background="@color/white"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/dimen_20">
+
+                <TextView
+                    android:layout_width="@dimen/dimen_64"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/dimen_14"
+                    android:text="供应商"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_16" />
+
+                <EditText
+                    android:id="@+id/create_equipment_not_mandatory_supplier"
+                    android:layout_width="@dimen/dimen_0"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:background="@color/white"
+                    android:textColor="@color/c_666666"
+                    android:textCursorDrawable="@drawable/edit_cursor_color"
+                    android:textSize="@dimen/dimen_16" />
+
+                <RelativeLayout
+                    android:id="@+id/create_equipment_not_mandatory_supplier_delete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:background="@color/white"
+                    android:paddingLeft="@dimen/dimen_10"
+                    android:paddingRight="@dimen/dimen_10"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="@dimen/dimen_18"
+                        android:layout_height="@dimen/dimen_18"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/icon_login_password_delete" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_0.5"
+                android:background="@color/c_e9e9e9" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/c_f9f9f9"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/create_equipment_not_mandatory_next"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_40"
+                    android:layout_marginLeft="@dimen/dimen_40"
+                    android:layout_marginRight="@dimen/dimen_40"
+                    android:layout_marginTop="@dimen/dimen_40"
+                    android:background="@drawable/corner_radius_33_blue_bg"
+                    android:text="下一步"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/dimen_16" />
+
+                <TextView
+                    android:id="@+id/create_equipment_not_mandatory_skip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/dimen_30"
+                    android:text="跳过"
+                    android:textColor="@color/c_00baf3"
+                    android:textSize="@dimen/dimen_16"
+                    android:layout_marginBottom="@dimen/dimen_46"/>
+            </LinearLayout>
+        </LinearLayout>
+
+    </ScrollView>
 </LinearLayout>

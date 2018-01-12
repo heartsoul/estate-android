@@ -78,4 +78,5 @@ public class CommonConfig {
     public static final String RESET_USERNAME = "RESET_USERNAME";
     public static final String RESET_PASSWORD_TITLE = "RESET_PASSWORD_TITLE";
     public static final String EQUIPMENT_MANDATORYINFO = "EQUIPMENT_MANDATORYINFO";
+    public static final String EQUIPMENT_NOT_MANDATORYINFO = "EQUIPMENT_NOT_MANDATORYINFO";
 }

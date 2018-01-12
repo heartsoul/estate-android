@@ -17,7 +17,9 @@ import com.glodon.bim.R;
 import com.glodon.bim.base.BaseActivity;
 import com.glodon.bim.business.equipment.bean.MandatoryInfo;
 import com.glodon.bim.business.equipment.contract.CreateEquipmentMandatoryContract;
+import com.glodon.bim.business.equipment.contract.CreateEquipmentPictureContract;
 import com.glodon.bim.business.equipment.presenter.CreateEquipmentMandatoryPresenter;
+import com.glodon.bim.business.equipment.presenter.CreateEquipmentPicturePresenter;
 import com.glodon.bim.customview.datepicker.CustomDatePickerUtils;
 
 import java.text.SimpleDateFormat;
@@ -26,11 +28,11 @@ import java.util.Date;
 import java.util.Map;
 
 /**
- * 描述：创建材设进场记录-必填项页面
+ * 描述：创建材设进场记录-拍照页面
  * 作者：zhourf on 2017/9/8
  * 邮箱：zhourf@glodon.com
  */
-public class CreateEquipmentMandatoryActivity extends BaseActivity implements View.OnClickListener ,CreateEquipmentMandatoryContract.View{
+public class CreateEquipmentPictureActivity extends BaseActivity implements View.OnClickListener ,CreateEquipmentPictureContract.View{
 
     private View mStatusView;
     private RelativeLayout mBackView;
@@ -39,7 +41,7 @@ public class CreateEquipmentMandatoryActivity extends BaseActivity implements Vi
     private LinearLayout mDateParent;
     private TextView mDateTv;
     private Button mNextBtn;
-    private CreateEquipmentMandatoryContract.Presenter mPresenter;
+    private CreateEquipmentPictureContract.Presenter mPresenter;
     private String mDate;
 
     @Override
@@ -75,48 +77,12 @@ public class CreateEquipmentMandatoryActivity extends BaseActivity implements Vi
         mNameDelete.setOnClickListener(this);
         mDateParent.setOnClickListener(this);
 
-        TextWatcher mTextWatcher = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                showNext();
-            }
-        };
-
-        mIndexEt.addTextChangedListener(mTextWatcher);
-        mCodeEt.addTextChangedListener(mTextWatcher);
-        mNameEt.addTextChangedListener(mTextWatcher);
     }
 
-    //控制是否显示下一步按钮
-    private void showNext() {
-        String index = mIndexEt.getText().toString().trim();
-        String date = mDateTv.getText().toString().trim();
-        String code = mCodeEt.getText().toString().trim();
-        String name = mNameEt.getText().toString().trim();
-        mIndexDelete.setVisibility(TextUtils.isEmpty(index)?View.GONE:View.VISIBLE);
-        mCodeDelete.setVisibility(TextUtils.isEmpty(code)?View.GONE:View.VISIBLE);
-        mNameDelete.setVisibility(TextUtils.isEmpty(name)?View.GONE:View.VISIBLE);
-        if(!TextUtils.isEmpty(index)&&!TextUtils.isEmpty(date)&&!TextUtils.isEmpty(code)&&!TextUtils.isEmpty(name)){
-            mNextBtn.setOnClickListener(this);
-            mNextBtn.setBackgroundResource(R.drawable.corner_radius_33_blue_bg);
-        }else{
-            mNextBtn.setOnClickListener(null);
-            mNextBtn.setBackgroundResource(R.drawable.corner_radius_33_gray_bg);
-        }
-    }
 
     private void initData() {
-        mPresenter = new CreateEquipmentMandatoryPresenter(this);
+        mPresenter = new CreateEquipmentPicturePresenter(this);
         mPresenter.initData(getIntent());
     }
 
@@ -138,7 +104,6 @@ public class CreateEquipmentMandatoryActivity extends BaseActivity implements Vi
                 mNameEt.setText("");
                 break;
             case R.id.create_equipment_mandatory_date_parent:
-                chooseDate();
                 break;
             case R.id.create_equipment_mandatory_next:
                 toNext();
@@ -146,20 +111,7 @@ public class CreateEquipmentMandatoryActivity extends BaseActivity implements Vi
         }
     }
 
-    private void chooseDate() {
-        CustomDatePickerUtils.showDayDialog(getActivity(), new CustomDatePickerUtils.OnDateSelectedListener() {
-            @Override
-            public void onDateSelected(Map<String, Integer> map) {
-                Calendar calendar = Calendar.getInstance();
-                calendar.set(map.get("year"), map.get("month") - 1, map.get("date"));
-                Date date = calendar.getTime();
-                String time = (new SimpleDateFormat("yyyy-MM-dd")).format(date);
-                mDateTv.setText(time);
-                mDate = calendar.getTimeInMillis() + "";
-                showNext();
-            }
-        });
-    }
+
 
     private void toNext() {
         MandatoryInfo info = new MandatoryInfo();
@@ -167,7 +119,6 @@ public class CreateEquipmentMandatoryActivity extends BaseActivity implements Vi
         info.date = mDate;
         info.code = mCodeEt.getText().toString().trim();
         info.name = mNameEt.getText().toString().trim();
-        mPresenter.toNotMandatory(info);
     }
 
     @Override

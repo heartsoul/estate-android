@@ -53,8 +53,7 @@ public class ModelPresenter implements ModelContract.Presenter {
 //    private ProjectVersionBean mLatestVersionInfo;//最新版本信息
 
     private ModelListBeanItem mModelSelectInfo;//编辑时有过这个item
-    private int type = 0;//0新建检查单 1检查单编辑状态 2详情查看  3模型模式
-    private boolean mIsFragment = false;
+    private int type = 0;//0新建检查单 1检查单编辑状态 2详情查看  3模型模式  4新建材设进场 5新增材设进场编辑状态
     private OnModelSelectListener mListener = new OnModelSelectListener() {
         @Override
         public void selectModel(ModelListBeanItem item) {
@@ -73,15 +72,12 @@ public class ModelPresenter implements ModelContract.Presenter {
                 switch (type)
                 {
                     case 0:
-
                         intent.putExtra(CommonConfig.RELEVANT_TYPE, type);
                         break;
                     case 1:
                         if(item.fileId.equals(mModelSelectInfo.fileId)){
                             //同一个模型
                             intent.putExtra(CommonConfig.RELEVANT_TYPE, 1);
-//                            modelInfo.buildingId = mModelSelectInfo.buildingId;
-//                            modelInfo.buildingName = mModelSelectInfo.buildingName;
                             modelInfo.component = mModelSelectInfo.component;
                         }else{
                             //不同的模型
@@ -89,10 +85,23 @@ public class ModelPresenter implements ModelContract.Presenter {
                         }
                         break;
                     case 2:
-
                         break;
                     case 3:
                         intent.putExtra(CommonConfig.RELEVANT_TYPE, type);
+                        break;
+                    case 4:
+                        intent.putExtra(CommonConfig.RELEVANT_TYPE, type);
+                        break;
+
+                    case 5:
+                        if(item.fileId.equals(mModelSelectInfo.fileId)){
+                            //同一个模型
+                            intent.putExtra(CommonConfig.RELEVANT_TYPE, 5);
+                            modelInfo.component = mModelSelectInfo.component;
+                        }else{
+                            //不同的模型
+                            intent.putExtra(CommonConfig.RELEVANT_TYPE, 4);
+                        }
                         break;
                 }
 
@@ -134,7 +143,6 @@ public class ModelPresenter implements ModelContract.Presenter {
 
     @Override
     public void setIsFragment() {
-        mIsFragment = true;
         type = 3;
         LogUtil.e("setIsFragment,type="+type);
     }
@@ -160,7 +168,7 @@ public class ModelPresenter implements ModelContract.Presenter {
         type = intent.getIntExtra(CommonConfig.RELEVANT_TYPE,0);
         LogUtil.e("inidData,type="+type);
         //编辑状态直接进入预览
-        if(type==1){
+        if(type==1 || type==5){
             toModelPreview();
         }
 //        getLatestVersion();
@@ -193,29 +201,6 @@ public class ModelPresenter implements ModelContract.Presenter {
         mView.getActivity().startActivityForResult(intent, RequestCodeConfig.REQUEST_CODE_MODEL_TO_SEARCH);
     }
 
-    //获取最新版本
-//    private void getLatestVersion(){
-//        Subscription sub = mModel.getLatestVersion(mProjectId)
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(new Subscriber<ProjectVersionBean>() {
-//                    @Override
-//                    public void onCompleted() {
-//
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//                        LogUtil.e(e.getMessage());
-//                    }
-//
-//                    @Override
-//                    public void onNext(ProjectVersionBean projectVersionBean) {
-//                        mLatestVersionInfo = projectVersionBean;
-//                    }
-//                });
-//        mSubscription.add(sub);
-//    }
 
     //专业列表
     private void getSpecialData(){
