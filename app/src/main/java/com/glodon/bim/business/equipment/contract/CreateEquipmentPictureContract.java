@@ -19,6 +19,21 @@ public interface CreateEquipmentPictureContract {
 
     interface Presenter extends IBasePresenter{
 
+        /**
+         * 图片预览
+         * @param position  当前位置
+         */
+        void toPreview(int position);
+
+        /**
+         * 拍照
+         */
+        void takePhoto();
+
+        /**
+         * 相册
+         */
+        void openAlbum();
     }
 
     interface Model{

@@ -9,18 +9,21 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.glodon.bim.R;
 import com.glodon.bim.base.BaseActivity;
+import com.glodon.bim.basic.listener.ThrottleClickEvents;
 import com.glodon.bim.business.equipment.bean.MandatoryInfo;
 import com.glodon.bim.business.equipment.contract.CreateEquipmentMandatoryContract;
 import com.glodon.bim.business.equipment.contract.CreateEquipmentPictureContract;
 import com.glodon.bim.business.equipment.presenter.CreateEquipmentMandatoryPresenter;
 import com.glodon.bim.business.equipment.presenter.CreateEquipmentPicturePresenter;
 import com.glodon.bim.customview.datepicker.CustomDatePickerUtils;
+import com.glodon.bim.customview.dialog.PhotoAlbumDialog;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -36,18 +39,16 @@ public class CreateEquipmentPictureActivity extends BaseActivity implements View
 
     private View mStatusView;
     private RelativeLayout mBackView;
-    private EditText mIndexEt,mCodeEt,mNameEt;
-    private RelativeLayout mIndexDelete,mCodeDelete,mNameDelete;
-    private LinearLayout mDateParent;
-    private TextView mDateTv;
+    private ImageView mPhoto0,mPhoto2,mPhoto3,mPhoto1,mFlag;
     private Button mNextBtn;
     private CreateEquipmentPictureContract.Presenter mPresenter;
-    private String mDate;
+    private PhotoAlbumDialog mPhotoAlbumDialog;
+    private boolean  mState = true;//验收合格 true合格
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.equipment_create_mandatory_activity);
+        setContentView(R.layout.equipment_create_picture_activity);
 
         initView();
         initStatusBar(mStatusView);
@@ -56,26 +57,25 @@ public class CreateEquipmentPictureActivity extends BaseActivity implements View
     }
 
     private void initView() {
-        mStatusView = findViewById(R.id.create_equipment_mandatory_header_top);
-        mBackView = (RelativeLayout) findViewById(R.id.create_equipment_mandatory_header_back);
-        mIndexEt = (EditText) findViewById(R.id.create_equipment_mandatory_index);
-        mCodeEt = (EditText) findViewById(R.id.create_equipment_mandatory_code);
-        mNameEt = (EditText) findViewById(R.id.create_equipment_mandatory_name);
-        mIndexDelete = (RelativeLayout) findViewById(R.id.create_equipment_mandatory_index_delete);
-        mCodeDelete = (RelativeLayout) findViewById(R.id.create_equipment_mandatory_code_delete);
-        mNameDelete = (RelativeLayout) findViewById(R.id.create_equipment_mandatory_name_delete);
-        mDateParent = (LinearLayout) findViewById(R.id.create_equipment_mandatory_date_parent);
-        mDateTv = (TextView) findViewById(R.id.create_equipment_mandatory_date);
+        mStatusView = findViewById(R.id.create_equipment_picture_header_top);
+        mBackView = (RelativeLayout) findViewById(R.id.create_equipment_picture_header_back);
+        mPhoto0 = (ImageView) findViewById(R.id.create_equipment_picture_photo_0);
+        mPhoto1 = (ImageView) findViewById(R.id.create_equipment_picture_photo_1);
+        mPhoto2 = (ImageView) findViewById(R.id.create_equipment_picture_photo_2);
+        mPhoto3 = (ImageView) findViewById(R.id.create_equipment_picture_photo_3);
+        mFlag = (ImageView) findViewById(R.id.create_equipment_picture_flag);
         mNextBtn = (Button) findViewById(R.id.create_equipment_mandatory_next);
     }
 
 
     private void setListener() {
         mBackView.setOnClickListener(this);
-        mIndexDelete.setOnClickListener(this);
-        mCodeDelete.setOnClickListener(this);
-        mNameDelete.setOnClickListener(this);
-        mDateParent.setOnClickListener(this);
+        mNextBtn.setOnClickListener(this);
+        ThrottleClickEvents.throttleClick(mPhoto0, this, 1);
+        ThrottleClickEvents.throttleClick(mPhoto1, this, 1);
+        ThrottleClickEvents.throttleClick(mPhoto2, this, 1);
+        ThrottleClickEvents.throttleClick(mPhoto3, this, 1);
+        ThrottleClickEvents.throttleClick(mFlag, this, 1);
 
 
     }
@@ -94,16 +94,34 @@ public class CreateEquipmentPictureActivity extends BaseActivity implements View
             case R.id.create_equipment_mandatory_header_back:
                 mActivity.finish();
                 break;
-            case R.id.create_equipment_mandatory_index_delete:
-                mIndexEt.setText("");
+            case R.id.create_check_list_photo_0:
+                mPresenter.toPreview(0);
                 break;
-            case R.id.create_equipment_mandatory_code_delete:
-                mCodeEt.setText("");
+            case R.id.create_check_list_photo_1:
+                mPresenter.toPreview(1);
                 break;
-            case R.id.create_equipment_mandatory_name_delete:
-                mNameEt.setText("");
+            case R.id.create_check_list_photo_2:
+                mPresenter.toPreview(2);
                 break;
-            case R.id.create_equipment_mandatory_date_parent:
+            case R.id.create_check_list_photo_3://添加图片
+                if (mPhotoAlbumDialog == null) {
+                    mPhotoAlbumDialog = new PhotoAlbumDialog(getActivity());
+                    mPhotoAlbumDialog.builder(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            mPresenter.takePhoto();
+                        }
+                    }, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            mPresenter.openAlbum();
+                        }
+                    });
+                }
+                mPhotoAlbumDialog.show();
+                break;
+            case R.id.create_check_list_remain_flag://验收合格开关
+                clickRemain();
                 break;
             case R.id.create_equipment_mandatory_next:
                 toNext();
@@ -111,14 +129,18 @@ public class CreateEquipmentPictureActivity extends BaseActivity implements View
         }
     }
 
+    private void clickRemain() {
+        if (mState) {
+            mFlag.setBackgroundResource(R.drawable.icon_flag_close);
+        } else {
+            mFlag.setBackgroundResource(R.drawable.icon_flag_open);
+        }
+        mState = !mState;
+    }
 
 
     private void toNext() {
-        MandatoryInfo info = new MandatoryInfo();
-        info.index = mIndexEt.getText().toString().trim();
-        info.date = mDate;
-        info.code = mCodeEt.getText().toString().trim();
-        info.name = mNameEt.getText().toString().trim();
+
     }
 
     @Override
