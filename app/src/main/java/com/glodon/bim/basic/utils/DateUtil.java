@@ -331,4 +331,11 @@ public class DateUtil {
 
         }
     }
+
+    /**
+     * 将毫秒数转为当前日
+     */
+    public static String getShowDate(String currentmiions){
+        return new SimpleDateFormat("yyyy-MM-dd").format(new Date(Long.parseLong(currentmiions)));
+    }
 }

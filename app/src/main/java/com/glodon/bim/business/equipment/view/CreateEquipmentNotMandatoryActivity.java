@@ -15,8 +15,7 @@ import android.widget.TextView;
 
 import com.glodon.bim.R;
 import com.glodon.bim.base.BaseActivity;
-import com.glodon.bim.business.equipment.bean.MandatoryInfo;
-import com.glodon.bim.business.equipment.bean.MandatoryNotInfo;
+import com.glodon.bim.business.equipment.bean.CreateEquipmentMandatoryNotInfo;
 import com.glodon.bim.business.equipment.contract.CreateEquipmentNotMandatoryContract;
 import com.glodon.bim.business.equipment.presenter.CreateEquipmentNotMandatoryPresenter;
 
@@ -29,6 +28,7 @@ public class CreateEquipmentNotMandatoryActivity extends BaseActivity implements
 
     private View mStatusView;
     private RelativeLayout mBackView;
+    private TextView mTitleView;
     private EditText mNumEt, mUnitEt, mSpecEt, mModelNumEt, mFactoryEt, mMakeEt, mSupplierEt;
     private RelativeLayout mNumDelete, mUnitDelete, mSpecDelete, mModelNumDelete, mFactoryDelete, mMakeDelete, mSupplierDelete;
     private LinearLayout mModelParent;
@@ -50,6 +50,7 @@ public class CreateEquipmentNotMandatoryActivity extends BaseActivity implements
     private void initView() {
         mStatusView = findViewById(R.id.create_equipment_not_mandatory_header_top);
         mBackView = (RelativeLayout) findViewById(R.id.create_equipment_not_mandatory_header_back);
+        mTitleView = (TextView) findViewById(R.id.create_equipment_not_mandatory_header_title);
         mNumEt = (EditText) findViewById(R.id.create_equipment_not_mandatory_num);
         mUnitEt = (EditText) findViewById(R.id.create_equipment_not_mandatory_unit);
         mSpecEt = (EditText) findViewById(R.id.create_equipment_not_mandatory_spec);
@@ -168,13 +169,13 @@ public class CreateEquipmentNotMandatoryActivity extends BaseActivity implements
 
 
     private void toNext() {
-        MandatoryNotInfo info = new MandatoryNotInfo();
-        String num = mNumEt.getText().toString().trim();
-        if(TextUtils.isEmpty(num)){
-            info.num = 0;
-        }else{
-            info.num = Long.parseLong(num);
-        }
+        CreateEquipmentMandatoryNotInfo info = new CreateEquipmentMandatoryNotInfo();
+        info.num = mNumEt.getText().toString().trim();
+//        if(TextUtils.isEmpty(num)){
+//            info.num = 0;
+//        }else{
+//            info.num = Long.parseLong(num);
+//        }
         info.unit = mUnitEt.getText().toString().trim();
         info.spec = mSpecEt.getText().toString().trim();
         info.modelnum = mModelNumEt.getText().toString().trim();
@@ -221,5 +222,22 @@ public class CreateEquipmentNotMandatoryActivity extends BaseActivity implements
     @Override
     public void showModelName(String elementName) {
         mModelTv.setText(elementName);
+    }
+
+    @Override
+    public void showEditInfo(CreateEquipmentMandatoryNotInfo info) {
+        mTitleView.setText("编辑材设详情");
+        mNextBtn.setText("确定");
+        mSkipTv.setVisibility(View.GONE);
+        mNumEt.setText(info.num);
+        mUnitEt.setText(info.unit);
+        mSpecEt.setText(info.spec);
+        mModelNumEt.setText(info.modelnum);
+        if(info.model!=null && info.model.component!=null) {
+            mModelTv.setText(info.model.component.elementName);
+        }
+        mFactoryEt.setText(info.factory);
+        mMakeEt.setText(info.make);
+        mSupplierEt.setText(info.supplier);
     }
 }

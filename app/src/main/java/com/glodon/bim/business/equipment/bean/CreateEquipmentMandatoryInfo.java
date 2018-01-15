@@ -8,7 +8,7 @@ import java.io.Serializable;
  * 邮箱：zhourf@glodon.com
  */
 
-public class MandatoryInfo implements Serializable{
+public class CreateEquipmentMandatoryInfo implements Serializable{
     public String index;
     public String date;
     public String code;

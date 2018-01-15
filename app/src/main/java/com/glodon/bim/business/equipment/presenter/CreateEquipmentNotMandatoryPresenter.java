@@ -6,8 +6,8 @@ import android.text.TextUtils;
 
 import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.basic.utils.SharedPreferencesUtil;
-import com.glodon.bim.business.equipment.bean.MandatoryInfo;
-import com.glodon.bim.business.equipment.bean.MandatoryNotInfo;
+import com.glodon.bim.business.equipment.bean.CreateEquipmentMandatoryInfo;
+import com.glodon.bim.business.equipment.bean.CreateEquipmentMandatoryNotInfo;
 import com.glodon.bim.business.equipment.contract.CreateEquipmentNotMandatoryContract;
 import com.glodon.bim.business.equipment.view.CreateEquipmentPictureActivity;
 import com.glodon.bim.business.qualityManage.bean.ModelElementInfo;
@@ -33,11 +33,12 @@ public class CreateEquipmentNotMandatoryPresenter implements CreateEquipmentNotM
     private CreateEquipmentNotMandatoryContract.View mView;
     private CreateEquipmentNotMandatoryContract.Model mModel;
     private ModelListBeanItem mModelSelectInfo;
-    private MandatoryInfo mMandatoryInfo;
+    private CreateEquipmentMandatoryInfo mCreateEquipmentMandatoryInfo;
     private int mModelType = 4;//0新建检查单 1检查单编辑状态 2详情查看  3图纸模式 4新建材设进场 5新增材设进场编辑状态
     private long mProjectId;
     private String mProjectVersionId;
     private CompositeSubscription mSubscritption;
+    private boolean mIsEdit = false;
 
     public CreateEquipmentNotMandatoryPresenter(CreateEquipmentNotMandatoryContract.View mView) {
         this.mView = mView;
@@ -48,24 +49,39 @@ public class CreateEquipmentNotMandatoryPresenter implements CreateEquipmentNotM
 
     @Override
     public void initData(Intent intent) {
-        mMandatoryInfo = (MandatoryInfo) intent.getSerializableExtra(CommonConfig.EQUIPMENT_MANDATORYINFO);
+        mCreateEquipmentMandatoryInfo = (CreateEquipmentMandatoryInfo) intent.getSerializableExtra(CommonConfig.EQUIPMENT_MANDATORYINFO);
+
+        CreateEquipmentMandatoryNotInfo info = (CreateEquipmentMandatoryNotInfo) intent.getSerializableExtra(CommonConfig.EQUIPMENT_EDIT_NOT_MANDATORY_INFO);
+        if(info!=null){
+            mIsEdit = true;
+            mView.showEditInfo(info);
+            mModelSelectInfo = info.model;
+        }
     }
 
 
     @Override
     public void toSkip() {
         Intent intent = new Intent(mView.getActivity(), CreateEquipmentPictureActivity.class);
-        intent.putExtra(CommonConfig.EQUIPMENT_MANDATORYINFO, mMandatoryInfo);
+        intent.putExtra(CommonConfig.EQUIPMENT_MANDATORYINFO, mCreateEquipmentMandatoryInfo);
+        intent.putExtra(CommonConfig.EQUIPMENT_NOT_MANDATORYINFO, new CreateEquipmentMandatoryNotInfo());
         mView.getActivity().startActivityForResult(intent, RequestCodeConfig.REQUEST_CODE_EQUIPMENT_MANDATORY_NOT);
     }
 
     @Override
-    public void toNext(MandatoryNotInfo info) {
+    public void toNext(CreateEquipmentMandatoryNotInfo info) {
         info.model = mModelSelectInfo;
-        Intent intent = new Intent(mView.getActivity(), CreateEquipmentPictureActivity.class);
-        intent.putExtra(CommonConfig.EQUIPMENT_MANDATORYINFO, mMandatoryInfo);
-        intent.putExtra(CommonConfig.EQUIPMENT_NOT_MANDATORYINFO, info);
-        mView.getActivity().startActivityForResult(intent, RequestCodeConfig.REQUEST_CODE_EQUIPMENT_MANDATORY_NOT);
+        if(mIsEdit){
+            Intent data = new Intent();
+            data.putExtra(CommonConfig.EQUIPMENT_EDIT_NOT_MANDATORY_INFO,info);
+            mView.getActivity().setResult(Activity.RESULT_OK,data);
+            mView.getActivity().finish();
+        }else {
+            Intent intent = new Intent(mView.getActivity(), CreateEquipmentPictureActivity.class);
+            intent.putExtra(CommonConfig.EQUIPMENT_MANDATORYINFO, mCreateEquipmentMandatoryInfo);
+            intent.putExtra(CommonConfig.EQUIPMENT_NOT_MANDATORYINFO, info);
+            mView.getActivity().startActivityForResult(intent, RequestCodeConfig.REQUEST_CODE_EQUIPMENT_MANDATORY_NOT);
+        }
     }
 
     @Override
@@ -115,7 +131,12 @@ public class CreateEquipmentNotMandatoryPresenter implements CreateEquipmentNotM
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case RequestCodeConfig.REQUEST_CODE_EQUIPMENT_MANDATORY_NOT:
-
+                if(resultCode == Activity.RESULT_OK){
+                    if(mView!=null){
+                        mView.getActivity().setResult(Activity.RESULT_OK);
+                        mView.getActivity().finish();
+                    }
+                }
                 break;
             case RequestCodeConfig.REQUEST_CODE_EQUIPMENT_CHOOSE_MODEL:
                 if (resultCode == Activity.RESULT_OK && data != null) {

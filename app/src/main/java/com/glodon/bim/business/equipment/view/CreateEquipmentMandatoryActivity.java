@@ -15,7 +15,8 @@ import android.widget.TextView;
 
 import com.glodon.bim.R;
 import com.glodon.bim.base.BaseActivity;
-import com.glodon.bim.business.equipment.bean.MandatoryInfo;
+import com.glodon.bim.basic.utils.DateUtil;
+import com.glodon.bim.business.equipment.bean.CreateEquipmentMandatoryInfo;
 import com.glodon.bim.business.equipment.contract.CreateEquipmentMandatoryContract;
 import com.glodon.bim.business.equipment.presenter.CreateEquipmentMandatoryPresenter;
 import com.glodon.bim.customview.datepicker.CustomDatePickerUtils;
@@ -34,6 +35,7 @@ public class CreateEquipmentMandatoryActivity extends BaseActivity implements Vi
 
     private View mStatusView;
     private RelativeLayout mBackView;
+    private TextView mTitleView;
     private EditText mIndexEt,mCodeEt,mNameEt;
     private RelativeLayout mIndexDelete,mCodeDelete,mNameDelete;
     private LinearLayout mDateParent;
@@ -56,6 +58,7 @@ public class CreateEquipmentMandatoryActivity extends BaseActivity implements Vi
     private void initView() {
         mStatusView = findViewById(R.id.create_equipment_mandatory_header_top);
         mBackView = (RelativeLayout) findViewById(R.id.create_equipment_mandatory_header_back);
+        mTitleView = (TextView) findViewById(R.id.create_equipment_mandatory_header_title);
         mIndexEt = (EditText) findViewById(R.id.create_equipment_mandatory_index);
         mCodeEt = (EditText) findViewById(R.id.create_equipment_mandatory_code);
         mNameEt = (EditText) findViewById(R.id.create_equipment_mandatory_name);
@@ -121,6 +124,17 @@ public class CreateEquipmentMandatoryActivity extends BaseActivity implements Vi
     }
 
     @Override
+    public void showMandatoryInfo(CreateEquipmentMandatoryInfo info) {
+        mIndexEt.setText(info.index);
+        mDate = info.date;
+        mDateTv.setText(DateUtil.getShowDate(mDate));
+        mCodeEt.setText(info.code);
+        mNameEt.setText(info.name);
+        mNextBtn.setText("确定");
+        mTitleView.setText("编辑材设基本信息");
+    }
+
+    @Override
     public void onClick(View view) {
         int id = view.getId();
         switch (id)
@@ -162,7 +176,7 @@ public class CreateEquipmentMandatoryActivity extends BaseActivity implements Vi
     }
 
     private void toNext() {
-        MandatoryInfo info = new MandatoryInfo();
+        CreateEquipmentMandatoryInfo info = new CreateEquipmentMandatoryInfo();
         info.index = mIndexEt.getText().toString().trim();
         info.date = mDate;
         info.code = mCodeEt.getText().toString().trim();
@@ -203,4 +217,6 @@ public class CreateEquipmentMandatoryActivity extends BaseActivity implements Vi
             mPresenter = null;
         }
     }
+
+
 }

@@ -31,6 +31,7 @@
 
 
         <TextView
+            android:id="@+id/create_equipment_picture_header_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
@@ -128,11 +129,12 @@
             android:layout_centerVertical="true"
             android:background="@drawable/icon_flag_open" />
     </RelativeLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="@color/c_f9f9f9">
+        android:background="@color/c_f9f9f9"
+        android:orientation="vertical">
 
         <Button
             android:id="@+id/create_equipment_picture_next"
@@ -142,7 +144,7 @@
             android:layout_marginRight="@dimen/dimen_40"
             android:layout_marginTop="@dimen/dimen_40"
             android:background="@drawable/corner_radius_33_blue_bg"
-            android:text="保存"
+            android:text="下一步"
             android:textColor="@color/white"
             android:textSize="@dimen/dimen_16" />
     </LinearLayout>

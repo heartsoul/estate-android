@@ -10,8 +10,8 @@ import java.io.Serializable;
  * 邮箱：zhourf@glodon.com
  */
 
-public class MandatoryNotInfo implements Serializable{
-    public long num;
+public class CreateEquipmentMandatoryNotInfo implements Serializable{
+    public String num;
     public String unit;
     public String spec;
     public String modelnum;
