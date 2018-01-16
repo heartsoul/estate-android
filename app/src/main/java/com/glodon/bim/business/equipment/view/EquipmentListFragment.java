@@ -11,7 +11,6 @@ import com.glodon.bim.R;
 import com.glodon.bim.base.BaseFragment;
 import com.glodon.bim.business.main.bean.ProjectListItem;
 import com.glodon.bim.business.qualityManage.listener.OnTitleChangerListener;
-import com.glodon.bim.business.qualityManage.view.QualityCheckListView;
 
 /**
  * 描述：材设清单
@@ -20,7 +19,7 @@ import com.glodon.bim.business.qualityManage.view.QualityCheckListView;
  */
 
 public class EquipmentListFragment extends BaseFragment{
-    private QualityCheckListView mQualityCheckListView;
+    private EquipmentListView mEquipmentListView;
     private ProjectListItem mProjectInfo;
     public void setProjectInfo(ProjectListItem info) {
         this.mProjectInfo = info;
@@ -40,9 +39,9 @@ public class EquipmentListFragment extends BaseFragment{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflate(R.layout.quality_check_list_fragment);
-        mQualityCheckListView = new QualityCheckListView(getActivity(),view,mProjectInfo);
-        mQualityCheckListView.initData();
+        View view = inflate(R.layout.equipment_list_fragment);
+        mEquipmentListView = new EquipmentListView(getActivity(),view,mProjectInfo);
+        mEquipmentListView.initData();
         return view;
     }
 
@@ -51,16 +50,16 @@ public class EquipmentListFragment extends BaseFragment{
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(mQualityCheckListView!=null) {
-            mQualityCheckListView.onActivityResult(requestCode, resultCode, data);
+        if(mEquipmentListView !=null) {
+            mEquipmentListView.onActivityResult(requestCode, resultCode, data);
         }
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if(mQualityCheckListView!=null) {
-            mQualityCheckListView.onDestroyView();
+        if(mEquipmentListView !=null) {
+            mEquipmentListView.onDestroyView();
         }
     }
 

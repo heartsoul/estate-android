@@ -98,6 +98,7 @@ public class CreateEquipmentPresenter implements CreateEquipmentContract.Present
         Intent intent = new Intent(mView.getActivity(), PhotoPreviewActivity.class);
         intent.putExtra(CommonConfig.ALBUM_DATA, new AlbumData(mPictureInfo.mSelectedMap));
         intent.putExtra(CommonConfig.ALBUM_POSITION, position);
+        intent.putExtra(CommonConfig.ALBUM_SHOW_DELETE, false);
         mView.getActivity().startActivityForResult(intent, RequestCodeConfig.REQUEST_CODE_PHOTO_PREVIEW);
     }
 

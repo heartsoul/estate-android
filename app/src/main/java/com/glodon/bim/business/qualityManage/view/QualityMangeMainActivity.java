@@ -260,12 +260,14 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
                 showFragmentById(mEquipmentListFragmentId);
                 hideDrawer(300);
                 mIsDrawerOpen = false;
+                SharedPreferencesUtil.setSelectModuleInfo(-1, "");
                 break;
             case R.id.main_drawer_equipment_model://点击材设进场下模型
                 setSelect(5);
                 showFragmentById(mEquipmentModelFragmentId);
                 hideDrawer(300);
                 mIsDrawerOpen = false;
+                SharedPreferencesUtil.setSelectModuleInfo(-1, "");
                 break;
             case R.id.main_drawer_setting://点击进入设置
                 mPresenter.toSetting(mProjectInfo);

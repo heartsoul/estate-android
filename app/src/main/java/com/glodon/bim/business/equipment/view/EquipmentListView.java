@@ -10,19 +10,17 @@ import android.widget.ImageView;
 
 import com.glodon.bim.R;
 import com.glodon.bim.basic.listener.ThrottleClickEvents;
+import com.glodon.bim.business.equipment.adapter.EquipmentListAdapter;
+import com.glodon.bim.business.equipment.bean.EquipmentListBeanItem;
+import com.glodon.bim.business.equipment.contract.EquipmentListContract;
+import com.glodon.bim.business.equipment.presenter.EquipmentListPresenter;
 import com.glodon.bim.business.main.bean.ProjectListItem;
 import com.glodon.bim.business.qualityManage.OnClassifyItemClickListener;
-import com.glodon.bim.business.qualityManage.adapter.QualityCheckListAdapter;
 import com.glodon.bim.business.qualityManage.adapter.QualityCheckListClassifyAdapter;
 import com.glodon.bim.business.qualityManage.bean.ClassifyItem;
 import com.glodon.bim.business.qualityManage.bean.ClassifyNum;
-import com.glodon.bim.business.qualityManage.bean.ModuleListBeanItem;
-import com.glodon.bim.business.qualityManage.bean.QualityCheckListBeanItem;
-import com.glodon.bim.business.qualityManage.contract.QualityCheckListContract;
-import com.glodon.bim.business.qualityManage.presenter.QualityCheckListPresenter;
 import com.glodon.bim.common.config.CommonConfig;
 import com.glodon.bim.customview.dialog.LoadingDialogManager;
-import com.glodon.bim.customview.dialog.PhotoAlbumDialog;
 import com.glodon.bim.customview.pullrefreshview.OnPullRefreshListener;
 import com.glodon.bim.customview.pullrefreshview.PullRefreshView;
 
@@ -32,17 +30,17 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 描述：材设清单的view
+ * 描述：材设进场记录-清单
  * 作者：zhourf on 2017/9/29
  * 邮箱：zhourf@glodon.com
  */
 
-public class EquipmentListView implements QualityCheckListContract.View {
+public class EquipmentListView implements EquipmentListContract.View {
     private PullRefreshView mPullRefreshView;
     private RecyclerView mRecyclerView;
     private ImageView mToTopView;
-    private QualityCheckListAdapter mAdapter;
-    private QualityCheckListContract.Presenter mPresenter;
+    private EquipmentListAdapter mAdapter;
+    private EquipmentListContract.Presenter mPresenter;
     private ProjectListItem mProjectInfo;
 
     private RecyclerView mClassifesView;
@@ -51,7 +49,6 @@ public class EquipmentListView implements QualityCheckListContract.View {
 
     private List<ClassifyItem> mDataList;//分类数据
 
-    private PhotoAlbumDialog mPhotoAlbumDialog;//拍照相册弹出框
     private LoadingDialogManager mLoadingDialog;
 
 
@@ -64,9 +61,9 @@ public class EquipmentListView implements QualityCheckListContract.View {
 
 
     private void initView(View view) {
-        mPullRefreshView = view.findViewById(R.id.quality_check_list_recyclerview);
-        mToTopView = view.findViewById(R.id.quality_check_list_to_top);
-        mClassifesView = view.findViewById(R.id.quality_check_list_classifes);
+        mPullRefreshView = view.findViewById(R.id.equipment_list_recyclerview);
+        mToTopView = view.findViewById(R.id.equipment_list_to_top);
+        mClassifesView = view.findViewById(R.id.equipment_list_classifes);
 
         setListener();
         initClassify();
@@ -112,17 +109,17 @@ public class EquipmentListView implements QualityCheckListContract.View {
      */
     private void initClassify(){
         mDataList = new ArrayList<>();
-        for(int i = 0;i<8;i++){
+        for(int i = 0;i<4;i++){
             ClassifyItem item = new ClassifyItem();
-            item.name = CommonConfig.CLASSIFY_NAMES[i];
-            item.qcState = CommonConfig.CLASSIFY_STATES[i];
+            item.name = CommonConfig.EQUIPMENT_CLASSIFY_NAMES[i];
+            item.qcState = CommonConfig.EQUIPMENT_CLASSIFY_STATES[i];
             mDataList.add(item);
         }
         mCalssifyAdapter = new QualityCheckListClassifyAdapter(getActivity(), mDataList, new OnClassifyItemClickListener() {
             @Override
             public void onClassifyItemClick(int position, ClassifyItem item) {
-                if(!mCurrentState.equals(CommonConfig.CLASSIFY_STATES[position])) {
-                    mCurrentState = CommonConfig.CLASSIFY_STATES[position];
+                if(!mCurrentState.equals(CommonConfig.EQUIPMENT_CLASSIFY_STATES[position])) {
+                    mCurrentState = CommonConfig.EQUIPMENT_CLASSIFY_STATES[position];
                     mPresenter.getClassifyData(mCurrentState);
                 }
             }
@@ -137,14 +134,11 @@ public class EquipmentListView implements QualityCheckListContract.View {
         if(list!=null && list.size()>0){
             Map<String,Integer> map = new HashMap<>();
             List<String> keyList = new ArrayList<>();
-            keyList.add(CommonConfig.QC_STATE_STAGED);
-            keyList.add(CommonConfig.QC_STATE_UNRECTIFIED);
-            keyList.add(CommonConfig.QC_STATE_UNREVIEWED);
-            keyList.add(CommonConfig.QC_STATE_DELAYED);
+            keyList.add(CommonConfig.QC_STATE_EDIT);
+            keyList.add(CommonConfig.QC_STATE_STANDARD);
+            keyList.add(CommonConfig.QC_STATE_NOT_STANDARD);
 
             for(ClassifyNum item : list){
-//                {"全部","待提交",  "待整改",      "待复查",    "已检查",    "已复查",  "已延迟",  "已验收"};
-//                {"",   "staged",  "unrectified","unreviewed","inspected","reviewed","delayed","accepted"};
                 if(keyList.contains(item.qcState)) {
                     map.put(item.qcState, item.count);
                 }else{
@@ -172,46 +166,18 @@ public class EquipmentListView implements QualityCheckListContract.View {
     }
 
     public void initData() {
-        mPresenter = new QualityCheckListPresenter(this);
-        mAdapter = new QualityCheckListAdapter(mActivity, mPresenter.getListener());
+        mPresenter = new EquipmentListPresenter(this);
+        mAdapter = new EquipmentListAdapter(mActivity, mPresenter.getListener());
         mRecyclerView.setAdapter(mAdapter);
         mPresenter.initData(mProjectInfo);
 
     }
 
-    /**
-     * 根据质检项目查询质检清单列表
-     */
-    public void initData(ModuleListBeanItem item){
-        mPresenter = new QualityCheckListPresenter(this);
-        mPresenter.setModuleSelectInfo(item);
-        mAdapter = new QualityCheckListAdapter(mActivity, mPresenter.getListener());
-        mRecyclerView.setAdapter(mAdapter);
-        mPresenter.initData(mProjectInfo);
 
-    }
 
     @Override
     public void create() {
-        if (mPhotoAlbumDialog == null) {
-            mPhotoAlbumDialog = new PhotoAlbumDialog(getActivity()).builder(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mPresenter.openPhoto();
-                }
-            }, new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mPresenter.openAlbum();
-                }
-            }, new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mPresenter.toCreate();
-                }
-            });
-        }
-        mPhotoAlbumDialog.show();
+
     }
 
 
@@ -225,7 +191,9 @@ public class EquipmentListView implements QualityCheckListContract.View {
 
     @Override
     public void dismissLoadingDialog() {
-        mLoadingDialog.dismiss();
+        if(mLoadingDialog!=null) {
+            mLoadingDialog.dismiss();
+        }
     }
 
     @Override
@@ -234,7 +202,7 @@ public class EquipmentListView implements QualityCheckListContract.View {
     }
 
     @Override
-    public void updateData(List<QualityCheckListBeanItem> mDataList) {
+    public void updateData(List<EquipmentListBeanItem> mDataList) {
         mAdapter.updateList(mDataList);
 
     }

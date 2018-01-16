@@ -34,11 +34,13 @@ public class QualityCheckListClassifyAdapter extends RecyclerView.Adapter<Recycl
     private TextView mLastTextView;
     private int mLastPosition = 0;
     private TextPaint mPaint;
+    private int mWidth = 0;
 
     public QualityCheckListClassifyAdapter(Context mContext, List<ClassifyItem> mDataList,OnClassifyItemClickListener listener) {
         this.mContext = mContext;
         this.mDataList = mDataList;
         this.mListener = listener;
+        mWidth = (ScreenUtil.getScreenInfo()[0]-ScreenUtil.dp2px(20))/4;
     }
 
     /**
@@ -79,6 +81,9 @@ public class QualityCheckListClassifyAdapter extends RecyclerView.Adapter<Recycl
                 cHolder.mParent.setMinimumWidth((int) (ScreenUtil.dp2px(36)+mPaint.measureText(cHolder.mNameView.getText().toString().trim())+0.5f));
             }
 
+            if(getItemCount()<=4){
+                cHolder.mParent.setMinimumWidth(mWidth);
+            }
             if(mLastPosition == position){
                 mLastLineView = cHolder.mLineView;
                 mLastLineView.setVisibility(View.VISIBLE);

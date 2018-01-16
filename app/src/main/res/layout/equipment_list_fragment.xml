@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/equipment_list_classifes"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_44"
+        android:background="@color/white"
+        android:layout_marginLeft="@dimen/dimen_20"
+        android:layout_marginRight="@dimen/dimen_20"
+        android:scrollbars="none"></android.support.v7.widget.RecyclerView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <include
+            android:id="@+id/equipment_list_recyclerview"
+            layout="@layout/view_pullrefresh_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            />
+
+        <ImageView
+            android:id="@+id/equipment_list_to_top"
+            android:layout_width="@dimen/dimen_37"
+            android:layout_height="@dimen/dimen_37"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="@dimen/dimen_10"
+            android:layout_marginRight="@dimen/dimen_20"
+            android:background="@drawable/icon_to_top" />
+    </RelativeLayout>
+</LinearLayout>

@@ -30,8 +30,13 @@ public class CommonConfig {
     public static final String CREATE_TYPE_REPAIR = "1";//新建整改单
     public static final String CREATE_TYPE_REVIEW = "2";//新建复查单
 
+    /**
+     * 质检清单
+     */
     public static final String[] CLASSIFY_NAMES = {"全部","待提交",  "待整改",      "待复查",    "已检查",    "已复查",  "已延迟",  "已验收"};
     public static final String[] CLASSIFY_STATES = {"",   "staged",  "unrectified","unreviewed","inspected","reviewed","delayed","accepted"};
+
+
     /**
      * 复查合格 "closed"
      *
@@ -49,16 +54,26 @@ public class CommonConfig {
     public static final String CREATE_CHECK_LIST_PROPS = "createCheckListProps";
     public static final String QUALITY_CHECK_LIST_SHOW_REPAIR = "showRepair";
 
+    /**
+     * 材设进场
+     */
+    public static final String QC_STATE_EDIT = "edit";
+    public static final String QC_STATE_STANDARD = "standard";
+    public static final String QC_STATE_NOT_STANDARD = "notStandard";
+
+    public static final String[] EQUIPMENT_CLASSIFY_NAMES = {"全部", "待提交",       "合格",      "不合格"};
+    public static final String[] EQUIPMENT_CLASSIFY_STATES = {"",    QC_STATE_EDIT, QC_STATE_STANDARD,QC_STATE_NOT_STANDARD};
+
 
     /**
      * 广播
      */
     public static final String ACTION_GET_AUTHORITY_CHECK = "com.glodon.bim.action.authority.check";//权限获取完毕
     public static final String ACTION_BRUSH_CHECK_LIST = "com.glodon.bim.action.brush.check.list";
+    public static final String ACTION_LOG_OUT = "com.glodon.bim.action.logout";//退出登录发送广播
     public static final String ALBUM_SHOW_DELETE = "albumShowDelete";
     public static final String MODULE_TEMPLATEID = "module_templateid";
     public static final String MODULE_TITLE = "MODULE_TITLE";
-    public static final String ACTION_LOG_OUT = "com.glodon.bim.action.logout";//退出登录发送广播
     public static final String BLUE_PRINT_FILE_ID = "BLUE_PRINT_FILE_ID";//图纸的id
     public static final String BLUE_PRINT_FILE_NAME = "BLUE_PRINT_FILE_NAME";//图纸的NAME
     public static final String BLUE_PRINT_POSITION_X = "BLUE_PRINT_POSITION_X";//图纸位置x
