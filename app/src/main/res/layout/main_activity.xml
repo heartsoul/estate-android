@@ -209,7 +209,7 @@
                     android:layout_marginLeft="@dimen/dimen_20"
                     android:layout_marginRight="@dimen/dimen_08"
                     android:layout_marginTop="@dimen/dimen_13"
-                    android:background="@color/c_3bcccccc" />
+                    android:background="@color/c_3bcccccc"/>
 
                 <RelativeLayout
                     android:id="@+id/main_drawer_setting"

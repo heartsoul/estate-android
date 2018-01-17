@@ -6,30 +6,19 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.drawable.BitmapDrawable;
-import android.hardware.camera2.CameraManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
 import com.glodon.bim.R;
 import com.glodon.bim.base.BaseActivity;
 import com.glodon.bim.basic.listener.ThrottleClickEvents;
-import com.glodon.bim.basic.utils.BitmapUtil;
 import com.glodon.bim.basic.utils.ScreenUtil;
 import com.glodon.bim.business.authority.AuthorityManager;
-import com.glodon.bim.business.equipment.view.CreateEquipmentMandatoryActivity;
-import com.glodon.bim.business.main.adapter.ChooseCategoryItemAdapter;
 import com.glodon.bim.business.main.bean.ChooseCategoryItem;
 import com.glodon.bim.business.main.contract.ChooseCategoryItemContract;
 import com.glodon.bim.business.main.presenter.ChooseCategoryItemPresenter;
@@ -43,11 +32,10 @@ import java.util.List;
  * 作者：zhourf on 2017/9/8
  * 邮箱：zhourf@glodon.com
  */
-public class ChooseCategoryItemActivity extends BaseActivity implements ChooseCategoryItemContract.View, View.OnClickListener {
+public class ChooseCategoryItemActivity2 extends BaseActivity implements ChooseCategoryItemContract.View, View.OnClickListener {
 
     private ChooseCategoryItemContract.Presenter mPresenter;
-    private RecyclerView mRecyclerView;
-    private ImageView mCreateView;
+    private LinearLayout mQualityCheckListView, mModelView, mBluePrintView, mQualityCheckModuleVIew, mCreateView;
     private PhotoAlbumDialog mPhotoAlbumDialog;//拍照相册弹出框
     private ImageView mSetView;
     private final int REQUEST_CAMERA = 1;
@@ -57,10 +45,19 @@ public class ChooseCategoryItemActivity extends BaseActivity implements ChooseCa
             checkAuthority();
         }
     };
-    private ChooseCategoryItemAdapter mAdapter;
-    private RelativeLayout mBlurParent;
-    private ImageView mBlurClose,mBlurQuality,mBlurEquipment;
 
+    /**
+     * 判断权限  控制是否显示新增按钮
+     */
+    private void checkAuthority() {
+        if (mCreateView != null) {
+            if (AuthorityManager.isShowCreateButton()) {
+                mCreateView.setVisibility(View.VISIBLE);
+            } else {
+                mCreateView.setVisibility(View.GONE);
+            }
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,48 +68,6 @@ public class ChooseCategoryItemActivity extends BaseActivity implements ChooseCa
         setListener();
         initDataForActivity();
 
-    }
-
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        checkAuthority();
-    }
-
-    private void initView() {
-        mRecyclerView = (RecyclerView) findViewById(R.id.choose_category_item_recyclerview);
-        mCreateView = (ImageView) findViewById(R.id.choose_category_item_create);
-        mSetView = (ImageView) findViewById(R.id.choose_category_item_setting);
-
-        mBlurParent = (RelativeLayout) findViewById(R.id.choose_category_item_blur);
-        mBlurClose = (ImageView) findViewById(R.id.choose_category_item_blur_close);
-        mBlurQuality = (ImageView) findViewById(R.id.choose_category_item_blur_quality);
-        mBlurEquipment = (ImageView) findViewById(R.id.choose_category_item_blur_equipment);
-
-        initSetView();
-
-        initRecyclerView();
-
-        initBlur();
-    }
-
-    private void initBlur() {
-
-        Bitmap bm = Bitmap.createBitmap(ScreenUtil.getScreenInfo()[0]/5,ScreenUtil.getScreenInfo()[1]/5, Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(bm);
-        canvas.drawColor(getResources().getColor(R.color.c_f1ffffff));
-        mBlurParent.setBackground(new BitmapDrawable(getResources(), BitmapUtil.fastblur(bm,2)));
-
-    }
-
-
-    private void initRecyclerView() {
-        GridLayoutManager manager = new GridLayoutManager(this,3);
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mRecyclerView.setLayoutManager(manager);
-        mAdapter = new ChooseCategoryItemAdapter(this);
-        mRecyclerView.setAdapter(mAdapter);
     }
 
     protected void initSetView() {
@@ -132,31 +87,63 @@ public class ChooseCategoryItemActivity extends BaseActivity implements ChooseCa
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        checkAuthority();
+    }
+
+    private void initView() {
+//        mQualityCheckListView = (LinearLayout) findViewById(R.id.choose_category_item_item_zjqd);
+//        mModelView = (LinearLayout) findViewById(R.id.choose_category_item_item_mx);
+//        mBluePrintView = (LinearLayout) findViewById(R.id.choose_category_item_item_tz);
+//        mQualityCheckModuleVIew = (LinearLayout) findViewById(R.id.choose_category_item_item_zjxm);
+//        mCreateView = (LinearLayout) findViewById(R.id.choose_category_item_item_create);
+//        mSetView = (ImageView) findViewById(R.id.choose_category_item_setting);
+//        //计算每个方形的宽度
+//        int width = (ScreenUtil.getScreenInfo()[0] - ScreenUtil.dp2px(44)) / 3;
+//        mQualityCheckListView.getLayoutParams().height = width;
+//        mQualityCheckListView.getLayoutParams().width = width;
+//        mModelView.getLayoutParams().height = width;
+//        mModelView.getLayoutParams().width = width;
+//        mBluePrintView.getLayoutParams().height = width;
+//        mBluePrintView.getLayoutParams().width = width;
+//        mQualityCheckModuleVIew.getLayoutParams().height = width;
+//        mQualityCheckModuleVIew.getLayoutParams().width = width;
+//        mCreateView.getLayoutParams().height = width;
+//        mCreateView.getLayoutParams().width = width;
+
+        initSetView();
+    }
 
     private void setListener() {
-        mBlurClose.setOnClickListener(this);
+        ThrottleClickEvents.throttleClick(mQualityCheckListView, this);
+        ThrottleClickEvents.throttleClick(mModelView, this);
+        ThrottleClickEvents.throttleClick(mBluePrintView, this);
+        ThrottleClickEvents.throttleClick(mQualityCheckModuleVIew, this);
+        ThrottleClickEvents.throttleClick(mCreateView, this);
         ThrottleClickEvents.throttleClick(mSetView, this);
-        ThrottleClickEvents.throttleClick(mBlurQuality, this);
-        ThrottleClickEvents.throttleClick(mBlurEquipment, this);
     }
 
     @Override
     public void onClick(View view) {
         int id = view.getId();
         switch (id) {
-
-            case R.id.choose_category_item_blur_close://点击关闭浮层
-                mBlurParent.setVisibility(View.GONE);
-                break;
-            case R.id.choose_category_item_blur_quality://点击创建质量
-                mBlurParent.setVisibility(View.GONE);
-                create();
-                break;
-            case R.id.choose_category_item_blur_equipment://点击创建材设
-                mBlurParent.setVisibility(View.GONE);
-                Intent intent = new Intent(mActivity, CreateEquipmentMandatoryActivity.class);
-                startActivity(intent);
-                break;
+//            case R.id.choose_category_item_item_zjqd://点击质检清单
+//                mPresenter.toQualityChickList(0);
+//                break;
+//            case R.id.choose_category_item_item_tz://点击图纸
+//                mPresenter.toQualityChickList(1);
+//                break;
+//            case R.id.choose_category_item_item_mx://点击模型
+//                mPresenter.toQualityChickList(2);
+//                break;
+//            case R.id.choose_category_item_item_zjxm://点击质检项目
+//                mPresenter.toQualityChickList(3);
+//                break;
+//            case R.id.choose_category_item_item_create://点击新建
+//                create();
+//                break;
             case R.id.choose_category_item_setting://点击账户设置
                 mPresenter.toSetting();
                 break;
@@ -166,7 +153,7 @@ public class ChooseCategoryItemActivity extends BaseActivity implements ChooseCa
 
     private void initDataForActivity() {
         //注册广播  监听   获取权限的变化  控制新增按钮的显示
-        registerReceiver(mReceiver, new IntentFilter(CommonConfig.ACTION_GET_AUTHORITY_CHECK));
+//        registerReceiver(mReceiver, new IntentFilter(CommonConfig.ACTION_GET_AUTHORITY_CHECK));
         mPresenter = new ChooseCategoryItemPresenter(this);
         mPresenter.initData(getIntent());
 
@@ -203,13 +190,6 @@ public class ChooseCategoryItemActivity extends BaseActivity implements ChooseCa
         mPhotoAlbumDialog.show();
     }
 
-    /**
-     * 判断权限  控制是否显示新增按钮
-     */
-    private void checkAuthority() {
-        mPresenter.checkAuthority();
-    }
-
     @Override
     public void showLoadingDialog() {
         showLoadDialog(true);
@@ -239,55 +219,33 @@ public class ChooseCategoryItemActivity extends BaseActivity implements ChooseCa
             mPresenter.onDestroy();
             mPresenter = null;
         }
-        if (mReceiver != null) {
-            unregisterReceiver(mReceiver);
-        }
+//        if (mReceiver != null) {
+//            unregisterReceiver(mReceiver);
+//        }
     }
 
     @Override
     public void updateList(List<ChooseCategoryItem> mDataList) {
-        mAdapter.updateList(mDataList);
+
     }
 
     @Override
     public void createBoth() {
-        mCreateView.setVisibility(View.VISIBLE);
-        mCreateView.setBackgroundResource(R.drawable.icon_category_create);
-        ThrottleClickEvents.throttleClick(mCreateView, new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mBlurParent.setVisibility(View.VISIBLE);
-            }
-        });
+
     }
 
     @Override
     public void createQuality() {
-        mCreateView.setVisibility(View.VISIBLE);
-        mCreateView.setBackgroundResource(R.drawable.icon_category_create_single_quality);
-        ThrottleClickEvents.throttleClick(mCreateView, new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                create();
-            }
-        });
+
     }
 
     @Override
     public void createEquipment() {
-        mCreateView.setVisibility(View.VISIBLE);
-        mCreateView.setBackgroundResource(R.drawable.icon_category_create_single_equipment);
-        ThrottleClickEvents.throttleClick(mCreateView, new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(mActivity, CreateEquipmentMandatoryActivity.class);
-                startActivity(intent);
-            }
-        });
+
     }
 
     @Override
     public void createNone() {
-        mCreateView.setVisibility(View.GONE);
+
     }
 }

@@ -27,14 +27,15 @@
                     android:layout_marginLeft="@dimen/dimen_10"
                     android:layout_marginTop="@dimen/dimen_31"
                     />
+
                 <ImageView
                     android:id="@+id/setting_head_icon"
                     android:layout_width="@dimen/dimen_80"
                     android:layout_height="@dimen/dimen_80"
-                    android:layout_marginTop="@dimen/dimen_35"
                     android:layout_gravity="center"
-                    android:background="@drawable/icon_default_girl"
-                    />
+                    android:layout_marginTop="@dimen/dimen_35"
+                    android:background="@drawable/icon_default_boy" />
+
                 <TextView
                     android:id="@+id/setting_name"
                     android:layout_width="match_parent"

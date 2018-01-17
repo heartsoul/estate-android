@@ -98,7 +98,7 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
     private ProjectListItem mProjectInfo;//项目信息
     private List<TextView> mContentList;
 
-    private int mFromType = 0;//0质检清单  1图纸  2 模型   3质检项目
+    private int mFromType = 0;//0质检清单  1图纸  2 模型   3质检项目 4材设清单  5模型预览
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -153,15 +153,27 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
 
         hideDrawer(1);
 
+
+
+    }
+
+    private void checkQualityAuthority(){
         //权限控制  是否显示新检检查单按钮
         if (AuthorityManager.isShowCreateButton()) {
             mCreateView.setVisibility(View.VISIBLE);
         } else {
             mCreateView.setVisibility(View.GONE);
         }
-
     }
 
+    private void checkEquipmentAuthority(){
+        //权限控制  是否显示新检检查单按钮
+        if (AuthorityManager.isEquipmentModify()) {
+            mCreateView.setVisibility(View.VISIBLE);
+        } else {
+            mCreateView.setVisibility(View.GONE);
+        }
+    }
 
     private void setListener() {
         mBackView.setOnClickListener(this);
@@ -363,6 +375,12 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
             case 3:
                 title = "质检项目";
                 break;
+            case 4:
+                title = "材设清单";
+                break;
+            case 5:
+                title = "模型预览";
+                break;
         }
         mTitleView.setText(title);
     }
@@ -458,6 +476,7 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
                 }
                 mQualityCheckListFragment.setProjectInfo(mProjectInfo);
                 currentFragment = mQualityCheckListFragment;
+                checkQualityAuthority();
                 break;
             case mBluePrintFragmentId:
                 if (mBluePrintFragment == null) {
@@ -465,6 +484,7 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
                     transaction.add(R.id.main_fragment_content, mBluePrintFragment);
                 }
                 currentFragment = mBluePrintFragment;
+                checkQualityAuthority();
                 break;
             case mModelFragmentId:
                 if (mQualityModelFragment == null) {
@@ -472,6 +492,7 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
                     transaction.add(R.id.main_fragment_content, mQualityModelFragment);
                 }
                 currentFragment = mQualityModelFragment;
+                checkQualityAuthority();
                 break;
             case mQualityCheckModuleFragmentId:
                 if (mQualityCheckModuleFragment == null) {
@@ -487,6 +508,7 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
                 });
                 mQualityCheckModuleFragment.changeTitle();
                 currentFragment = mQualityCheckModuleFragment;
+                checkQualityAuthority();
                 break;
             case mEquipmentListFragmentId:
                 if (mEquipmentListFragment == null) {
@@ -502,6 +524,7 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
                 });
                 mEquipmentListFragment.changeTitle();
                 currentFragment = mEquipmentListFragment;
+                checkEquipmentAuthority();
                 break;
             case mEquipmentModelFragmentId:
                 if (mEquipmentModelFragment == null) {
@@ -517,6 +540,7 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
                 });
                 mEquipmentModelFragment.changeTitle();
                 currentFragment = mEquipmentModelFragment;
+                checkEquipmentAuthority();
                 break;
         }
 

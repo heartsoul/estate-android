@@ -96,19 +96,22 @@ public class BluePrintPresenter implements BluePrintContract.Presenter {
         }
     };
 
-
+    private boolean mIsLoading = false;
     private OnChooseBlueprintCataListener mCataListener = new OnChooseBlueprintCataListener() {
         @Override
         public void onSelect(BlueprintListBeanItem item) {
-            //选中了一个目录
-            //更新顶部目录
-            mCatalogList.add(item);
-            if (mView != null) {
-                mView.updateCataListView(mCatalogList);
+            if(!mIsLoading) {
+                //选中了一个目录
+                //更新顶部目录
+                mCatalogList.add(item);
+                if (mView != null) {
+                    mView.updateCataListView(mCatalogList);
+                }
+                //更新目录列表
+                fileId = item.fileId;
+                getBluePrintData();
+                mIsLoading = true;
             }
-            //更新目录列表
-            fileId = item.fileId;
-            getBluePrintData();
         }
     };
     private OnChooseBlueprintObjListener mObjListener = new OnChooseBlueprintObjListener() {
@@ -215,99 +218,71 @@ public class BluePrintPresenter implements BluePrintContract.Presenter {
         mSubscription.add(sub);
     }
 
-//    private void getBluePrintRoot() {
-//        Subscription sub = mModel.getBluePrint(mDeptId, mLatestVersionInfo.data.versionId, fileId, pageIndex)
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(new Subscriber<BluePrintBean>() {
-//                    @Override
-//                    public void onCompleted() {
-//
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//                        LogUtil.e(e.getMessage());
-//                        if (mView != null) {
-//                            mView.dismissLoadingDialog();
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onNext(BluePrintBean bean) {
-//                        mDataList.clear();
-//                        if (bean != null && bean.data != null && bean.data.items != null && bean.data.items.size() > 0) {
-//
-//                            for (BlueprintListBeanItem item : bean.data.items) {
-//                                if ("图纸文件".equals(item.name)) {
-//                                    fileId = item.fileId;
-//                                    getBluePrintData();
-//                                    break;
-//                                }
-//                            }
-//
-//                        }
-//
-//                    }
-//                });
-//        mSubscription.add(sub);
-//    }
 
     private void getBluePrintData() {
-        Subscription sub = mModel.getBluePrint(mDeptId, mLatestVersionInfo.data.versionId, fileId, pageIndex)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<BluePrintBean>() {
-                    @Override
-                    public void onCompleted() {
+        if(NetWorkUtils.isNetworkAvailable(mView.getActivity())) {
+            if(mView!=null){
+                mView.showLoadingDialog();
+            }
+            Subscription sub = mModel.getBluePrint(mDeptId, mLatestVersionInfo.data.versionId, fileId, pageIndex)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Subscriber<BluePrintBean>() {
+                        @Override
+                        public void onCompleted() {
 
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        LogUtil.e(e.getMessage());
-                        if (mView != null) {
-                            mView.dismissLoadingDialog();
                         }
-                    }
 
-                    @Override
-                    public void onNext(BluePrintBean bean) {
-                        mDataList.clear();
-                        if (bean != null) {
-                            LogUtil.e("bean=" + new GsonBuilder().create().toJson(bean));
-                            mContentList = bean.data.items;
-                            if(mContentList!=null && mContentList.size()>0){
-                                //删除模型文件
-                                int i = 0;
-                                boolean isRemove = false;
-                                for(BlueprintListBeanItem item:mContentList){
-                                    if("模型文件".equals(item.name)){
-                                        isRemove = true;
-                                        break;
-                                    }
-                                    i++;
-                                }
-                                if(isRemove) {
-                                    mContentList.remove(i);
-                                }
-                            }
-                            if (mContentList == null) {
-                                mContentList = new ArrayList<>();
-                            }
-                            mContentList = getSortedList(mContentList);
+                        @Override
+                        public void onError(Throwable e) {
+                            LogUtil.e(e.getMessage());
                             if (mView != null) {
-                                mView.updateContentListView(mContentList, mSelectId);
+                                mView.dismissLoadingDialog();
                             }
+                            mIsLoading = false;
+                        }
+
+                        @Override
+                        public void onNext(BluePrintBean bean) {
+                            mDataList.clear();
+                            if (bean != null) {
+                                LogUtil.e("bean=" + new GsonBuilder().create().toJson(bean));
+                                mContentList = bean.data.items;
+                                if (mContentList != null && mContentList.size() > 0) {
+                                    //删除模型文件
+                                    int i = 0;
+                                    boolean isRemove = false;
+                                    for (BlueprintListBeanItem item : mContentList) {
+                                        if ("模型文件".equals(item.name)) {
+                                            isRemove = true;
+                                            break;
+                                        }
+                                        i++;
+                                    }
+                                    if (isRemove) {
+                                        mContentList.remove(i);
+                                    }
+                                }
+                                if (mContentList == null) {
+                                    mContentList = new ArrayList<>();
+                                }
+                                mContentList = getSortedList(mContentList);
+                                if (mView != null) {
+                                    mView.updateContentListView(mContentList, mSelectId);
+                                }
 
 
+                            }
+                            if (mView != null) {
+                                mView.dismissLoadingDialog();
+                            }
+                            mIsLoading = false;
                         }
-                        if (mView != null) {
-                            mView.dismissLoadingDialog();
-                        }
-                    }
-                });
-        mSubscription.add(sub);
+                    });
+            mSubscription.add(sub);
+        }else{
+            ToastManager.showNetWorkToast();
+        }
     }
 
     private List<BlueprintListBeanItem> getSortedList(List<BlueprintListBeanItem> contentlist){

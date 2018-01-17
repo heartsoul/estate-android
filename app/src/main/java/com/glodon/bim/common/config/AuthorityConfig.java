@@ -20,8 +20,10 @@ public class AuthorityConfig {
     public static final String Print = "Print";
     public static final String BrowseGrant = "BrowseGrant";
     public static final String BrowseAll = "BrowseAll";
+    public static final String BrowseSelf = "BrowseSelf";
     public static final String DeleteAll = "DeleteAll";
     public static final String ModifyUnit = "ModifyUnit";
+    public static final String ModifySelf = "ModifySelf";
     public static final String DeleteGrant = "DeleteGrant";
     public static final String BrowseUnit = "BrowseUnit";
     public static final String Download = "Download";

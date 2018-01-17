@@ -2,6 +2,9 @@ package com.glodon.bim.business.main.contract;
 
 import com.glodon.bim.base.IBasePresenter;
 import com.glodon.bim.base.IBaseView;
+import com.glodon.bim.business.main.bean.ChooseCategoryItem;
+
+import java.util.List;
 
 /**
  * 描述：项目功能列表
@@ -13,7 +16,18 @@ public interface ChooseCategoryItemContract {
 
     interface View extends IBaseView{
 
+        /**
+         * 目录列表
+         */
+        void updateList(List<ChooseCategoryItem> mDataList);
 
+        void createBoth();
+
+        void createQuality();
+
+        void createEquipment();
+
+        void createNone();
     }
 
     interface Presenter extends IBasePresenter{
@@ -52,6 +66,8 @@ public interface ChooseCategoryItemContract {
          * 跳转到账户设置
          */
         void toSetting();
+
+        void checkAuthority();
     }
 
     interface Model{

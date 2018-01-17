@@ -25,7 +25,7 @@ public class EquipmentModelFragment extends BaseFragment {
     public void setProjectInfo(ProjectListItem info) {
         this.mProjectInfo = info;
     }
-    private String mCurrentTitle = "模型";
+    private String mCurrentTitle = "模型预览";
     private OnTitleChangerListener mTitleListener;
 
     public void setTitleChangeListener(OnTitleChangerListener listner){

@@ -9,6 +9,7 @@ import com.glodon.bim.business.authority.AuthorityManager;
 import com.glodon.bim.business.main.bean.ProjectListBean;
 import com.glodon.bim.business.main.bean.ProjectListItem;
 import com.glodon.bim.business.main.contract.ChooseProjectContract;
+import com.glodon.bim.business.main.listener.OnGetAuthorityListener;
 import com.glodon.bim.business.main.listener.OnProjectClickListener;
 import com.glodon.bim.business.main.model.ChooseProjectModel;
 import com.glodon.bim.business.main.view.ChooseCategoryItemActivity;
@@ -65,12 +66,17 @@ public class ChooseProjectPresenter implements ChooseProjectContract.Presenter {
     /**
      * 点击项目
      */
-    public void clickProject(ProjectListItem item) {
+    public void clickProject(final ProjectListItem item) {
         SharedPreferencesUtil.setProjectInfo(item);
-        AuthorityManager.getAuthorities();
-        Intent intent = new Intent(mView.getActivity(), ChooseCategoryItemActivity.class);
-        intent.putExtra(CommonConfig.PROJECT_LIST_ITEM, item);
-        mView.getActivity().startActivity(intent);
+        AuthorityManager.getAuthorities(new OnGetAuthorityListener() {
+            @Override
+            public void finish() {
+                Intent intent = new Intent(mView.getActivity(), ChooseCategoryItemActivity.class);
+                intent.putExtra(CommonConfig.PROJECT_LIST_ITEM, item);
+                mView.getActivity().startActivity(intent);
+            }
+        });
+
         getLatestVersion(item.deptId);
     }
 
