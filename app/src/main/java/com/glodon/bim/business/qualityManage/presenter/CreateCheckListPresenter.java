@@ -1102,7 +1102,7 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
 
     //保存后将值付给初始值  以便下一次比较
     private void resetInitParams() {
-//        mInitParams.code = mInput.code;
+//        mInitParams.facilityCode = mInput.facilityCode;
         mInitParams.projectId = mInput.projectId;
         mInitParams.projectName = mInput.projectName;
         mInitParams.qualityCheckpointId = mInput.qualityCheckpointId;

@@ -101,9 +101,9 @@ public class DateRecycle {
 	}
 
 	/**
-	 * Adds view to cache. Determines view type (item view or empty one) by index.
+	 * Adds view to cache. Determines view type (item view or empty one) by batchCode.
 	 * @param view the view to be cached
-	 * @param index the index of view
+	 * @param index the batchCode of view
 	 */
 	private void recycleView(View view, int index) {
 		int count = wheel.getViewAdapter().getItemsCount();

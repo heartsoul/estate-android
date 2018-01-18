@@ -9,9 +9,9 @@ import java.io.Serializable;
  */
 
 public class CreateEquipmentMandatoryInfo implements Serializable{
-    public String index;
-    public String date;
-    public String code;
-    public String name;
+    public String batchCode;//批次编号
+    public String facilityCode;//材设编码
+    public String facilityName;//材设名称
+    public String approachDate;//进场日期
 
 }

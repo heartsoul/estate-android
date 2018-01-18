@@ -58,11 +58,12 @@ public class CommonConfig {
      * 材设进场
      */
     public static final String QC_STATE_EDIT = "edit";
+    public static final String QC_STATE_ALL = "all";
     public static final String QC_STATE_STANDARD = "standard";
     public static final String QC_STATE_NOT_STANDARD = "notStandard";
 
     public static final String[] EQUIPMENT_CLASSIFY_NAMES = {"全部", "待提交",       "合格",      "不合格"};
-    public static final String[] EQUIPMENT_CLASSIFY_STATES = {"",    QC_STATE_EDIT, QC_STATE_STANDARD,QC_STATE_NOT_STANDARD};
+    public static final String[] EQUIPMENT_CLASSIFY_STATES = {QC_STATE_ALL,    QC_STATE_EDIT, QC_STATE_STANDARD,QC_STATE_NOT_STANDARD};
 
 
     /**
@@ -98,4 +99,9 @@ public class CommonConfig {
     public static final String EQUIPMENT_EDIT_MANDATORY_INFO = "EQUIPMENT_EDIT_MANDATORY_INFO";
     public static final String EQUIPMENT_EDIT_NOT_MANDATORY_INFO = "EQUIPMENT_EDIT_NOT_MANDATORY_INFO";
     public static final String EQUIPMENT_EDIT_PICTURE_INFO = "EQUIPMENT_EDIT_PICTURE_INFO";
+    public static final String EQUIPMENT_TYPE = "EQUIPMENT_TYPE";
+    public static final int EQUIPMENT_TYPE_CREATE = 0;
+    public static final int EQUIPMENT_TYPE_EDIT = 1;
+    public static final int EQUIPMENT_TYPE_DETAIL = 2;
+    public static final String EQUIPMENT_LIST_ID = "EQUIPMENT_LIST_ID";
 }

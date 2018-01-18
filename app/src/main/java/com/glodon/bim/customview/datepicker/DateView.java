@@ -333,9 +333,9 @@ public class DateView extends View {
 	}
 
 	/**
-	 * Sets the current item. Does nothing when index is wrong.
+	 * Sets the current item. Does nothing when batchCode is wrong.
 	 * 
-	 * @param index the item index
+	 * @param index the item batchCode
 	 * @param animated the animation flag
 	 */
 	public void setCurrentItem(int index, boolean animated) {
@@ -378,9 +378,9 @@ public class DateView extends View {
 	}
 
 	/**
-	 * Sets the current item w/o animation. Does nothing when index is wrong.
+	 * Sets the current item w/o animation. Does nothing when batchCode is wrong.
 	 * 
-	 * @param index the item index
+	 * @param index the item batchCode
 	 */
 	public void setCurrentItem(int index) {
 		setCurrentItem(index, false);
@@ -538,7 +538,7 @@ public class DateView extends View {
 	private int calculateLayoutWidth(int widthSize, int mode) {
 		initResourcesIfNecessary();
 
-		// TODO: make it static
+		// TODO: brand it static
 		itemsLayout.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 		itemsLayout.measure(MeasureSpec.makeMeasureSpec(widthSize, MeasureSpec.UNSPECIFIED),
 				MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
@@ -892,7 +892,7 @@ public class DateView extends View {
 
 	/**
 	 * Adds view for item to items layout
-	 * @param index the item index
+	 * @param index the item batchCode
 	 * @param first the flag indicates if view should be first
 	 * @return true if corresponding item exists and is added
 	 */
@@ -912,9 +912,9 @@ public class DateView extends View {
 	}
 
 	/**
-	 * Checks whether intem index is valid
-	 * @param index the item index
-	 * @return true if item index is not out of bounds or the wheel is cyclic
+	 * Checks whether intem batchCode is valid
+	 * @param index the item batchCode
+	 * @return true if item batchCode is not out of bounds or the wheel is cyclic
 	 */
 	private boolean isValidItemIndex(int index) {
 		return viewAdapter != null && viewAdapter.getItemsCount() > 0 &&
@@ -923,8 +923,8 @@ public class DateView extends View {
 
 	/**
 	 * Returns view for specified item
-	 * @param index the item index
-	 * @return item view or empty view if index is out of bounds
+	 * @param index the item batchCode
+	 * @return item view or empty view if batchCode is out of bounds
 	 */
 	private View getItemView(int index) {
 		if (viewAdapter == null || viewAdapter.getItemsCount() == 0) {

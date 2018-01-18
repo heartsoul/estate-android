@@ -14,7 +14,7 @@ public class ImageUploadBean {
     @Override
     public String toString() {
         return "ImageUploadBean{" +
-                "code=" + code +
+                "facilityCode=" + code +
                 ", data=" + data.toString() +
                 ", message='" + message + '\'' +
                 '}';

@@ -170,17 +170,18 @@ public class CreateEquipmentNotMandatoryActivity extends BaseActivity implements
 
     private void toNext() {
         CreateEquipmentMandatoryNotInfo info = new CreateEquipmentMandatoryNotInfo();
-        info.num = mNumEt.getText().toString().trim();
-//        if(TextUtils.isEmpty(num)){
-//            info.num = 0;
-//        }else{
-//            info.num = Long.parseLong(num);
-//        }
+//        info.quantity = mNumEt.getText().toString().trim();
+        String quantity = mNumEt.getText().toString().trim();
+        if(TextUtils.isEmpty(quantity)){
+            info.quantity = 0;
+        }else{
+            info.quantity = Long.parseLong(quantity);
+        }
         info.unit = mUnitEt.getText().toString().trim();
-        info.spec = mSpecEt.getText().toString().trim();
-        info.modelnum = mModelNumEt.getText().toString().trim();
-        info.factory = mFactoryEt.getText().toString().trim();
-        info.make = mMakeEt.getText().toString().trim();
+        info.specification = mSpecEt.getText().toString().trim();
+        info.modelNum = mModelNumEt.getText().toString().trim();
+        info.manufacturer = mFactoryEt.getText().toString().trim();
+        info.brand = mMakeEt.getText().toString().trim();
         info.supplier = mSupplierEt.getText().toString().trim();
         mPresenter.toNext(info);
 
@@ -229,15 +230,15 @@ public class CreateEquipmentNotMandatoryActivity extends BaseActivity implements
         mTitleView.setText("编辑材设详情");
         mNextBtn.setText("确定");
         mSkipTv.setVisibility(View.GONE);
-        mNumEt.setText(info.num);
+        mNumEt.setText(info.quantity+"");
         mUnitEt.setText(info.unit);
-        mSpecEt.setText(info.spec);
-        mModelNumEt.setText(info.modelnum);
+        mSpecEt.setText(info.specification);
+        mModelNumEt.setText(info.modelNum);
         if(info.model!=null && info.model.component!=null) {
             mModelTv.setText(info.model.component.elementName);
         }
-        mFactoryEt.setText(info.factory);
-        mMakeEt.setText(info.make);
+        mFactoryEt.setText(info.manufacturer);
+        mMakeEt.setText(info.brand);
         mSupplierEt.setText(info.supplier);
     }
 }

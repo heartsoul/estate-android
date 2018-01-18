@@ -39,9 +39,9 @@ public class LoginModel implements LoginContract.Model {
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                        System.out.println("1--");
-                        System.out.println(response.headers().toString());
-                        System.out.println("1--");
+//                        System.out.println("1--");
+//                        System.out.println(response.headers().toString());
+//                        System.out.println("1--");
                         request2(response, username, password, listener);
                     }
 
@@ -64,9 +64,9 @@ public class LoginModel implements LoginContract.Model {
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                        System.out.println("2--");
-                        System.out.println(response.headers().toString());
-                        System.out.println("2--");
+//                        System.out.println("2--");
+//                        System.out.println(response.headers().toString());
+//                        System.out.println("2--");
                         request3(response, username, password, cookie2, listener);
                     }
 
@@ -75,6 +75,7 @@ public class LoginModel implements LoginContract.Model {
                         if (listener != null) {
                             listener.onLoginFailed(call, t);
                         }
+//                        System.out.println("er/ror  2--"+t.getMessage());
                     }
                 });
     }
@@ -90,9 +91,9 @@ public class LoginModel implements LoginContract.Model {
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                        System.out.println("3--");
-                        System.out.println(response.headers().toString());
-                        System.out.println("3--");
+//                        System.out.println("3--");
+//                        System.out.println(response.headers().toString());
+//                        System.out.println("3--");
                         request4(response, username, password, cookie2, cookie3, listener);
                     }
 
@@ -101,6 +102,7 @@ public class LoginModel implements LoginContract.Model {
                         if (listener != null) {
                             listener.onLoginFailed(call, t);
                         }
+//                        System.out.println("error  3--"+t.getMessage());
                     }
                 });
     }
@@ -110,9 +112,11 @@ public class LoginModel implements LoginContract.Model {
      */
     private void request4(Response<ResponseBody> response, String username, String password, String cookie2, String cookie3, final OnLoginListener listener) {
         String location = response.headers().get(LOCATION);
+//        System.out.println("location--"+location);
         if(TextUtils.isEmpty(location)){
             if (listener != null) {
-                Throwable t = new Throwable("账户密码错误");
+
+                Throwable t = new Throwable("账户密码错误!");
                 listener.onLoginFailed(null, t);
             }
         }else {
@@ -121,9 +125,9 @@ public class LoginModel implements LoginContract.Model {
                     .enqueue(new Callback<ResponseBody>() {
                         @Override
                         public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                            System.out.println("4--");
-                            System.out.println(response.headers().toString());
-                            System.out.println("4--");
+//                            System.out.println("4--");
+//                            System.out.println(response.headers().toString());
+//                            System.out.println("4--");
                             if (listener != null) {
                                 listener.onLoginSuccess(getCookie(response.headers().get(SET_COOKIE)));
                             }
@@ -134,6 +138,7 @@ public class LoginModel implements LoginContract.Model {
                             if (listener != null) {
                                 listener.onLoginFailed(call, t);
                             }
+//                            System.out.println("error  4--"+t.getMessage());
                         }
                     });
         }

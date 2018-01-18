@@ -125,11 +125,11 @@ public class CreateEquipmentMandatoryActivity extends BaseActivity implements Vi
 
     @Override
     public void showMandatoryInfo(CreateEquipmentMandatoryInfo info) {
-        mIndexEt.setText(info.index);
-        mDate = info.date;
+        mIndexEt.setText(info.batchCode);
+        mDate = info.approachDate;
         mDateTv.setText(DateUtil.getShowDate(mDate));
-        mCodeEt.setText(info.code);
-        mNameEt.setText(info.name);
+        mCodeEt.setText(info.facilityCode);
+        mNameEt.setText(info.facilityName);
         mNextBtn.setText("确定");
         mTitleView.setText("编辑材设基本信息");
     }
@@ -165,7 +165,7 @@ public class CreateEquipmentMandatoryActivity extends BaseActivity implements Vi
             @Override
             public void onDateSelected(Map<String, Integer> map) {
                 Calendar calendar = Calendar.getInstance();
-                calendar.set(map.get("year"), map.get("month") - 1, map.get("date"));
+                calendar.set(map.get("year"), map.get("month") - 1, map.get("approachDate"));
                 Date date = calendar.getTime();
                 String time = (new SimpleDateFormat("yyyy-MM-dd")).format(date);
                 mDateTv.setText(time);
@@ -177,10 +177,10 @@ public class CreateEquipmentMandatoryActivity extends BaseActivity implements Vi
 
     private void toNext() {
         CreateEquipmentMandatoryInfo info = new CreateEquipmentMandatoryInfo();
-        info.index = mIndexEt.getText().toString().trim();
-        info.date = mDate;
-        info.code = mCodeEt.getText().toString().trim();
-        info.name = mNameEt.getText().toString().trim();
+        info.batchCode = mIndexEt.getText().toString().trim();
+        info.approachDate = mDate;
+        info.facilityCode = mCodeEt.getText().toString().trim();
+        info.facilityName = mNameEt.getText().toString().trim();
         mPresenter.toNotMandatory(info);
     }
 

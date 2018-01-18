@@ -18,18 +18,16 @@ import com.glodon.bim.basic.image.ImageLoader;
 import com.glodon.bim.basic.listener.ThrottleClickEvents;
 import com.glodon.bim.basic.utils.CameraUtil;
 import com.glodon.bim.basic.utils.DateUtil;
-import com.glodon.bim.basic.utils.DateUtils;
 import com.glodon.bim.basic.utils.LinkedHashList;
 import com.glodon.bim.business.equipment.bean.CreateEquipmentMandatoryInfo;
 import com.glodon.bim.business.equipment.bean.CreateEquipmentMandatoryNotInfo;
 import com.glodon.bim.business.equipment.bean.CreateEquipmentPictureInfo;
 import com.glodon.bim.business.equipment.contract.CreateEquipmentContract;
 import com.glodon.bim.business.equipment.presenter.CreateEquipmentPresenter;
+import com.glodon.bim.business.qualityManage.view.SaveDeleteDialog;
 import com.glodon.bim.customview.album.ImageItem;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -57,6 +55,8 @@ public class CreateEquipmentActivity extends BaseActivity implements View.OnClic
     //保存删除
     private Button mSaveBtn,mDeleteBtn;
 
+    //三个右边箭头
+    private ImageView mBasicArrow,mOtherArrow,mPhotoArrow;
 
     private CreateEquipmentContract.Presenter mPresenter;
 
@@ -103,6 +103,11 @@ public class CreateEquipmentActivity extends BaseActivity implements View.OnClic
         mSaveBtn = (Button) findViewById(R.id.create_equipment_save);
         mDeleteBtn = (Button) findViewById(R.id.create_equipment_delete);
 
+        //三个箭头
+
+        mBasicArrow = (ImageView) findViewById(R.id.create_equipment_basic_arrow);
+        mOtherArrow = (ImageView) findViewById(R.id.create_equipment_other_arrow);
+        mPhotoArrow = (ImageView) findViewById(R.id.create_equipment_picture_arrow);
     }
 
 
@@ -167,30 +172,39 @@ public class CreateEquipmentActivity extends BaseActivity implements View.OnClic
                 mPresenter.save();
                 break;
             case R.id.create_equipment_delete:
-                mPresenter.delete();
+                SaveDeleteDialog mDeleteDialog = new SaveDeleteDialog(getActivity());
+                mDeleteDialog.getDeleteDialog(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        //调用接口删除
+                        mPresenter.delete();
+                    }
+                });
+                mDeleteDialog.show();
+
                 break;
         }
     }
 
     @Override
     public void showBasicInfo(CreateEquipmentMandatoryInfo mMandatoryInfo) {
-        mIndexView.setText(mMandatoryInfo.index);
-        mDateView.setText(DateUtil.getShowDate(mMandatoryInfo.date));
-        mCodeView.setText(mMandatoryInfo.code);
-        mNameView.setText(mMandatoryInfo.name);
+        mIndexView.setText(mMandatoryInfo.batchCode);
+        mDateView.setText(DateUtil.getShowDate(mMandatoryInfo.approachDate));
+        mCodeView.setText(mMandatoryInfo.facilityCode);
+        mNameView.setText(mMandatoryInfo.facilityName);
     }
 
     @Override
     public void showOtherInfo(CreateEquipmentMandatoryNotInfo mMandatoryNotInfo) {
-        mNumView.setText(mMandatoryNotInfo.num);
+        mNumView.setText(mMandatoryNotInfo.quantity+"");
         mUnitView.setText(mMandatoryNotInfo.unit);
-        mSpecView.setText(mMandatoryNotInfo.spec);
-        mModelNumView.setText(mMandatoryNotInfo.modelnum);
+        mSpecView.setText(mMandatoryNotInfo.specification);
+        mModelNumView.setText(mMandatoryNotInfo.modelNum);
         if(mMandatoryNotInfo.model!=null && mMandatoryNotInfo.model.component!=null) {
             mModelView.setText(mMandatoryNotInfo.model.component.elementName);
         }
-        mFactoryView.setText(mMandatoryNotInfo.factory);
-        mMakeView.setText(mMandatoryNotInfo.make);
+        mFactoryView.setText(mMandatoryNotInfo.manufacturer);
+        mMakeView.setText(mMandatoryNotInfo.brand);
         mSupplierView.setText(mMandatoryNotInfo.supplier);
     }
 
@@ -199,7 +213,31 @@ public class CreateEquipmentActivity extends BaseActivity implements View.OnClic
         if(mPictureInfo.mSelectedMap!=null){
             showImages(mPictureInfo.mSelectedMap);
         }
-        mStandardView.setBackgroundResource(mPictureInfo.isUpToStandard?R.drawable.icon_up_to_standard:R.drawable.icon_not_up_to_standard);
+        mStandardView.setBackgroundResource(mPictureInfo.qualified ?R.drawable.icon_up_to_standard:R.drawable.icon_not_up_to_standard);
+    }
+
+    @Override
+    public void showEdit() {
+        mSaveBtn.setVisibility(View.VISIBLE);
+        mDeleteBtn.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void showDetail() {
+        mSaveBtn.setVisibility(View.GONE);
+        mDeleteBtn.setVisibility(View.GONE);
+        mSubmitView.setVisibility(View.GONE);
+        mBasicParent.setOnClickListener(null);
+        mOtherParent.setOnClickListener(null);
+        mPhotoParent.setOnClickListener(null);
+        mBasicArrow.setVisibility(View.GONE);
+        mOtherArrow.setVisibility(View.GONE);
+        mPhotoArrow.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showDelete() {
+        mDeleteBtn.setVisibility(View.VISIBLE);
     }
 
 

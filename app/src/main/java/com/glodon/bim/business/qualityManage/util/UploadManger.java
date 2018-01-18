@@ -87,7 +87,7 @@ public class UploadManger {
                         try {
                             if(response.body()!=null) {
                                 operationCode = response.body().string();
-                                LogUtil.e("code = ", operationCode);
+                                LogUtil.e("facilityCode = ", operationCode);
                                 uploadImage(operationCode, file,imagePath);
                             }else if(response.errorBody()!=null){
                                 LogUtil.e("erro="+response.errorBody().string());

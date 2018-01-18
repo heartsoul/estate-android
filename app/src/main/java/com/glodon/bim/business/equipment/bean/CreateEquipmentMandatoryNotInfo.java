@@ -11,13 +11,13 @@ import java.io.Serializable;
  */
 
 public class CreateEquipmentMandatoryNotInfo implements Serializable{
-    public String num;
-    public String unit;
-    public String spec;
-    public String modelnum;
-    public String factory;
-    public String make;
-    public String supplier;
+    public long quantity;//进场数量
+    public String unit;//单位
+    public String specification;//规格
+    public String modelNum;//型号
+    public String manufacturer;//厂家
+    public String brand;//品牌
+    public String supplier;//供应商
 
     //模型
     public ModelListBeanItem model;

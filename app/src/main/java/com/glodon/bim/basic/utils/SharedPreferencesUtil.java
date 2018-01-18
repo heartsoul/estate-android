@@ -99,6 +99,14 @@ public class SharedPreferencesUtil {
         return preferences.getString(projectId+"","");
     }
     /**
+     * 获取项目版本id
+     * @return
+     */
+    public static String getProjectVersionId(){
+        SharedPreferences preferences= BaseApplication.getInstance().getSharedPreferences(NAME,Context.MODE_PRIVATE);
+        return preferences.getString(getProjectId()+"","");
+    }
+    /**
      * 获取项目名称
      * @return
      */

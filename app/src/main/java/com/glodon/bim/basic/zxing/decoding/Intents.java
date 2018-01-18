@@ -80,7 +80,7 @@ public final class Intents {
     /**
      * If a barcode is found, Barcodes returns RESULT_OK to onActivityResult() of the app which
      * requested the scan via startSubActivity(). The barcodes contents can be retrieved with
-     * intent.getStringExtra(RESULT). If the user presses Back, the result code will be
+     * intent.getStringExtra(RESULT). If the user presses Back, the result facilityCode will be
      * RESULT_CANCELED.
      */
     public static final String RESULT = "SCAN_RESULT";
@@ -102,7 +102,7 @@ public final class Intents {
 
   public static final class Encode {
     /**
-     * Send this intent to encode a piece of data as a QR code and display it full screen, so
+     * Send this intent to encode a piece of data as a QR facilityCode and display it full screen, so
      * that another person can scan the barcode from your screen.
      */
     public static final String ACTION = "com.google.zxing.client.android.ENCODE";

@@ -14,9 +14,9 @@ public interface DateAdapter {
 	int getItemsCount();
 	
 	/**
-	 * Gets a wheel item by index.
+	 * Gets a wheel item by batchCode.
 	 * 
-	 * @param index the item index
+	 * @param index the item batchCode
 	 * @return the wheel item text or null
 	 */
 	String getItem(int index);

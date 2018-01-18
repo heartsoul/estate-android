@@ -122,7 +122,7 @@ public class CreateEquipmentPicturePresenter implements CreateEquipmentPictureCo
     @Override
     public void next(boolean isUpToStandard) {
         CreateEquipmentPictureInfo info = new CreateEquipmentPictureInfo();
-        info.isUpToStandard = isUpToStandard;
+        info.qualified = isUpToStandard;
         info.mSelectedMap = mSelectedMap;
         if(mIsEdit){
             Intent data = new Intent();

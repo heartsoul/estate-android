@@ -14,7 +14,7 @@ public class RelevantBluePrintToken {
     @Override
     public String toString() {
         return "RelevantBluePrintToken{" +
-                "code='" + code + '\'' +
+                "facilityCode='" + code + '\'' +
                 ", message='" + message + '\'' +
                 ", data='" + data + '\'' +
                 '}';

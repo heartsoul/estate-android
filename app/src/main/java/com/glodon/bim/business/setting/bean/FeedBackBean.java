@@ -14,7 +14,7 @@ public class FeedBackBean {
     @Override
     public String toString() {
         return "FeedBackBean{" +
-                "code=" + code +
+                "facilityCode=" + code +
                 ", message='" + message + '\'' +
                 ", data=" + data.toString() +
                 '}';

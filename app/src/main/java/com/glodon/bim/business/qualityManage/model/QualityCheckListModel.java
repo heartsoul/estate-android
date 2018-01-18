@@ -29,7 +29,7 @@ import rx.Observable;
 public class QualityCheckListModel implements QualityCheckListContract.Model{
     @Override
     public Observable<QualityCheckListBean> getQualityCheckList(long deptId,String qcState, int page, int size) {
-        String[] sort = {"updateTime,desc"};
+        String[] sort = {"approachDate,desc"};
         return NetRequest.getInstance().getCall(AppConfig.BASE_URL,QualityCheckListApi.class).getQualityCheckList(deptId,qcState,page,size,sort,new DaoProvider().getCookie());
     }
 
@@ -37,7 +37,7 @@ public class QualityCheckListModel implements QualityCheckListContract.Model{
      * 获取质检清单
      */
     public Observable<QualityCheckListBean> getQualityCheckList(long deptId, String qcState,int page, int size, long qualityCheckpointId, String qualityCheckpointName){
-        String[] sort = {"updateTime,desc"};
+        String[] sort = {"approachDate,desc"};
         return NetRequest.getInstance().getCall(AppConfig.BASE_URL,QualityCheckListApi.class).getQualityCheckList(deptId,qcState,page,size,sort,qualityCheckpointId,qualityCheckpointName,new DaoProvider().getCookie());
     }
 

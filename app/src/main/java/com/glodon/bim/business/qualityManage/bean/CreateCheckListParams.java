@@ -59,7 +59,7 @@ public class CreateCheckListParams implements Serializable {
     @Override
     public String toString() {
         return "CreateCheckListParams{" +
-                "code='" + code + '\'' +
+                "facilityCode='" + code + '\'' +
                 ", projectId=" + projectId +
                 ", projectName='" + projectName + '\'' +
                 ", inspectionCompanyId=" + inspectionCompanyId +

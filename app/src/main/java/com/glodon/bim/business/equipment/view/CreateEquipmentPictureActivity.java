@@ -186,8 +186,8 @@ public class CreateEquipmentPictureActivity extends BaseActivity implements View
 
     @Override
     public void showPhotoInfo(CreateEquipmentPictureInfo info) {
-        mFlag.setBackgroundResource(info.isUpToStandard?R.drawable.icon_flag_open:R.drawable.icon_flag_close);
-        mState = info.isUpToStandard;
+        mFlag.setBackgroundResource(info.qualified ?R.drawable.icon_flag_open:R.drawable.icon_flag_close);
+        mState = info.qualified;
         mNextBtn.setText("确定");
         mTitleView.setText("编辑现场照片");
     }

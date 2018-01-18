@@ -449,10 +449,10 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter {
         QualityCheckListDetailBean info = mView.getDetailInfo();
         if (info != null && info.progressInfos != null && info.progressInfos.size() > 0) {
             List<QualityCheckListDetailProgressInfo> list = info.progressInfos;
-//            props.flawCode = list.get(list.size()-1).code;
+//            props.flawCode = list.get(list.size()-1).facilityCode;
             props.flawId = list.get(list.size()-1).id;
         } else {
-//            props.flawCode = info.inspectionInfo.code;
+//            props.flawCode = info.inspectionInfo.facilityCode;
             props.flawId = info.inspectionInfo.id;
         }
         if(mImageList!=null && mImageList.size()>0){
@@ -543,7 +543,7 @@ public class CreateReviewPresenter implements CreateReviewContract.Presenter {
         QualityCheckListDetailBean info = mView.getDetailInfo();
         if (info != null && info.progressInfos != null && info.progressInfos.size() > 0) {
             List<QualityCheckListDetailProgressInfo> list = info.progressInfos;
-//            props.rectificationCode = list.get(list.size()-1).code;
+//            props.rectificationCode = list.get(list.size()-1).facilityCode;
             props.rectificationId = list.get(list.size()-1).id;
         }
         if(mImageList!=null && mImageList.size()>0){

@@ -14,5 +14,5 @@ import java.io.Serializable;
 public class CreateEquipmentPictureInfo implements Serializable{
     public LinkedHashList<String, ImageItem> mSelectedMap;
 
-    public boolean isUpToStandard;
+    public boolean qualified;
 }

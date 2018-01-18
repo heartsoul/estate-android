@@ -64,11 +64,11 @@ public class EquipmentListAdapter extends RecyclerView.Adapter<RecyclerView.View
         final EquipmentListBeanItem item = mDataList.get(position);
         if(holder instanceof SheetHolder){
             SheetHolder sHolder = (SheetHolder) holder;
-            sHolder.mTimeView.setText(DateUtil.getListTime(Long.parseLong(item.updateTime)));
-            sHolder.mIndexView.setText("批号："+item.index);
-            sHolder.mCodeView.setText("编码："+item.code);
-            sHolder.mNameView.setText("名称："+item.name);
-            sHolder.mStandardView.setBackgroundResource(item.isStandard?R.drawable.icon_up_to_standard:R.drawable.icon_not_up_to_standard);
+            sHolder.mTimeView.setText(DateUtil.getListTime(Long.parseLong(item.approachDate)));
+            sHolder.mIndexView.setText("批号："+item.batchCode);
+            sHolder.mCodeView.setText("编码："+item.facilityCode);
+            sHolder.mNameView.setText("名称："+item.facilityName);
+            sHolder.mStandardView.setBackgroundResource(item.qualified ?R.drawable.icon_up_to_standard:R.drawable.icon_not_up_to_standard);
             ThrottleClickEvents.throttleClick(sHolder.mParent, new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -80,10 +80,10 @@ public class EquipmentListAdapter extends RecyclerView.Adapter<RecyclerView.View
         }
         if (holder instanceof SheetEditHolder) {
             SheetEditHolder sHolder = (SheetEditHolder) holder;
-            sHolder.mTimeView.setText(DateUtil.getListTime(Long.parseLong(item.updateTime)));
-            sHolder.mIndexView.setText("批号："+item.index);
-            sHolder.mCodeView.setText("编码："+item.code);
-            sHolder.mNameView.setText("名称："+item.name);
+            sHolder.mTimeView.setText(DateUtil.getListTime(Long.parseLong(item.approachDate)));
+            sHolder.mIndexView.setText("批号："+item.batchCode);
+            sHolder.mCodeView.setText("编码："+item.facilityCode);
+            sHolder.mNameView.setText("名称："+item.facilityName);
             ThrottleClickEvents.throttleClick(sHolder.mParent, new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -121,7 +121,7 @@ public class EquipmentListAdapter extends RecyclerView.Adapter<RecyclerView.View
             } else {
                 tHolder.mTimeParent.setPadding(ScreenUtil.dp2px(20), ScreenUtil.dp2px(10), ScreenUtil.dp2px(20), 0);
             }
-            tHolder.mTimeView.setText(DateUtil.getListDate(Long.parseLong(item.updateTime)));
+            tHolder.mTimeView.setText(DateUtil.getListDate(Long.parseLong(item.approachDate)));
         }
     }
 

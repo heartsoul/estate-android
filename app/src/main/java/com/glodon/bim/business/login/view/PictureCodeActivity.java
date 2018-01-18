@@ -239,14 +239,14 @@ public class PictureCodeActivity extends BaseActivity implements View.OnClickLis
     //改变验证码
 //    private void changeCode() {
 //        int size = letters.length;
-//        StringBuilder code =new StringBuilder();
+//        StringBuilder facilityCode =new StringBuilder();
 //        StringBuilder codeText =new StringBuilder();
 //        for(int i = 0;i<4;i++){
 //            int random = new Random().nextInt(size);
-//            code.append(letters[random]);
+//            facilityCode.append(letters[random]);
 //            codeText.append(letters[random]+" ");
 //        }
-//        mCurrentCode = code.toString();
+//        mCurrentCode = facilityCode.toString();
 //        mCodeView.setText(codeText.toString().trim());
 //    }
 

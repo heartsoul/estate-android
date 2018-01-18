@@ -161,7 +161,7 @@ public abstract class AbstractDateTextAdapter extends AbstractDateAdapter {
     
     /**
      * Returns text for specified item
-     * @param index the item index
+     * @param index the item batchCode
      * @return the text of specified items
      */
     protected abstract CharSequence getItemText(int index);

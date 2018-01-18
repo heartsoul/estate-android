@@ -55,6 +55,7 @@ public class LoginPresenter implements LoginContract.Presenter {
 
     private void login(final String username, final String password) {
         if (NetWorkUtils.isNetworkAvailable(mView.getActivity())) {
+
             mView.showLoadingDialog();
             mModel.login(username, password, new OnLoginListener() {
                 @Override
@@ -98,14 +99,15 @@ public class LoginPresenter implements LoginContract.Presenter {
 
                 @Override
                 public void onLoginFailed(Call<ResponseBody> call, Throwable t) {
+
                     mErrorTimes++;
                     if (mView != null) {
                         mView.dismissLoadingDialog();
                     }
                     if (mErrorTimes > 3) {
                         mView.showErrorDialog();
-                    } else {
-                        ToastManager.show("账号或密码错误！");
+                    }else{
+                        ToastManager.show(t.getMessage());
                     }
                 }
             });

@@ -128,7 +128,7 @@ public class DateDialog {
                 final Map<String, Integer> map = new HashMap<String, Integer>();
                 map.put("year", Integer.parseInt(firstStr));
                 map.put("month", Integer.parseInt(secondStr));
-                map.put("date", Integer.parseInt(thirdStr));
+                map.put("approachDate", Integer.parseInt(thirdStr));
                 listener.onDateSelected(map);
                 dialog.dismiss();
             }

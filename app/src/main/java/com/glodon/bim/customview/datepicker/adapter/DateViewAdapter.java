@@ -20,7 +20,7 @@ public interface DateViewAdapter {
 	/**
 	 * Get a View that displays the data at the specified position in the data set
 	 * 
-	 * @param index the item index
+	 * @param index the item batchCode
 	 * @param convertView the old view to reuse if possible
 	 * @param parent the parent that this view will eventually be attached to
 	 * @return the wheel item View

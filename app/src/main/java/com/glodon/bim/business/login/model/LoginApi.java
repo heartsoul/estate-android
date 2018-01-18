@@ -106,13 +106,13 @@ public interface LoginApi {
     /**
      * 获取手机验证码
      */
-    @GET("uaa/user/password/forgot/code")
+    @GET("uaa/user/password/forgot/facilityCode")
     Observable<CheckAccountBean> getPhoneCode(@Query("mobile") String mobile,@Query("captcha")String captcha,@Query("signupKey")String signupKey);
 
     /**
      * 验证短信验证码
      */
-    @GET("uaa/user/password/forgot/code/verify")
+    @GET("uaa/user/password/forgot/facilityCode/verify")
     Observable<CheckAccountBean> checkSmsCode(@Query("mobile") String mobile,@Query("verifyCode")String verifyCode);
 
 
@@ -120,6 +120,6 @@ public interface LoginApi {
      * 重置密码
      */
     @POST("uaa/user/password/forgot/reset")
-    Observable<CheckAccountBean> resetPwd(@Query("mobile") String mobile,@Query("code")String code,@Query("pwd")String pwd);
+    Observable<CheckAccountBean> resetPwd(@Query("mobile") String mobile,@Query("facilityCode")String code,@Query("pwd")String pwd);
 
 }

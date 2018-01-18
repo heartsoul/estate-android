@@ -23,7 +23,7 @@ public class InspectionCompanyItem {
     public String toString() {
         return "InspectionCompanyItem{" +
                 "alias='" + alias + '\'' +
-                ", code='" + code + '\'' +
+                ", facilityCode='" + code + '\'' +
                 ", extData='" + extData + '\'' +
                 ", external=" + external +
                 ", formal=" + formal +

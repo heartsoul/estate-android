@@ -114,7 +114,7 @@ public class LogUtil {
         }
     }
 
-    //                NetRequest.getInstance().getCall(AppConfig.BASE_URL,LoginApi.class).getPhoneCode(account,code,mSignupKey)
+    //                NetRequest.getInstance().getCall(AppConfig.BASE_URL,LoginApi.class).getPhoneCode(account,facilityCode,mSignupKey)
 //                .enqueue(new Callback<ResponseBody>() {
 //                    @Override
 //                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

@@ -234,7 +234,7 @@ public class CreateReviewActivity extends BaseActivity implements View.OnClickLi
                     @Override
                     public void onDateSelected(Map<String, Integer> map) {
                         Calendar calendar = Calendar.getInstance();
-                        calendar.set(map.get("year"), map.get("month") - 1, map.get("date"));
+                        calendar.set(map.get("year"), map.get("month") - 1, map.get("approachDate"));
                         Date date = calendar.getTime();
                         String time = (new SimpleDateFormat("yyyy-MM-dd")).format(date);
                         mRemainName.setText(time);

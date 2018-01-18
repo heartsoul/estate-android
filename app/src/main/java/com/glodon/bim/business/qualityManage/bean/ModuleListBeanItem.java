@@ -25,7 +25,7 @@ public class ModuleListBeanItem implements Serializable {
 //    public long parentId;
 //    public long specialtyId;
 //    public String treePath;
-//    public String name;
+//    public String facilityName;
 //    public String inspectItemDesc;
 //    public String specialty;
 
@@ -33,7 +33,7 @@ public class ModuleListBeanItem implements Serializable {
 //    public long parentId;
 //    public long specialtyId;
 //    public String treePath;
-//    public String name;
+//    public String facilityName;
 //    public String inspectItemDesc;
 //    public String specialty;
 
@@ -42,10 +42,10 @@ public class ModuleListBeanItem implements Serializable {
     @Override
     public String toString() {
         return "ModuleListBeanItem{" +
-                "code='" + code + '\'' +
+                "facilityCode='" + code + '\'' +
                 ", hasRule=" + hasRule +
                 ", id=" + id +
-                ", name='" + name + '\'' +
+                ", facilityName='" + name + '\'' +
                 ", parentId=" + parentId +
                 ", projectType='" + projectType + '\'' +
                 ", requirement='" + requirement + '\'' +
