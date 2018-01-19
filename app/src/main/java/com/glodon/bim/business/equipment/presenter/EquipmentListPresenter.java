@@ -10,6 +10,7 @@ import com.glodon.bim.basic.utils.NetWorkUtils;
 import com.glodon.bim.business.equipment.bean.CreateEquipmentParams;
 import com.glodon.bim.business.equipment.bean.EquipmentListBean;
 import com.glodon.bim.business.equipment.bean.EquipmentListBeanItem;
+import com.glodon.bim.business.equipment.bean.EquipmentNumBean;
 import com.glodon.bim.business.equipment.contract.EquipmentListContract;
 import com.glodon.bim.business.equipment.listener.OnOperateEquipmentSheetListener;
 import com.glodon.bim.business.equipment.model.CreateEquipmentModel;
@@ -92,6 +93,7 @@ public class EquipmentListPresenter implements EquipmentListContract.Presenter {
         public void detail(EquipmentListBeanItem item, int position) {
             Intent intent = new Intent(mView.getActivity(), CreateEquipmentActivity.class);
             intent.putExtra(CommonConfig.EQUIPMENT_TYPE, CommonConfig.EQUIPMENT_TYPE_DETAIL);
+            intent.putExtra(CommonConfig.EQUIPMENT_LIST_ID,item.id);
             mView.getActivity().startActivity(intent);
         }
 
@@ -171,6 +173,7 @@ public class EquipmentListPresenter implements EquipmentListContract.Presenter {
         public void toEdit(EquipmentListBeanItem item, int position) {
             Intent intent = new Intent(mView.getActivity(), CreateEquipmentActivity.class);
             intent.putExtra(CommonConfig.EQUIPMENT_TYPE, CommonConfig.EQUIPMENT_TYPE_EDIT);
+            intent.putExtra(CommonConfig.EQUIPMENT_LIST_ID,item.id);
             mView.getActivity().startActivityForResult(intent, RequestCodeConfig.REQUEST_CODE_EQUIPMENT_TO_EDIT);
         }
     };
@@ -223,6 +226,7 @@ public class EquipmentListPresenter implements EquipmentListContract.Presenter {
 
                         @Override
                         public void onNext(EquipmentListBean bean) {
+                            LogUtil.toJson(bean);
                             handleResult(bean);
                         }
                     });
@@ -235,35 +239,35 @@ public class EquipmentListPresenter implements EquipmentListContract.Presenter {
 //        handleResult(bean);
     }
 
-    private List<EquipmentListBeanItem> getList() {
-        List<EquipmentListBeanItem> list = new ArrayList<>();
-        for (int i = 0; i < 6; i++) {
-            EquipmentListBeanItem item = new EquipmentListBeanItem();
-            item.facilityName = "facilityName " + i;
-            item.facilityCode = "facilityCode " + i;
-            item.batchCode = "batchCode " + i;
-            if (i % 2 == 0) {
-                item.qcState = CommonConfig.QC_STATE_EDIT;
-            } else {
-                item.qcState = CommonConfig.QC_STATE_NOT_STANDARD;
-                item.qualified = false;
-            }
-            item.approachDate = (SystemClock.currentThreadTimeMillis() - i * 1000 * 3600 * 24) + "";
-            list.add(item);
-        }
-        for (int i = 6; i < 10; i++) {
-            EquipmentListBeanItem item = new EquipmentListBeanItem();
-            item.facilityName = "facilityName " + i;
-            item.facilityCode = "facilityCode " + i;
-            item.batchCode = "batchCode " + i;
-            item.qcState = CommonConfig.QC_STATE_STANDARD;
-            item.qualified = true;
-            item.approachDate = (SystemClock.currentThreadTimeMillis() - i * 1000 * 3600 * 12) + "";
-            list.add(item);
-        }
-
-        return list;
-    }
+//    private List<EquipmentListBeanItem> getList() {
+//        List<EquipmentListBeanItem> list = new ArrayList<>();
+//        for (int i = 0; i < 6; i++) {
+//            EquipmentListBeanItem item = new EquipmentListBeanItem();
+//            item.facilityName = "facilityName " + i;
+//            item.facilityCode = "facilityCode " + i;
+//            item.batchCode = "batchCode " + i;
+//            if (i % 2 == 0) {
+//                item.qcState = CommonConfig.QC_STATE_EDIT;
+//            } else {
+//                item.qcState = CommonConfig.QC_STATE_NOT_STANDARD;
+//                item.qualified = false;
+//            }
+//            item.approachDate = (SystemClock.currentThreadTimeMillis() - i * 1000 * 3600 * 24) + "";
+//            list.add(item);
+//        }
+//        for (int i = 6; i < 10; i++) {
+//            EquipmentListBeanItem item = new EquipmentListBeanItem();
+//            item.facilityName = "facilityName " + i;
+//            item.facilityCode = "facilityCode " + i;
+//            item.batchCode = "batchCode " + i;
+//            item.qcState = CommonConfig.QC_STATE_STANDARD;
+//            item.qualified = true;
+//            item.approachDate = (SystemClock.currentThreadTimeMillis() - i * 1000 * 3600 * 12) + "";
+//            list.add(item);
+//        }
+//
+//        return list;
+//    }
 
     private void handleResult(EquipmentListBean bean) {
         if (bean != null && bean.content != null && bean.content.size() > 0) {
@@ -289,7 +293,7 @@ public class EquipmentListPresenter implements EquipmentListContract.Presenter {
         if (mDataList != null && mDataList.size() > 0) {
             for (EquipmentListBeanItem item : mDataList) {
                 String now = DateUtil.getListDate(Long.parseLong(item.approachDate));
-                if (CommonConfig.QC_STATE_EDIT.equals(item.qcState)) {
+                if (CommonConfig.QC_STATE_EDIT.equals(item.getQcState())) {
                     item.showType = 1;
                 } else {
                     item.showType = 2;
@@ -324,40 +328,54 @@ public class EquipmentListPresenter implements EquipmentListContract.Presenter {
     }
 
     private void updateStatusNum() {
-//        Subscription sub = mModel.getStatusNum(mProjectInfo.deptId)
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(new Subscriber<List<ClassifyNum>>() {
-//                    @Override
-//                    public void onCompleted() {
-//
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//                        LogUtil.e(e.getMessage());
-//                    }
-//
-//                    @Override
-//                    public void onNext(List<ClassifyNum> classifyNa) {
-//                        updateNumber(classifyNa);
-//                    }
-//                });
-//        mSubscription.add(sub);
-        List<ClassifyNum> classifyNa = new ArrayList<>();
-        ClassifyNum num = new ClassifyNum();
-        num.count = 22;
-        num.qcState = CommonConfig.QC_STATE_EDIT;
-        classifyNa.add(num);
-        ClassifyNum num1 = new ClassifyNum();
-        num1.count = 12;
-        num1.qcState = CommonConfig.QC_STATE_STANDARD;
-        classifyNa.add(num1);
-        ClassifyNum num2 = new ClassifyNum();
-        num2.count = 3;
-        num2.qcState = CommonConfig.QC_STATE_NOT_STANDARD;
-        classifyNa.add(num2);
-        updateNumber(classifyNa);
+        Subscription sub = mModel.getEquipmentListNum()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<EquipmentNumBean>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        LogUtil.e(e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(EquipmentNumBean bean) {
+
+                        List<ClassifyNum> classifyNa = new ArrayList<>();
+                        ClassifyNum commit = new ClassifyNum();
+                        commit.qcState = CommonConfig.QC_STATE_EDIT;
+                        commit.count = bean.uncommittedCount;
+                        classifyNa.add(commit);
+                        ClassifyNum standard = new ClassifyNum();
+                        standard.qcState = CommonConfig.QC_STATE_STANDARD;
+                        standard.count = bean.qualifiedCount;
+                        classifyNa.add(standard);
+                        ClassifyNum notStandard = new ClassifyNum();
+                        notStandard.qcState = CommonConfig.QC_STATE_NOT_STANDARD;
+                        notStandard.count = bean.unqualifiedCount;
+                        classifyNa.add(notStandard);
+                        updateNumber(classifyNa);
+                    }
+                });
+        mSubscription.add(sub);
+//        List<ClassifyNum> classifyNa = new ArrayList<>();
+//        ClassifyNum num = new ClassifyNum();
+//        num.count = 22;
+//        num.qcState = CommonConfig.QC_STATE_EDIT;
+//        classifyNa.add(num);
+//        ClassifyNum num1 = new ClassifyNum();
+//        num1.count = 12;
+//        num1.qcState = CommonConfig.QC_STATE_STANDARD;
+//        classifyNa.add(num1);
+//        ClassifyNum num2 = new ClassifyNum();
+//        num2.count = 3;
+//        num2.qcState = CommonConfig.QC_STATE_NOT_STANDARD;
+//        classifyNa.add(num2);
+//        updateNumber(classifyNa);
     }
 
     private void updateNumber(List<ClassifyNum> classifyNa) {

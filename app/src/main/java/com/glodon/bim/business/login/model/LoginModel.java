@@ -3,6 +3,7 @@ package com.glodon.bim.business.login.model;
 import android.text.TextUtils;
 
 import com.glodon.bim.basic.config.AppConfig;
+import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.basic.network.NetRequest;
 import com.glodon.bim.basic.network.OAuth2Request;
 import com.glodon.bim.business.login.contract.LoginContract;
@@ -39,9 +40,9 @@ public class LoginModel implements LoginContract.Model {
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-//                        System.out.println("1--");
-//                        System.out.println(response.headers().toString());
-//                        System.out.println("1--");
+                        System.out.println("1--");
+                        System.out.println(response.headers().toString());
+                        System.out.println("1--");
                         request2(response, username, password, listener);
                     }
 
@@ -50,6 +51,8 @@ public class LoginModel implements LoginContract.Model {
                         if (listener != null) {
                             listener.onLoginFailed(call, t);
                         }
+                        LogUtil.e("error="+t.getMessage());
+
                     }
                 });
     }

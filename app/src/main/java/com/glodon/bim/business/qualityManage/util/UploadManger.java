@@ -77,6 +77,7 @@ public class UploadManger {
         String containerId = SystemClock.currentThreadTimeMillis() + "";
         final String name = file.getName();
         String digest = name;
+        LogUtil.e("name="+name);
         long length = file.length();
         //http://172.16.233.183:8093/v1/operationCodes
         NetRequest.getInstance().getCall(AppConfig.BASE_URL, UploadImageApi.class).getOperationCode(containerId,name,digest,length,new DaoProvider().getCookie())
@@ -91,6 +92,9 @@ public class UploadManger {
                                 uploadImage(operationCode, file,imagePath);
                             }else if(response.errorBody()!=null){
                                 LogUtil.e("erro="+response.errorBody().string());
+                                if(mListener!=null){
+                                    mListener.onUploadError(new Throwable(response.errorBody().string()));
+                                }
                             }
                         } catch (IOException e) {
                             e.printStackTrace();

@@ -1,9 +1,5 @@
 package com.glodon.bim.basic.network;
 
-import com.glodon.bim.BuildConfig;
-
-import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -21,7 +17,6 @@ public class NetRequest {
 
     //单例模式
     private static NetRequest instance = new NetRequest();
-//    private static HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
 
     private NetRequest() {
     }
@@ -32,8 +27,6 @@ public class NetRequest {
      * @return 当前对象
      */
     public static NetRequest getInstance() {
-        //设置日志Level
-//        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
         return instance;
     }
 
@@ -46,16 +39,10 @@ public class NetRequest {
      * @return 接口实例
      */
     public <T> T getCall(String baseUrl, Class<T> tClass) {
-//        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-//        //添加拦截器到OkHttp，这是最关键的
-//        if (BuildConfig.DEBUG) {
-//            httpClient.addInterceptor(logging);
-//        }
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-//                .client(httpClient.build())
                 .build();
         return retrofit.create(tClass);
 

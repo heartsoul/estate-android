@@ -64,7 +64,7 @@ public class EquipmentListAdapter extends RecyclerView.Adapter<RecyclerView.View
         final EquipmentListBeanItem item = mDataList.get(position);
         if(holder instanceof SheetHolder){
             SheetHolder sHolder = (SheetHolder) holder;
-            sHolder.mTimeView.setText(DateUtil.getListTime(Long.parseLong(item.approachDate)));
+//            sHolder.mTimeView.setText("进场日期:"+DateUtil.getListTime(Long.parseLong(item.approachDate)));
             sHolder.mIndexView.setText("批号："+item.batchCode);
             sHolder.mCodeView.setText("编码："+item.facilityCode);
             sHolder.mNameView.setText("名称："+item.facilityName);
@@ -80,7 +80,7 @@ public class EquipmentListAdapter extends RecyclerView.Adapter<RecyclerView.View
         }
         if (holder instanceof SheetEditHolder) {
             SheetEditHolder sHolder = (SheetEditHolder) holder;
-            sHolder.mTimeView.setText(DateUtil.getListTime(Long.parseLong(item.approachDate)));
+//            sHolder.mTimeView.setText(DateUtil.getListTime(Long.parseLong(item.approachDate)));
             sHolder.mIndexView.setText("批号："+item.batchCode);
             sHolder.mCodeView.setText("编码："+item.facilityCode);
             sHolder.mNameView.setText("名称："+item.facilityName);
@@ -121,7 +121,7 @@ public class EquipmentListAdapter extends RecyclerView.Adapter<RecyclerView.View
             } else {
                 tHolder.mTimeParent.setPadding(ScreenUtil.dp2px(20), ScreenUtil.dp2px(10), ScreenUtil.dp2px(20), 0);
             }
-            tHolder.mTimeView.setText(DateUtil.getListDate(Long.parseLong(item.approachDate)));
+            tHolder.mTimeView.setText("进场日期:"+DateUtil.getListDate(Long.parseLong(item.approachDate)));
         }
     }
 
@@ -137,12 +137,12 @@ public class EquipmentListAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     //编辑
     class SheetEditHolder extends RecyclerView.ViewHolder {
-        TextView mTimeView,mIndexView,mCodeView,mNameView;
+        TextView mIndexView,mCodeView,mNameView;
         TextView mSubmitBtn, mDeleteBtn;
         View mParent;
         SheetEditHolder(View itemView) {
             super(itemView);
-            mTimeView = itemView.findViewById(R.id.equipment_list_edit_item_sheet_time);
+//            mTimeView = itemView.findViewById(R.id.equipment_list_edit_item_sheet_time);
             mIndexView = itemView.findViewById(R.id.equipment_list_edit_index);
             mCodeView = itemView.findViewById(R.id.equipment_list_edit_code);
             mNameView = itemView.findViewById(R.id.equipment_list_edit_name);
@@ -154,13 +154,13 @@ public class EquipmentListAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     //合格不合格
     class SheetHolder extends RecyclerView.ViewHolder {
-        TextView mTimeView,mIndexView,mCodeView,mNameView;
+        TextView mIndexView,mCodeView,mNameView;
         ImageView mStandardView;
         View mParent;
 
         SheetHolder(View itemView) {
             super(itemView);
-            mTimeView = itemView.findViewById(R.id.equipment_list_item_sheet_time);
+//            mTimeView = itemView.findViewById(R.id.equipment_list_item_sheet_time);
             mIndexView = itemView.findViewById(R.id.equipment_list_item_index);
             mCodeView = itemView.findViewById(R.id.equipment_list_item_code);
             mNameView = itemView.findViewById(R.id.equipment_list_item_name);

@@ -24,7 +24,7 @@ public interface UploadImageApi {
      * 图片上传  获取operationCode
      */
     @GET("bimpm/attachment/operationCode")
-    Call<ResponseBody> getOperationCode(@Query("containerId") String containerId, @Query("facilityName") String name, @Query("digest") String digest, @Query("length") long length, @Header("cookie") String cookie);
+    Call<ResponseBody> getOperationCode(@Query("containerId") String containerId, @Query("name") String name, @Query("digest") String digest, @Query("length") long length, @Header("cookie") String cookie);
 
     /**
      * 根据objectid 获取图片原地址

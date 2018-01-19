@@ -1,6 +1,7 @@
 package com.glodon.bim.business.equipment.bean;
 
 import com.glodon.bim.business.qualityManage.bean.CreateCheckListParamsFile;
+import com.google.gson.GsonBuilder;
 
 import java.util.List;
 
@@ -43,4 +44,32 @@ public class CreateEquipmentParams {
     //图片
     public List<CreateCheckListParamsFile> files;//图片
     public boolean qualified;//是否合格
+
+
+    @Override
+    public String toString() {
+        return "CreateEquipmentParams{" +
+                "code='" + code + '\'' +
+                ", projectId=" + projectId +
+                ", projectName='" + projectName + '\'' +
+                ", batchCode='" + batchCode + '\'' +
+                ", facilityCode='" + facilityCode + '\'' +
+                ", facilityName='" + facilityName + '\'' +
+                ", approachDate='" + approachDate + '\'' +
+                ", quantity=" + quantity +
+                ", unit='" + unit + '\'' +
+                ", specification='" + specification + '\'' +
+                ", modelNum='" + modelNum + '\'' +
+                ", manufacturer='" + manufacturer + '\'' +
+                ", brand='" + brand + '\'' +
+                ", supplier='" + supplier + '\'' +
+                ", versionId='" + versionId + '\'' +
+                ", gdocFileId='" + gdocFileId + '\'' +
+                ", buildingName='" + buildingName + '\'' +
+                ", elementId='" + elementId + '\'' +
+                ", elementName='" + elementName + '\'' +
+//                ", files='" + new GsonBuilder().create().toJson(files) + '\'' +
+                ", qualified=" + qualified +
+                '}';
+    }
 }

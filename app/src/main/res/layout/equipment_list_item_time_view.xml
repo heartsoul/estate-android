@@ -30,6 +30,12 @@
             android:layout_gravity="center_vertical"
             android:background="@color/c_e6e6e6"
             />
+        <ImageView
+            android:layout_width="@dimen/dimen_18"
+            android:layout_height="@dimen/dimen_18"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dimen_10"
+            android:background="@drawable/icon_time_black" />
         <TextView
             android:id="@+id/equipment_list_item_time"
             android:layout_width="wrap_content"
@@ -37,9 +43,10 @@
             android:textSize="@dimen/dimen_14"
             android:textColor="@color/c_b0b0b0"
             android:text="昨天"
-            android:layout_marginLeft="@dimen/dimen_11"
+            android:layout_marginLeft="@dimen/dimen_05"
             android:layout_marginRight="@dimen/dimen_11"
             android:layout_gravity="center"
+            android:gravity="center_vertical"
             />
         <View
             android:layout_width="@dimen/dimen_0"

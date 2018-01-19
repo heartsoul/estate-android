@@ -2,6 +2,7 @@ package com.glodon.bim.business.equipment.model;
 
 import com.glodon.bim.business.equipment.bean.EquipmentDetailBean;
 import com.glodon.bim.business.equipment.bean.EquipmentListBean;
+import com.glodon.bim.business.equipment.bean.EquipmentNumBean;
 
 import retrofit2.http.GET;
 import retrofit2.http.Header;
@@ -48,7 +49,16 @@ public interface EquipmentListApi {
     Observable<EquipmentListBean> getqualifyEquipmentList(@Path("deptId") long deptId,
                                                            @Query("page") int page,
                                                            @Query("size") int size,
+                                                          @Query("committed") boolean committed,
                                                            @Query("qualified") boolean qualified,
                                                            @Query("sort") String[] sort,
                                                            @Header("cookie") String cookie);
+
+    /**
+     * 根据id查询详情和保存后的编辑信息
+     * 合格不合格
+     */
+    @GET("quality/{deptId}/facilityAcceptance/state/summary")
+    Observable<EquipmentNumBean> getEquipmentListNum(@Path("deptId") long deptId,
+                                                     @Header("cookie") String cookie);
 }

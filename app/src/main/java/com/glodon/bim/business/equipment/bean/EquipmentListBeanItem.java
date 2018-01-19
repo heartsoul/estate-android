@@ -1,11 +1,12 @@
 package com.glodon.bim.business.equipment.bean;
 
 import com.glodon.bim.business.qualityManage.bean.QualityCheckListBeanItemFile;
+import com.glodon.bim.common.config.CommonConfig;
 
 import java.util.List;
 
 /**
- * 描述：
+ * 描述：材设清单列表返回值
  * 作者：zhourf on 2018/1/16
  * 邮箱：zhourf@glodon.com
  */
@@ -45,5 +46,15 @@ public class EquipmentListBeanItem {
     public boolean qualified;//是否合格
 
     public String qcState;
+
+    public String getQcState() {
+        if(!committed){
+            qcState = CommonConfig.QC_STATE_EDIT;
+        }else{
+            qcState = qualified?CommonConfig.QC_STATE_STANDARD:CommonConfig.QC_STATE_NOT_STANDARD;
+        }
+        return qcState;
+    }
+
     public int showType;//0 时间  1编辑  2合格不合格
 }

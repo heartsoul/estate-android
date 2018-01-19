@@ -141,7 +141,7 @@ public class CreateEquipmentActivity extends BaseActivity implements View.OnClic
         switch (id)
         {
             case R.id.create_equipment_header_back:
-                mActivity.finish();
+                back();
                 break;
 
             case R.id.create_equipment_header_submit:
@@ -184,6 +184,15 @@ public class CreateEquipmentActivity extends BaseActivity implements View.OnClic
 
                 break;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        back();
+    }
+
+    private void back(){
+        mPresenter.back();
     }
 
     @Override
@@ -280,8 +289,25 @@ public class CreateEquipmentActivity extends BaseActivity implements View.OnClic
         }
     }
 
-
-
+    @Override
+    public void showBackDialog() {
+        SaveDeleteDialog mBackDialog = new SaveDeleteDialog(getActivity());
+        mBackDialog.getBackDialog(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                if (mPresenter.isChange()) {
+//                    getActivity().setResult(Activity.RESULT_OK);
+//                }
+                getActivity().finish();
+            }
+        }, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mPresenter.save();
+            }
+        });
+        mBackDialog.show();
+    }
 
 
     @Override

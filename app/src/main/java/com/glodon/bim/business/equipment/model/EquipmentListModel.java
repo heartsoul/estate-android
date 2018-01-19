@@ -4,12 +4,10 @@ import com.glodon.bim.basic.config.AppConfig;
 import com.glodon.bim.basic.network.NetRequest;
 import com.glodon.bim.basic.utils.SharedPreferencesUtil;
 import com.glodon.bim.business.equipment.bean.EquipmentListBean;
+import com.glodon.bim.business.equipment.bean.EquipmentNumBean;
 import com.glodon.bim.business.equipment.contract.EquipmentListContract;
 import com.glodon.bim.business.greendao.provider.DaoProvider;
-import com.glodon.bim.business.qualityManage.bean.ClassifyNum;
 import com.glodon.bim.common.config.CommonConfig;
-
-import java.util.List;
 
 import rx.Observable;
 
@@ -27,7 +25,7 @@ public class EquipmentListModel implements EquipmentListContract.Model {
     public EquipmentListModel() {
         cookie = new DaoProvider().getCookie();
         projectId = SharedPreferencesUtil.getProjectId();
-        sort = new String[]{"approachDate,desc"};
+        sort = new String[]{"updateTime,desc"};
     }
     /**
      * 根据id查询详情和保存后的编辑信息
@@ -67,10 +65,13 @@ public class EquipmentListModel implements EquipmentListContract.Model {
      * 合格不合格
      */
     private Observable<EquipmentListBean> getQualifyEquipmentList(int page,int size,boolean qualified){
-        return NetRequest.getInstance().getCall(AppConfig.BASE_URL,EquipmentListApi.class).getqualifyEquipmentList(projectId,page,size,qualified,sort,cookie);
+        return NetRequest.getInstance().getCall(AppConfig.BASE_URL,EquipmentListApi.class).getqualifyEquipmentList(projectId,page,size,true,qualified,sort,cookie);
     }
-    @Override
-    public Observable<List<ClassifyNum>> getStatusNum(long deptId) {
-        return null;
+    /**
+     * 根据id查询详情和保存后的编辑信息
+     * 合格不合格
+     */
+    public Observable<EquipmentNumBean> getEquipmentListNum(){
+        return NetRequest.getInstance().getCall(AppConfig.BASE_URL,EquipmentListApi.class).getEquipmentListNum(projectId,cookie);
     }
 }

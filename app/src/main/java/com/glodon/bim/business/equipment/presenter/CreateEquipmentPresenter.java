@@ -60,13 +60,17 @@ public class CreateEquipmentPresenter implements CreateEquipmentContract.Present
     private int mType = 0;//0创建   1编辑  2详情
 
     private long id;
+    private CreateEquipmentParams mInitParams;
 
     public CreateEquipmentPresenter(CreateEquipmentContract.View mView) {
         this.mView = mView;
         mModel = new CreateEquipmentModel();
         mSubscription = new CompositeSubscription();
         mInput = new CreateEquipmentParams();
+
+        mInitParams = new CreateEquipmentParams();
     }
+
 
     @Override
     public void initData(Intent intent) {
@@ -108,7 +112,7 @@ public class CreateEquipmentPresenter implements CreateEquipmentContract.Present
         if(mView!=null) {
             mView.showEdit();
         }
-        id = intent.getIntExtra(CommonConfig.EQUIPMENT_LIST_ID,0);
+        id = intent.getLongExtra(CommonConfig.EQUIPMENT_LIST_ID,0);
         if(NetWorkUtils.isNetworkAvailable(mView.getActivity())){
             if(mView!=null){
                 mView.showLoadingDialog();
@@ -147,7 +151,7 @@ public class CreateEquipmentPresenter implements CreateEquipmentContract.Present
 
     //详情
     private void typeDetail(Intent intent){
-        id = intent.getIntExtra(CommonConfig.EQUIPMENT_LIST_ID,0);
+        id = intent.getLongExtra(CommonConfig.EQUIPMENT_LIST_ID,0);
         if(mView!=null) {
             mView.showDetail();
         }
@@ -175,6 +179,10 @@ public class CreateEquipmentPresenter implements CreateEquipmentContract.Present
                         public void onNext(EquipmentDetailBean bean) {
                             if(bean!=null){
                                 showInfo(bean);
+                                //收集初步数据
+                                assemBleData();
+                                mInitParams = mInput;
+                                mInput = new CreateEquipmentParams();
                             }
                             if (mView != null) {
                                 mView.dismissLoadingDialog();
@@ -236,7 +244,11 @@ public class CreateEquipmentPresenter implements CreateEquipmentContract.Present
                 ImageItem item = new ImageItem();
                 item.imagePath = file.url;
                 item.objectId = file.objectId;
-//                item.urlFile = file;
+                item.urlFile = new CreateCheckListParamsFile();
+                item.urlFile.objectId = file.objectId;
+                item.urlFile.name = file.name;
+                item.urlFile.extData = file.extData;
+                item.urlFile.url = file.url;
                 mSelectedMap.put(item.imagePath, item);
             }
         }
@@ -414,6 +426,8 @@ public class CreateEquipmentPresenter implements CreateEquipmentContract.Present
                             if (mView != null) {
                                 mView.dismissLoadingDialog();
                             }
+                            mInitParams = mInput;
+                            mInput = new CreateEquipmentParams();
                         }
                     });
             mSubscription.add(sub);
@@ -443,6 +457,11 @@ public class CreateEquipmentPresenter implements CreateEquipmentContract.Present
                                 }
                                 mIsEdit = true;
                                 mInput.code = bean.code;
+                                //初始化数据  保存验证使用
+                                mInitParams = mInput;
+                                mInput = new CreateEquipmentParams();
+                                mInput.code = bean.code;
+
                                 ToastManager.showSaveToast();
                             }
                             if (mView != null) {
@@ -451,6 +470,8 @@ public class CreateEquipmentPresenter implements CreateEquipmentContract.Present
                         }
                     });
             mSubscription.add(sub);
+
+
         }
     }
 
@@ -493,7 +514,29 @@ public class CreateEquipmentPresenter implements CreateEquipmentContract.Present
         }
     }
 
+    @Override
+    public void back() {
+        //0创建   1编辑  2详情
+        switch (mType){
+            case 0:
+            case 1:
+                assemBleData();
+                if(mInput.toString().equals(mInitParams.toString())){
+                    mView.getActivity().finish();
+                }else{
+                    mView.showBackDialog();
+                }
+                break;
+            case 2:
+                mView.getActivity().finish();
+                break;
+        }
+
+    }
+
     private void assemBleData(){
+        mInput.projectId = SharedPreferencesUtil.getProjectId();
+        mInput.projectName = SharedPreferencesUtil.getProjectName();
         if(mMandatoryInfo!=null){
             mInput.batchCode = mMandatoryInfo.batchCode;
             mInput.approachDate = mMandatoryInfo.approachDate;

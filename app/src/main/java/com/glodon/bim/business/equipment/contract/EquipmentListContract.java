@@ -9,6 +9,7 @@ import com.glodon.bim.business.equipment.bean.CreateEquipmentMandatoryNotInfo;
 import com.glodon.bim.business.equipment.bean.CreateEquipmentPictureInfo;
 import com.glodon.bim.business.equipment.bean.EquipmentListBean;
 import com.glodon.bim.business.equipment.bean.EquipmentListBeanItem;
+import com.glodon.bim.business.equipment.bean.EquipmentNumBean;
 import com.glodon.bim.business.equipment.listener.OnOperateEquipmentSheetListener;
 import com.glodon.bim.business.equipment.model.EquipmentListApi;
 import com.glodon.bim.business.main.bean.ProjectListItem;
@@ -54,6 +55,10 @@ public interface EquipmentListContract {
          */
          Observable<EquipmentListBean> getAllEquipmentList(int page,int size,String state);
 
-        Observable<List<ClassifyNum>> getStatusNum(long deptId);
+        /**
+         * 根据id查询详情和保存后的编辑信息
+         * 合格不合格
+         */
+         Observable<EquipmentNumBean> getEquipmentListNum();
     }
 }

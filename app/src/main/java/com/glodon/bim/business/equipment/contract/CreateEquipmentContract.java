@@ -58,6 +58,11 @@ public interface CreateEquipmentContract {
          * 展示选中的图片
          */
         void showImages(LinkedHashList<String, ImageItem> mSelectedMap);
+
+        /**
+         * 返回提示框
+         */
+        void showBackDialog();
     }
 
     interface Presenter extends IBasePresenter{
@@ -101,6 +106,11 @@ public interface CreateEquipmentContract {
          * 删除
          */
         void delete();
+
+        /**
+         * 点击返回键
+         */
+        void back();
     }
 
     interface Model{
