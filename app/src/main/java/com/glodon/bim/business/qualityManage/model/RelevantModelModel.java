@@ -3,11 +3,11 @@ package com.glodon.bim.business.qualityManage.model;
 import com.glodon.bim.basic.config.AppConfig;
 import com.glodon.bim.basic.network.NetRequest;
 import com.glodon.bim.business.greendao.provider.DaoProvider;
+import com.glodon.bim.business.qualityManage.bean.EquipmentHistoryItem;
 import com.glodon.bim.business.qualityManage.bean.ModelElementHistory;
 import com.glodon.bim.business.qualityManage.bean.ModelElementInfo;
 import com.glodon.bim.business.qualityManage.bean.ProjectVersionBean;
 import com.glodon.bim.business.qualityManage.bean.RelevantBluePrintToken;
-import com.glodon.bim.business.qualityManage.contract.RelevantBluePrintContract;
 import com.glodon.bim.business.qualityManage.contract.RelevantModelContract;
 
 import java.util.List;
@@ -48,5 +48,12 @@ public class RelevantModelModel implements RelevantModelContract.Model{
      */
     public Observable<ModelElementInfo> getElementProperty(long projectId, String versionId, String fileId, String elementId){
         return NetRequest.getInstance().getCall(AppConfig.BASE_URL,CreateCheckListApi.class).getElementProperty(projectId,versionId,fileId,elementId,new DaoProvider().getCookie());
+    }
+
+    /**
+     * 根据模型获取材设单据列表
+     */
+    public Observable<List<EquipmentHistoryItem>> getEquipmentList(long deptId,String gdocFileId){
+        return NetRequest.getInstance().getCall(AppConfig.BASE_URL,RelevantModelApi.class).getEquipmentList(deptId,gdocFileId,cookie);
     }
 }

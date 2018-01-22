@@ -12,6 +12,7 @@ import com.glodon.bim.base.BaseFragment;
 import com.glodon.bim.business.main.bean.ProjectListItem;
 import com.glodon.bim.business.qualityManage.listener.OnTitleChangerListener;
 import com.glodon.bim.business.qualityManage.view.ModelView;
+import com.glodon.bim.common.config.CommonConfig;
 
 /**
  * 描述：材设下模型
@@ -42,7 +43,7 @@ public class EquipmentModelFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflate(R.layout.quality_model_content_view);
         mModelView = new ModelView(getActivity(),view);
-        mModelView.setIsFragment();
+        mModelView.setType(CommonConfig.MODEL_TYPE_EQUIPMENT);
         return view;
     }
 

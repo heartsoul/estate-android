@@ -6,6 +6,7 @@ import android.content.Intent;
 import com.glodon.bim.business.equipment.bean.CreateEquipmentMandatoryInfo;
 import com.glodon.bim.business.equipment.contract.CreateEquipmentMandatoryContract;
 import com.glodon.bim.business.equipment.view.CreateEquipmentNotMandatoryActivity;
+import com.glodon.bim.business.qualityManage.bean.ModelListBeanItem;
 import com.glodon.bim.common.config.CommonConfig;
 import com.glodon.bim.common.config.RequestCodeConfig;
 
@@ -19,6 +20,7 @@ public class CreateEquipmentMandatoryPresenter implements CreateEquipmentMandato
     private CreateEquipmentMandatoryContract.View mView;
     private CreateEquipmentMandatoryContract.Model mModel;
     private boolean mIsEdit = false;
+    private ModelListBeanItem mModelSelectInfo;
 
     public CreateEquipmentMandatoryPresenter(CreateEquipmentMandatoryContract.View mView) {
         this.mView = mView;
@@ -26,11 +28,15 @@ public class CreateEquipmentMandatoryPresenter implements CreateEquipmentMandato
 
     @Override
     public void initData(Intent intent) {
+        //编辑状态
         CreateEquipmentMandatoryInfo info = (CreateEquipmentMandatoryInfo) intent.getSerializableExtra(CommonConfig.EQUIPMENT_EDIT_MANDATORY_INFO);
         if(info!=null){
             mView.showMandatoryInfo(info);
             mIsEdit = true;
         }
+        //从模型过来
+        mModelSelectInfo = (ModelListBeanItem) intent.getSerializableExtra(CommonConfig.RELEVANT_MODEL);
+
     }
 
     @Override
@@ -62,6 +68,10 @@ public class CreateEquipmentMandatoryPresenter implements CreateEquipmentMandato
         }else {
             Intent intent = new Intent(mView.getActivity(), CreateEquipmentNotMandatoryActivity.class);
             intent.putExtra(CommonConfig.EQUIPMENT_MANDATORYINFO, info);
+            //从模型选择过来
+            if(mModelSelectInfo!=null){
+                intent.putExtra(CommonConfig.RELEVANT_MODEL,mModelSelectInfo);
+            }
             mView.getActivity().startActivityForResult(intent, RequestCodeConfig.REQUEST_CODE_EQUIPMENT_MANDATORY);
         }
     }

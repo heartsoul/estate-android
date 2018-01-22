@@ -53,7 +53,7 @@ public class ModelPresenter implements ModelContract.Presenter {
 //    private ProjectVersionBean mLatestVersionInfo;//最新版本信息
 
     private ModelListBeanItem mModelSelectInfo;//编辑时有过这个item
-    private int type = 0;//0新建检查单 1检查单编辑状态 2详情查看  3模型模式  4新建材设进场 5新增材设进场编辑状态
+    private int type = 0;//0新建检查单 1检查单编辑状态 2详情查看  3质量模型模式  4新建材设进场 5新增材设进场编辑状态  6材设模型模式
     private OnModelSelectListener mListener = new OnModelSelectListener() {
         @Override
         public void selectModel(ModelListBeanItem item) {
@@ -69,6 +69,7 @@ public class ModelPresenter implements ModelContract.Presenter {
                     modelInfo.buildingId = mCurrentSingle.id;
                     modelInfo.buildingName = mCurrentSingle.name;
                 }
+                LogUtil.e("selectModel,type="+type);
                 switch (type)
                 {
                     case 0:
@@ -102,6 +103,9 @@ public class ModelPresenter implements ModelContract.Presenter {
                             //不同的模型
                             intent.putExtra(CommonConfig.RELEVANT_TYPE, 4);
                         }
+                        break;
+                    case 6:
+                        intent.putExtra(CommonConfig.RELEVANT_TYPE, type);
                         break;
                 }
 
@@ -144,7 +148,6 @@ public class ModelPresenter implements ModelContract.Presenter {
     @Override
     public void setIsFragment() {
         type = 3;
-        LogUtil.e("setIsFragment,type="+type);
     }
 
 
@@ -199,6 +202,12 @@ public class ModelPresenter implements ModelContract.Presenter {
         intent.putExtra(CommonConfig.RELEVANT_TYPE_MODEL,type);
         LogUtil.e("toSearch type="+type);
         mView.getActivity().startActivityForResult(intent, RequestCodeConfig.REQUEST_CODE_MODEL_TO_SEARCH);
+    }
+
+    @Override
+    public void setType(int type) {
+        LogUtil.e("settype="+type);
+        this.type = type;
     }
 
 

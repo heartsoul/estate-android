@@ -27,10 +27,13 @@ import com.glodon.bim.basic.config.AppConfig;
 import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.basic.utils.SharedPreferencesUtil;
 import com.glodon.bim.business.authority.AuthorityManager;
+import com.glodon.bim.business.equipment.view.CreateEquipmentMandatoryActivity;
+import com.glodon.bim.business.qualityManage.bean.EquipmentHistoryItem;
 import com.glodon.bim.business.qualityManage.bean.ModelComponent;
 import com.glodon.bim.business.qualityManage.bean.ModelElementHistory;
 import com.glodon.bim.business.qualityManage.bean.ModelListBeanItem;
 import com.glodon.bim.business.qualityManage.contract.RelevantModelContract;
+import com.glodon.bim.business.qualityManage.listener.OnEquipmentClickListener;
 import com.glodon.bim.business.qualityManage.presenter.RelevantModelPresenter;
 import com.glodon.bim.common.config.CommonConfig;
 import com.glodon.bim.customview.ToastManager;
@@ -56,14 +59,13 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
     private String mFileName = "";
     private String mFileId = "";//模型id
 
-    private RelevantBluePrintAndModelDialog mRepairDialog;
-    private RelevantBluePrintAndModelDialog mReviewDialog;
+    private RelevantBluePrintAndModelDialog mRepairDialog,mReviewDialog,mEquipmentEditDialog,mEquipmentDetailDialog;
 
     private RelevantModelContract.Presenter mPresenter;
 
     private ModelListBeanItem mModelSelectInfo;//编辑时有过这个item
     private ModelComponent component;//选中的构件
-    private int type = 0;//0新建检查单 1检查单编辑状态 2详情查看  3模型模式  4新建材设进场 5新增材设进场编辑状态
+    private int type = 0;//0新建检查单 1检查单编辑状态 2详情查看  3模型模式  4新建材设进场 5新增材设进场编辑状态  6材设模型模式
     private boolean show = false;//true  不相应长按事件  false相应长按事件
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -174,7 +176,7 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
                 component = new GsonBuilder().create().fromJson(json, ModelComponent.class);
             }
 
-            //0新建检查单 1检查单编辑状态 2详情查看  3模型模式   4新建材设进场 5新增材设进场编辑状态
+            //0新建检查单 1检查单编辑状态 2详情查看  3模型模式   4新建材设进场  5新增材设进场编辑状态  6材设模型模式
             switch (type){
                 case 0:
                     if(checkComponent()){
@@ -209,38 +211,113 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
                         backData();
                     }
                     break;
+                case 6:
+                    if(checkComponent()) {
+                        //跳转到检查单创建页
+                        Intent intent = new Intent(mActivity, CreateEquipmentMandatoryActivity.class);
+                        mModelSelectInfo.component = component;
+                        intent.putExtra(CommonConfig.RELEVANT_MODEL, mModelSelectInfo);
+                        startActivity(intent);
+                    }
+                    break;
             }
         }
 
         //点击圆点 返回信息
         @JavascriptInterface
-        public void getPositionInfo(final String json) {
+        public void getPositionInfo(String json) {
             LogUtil.e("getPositionInfo json="+json);
-            final ModelElementHistory dot = new GsonBuilder().create().fromJson(json, ModelElementHistory.class);
-            if (dot != null) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-//          {"全部", "待提交",  "待整改",       "待复查",      "已检查",      "已复查",    "已延迟",  "已验收"};
-//          {"",     "staged", "unrectified",  "unreviewed",  "inspected",  "reviewed",  "delayed","accepted"};
-                        switch (dot.qcState) {
-                            case CommonConfig.QC_STATE_UNRECTIFIED://"待整改"
-                                if (AuthorityManager.isCreateRepair() && AuthorityManager.isMe(dot.responsibleUserId)) {
-                                    showRepairDialog(dot);
-                                }
-                                break;
-                            case CommonConfig.QC_STATE_UNREVIEWED://"待复查"
-                                if (AuthorityManager.isCreateReview() && AuthorityManager.isMe(dot.inspectionUserId)) {
-                                    showReviewDialog(dot);
-                                }
-                                break;
-                        }
-                    }
-                });
+            switch (type){
+                case 3:
+                    handleQuality(json);
+                    break;
+                case 6:
+                    handleEquipment(json);
+                    break;
             }
+        }
+
+
+    }
+
+    //材设模型模式
+    private void handleEquipment(String json) {
+        final EquipmentHistoryItem dot = new GsonBuilder().create().fromJson(json, EquipmentHistoryItem.class);
+        if (dot != null) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    switch (dot.qcState) {
+                        case CommonConfig.QC_STATE_EDIT://待提交
+                                showEquipmentEditDialog(dot);
+                            break;
+                        case CommonConfig.QC_STATE_STANDARD://合格
+                        case CommonConfig.QC_STATE_NOT_STANDARD://不合格
+                            if (AuthorityManager.isEquipmentBrowser()) {
+                                showEquipmentDialog(dot);
+                            }
+                            break;
+                    }
+                }
+
+
+            });
         }
     }
 
+    private void showEquipmentEditDialog(final EquipmentHistoryItem item) {
+        mEquipmentEditDialog.getEquipmentEditDialog(new OnEquipmentClickListener() {
+            @Override
+            public void submit() {
+                mPresenter.submit(item);
+            }
+
+            @Override
+            public void delete() {
+                mPresenter.delete(item);
+            }
+
+            @Override
+            public void edit() {
+                mPresenter.edit(item);
+            }
+        }).show();
+    }
+
+    private void showEquipmentDialog(final EquipmentHistoryItem item) {
+        mEquipmentDetailDialog.getEquipmentDialog(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mPresenter.detail(item);
+            }
+        }).show();
+    }
+
+    //质量模型模式
+    private void handleQuality(String json){
+        final ModelElementHistory dot = new GsonBuilder().create().fromJson(json, ModelElementHistory.class);
+        if (dot != null) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+//          {"全部", "待提交",  "待整改",       "待复查",      "已检查",      "已复查",    "已延迟",  "已验收"};
+//          {"",     "staged", "unrectified",  "unreviewed",  "inspected",  "reviewed",  "delayed","accepted"};
+                    switch (dot.qcState) {
+                        case CommonConfig.QC_STATE_UNRECTIFIED://"待整改"
+                            if (AuthorityManager.isCreateRepair() && AuthorityManager.isMe(dot.responsibleUserId)) {
+                                showRepairDialog(dot);
+                            }
+                            break;
+                        case CommonConfig.QC_STATE_UNREVIEWED://"待复查"
+                            if (AuthorityManager.isCreateReview() && AuthorityManager.isMe(dot.inspectionUserId)) {
+                                showReviewDialog(dot);
+                            }
+                            break;
+                    }
+                }
+            });
+        }
+    }
 
     private void setListener() {
         mBackView.setOnClickListener(this);
@@ -264,6 +341,8 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
         //初始化底部弹出框
         mRepairDialog = new RelevantBluePrintAndModelDialog(this);
         mReviewDialog = new RelevantBluePrintAndModelDialog(this);
+        mEquipmentDetailDialog = new RelevantBluePrintAndModelDialog(this);
+        mEquipmentEditDialog = new RelevantBluePrintAndModelDialog(this);
 
         //获取数据
         mPresenter = new RelevantModelPresenter(this);
@@ -272,7 +351,7 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
 
     //不同的入口处理数据不同
     private void handleType(){
-        //0新建检查单 1检查单编辑状态 2详情查看  3模型模式
+        //0新建检查单 1检查单编辑状态 2详情查看  3模型模式  4新建材设进场 5新增材设进场编辑状态  6材设模型模式
         switch (type){
             case 0:
                 show = false;
@@ -297,6 +376,9 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
                 show = false;
                 break;
             case 5:
+                show = false;
+                break;
+            case 6:
                 show = false;
                 break;
         }
@@ -354,59 +436,11 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
     //设置多个点
     @Override
     public void showModelHistory(List<ModelElementHistory> list) {
-//        if(list==null){
-//            String str = " {\n" +
-//                    "        \"drawingPositionX\": -9795.7915,\n" +
-//                    "        \"drawingPositionY\": -1652.2905,\n" +
-//                    "        \"drawingPositionZ\": 2145,\n" +
-//                    "        \"elementId\": \"332707\",\n" +
-//                    "        \"elementName\": \"1200 x 2100mm\",\n" +
-//                    "        \"gdocFileId\": \"bfaee9baba154c3b9a8343dc1ff48845\",\n" +
-//                    "        \"inspectionId\": 5200069,\n" +
-//                    "        \"inspectionUserId\": 5200003,\n" +
-//                    "        \"qcState\": \"unrectified\",\n" +
-//                    "        \"rectificationId\": 0,\n" +
-//                    "        \"responsibleUserId\": 5200013,\n" +
-//                    "        \"reviewId\": 0\n" +
-//                    "    }";
-//            String str2 = "{\n" +
-//                    "        \"drawingPositionX\": -1638.2932,\n" +
-//                    "        \"drawingPositionY\": 6979.591,\n" +
-//                    "        \"drawingPositionZ\": 2723.249,\n" +
-//                    "        \"elementId\": \"333105\",\n" +
-//                    "        \"elementName\": \"百叶窗\",\n" +
-//                    "        \"gdocFileId\": \"bfaee9baba154c3b9a8343dc1ff48845\",\n" +
-//                    "        \"inspectionId\": 5200071,\n" +
-//                    "        \"inspectionUserId\": 5200003,\n" +
-//                    "        \"qcState\": \"unrectified\",\n" +
-//                    "        \"rectificationId\": 0,\n" +
-//                    "        \"responsibleUserId\": 5200013,\n" +
-//                    "        \"reviewId\": 0\n" +
-//                    "    }";
-//            String str3 = "{\n" +
-//                    "        \"drawingPositionX\": -3738.2915000000003,\n" +
-//                    "        \"drawingPositionY\": 7147.709,\n" +
-//                    "        \"drawingPositionZ\": 2760,\n" +
-//                    "        \"elementId\": \"313507\",\n" +
-//                    "        \"elementName\": \"墙面\",\n" +
-//                    "        \"gdocFileId\": \"bfaee9baba154c3b9a8343dc1ff48845\",\n" +
-//                    "        \"inspectionId\": 5200070,\n" +
-//                    "        \"inspectionUserId\": 5200003,\n" +
-//                    "        \"qcState\": \"unrectified\",\n" +
-//                    "        \"rectificationId\": 0,\n" +
-//                    "        \"responsibleUserId\": 5200013,\n" +
-//                    "        \"reviewId\": 0\n" +
-//                    "    }";
-//            list =  new ArrayList<>();
-//            list.add(new GsonBuilder().create().fromJson(str,ModelElementHistory.class));
-//            list.add(new GsonBuilder().create().fromJson(str2,ModelElementHistory.class));
-//            list.add(new GsonBuilder().create().fromJson(str3,ModelElementHistory.class));
-//        }
+
         //设置多点
         String param = new GsonBuilder().create().toJson(list);
-        LogUtil.e("设置多点 params="+param);
+        LogUtil.e("设置质量多点 params="+param);
         mWebview.loadUrl("javascript:loadCircleItems('" + param + "')");
-//        mWebview.loadUrl("javascript:loadCircleItems()");
 
         //设置多个构件选中
 //        List<String> dotList = new ArrayList<>();
@@ -417,9 +451,30 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
     }
 
     @Override
+    public void showEquipmentList(final List<EquipmentHistoryItem> items) {
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                String param = new GsonBuilder().create().toJson(items);
+                LogUtil.e("设置材设多点 params="+param);
+                mWebview.loadUrl("javascript:loadCircleItems('" + param + "')");
+            }
+        });
+
+    }
+
+    @Override
+    public void clearDots() {
+        mWebview.loadUrl("javascript:removeDrawableItem()");
+    }
+
+    @Override
     public void showTokenError() {
         ToastManager.show("抱歉，您目前没有查看此模型的权限，请联系系统管理员。");
     }
+
+
 
 
     //新建整改单的弹出框
@@ -483,7 +538,7 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
     }
 
      private void pageFinished(){
-         //0新建检查单 1检查单编辑状态 2详情查看  3模型模式
+         //0新建检查单 1检查单编辑状态 2详情查看  3模型模式  4新建材设进场 5新增材设进场编辑状态  6材设模型模式
          LogUtil.e("pageFinish type="+type);
          switch (type){
              case 0:
@@ -525,6 +580,9 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
                          showSelectedComponent(list);
                      }
                  }
+                 break;
+             case 6:
+                 mPresenter.getEquipmentList();
                  break;
          }
 
@@ -571,7 +629,6 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
     protected void onDestroy() {
         super.onDestroy();
         if(mWebview!=null){
-            LogUtil.e("ondestroy");
             //清空所有Cookie
             CookieSyncManager.createInstance(BaseApplication.getInstance());  //Create a singleton CookieSyncManager within a context
             CookieManager cookieManager = CookieManager.getInstance(); // the singleton CookieManager instance

@@ -2,6 +2,7 @@ package com.glodon.bim.business.qualityManage.contract;
 
 import com.glodon.bim.base.IBasePresenter;
 import com.glodon.bim.base.IBaseView;
+import com.glodon.bim.business.qualityManage.bean.EquipmentHistoryItem;
 import com.glodon.bim.business.qualityManage.bean.ModelElementHistory;
 import com.glodon.bim.business.qualityManage.bean.ModelElementInfo;
 import com.glodon.bim.business.qualityManage.bean.ProjectVersionBean;
@@ -22,9 +23,31 @@ public interface RelevantModelContract {
     interface Presenter extends IBasePresenter {
 
         /**
-         * 获取历史的构件信息
+         * 获取质量历史的构件信息
          */
         void getElements();
+
+        /**
+         * 获取材设单据信息
+         */
+        void getEquipmentList();
+
+        /**
+         * 提交
+         */
+        void submit(EquipmentHistoryItem item);
+        /**
+         * 删除
+         */
+        void delete(EquipmentHistoryItem item);
+        /**
+         * 编辑
+         */
+        void edit(EquipmentHistoryItem item);
+        /**
+         * 查看详情
+         */
+        void detail(EquipmentHistoryItem item);
     }
 
     interface View extends IBaseView {
@@ -44,6 +67,16 @@ public interface RelevantModelContract {
          * 获取token失败
          */
         void showTokenError();
+
+        /**
+         * 展示材设列表颜色
+         */
+        void showEquipmentList(List<EquipmentHistoryItem> items);
+
+        /**
+         * 清除点的信息
+         */
+        void clearDots();
     }
 
     interface Model {
@@ -69,5 +102,10 @@ public interface RelevantModelContract {
          * 根据构件id获取构件名称
          */
          Observable<ModelElementInfo> getElementProperty(long projectId, String versionId, String fileId, String elementId);
+
+        /**
+         * 根据模型获取材设单据列表
+         */
+        Observable<List<EquipmentHistoryItem>> getEquipmentList(long deptId, String gdocFileId);
     }
 }

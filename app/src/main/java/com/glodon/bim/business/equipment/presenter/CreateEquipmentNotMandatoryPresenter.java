@@ -51,11 +51,18 @@ public class CreateEquipmentNotMandatoryPresenter implements CreateEquipmentNotM
     public void initData(Intent intent) {
         mCreateEquipmentMandatoryInfo = (CreateEquipmentMandatoryInfo) intent.getSerializableExtra(CommonConfig.EQUIPMENT_MANDATORYINFO);
 
+        //编辑状态
         CreateEquipmentMandatoryNotInfo info = (CreateEquipmentMandatoryNotInfo) intent.getSerializableExtra(CommonConfig.EQUIPMENT_EDIT_NOT_MANDATORY_INFO);
         if(info!=null){
             mIsEdit = true;
             mView.showEditInfo(info);
             mModelSelectInfo = info.model;
+        }
+        //从模型过来
+        mModelSelectInfo = (ModelListBeanItem) intent.getSerializableExtra(CommonConfig.RELEVANT_MODEL);
+        if (mModelSelectInfo!=null && mModelSelectInfo.component != null) {
+            getElementName(mModelSelectInfo.fileId, mModelSelectInfo.component.elementId);
+            mModelType=5;
         }
     }
 

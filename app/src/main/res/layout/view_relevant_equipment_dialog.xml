@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:orientation="vertical"
+    >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_56"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="你可以选择"
+        android:textColor="@color/c_464646"
+        android:textSize="@dimen/dimen_14" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_0.5"
+        android:background="@color/c_80d8d8d8" />
+
+    <TextView
+        android:id="@+id/relevant_equipment_bottom_submit"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_56"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="提交"
+        android:textColor="@color/c_464646"
+        android:textSize="@dimen/dimen_20" />
+
+    <View
+        android:id="@+id/relevant_equipment_bottom_submit_line"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_09"
+        android:background="@color/c_99ffffff" />
+
+    <TextView
+        android:id="@+id/relevant_equipment_bottom_delete"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_56"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="删除"
+        android:textColor="@color/c_464646"
+        android:textSize="@dimen/dimen_20" />
+    <View
+        android:id="@+id/relevant_equipment_bottom_delete_line"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_09"
+        android:background="@color/c_99ffffff" />
+
+    <TextView
+        android:id="@+id/relevant_equipment_bottom_edit"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_56"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="编辑"
+        android:textColor="@color/c_464646"
+        android:textSize="@dimen/dimen_20" />
+</LinearLayout>

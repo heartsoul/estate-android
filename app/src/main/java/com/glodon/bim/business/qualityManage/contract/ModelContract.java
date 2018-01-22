@@ -44,6 +44,11 @@ public interface ModelContract {
          * 跳转到搜索
          */
         void toSearch();
+
+        /**
+         * 材设设置类型
+         */
+        void setType(int type);
     }
 
     interface View extends IBaseView {

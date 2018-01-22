@@ -290,4 +290,8 @@ public class ModelView implements View.OnClickListener, ModelContract.View {
     public void toSearch() {
         mPresenter.toSearch();
     }
+
+    public void setType(int type) {
+        mPresenter.setType(type);
+    }
 }
