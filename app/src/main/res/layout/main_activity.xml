@@ -55,7 +55,8 @@
                 <RelativeLayout
                     android:id="@+id/main_drawer_quality"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    >
 
                     <ImageView
                         android:layout_width="@dimen/dimen_20"
@@ -132,6 +133,7 @@
                 </LinearLayout>
 
                 <View
+                    android:id="@+id/main_drawer_quality_line"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dimen_0.5"
                     android:layout_marginLeft="@dimen/dimen_20"
@@ -196,7 +198,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dimen_13"
                         android:paddingLeft="@dimen/dimen_54"
-                        android:text="模型"
+                        android:text="模型预览"
                         android:textColor="@color/c_d4d4d4"
                         android:textSize="@dimen/dimen_16" />
 
@@ -204,6 +206,7 @@
                 </LinearLayout>
 
                 <View
+                    android:id="@+id/main_drawer_equipment_line"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dimen_0.5"
                     android:layout_marginLeft="@dimen/dimen_20"

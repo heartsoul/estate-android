@@ -6,7 +6,6 @@ import android.graphics.Bitmap;
 import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.text.TextUtils;
 import android.view.View;
 import android.webkit.CookieManager;
@@ -14,7 +13,7 @@ import android.webkit.CookieSyncManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
-import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -33,7 +32,6 @@ import com.glodon.bim.business.qualityManage.bean.ModelComponent;
 import com.glodon.bim.business.qualityManage.bean.ModelElementHistory;
 import com.glodon.bim.business.qualityManage.bean.ModelListBeanItem;
 import com.glodon.bim.business.qualityManage.contract.RelevantModelContract;
-import com.glodon.bim.business.qualityManage.listener.OnEquipmentClickListener;
 import com.glodon.bim.business.qualityManage.presenter.RelevantModelPresenter;
 import com.glodon.bim.common.config.CommonConfig;
 import com.glodon.bim.customview.ToastManager;
@@ -42,8 +40,6 @@ import com.google.gson.GsonBuilder;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.glodon.bim.R.id.webView;
 
 /**
  * 描述：关联模型-模型展示
@@ -59,7 +55,7 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
     private String mFileName = "";
     private String mFileId = "";//模型id
 
-    private RelevantBluePrintAndModelDialog mRepairDialog,mReviewDialog,mEquipmentEditDialog,mEquipmentDetailDialog;
+    private RelevantBluePrintAndModelDialog mRepairDialog,mReviewDialog,mQualityDetailDialog,mEquipmentDetailDialog;
 
     private RelevantModelContract.Presenter mPresenter;
 
@@ -213,7 +209,7 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
                     break;
                 case 6:
                     if(checkComponent()) {
-                        //跳转到检查单创建页
+                        //跳转到材设记录创建页
                         Intent intent = new Intent(mActivity, CreateEquipmentMandatoryActivity.class);
                         mModelSelectInfo.component = component;
                         intent.putExtra(CommonConfig.RELEVANT_MODEL, mModelSelectInfo);
@@ -248,9 +244,6 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
                 @Override
                 public void run() {
                     switch (dot.qcState) {
-                        case CommonConfig.QC_STATE_EDIT://待提交
-                                showEquipmentEditDialog(dot);
-                            break;
                         case CommonConfig.QC_STATE_STANDARD://合格
                         case CommonConfig.QC_STATE_NOT_STANDARD://不合格
                             if (AuthorityManager.isEquipmentBrowser()) {
@@ -263,25 +256,6 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
 
             });
         }
-    }
-
-    private void showEquipmentEditDialog(final EquipmentHistoryItem item) {
-        mEquipmentEditDialog.getEquipmentEditDialog(new OnEquipmentClickListener() {
-            @Override
-            public void submit() {
-                mPresenter.submit(item);
-            }
-
-            @Override
-            public void delete() {
-                mPresenter.delete(item);
-            }
-
-            @Override
-            public void edit() {
-                mPresenter.edit(item);
-            }
-        }).show();
     }
 
     private void showEquipmentDialog(final EquipmentHistoryItem item) {
@@ -304,6 +278,7 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
 //          {"",     "staged", "unrectified",  "unreviewed",  "inspected",  "reviewed",  "delayed","accepted"};
                     switch (dot.qcState) {
                         case CommonConfig.QC_STATE_UNRECTIFIED://"待整改"
+                        case CommonConfig.QC_STATE_DELAYED://"已延迟"
                             if (AuthorityManager.isCreateRepair() && AuthorityManager.isMe(dot.responsibleUserId)) {
                                 showRepairDialog(dot);
                             }
@@ -313,11 +288,20 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
                                 showReviewDialog(dot);
                             }
                             break;
+                        case CommonConfig.QC_STATE_INSPECTED://"已检查"
+                        case CommonConfig.QC_STATE_REVIEWED://"已复查"
+                        case CommonConfig.QC_STATE_ACCEPTED://"已验收"
+                            if (AuthorityManager.isQualityBrowser()) {
+                                showDetailDialog(dot);
+                            }
+                            break;
                     }
                 }
             });
         }
     }
+
+
 
     private void setListener() {
         mBackView.setOnClickListener(this);
@@ -341,8 +325,8 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
         //初始化底部弹出框
         mRepairDialog = new RelevantBluePrintAndModelDialog(this);
         mReviewDialog = new RelevantBluePrintAndModelDialog(this);
+        mQualityDetailDialog = new RelevantBluePrintAndModelDialog(this);
         mEquipmentDetailDialog = new RelevantBluePrintAndModelDialog(this);
-        mEquipmentEditDialog = new RelevantBluePrintAndModelDialog(this);
 
         //获取数据
         mPresenter = new RelevantModelPresenter(this);
@@ -527,6 +511,20 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
         }).show();
     }
 
+    //查看质量详情
+    private void showDetailDialog(final ModelElementHistory dot) {
+        mQualityDetailDialog.getQualityDetailDialog(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //查看详情
+                Intent intent = new Intent(mActivity, QualityCheckListDetailActivity.class);
+                intent.putExtra(CommonConfig.QUALITY_CHECK_LIST_DEPTID, SharedPreferencesUtil.getProjectId());
+                intent.putExtra(CommonConfig.QUALITY_CHECK_LIST_ID, dot.inspectionId);
+                startActivity(intent);
+            }
+        }).show();
+    }
+
     /**
      * 创建返回的事件
      */
@@ -589,6 +587,34 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
      }
 
     class CustomWebViewClient extends WebViewClient {
+
+        @Override
+        public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
+            LogUtil.e("intercept before,url="+url);
+//            if(!TextUtils.isEmpty(url)){
+//                String pre = "static.bimface.com";
+//                String pro = "api.bimface.com";
+//                String loc = "172.16.233.144:443";
+//                if(url.contains(pre)){
+//                    url = url.replace(pre,loc);
+//                }
+//                if(url.contains(pro))
+//                {
+//                    url = url.replace(pro,loc);
+//                }
+//            }
+//            LogUtil.e("intercept after,url="+url);
+            return super.shouldInterceptRequest(view, url);
+        }
+
+
+
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            LogUtil.e("url="+url);
+            view.loadUrl(url);
+            return true;
+        }
 
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {

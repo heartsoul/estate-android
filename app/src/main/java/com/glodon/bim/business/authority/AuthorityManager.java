@@ -114,7 +114,7 @@ public class AuthorityManager {
     }
 
     /**
-     * 判断是否有浏览材设的权限
+     * 判断是否有浏览质量的权限
      */
     public static boolean isQualityBrowser(){
         Quality_Rectification_Bean = SharedPreferencesUtil.getQualityFacilityBean();

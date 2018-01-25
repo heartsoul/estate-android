@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import com.glodon.bim.R;
 import com.glodon.bim.business.authority.AuthorityManager;
-import com.glodon.bim.business.equipment.contract.EquipmentListContract;
 import com.glodon.bim.business.qualityManage.listener.OnEquipmentClickListener;
 
 
@@ -91,6 +90,26 @@ public class RelevantBluePrintAndModelDialog {
                 dismiss();
             }
         });
+        mDetailView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(detailListener!=null)
+                {
+                    detailListener.onClick(view);
+                }
+                dismiss();
+            }
+        });
+        dialogSetting(view);
+        return this;
+    }
+
+    /**
+     * 新建复查单
+     */
+    public RelevantBluePrintAndModelDialog getQualityDetailDialog(final View.OnClickListener detailListener) {
+        View view = LayoutInflater.from(context).inflate(R.layout.view_relevant_blueprint_model_detail_dialog,null);
+        mDetailView = view.findViewById(R.id.relevant_blueprint_bottom_detail_detail);
         mDetailView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

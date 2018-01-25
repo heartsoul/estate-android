@@ -33,4 +33,6 @@ public class IntentManager {
         intent.putExtra(CommonConfig.SEARCH_TYPE,type);
         activity.startActivity(intent);
     }
+
+
 }

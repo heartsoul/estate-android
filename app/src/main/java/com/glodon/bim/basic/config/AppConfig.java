@@ -12,11 +12,6 @@ public class AppConfig {
 
 
     /**
-     * 控制是否显示控制台log
-     */
-    public static boolean LOGCAT_SHOW = true;
-
-    /**
      * 控制是否生成log日志文件   true 生成  false 不生成
      */
     public static boolean LOG_ERR_SAVE = true;
@@ -45,19 +40,19 @@ public class AppConfig {
 //    public static String BASE_URL = "http://192.168.81.41/"; //开发
 //    public static final String BASE_URL_BLUEPRINT_TOKEN = "http://47.95.204.243/app.html?param=";//图纸的url地址
       //测试环境
-//    public static String BASE_UPLOAD_URL =  "http://172.16.233.183:8093/";//图片上传  测试
-//    public static String BASE_URL = "http://192.168.81.30/"; //测试
-//    public static final String BASE_URL_BLUEPRINT_TOKEN = "http://47.95.204.243/app.html?param=";//图纸的url地址
+    public static String BASE_UPLOAD_URL =  "http://172.16.233.183:8093/";//图片上传  测试
+    public static String BASE_URL = "http://192.168.81.30/"; //测试
+    public static final String BASE_URL_BLUEPRINT_TOKEN = BASE_URL+"app.html?param=";//图纸的url地址
 
     //预生产 47.95.204.243
-    public static String BASE_UPLOAD_URL =  "https://api.glodon.com/nss/";//图片上传
-    public static String BASE_URL = "http://47.95.204.243/";
-    public static final String BASE_URL_BLUEPRINT_TOKEN = "http://47.95.204.243/app.html?param=";//图纸的url地址
+//    public static String BASE_UPLOAD_URL =  "https://api.glodon.com/nss/";//图片上传
+//    public static String BASE_URL = "http://47.95.204.243/";
+//    public static final String BASE_URL_BLUEPRINT_TOKEN = BASE_URL+"app.html?param=";//图纸的url地址
 
     //生产 47.95.204.243
 //    public static String BASE_UPLOAD_URL =  "https://api.glodon.com/nss/";//图片上传
 //    public static String BASE_URL = "http://bimcop.glodon.com/";
-//    public static final String BASE_URL_BLUEPRINT_TOKEN = "http://bimcop.glodon.com/app.html?param=";//图纸的url地址
+//    public static final String BASE_URL_BLUEPRINT_TOKEN = BASE_URL+"app.html?param=";//图纸的url地址
 
 
     /*

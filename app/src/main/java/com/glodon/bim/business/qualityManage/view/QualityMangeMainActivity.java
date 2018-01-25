@@ -59,11 +59,12 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
     private TextView mQualityCheckListTv, mBluePrintTv, mModelTv, mQualityCheckModuleTv;
     private RelativeLayout mQualityManagerView, mSettingView;
     private LinearLayout mQualityContentView;
+    private View mQualityDrawerLine;
     //材设
     private RelativeLayout mEquipmentView;
     private TextView mEquipmentListTv,mEquipmentModelTv;
     private LinearLayout mEquipmentContentView;
-
+    private View mEquipmentDrawerLine;
     //content
     private LinearLayout mContentView;
 
@@ -122,6 +123,7 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
         mQualityManagerView = (RelativeLayout) findViewById(R.id.main_drawer_quality);
         mSettingView = (RelativeLayout) findViewById(R.id.main_drawer_setting);
         mQualityContentView = (LinearLayout) findViewById(R.id.main_drawer_quality_content);
+        mQualityDrawerLine = findViewById(R.id.main_drawer_quality_line);
 
         mContentView = (LinearLayout) findViewById(R.id.main_content);
         mStatusLeft = (LinearLayout) findViewById(R.id.main_drawer_status_left);
@@ -147,14 +149,33 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
         mEquipmentListTv = (TextView) findViewById(R.id.main_drawer_equipment_list);
         mEquipmentModelTv = (TextView) findViewById(R.id.main_drawer_equipment_model);
         mEquipmentContentView = (LinearLayout) findViewById(R.id.main_drawer_equipment_content);
+        mEquipmentDrawerLine = findViewById(R.id.main_drawer_equipment_line);
 
         initStatusBar(mStatusRight);
         initStatusBar(mStatusLeft);
 
         hideDrawer(1);
 
+        checkAutority();
+    }
 
+    //判断质量和材设权限
+    private void checkAutority() {
+        if(AuthorityManager.isQualityBrowser()){
+            mQualityDrawerLine.setVisibility(View.VISIBLE);
+            mQualityManagerView.setVisibility(View.VISIBLE);
+        }else{
+            mQualityDrawerLine.setVisibility(View.GONE);
+            mQualityManagerView.setVisibility(View.GONE);
+        }
 
+        if(AuthorityManager.isEquipmentBrowser()){
+            mEquipmentView.setVisibility(View.VISIBLE);
+            mEquipmentDrawerLine.setVisibility(View.VISIBLE);
+        }else{
+            mEquipmentView.setVisibility(View.GONE);
+            mEquipmentDrawerLine.setVisibility(View.GONE);
+        }
     }
 
     private void checkQualityAuthority(){

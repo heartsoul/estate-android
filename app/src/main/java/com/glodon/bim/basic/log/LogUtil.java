@@ -2,6 +2,7 @@ package com.glodon.bim.basic.log;
 
 import android.util.Log;
 
+import com.glodon.bim.BuildConfig;
 import com.glodon.bim.basic.config.AppConfig;
 import com.google.gson.GsonBuilder;
 
@@ -90,7 +91,7 @@ public class LogUtil {
      * @return true 显示  false  不显示
      */
     private static boolean isShowLog() {
-        return AppConfig.LOGCAT_SHOW;
+        return BuildConfig.DEBUG;
     }
 
     public static void toJson(Object obj){

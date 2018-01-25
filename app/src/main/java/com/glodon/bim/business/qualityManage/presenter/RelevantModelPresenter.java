@@ -8,28 +8,21 @@ import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.basic.utils.LinkedHashList;
 import com.glodon.bim.basic.utils.NetWorkUtils;
 import com.glodon.bim.basic.utils.SharedPreferencesUtil;
-import com.glodon.bim.business.equipment.bean.CreateEquipmentParams;
-import com.glodon.bim.business.equipment.bean.EquipmentDetailBean;
-import com.glodon.bim.business.equipment.model.CreateEquipmentModel;
 import com.glodon.bim.business.equipment.view.CreateEquipmentActivity;
-import com.glodon.bim.business.qualityManage.bean.CreateCheckListParamsFile;
 import com.glodon.bim.business.qualityManage.bean.EquipmentHistoryItem;
 import com.glodon.bim.business.qualityManage.bean.ModelComponentWorldPosition;
 import com.glodon.bim.business.qualityManage.bean.ModelElementHistory;
 import com.glodon.bim.business.qualityManage.bean.ModelElementInfo;
 import com.glodon.bim.business.qualityManage.bean.ProjectVersionBean;
-import com.glodon.bim.business.qualityManage.bean.QualityCheckListBeanItemFile;
 import com.glodon.bim.business.qualityManage.bean.RelevantBluePrintToken;
 import com.glodon.bim.business.qualityManage.contract.RelevantModelContract;
 import com.glodon.bim.business.qualityManage.model.RelevantModelModel;
 import com.glodon.bim.common.config.CommonConfig;
-import com.glodon.bim.common.config.RequestCodeConfig;
 import com.glodon.bim.customview.ToastManager;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import okhttp3.ResponseBody;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -164,7 +157,6 @@ public class RelevantModelPresenter implements RelevantModelContract.Presenter {
                         LogUtil.e("size="+(modelElementHistories==null));
                         if(modelElementHistories!=null){
                             LogUtil.e("size="+modelElementHistories.size());
-
                         }
                         if(modelElementHistories!=null && modelElementHistories.size()>0){
                             mElementHistories = modelElementHistories;
@@ -217,163 +209,7 @@ public class RelevantModelPresenter implements RelevantModelContract.Presenter {
         handleEquipmentlist(items);
     }
 
-    @Override
-    public void submit(EquipmentHistoryItem item) {
-        if(NetWorkUtils.isNetworkAvailable(mView.getActivity())){
-            if(mView!=null){
-                mView.showLoadingDialog();
-            }
-            //获取详情
-            Subscription sub = new CreateEquipmentModel().detail(item.facilityId)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Subscriber<EquipmentDetailBean>() {
-                        @Override
-                        public void onCompleted() {
 
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-                            if (mView != null) {
-                                mView.dismissLoadingDialog();
-                            }
-                        }
-
-                        @Override
-                        public void onNext(EquipmentDetailBean bean) {
-                            if(bean!=null){
-                                toSubmit(bean);
-                            }else{
-                                if (mView != null) {
-                                    mView.dismissLoadingDialog();
-                                }
-                            }
-
-                        }
-                    });
-            mSubscription.add(sub);
-        }else{
-            ToastManager.showNetWorkToast();
-        }
-    }
-
-    //提交
-    private void toSubmit(EquipmentDetailBean item) {
-        if (NetWorkUtils.isNetworkAvailable(mView.getActivity())) {
-
-            CreateEquipmentParams params = new CreateEquipmentParams();
-            params.code = item.code;
-            params.projectId = item.projectId;
-            params.projectName = item.projectName;
-            params.batchCode = item.batchCode;
-            params.facilityCode = item.facilityCode;
-            params.facilityName = item.facilityName;
-            params.approachDate = item.approachDate;
-            params.quantity = item.quantity;
-            params.unit = item.unit;
-            params.specification = item.specification;
-            params.modelNum = item.modelNum;
-            params.manufacturer = item.manufacturer;
-            params.brand = item.brand;
-            params.supplier = item.supplier;
-            params.versionId = SharedPreferencesUtil.getProjectVersionId();
-            params.gdocFileId = item.gdocFileId;
-            params.buildingId = item.buildingId;
-            params.buildingName = item.buildingName;
-            params.elementId = item.elementId;
-            params.elementName = item.elementName;
-            List<CreateCheckListParamsFile> fileList = new ArrayList<>();
-            for (QualityCheckListBeanItemFile file : item.files) {
-                CreateCheckListParamsFile f = new CreateCheckListParamsFile();
-
-                f.extData = file.extData;
-                f.objectId = file.objectId;
-                f.name = file.name;
-                f.url = file.url;
-                fileList.add(f);
-            }
-            if (fileList.size() > 0) {
-                params.files = fileList;
-            }
-            params.qualified = item.qualified;
-            Subscription sub = new CreateEquipmentModel().editSubmit(item.id, params)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Subscriber<ResponseBody>() {
-                        @Override
-                        public void onCompleted() {
-
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-                            if (mView != null) {
-                                mView.dismissLoadingDialog();
-                            }
-                        }
-
-                        @Override
-                        public void onNext(ResponseBody responseBody) {
-                            ToastManager.showSubmitToast();
-                            if (mView != null) {
-                                mView.dismissLoadingDialog();
-                                mView.clearDots();
-                            }
-                            getEquipmentList();
-                        }
-                    });
-            mSubscription.add(sub);
-        } else {
-            ToastManager.showNetWorkToast();
-        }
-    }
-
-    @Override
-    public void delete(EquipmentHistoryItem item) {
-        if (NetWorkUtils.isNetworkAvailable(mView.getActivity())) {
-            if (mView != null) {
-                mView.showLoadingDialog();
-            }
-            Subscription sub = new CreateEquipmentModel().delete(item.facilityId)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Subscriber<ResponseBody>() {
-                        @Override
-                        public void onCompleted() {
-
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-                            if (mView != null) {
-                                mView.dismissLoadingDialog();
-                            }
-                        }
-
-                        @Override
-                        public void onNext(ResponseBody responseBody) {
-                            if (mView != null) {
-                                mView.dismissLoadingDialog();
-                                mView.clearDots();
-                            }
-                            getEquipmentList();
-
-                        }
-                    });
-            mSubscription.add(sub);
-        } else {
-            ToastManager.showNetWorkToast();
-        }
-    }
-
-    @Override
-    public void edit(EquipmentHistoryItem item) {
-        Intent intent = new Intent(mView.getActivity(), CreateEquipmentActivity.class);
-        intent.putExtra(CommonConfig.EQUIPMENT_TYPE, CommonConfig.EQUIPMENT_TYPE_EDIT);
-        intent.putExtra(CommonConfig.EQUIPMENT_LIST_ID,item.facilityId);
-        mView.getActivity().startActivityForResult(intent, RequestCodeConfig.REQUEST_CODE_EQUIPMENT_TO_EDIT);
-    }
 
     @Override
     public void detail(EquipmentHistoryItem item) {

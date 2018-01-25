@@ -33,18 +33,6 @@ public interface RelevantModelContract {
         void getEquipmentList();
 
         /**
-         * 提交
-         */
-        void submit(EquipmentHistoryItem item);
-        /**
-         * 删除
-         */
-        void delete(EquipmentHistoryItem item);
-        /**
-         * 编辑
-         */
-        void edit(EquipmentHistoryItem item);
-        /**
          * 查看详情
          */
         void detail(EquipmentHistoryItem item);

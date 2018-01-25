@@ -40,9 +40,9 @@ public class LoginModel implements LoginContract.Model {
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                        System.out.println("1--");
-                        System.out.println(response.headers().toString());
-                        System.out.println("1--");
+//                        System.out.println("1--");
+//                        System.out.println(response.headers().toString());
+//                        System.out.println("1--");
                         request2(response, username, password, listener);
                     }
 
