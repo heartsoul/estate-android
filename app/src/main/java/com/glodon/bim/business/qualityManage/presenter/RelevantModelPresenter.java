@@ -43,11 +43,11 @@ public class RelevantModelPresenter implements RelevantModelContract.Presenter {
     private String mProjectVersionId;
     private String mFileId; //模型的id
     private List<ModelElementHistory> mElementHistories;
-    private Handler mhandler =new Handler();
-    private LinkedHashList<String,ModelElementHistory> mPositionMap;
+    private Handler mhandler = new Handler();
+    private LinkedHashList<String, ModelElementHistory> mPositionMap;
     //材设历史清单
     private List<EquipmentHistoryItem> mEquipmentHistories;
-    private LinkedHashList<String,EquipmentHistoryItem> mEquipmentPositionMap;
+    private LinkedHashList<String, EquipmentHistoryItem> mEquipmentPositionMap;
 
     public RelevantModelPresenter(RelevantModelContract.View mView) {
         this.mView = mView;
@@ -116,19 +116,19 @@ public class RelevantModelPresenter implements RelevantModelContract.Presenter {
                     @Override
                     public void onError(Throwable e) {
                         LogUtil.e(e.getMessage());
-                        if(mView!=null){
+                        if (mView != null) {
                             mView.showTokenError();
                         }
                     }
 
                     @Override
                     public void onNext(RelevantBluePrintToken bean) {
-                        if(bean!=null){
-                            LogUtil.e("info="+bean.toString());
+                        if (bean != null) {
+                            LogUtil.e("info=" + bean.toString());
                         }
-                        if(bean!=null && !TextUtils.isEmpty(bean.data)){
+                        if (bean != null && !TextUtils.isEmpty(bean.data)) {
 
-                            if(mView!=null){
+                            if (mView != null) {
                                 mView.sendBasicInfo(bean.data);
                             }
                         }
@@ -137,8 +137,8 @@ public class RelevantModelPresenter implements RelevantModelContract.Presenter {
         mSubscription.add(sub);
     }
 
-    public void getElements(){
-        Subscription sub = mModel.getElements(mProjectId,mFileId)
+    public void getElements() {
+        Subscription sub = mModel.getElements(mProjectId, mFileId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<List<ModelElementHistory>>() {
@@ -154,21 +154,20 @@ public class RelevantModelPresenter implements RelevantModelContract.Presenter {
 
                     @Override
                     public void onNext(List<ModelElementHistory> modelElementHistories) {
-                        LogUtil.e("size="+(modelElementHistories==null));
-                        if(modelElementHistories!=null){
-                            LogUtil.e("size="+modelElementHistories.size());
+                        LogUtil.e("size=" + (modelElementHistories == null));
+                        if (modelElementHistories != null) {
+                            LogUtil.e("size=" + modelElementHistories.size());
                         }
-                        if(modelElementHistories!=null && modelElementHistories.size()>0){
+                        if (modelElementHistories != null && modelElementHistories.size() > 0) {
                             mElementHistories = modelElementHistories;
                             int i = 0;
-                            for(final ModelElementHistory element:modelElementHistories)
-                            {
+                            for (final ModelElementHistory element : modelElementHistories) {
                                 mhandler.postDelayed(new Runnable() {
                                     @Override
                                     public void run() {
-                                        getElementName(element,element.gdocFileId,element.elementId);
+                                        getElementName(element, element.gdocFileId, element.elementId);
                                     }
-                                },20*i);
+                                }, 20 * i);
                                 i++;
                             }
                         }
@@ -179,70 +178,68 @@ public class RelevantModelPresenter implements RelevantModelContract.Presenter {
 
     @Override
     public void getEquipmentList() {
-//        Subscription sub = mModel.getEquipmentList(mProjectId,mFileId)
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(new Subscriber<List<EquipmentHistoryItem>>() {
-//                    @Override
-//                    public void onCompleted() {
-//
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onNext(List<EquipmentHistoryItem> items) {
-//                        handleEquipmentlist(items);
-//                    }
-//                });
-//        mSubscription.add(sub);
-        List<EquipmentHistoryItem> items = new ArrayList<>();
-        EquipmentHistoryItem item1 = new EquipmentHistoryItem(false,"332707","name1",1,true);
-        EquipmentHistoryItem item2 = new EquipmentHistoryItem(true,"333105","name1",2,true);
-        EquipmentHistoryItem item3 = new EquipmentHistoryItem(true,"313096","name1",3,false);
-        items.add(item1);
-        items.add(item2);
-        items.add(item3);
-        handleEquipmentlist(items);
-    }
+        Subscription sub = mModel.getEquipmentList(mProjectId, mFileId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<List<EquipmentHistoryItem>>() {
+                    @Override
+                    public void onCompleted() {
 
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(List<EquipmentHistoryItem> items) {
+                        handleEquipmentlist(items);
+                    }
+                });
+        mSubscription.add(sub);
+//        List<EquipmentHistoryItem> items = new ArrayList<>();
+//        EquipmentHistoryItem item1 = new EquipmentHistoryItem(false,"332707","name1",1,true);
+//        EquipmentHistoryItem item2 = new EquipmentHistoryItem(true,"333105","name1",2,true);
+//        EquipmentHistoryItem item3 = new EquipmentHistoryItem(true,"313096","name1",3,false);
+//        items.add(item1);
+//        items.add(item2);
+//        items.add(item3);
+//        handleEquipmentlist(items);
+    }
 
 
     @Override
     public void detail(EquipmentHistoryItem item) {
         Intent intent = new Intent(mView.getActivity(), CreateEquipmentActivity.class);
         intent.putExtra(CommonConfig.EQUIPMENT_TYPE, CommonConfig.EQUIPMENT_TYPE_DETAIL);
-        intent.putExtra(CommonConfig.EQUIPMENT_LIST_ID,item.facilityId);
+        intent.putExtra(CommonConfig.EQUIPMENT_LIST_ID, item.facilityId);
         mView.getActivity().startActivity(intent);
     }
 
 
     //处理单据状态
     private void handleEquipmentlist(List<EquipmentHistoryItem> items) {
-        if(items!=null && items.size()>0){
-            for(int i = 0;i<items.size();i++){
+        if (items != null && items.size() > 0) {
+            for (int i = 0; i < items.size(); i++) {
                 EquipmentHistoryItem item = items.get(i);
-                if(item.committed){
-                    item.qcState = item.qualified?CommonConfig.QC_STATE_STANDARD:CommonConfig.QC_STATE_NOT_STANDARD;
-                }else{
+                if (item.committed) {
+                    item.qcState = item.qualified ? CommonConfig.QC_STATE_STANDARD : CommonConfig.QC_STATE_NOT_STANDARD;
+                } else {
                     item.qcState = CommonConfig.QC_STATE_EDIT;
                 }
             }
             LogUtil.toJson(items);
-            if(items!=null && items.size()>0){
+            if (items != null && items.size() > 0) {
                 mEquipmentHistories = items;
                 int i = 0;
-                for(final EquipmentHistoryItem element:items)
-                {
+                for (final EquipmentHistoryItem element : items) {
                     mhandler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            getEquipmentElementName(element,mFileId,element.elementId);
+                            getEquipmentElementName(element, mFileId, element.elementId);
                         }
-                    },20*i);
+                    }, 20 * i);
                     i++;
                 }
             }
@@ -310,22 +307,21 @@ public class RelevantModelPresenter implements RelevantModelContract.Presenter {
 
                     @Override
                     public void onNext(ModelElementInfo modelElementInfo) {
-                        if (modelElementInfo != null && modelElementInfo.data != null && modelElementInfo.data.boundingBox!=null) {
+                        if (modelElementInfo != null && modelElementInfo.data != null && modelElementInfo.data.boundingBox != null) {
 
                             ModelComponentWorldPosition min = modelElementInfo.data.boundingBox.min;
                             ModelComponentWorldPosition max = modelElementInfo.data.boundingBox.max;
-                            if(max!=null && min!=null) {
+                            if (max != null && min != null) {
                                 element.drawingPositionX = (max.x + min.x) / 2;
                                 element.drawingPositionY = (max.y + min.y) / 2;
                                 element.drawingPositionZ = max.z > min.z ? max.z : min.z;
                                 mPositionMap.put(elementId, element);
                                 if (mPositionMap.size() == mElementHistories.size()) {
                                     List<ModelElementHistory> list = new ArrayList<>();
-                                    for(ModelElementHistory history:mPositionMap.getValueList()){
+                                    for (ModelElementHistory history : mPositionMap.getValueList()) {
                                         list.add(history);
                                     }
-                                    if(mView!=null)
-                                    {
+                                    if (mView != null) {
                                         mView.showModelHistory(list);
                                     }
                                 }

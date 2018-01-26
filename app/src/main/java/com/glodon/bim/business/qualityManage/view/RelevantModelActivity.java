@@ -55,7 +55,7 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
     private String mFileName = "";
     private String mFileId = "";//模型id
 
-    private RelevantBluePrintAndModelDialog mRepairDialog,mReviewDialog,mQualityDetailDialog,mEquipmentDetailDialog;
+    private RelevantBluePrintAndModelDialog mRepairDialog, mReviewDialog, mQualityDetailDialog, mEquipmentDetailDialog;
 
     private RelevantModelContract.Presenter mPresenter;
 
@@ -63,6 +63,7 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
     private ModelComponent component;//选中的构件
     private int type = 0;//0新建检查单 1检查单编辑状态 2详情查看  3模型模式  4新建材设进场 5新增材设进场编辑状态  6材设模型模式
     private boolean show = false;//true  不相应长按事件  false相应长按事件
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -132,7 +133,7 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
 
     @Override
     public void sendBasicInfo(String token) {
-        String url = AppConfig.BASE_URL_BLUEPRINT_TOKEN +token+"&show="+show;
+        String url = AppConfig.BASE_URL_BLUEPRINT_TOKEN + token + "&show=" + show;
         LogUtil.e("url=" + url);
         mWebview.loadUrl(url);
     }
@@ -165,22 +166,22 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
         //点击构件返回信息
         @JavascriptInterface
         public void getPosition(final String json) {
-            LogUtil.e("getPosition json="+json+" type="+type);
-            if(TextUtils.isEmpty(json)){
+            LogUtil.e("getPosition json=" + json + " type=" + type);
+            if (TextUtils.isEmpty(json)) {
                 component = null;
-            }else {
+            } else {
                 component = new GsonBuilder().create().fromJson(json, ModelComponent.class);
             }
 
             //0新建检查单 1检查单编辑状态 2详情查看  3模型模式   4新建材设进场  5新增材设进场编辑状态  6材设模型模式
-            switch (type){
+            switch (type) {
                 case 0:
-                    if(checkComponent()){
+                    if (checkComponent()) {
                         backData();
                     }
                     break;
                 case 1:
-                    if(checkComponent()){
+                    if (checkComponent()) {
                         backData();
                     }
                     break;
@@ -188,7 +189,7 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
 
                     break;
                 case 3:
-                    if(checkComponent()) {
+                    if (checkComponent()) {
                         //跳转到检查单创建页
                         Intent intent = new Intent(mActivity, CreateCheckListActivity.class);
                         mModelSelectInfo.component = component;
@@ -198,17 +199,17 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
                     }
                     break;
                 case 4:
-                    if(checkComponent()){
+                    if (checkComponent()) {
                         backData();
                     }
                     break;
                 case 5:
-                    if(checkComponent()){
+                    if (checkComponent()) {
                         backData();
                     }
                     break;
                 case 6:
-                    if(checkComponent()) {
+                    if (checkComponent()) {
                         //跳转到材设记录创建页
                         Intent intent = new Intent(mActivity, CreateEquipmentMandatoryActivity.class);
                         mModelSelectInfo.component = component;
@@ -222,8 +223,8 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
         //点击圆点 返回信息
         @JavascriptInterface
         public void getPositionInfo(String json) {
-            LogUtil.e("getPositionInfo json="+json);
-            switch (type){
+            LogUtil.e("getPositionInfo json=" + json);
+            switch (type) {
                 case 3:
                     handleQuality(json);
                     break;
@@ -268,7 +269,7 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
     }
 
     //质量模型模式
-    private void handleQuality(String json){
+    private void handleQuality(String json) {
         final ModelElementHistory dot = new GsonBuilder().create().fromJson(json, ModelElementHistory.class);
         if (dot != null) {
             runOnUiThread(new Runnable() {
@@ -279,28 +280,21 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
                     switch (dot.qcState) {
                         case CommonConfig.QC_STATE_UNRECTIFIED://"待整改"
                         case CommonConfig.QC_STATE_DELAYED://"已延迟"
-                            if (AuthorityManager.isCreateRepair() && AuthorityManager.isMe(dot.responsibleUserId)) {
-                                showRepairDialog(dot);
-                            }
+                            showRepairDialog(dot, AuthorityManager.isCreateRepair() && AuthorityManager.isMe(dot.responsibleUserId), AuthorityManager.isQualityBrowser());
                             break;
                         case CommonConfig.QC_STATE_UNREVIEWED://"待复查"
-                            if (AuthorityManager.isCreateReview() && AuthorityManager.isMe(dot.inspectionUserId)) {
-                                showReviewDialog(dot);
-                            }
+                            showReviewDialog(dot, AuthorityManager.isCreateReview() && AuthorityManager.isMe(dot.inspectionUserId), AuthorityManager.isQualityBrowser());
                             break;
                         case CommonConfig.QC_STATE_INSPECTED://"已检查"
                         case CommonConfig.QC_STATE_REVIEWED://"已复查"
                         case CommonConfig.QC_STATE_ACCEPTED://"已验收"
-                            if (AuthorityManager.isQualityBrowser()) {
-                                showDetailDialog(dot);
-                            }
+                            showDetailDialog(dot, AuthorityManager.isQualityBrowser());
                             break;
                     }
                 }
             });
         }
     }
-
 
 
     private void setListener() {
@@ -310,14 +304,14 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
     }
 
     //获取选中的构件信息
-    private void getSelectedComponent(){
+    private void getSelectedComponent() {
         LogUtil.e("javascript:getSelectedComponent()");
         mWebview.loadUrl("javascript:getSelectedComponent()");
     }
 
     private void initData() {
         //入口类型
-        type = getIntent().getIntExtra(CommonConfig.RELEVANT_TYPE,0);
+        type = getIntent().getIntExtra(CommonConfig.RELEVANT_TYPE, 0);
         mModelSelectInfo = (ModelListBeanItem) getIntent().getSerializableExtra(CommonConfig.MODEL_SELECT_INFO);
         mFileName = getIntent().getStringExtra(CommonConfig.BLUE_PRINT_FILE_NAME);
         mFileId = getIntent().getStringExtra(CommonConfig.BLUE_PRINT_FILE_ID);
@@ -334,9 +328,9 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
     }
 
     //不同的入口处理数据不同
-    private void handleType(){
+    private void handleType() {
         //0新建检查单 1检查单编辑状态 2详情查看  3模型模式  4新建材设进场 5新增材设进场编辑状态  6材设模型模式
-        switch (type){
+        switch (type) {
             case 0:
                 show = false;
                 break;
@@ -369,7 +363,6 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
     }
 
 
-
     @Override
     public void onClick(View view) {
         int id = view.getId();
@@ -384,8 +377,8 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
     }
 
     //检测是否选择了构件
-    private boolean checkComponent(){
-        if(component==null||TextUtils.isEmpty(component.elementId)||"undefined".equals(component.elementId)) {
+    private boolean checkComponent() {
+        if (component == null || TextUtils.isEmpty(component.elementId) || "undefined".equals(component.elementId)) {
             SaveDeleteDialog mHintDialog = new SaveDeleteDialog(getActivity());
             mHintDialog.getModelHintDialog("您还未选择构件!");
             mHintDialog.show();
@@ -394,7 +387,7 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
         return true;
     }
 
-    private void backData(){
+    private void backData() {
         Intent data = new Intent();
         mModelSelectInfo.component = component;
         data.putExtra(CommonConfig.MODEL_SELECT_INFO, mModelSelectInfo);
@@ -403,27 +396,27 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
     }
 
 
-
     //设定选中的构件  单个和多个
-    private void showSelectedComponent(final List<String> list){
+    private void showSelectedComponent(final List<String> list) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 String param = new GsonBuilder().create().toJson(list);
-                LogUtil.e("设置选中构件 param="+param);
+                LogUtil.e("设置选中构件 param=" + param);
                 mWebview.loadUrl("javascript:showSelectedComponent('" + param + "')");
             }
         });
 
 
     }
+
     //设置多个点
     @Override
     public void showModelHistory(List<ModelElementHistory> list) {
 
         //设置多点
         String param = new GsonBuilder().create().toJson(list);
-        LogUtil.e("设置质量多点 params="+param);
+        LogUtil.e("设置质量多点 params=" + param);
         mWebview.loadUrl("javascript:loadCircleItems('" + param + "')");
 
         //设置多个构件选中
@@ -441,7 +434,7 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
             @Override
             public void run() {
                 String param = new GsonBuilder().create().toJson(items);
-                LogUtil.e("设置材设多点 params="+param);
+                LogUtil.e("设置材设多点 params=" + param);
                 mWebview.loadUrl("javascript:loadCircleItems('" + param + "')");
             }
         });
@@ -459,10 +452,8 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
     }
 
 
-
-
     //新建整改单的弹出框
-    private void showRepairDialog(final ModelElementHistory dot) {
+    private void showRepairDialog(final ModelElementHistory dot, boolean create, boolean browser) {
         mRepairDialog.getRepairDialog(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -483,11 +474,11 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
                 intent.putExtra(CommonConfig.QUALITY_CHECK_LIST_ID, dot.inspectionId);
                 startActivity(intent);
             }
-        }).show();
+        }, create, browser).show();
     }
 
     //新建复查单的弹出框
-    private void showReviewDialog(final ModelElementHistory dot) {
+    private void showReviewDialog(final ModelElementHistory dot, boolean create, boolean browser) {
         mReviewDialog.getReviewDialog(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -508,11 +499,11 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
                 intent.putExtra(CommonConfig.QUALITY_CHECK_LIST_ID, dot.inspectionId);
                 startActivity(intent);
             }
-        }).show();
+        }, create, browser).show();
     }
 
     //查看质量详情
-    private void showDetailDialog(final ModelElementHistory dot) {
+    private void showDetailDialog(final ModelElementHistory dot, boolean browser) {
         mQualityDetailDialog.getQualityDetailDialog(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -522,7 +513,7 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
                 intent.putExtra(CommonConfig.QUALITY_CHECK_LIST_ID, dot.inspectionId);
                 startActivity(intent);
             }
-        }).show();
+        }, browser).show();
     }
 
     /**
@@ -535,86 +526,59 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
         return temp;
     }
 
-     private void pageFinished(){
-         //0新建检查单 1检查单编辑状态 2详情查看  3模型模式  4新建材设进场 5新增材设进场编辑状态  6材设模型模式
-         LogUtil.e("pageFinish type="+type);
-         switch (type){
-             case 0:
+    private void pageFinished() {
+        //0新建检查单 1检查单编辑状态 2详情查看  3模型模式  4新建材设进场 5新增材设进场编辑状态  6材设模型模式
+        LogUtil.e("pageFinish type=" + type);
+        switch (type) {
+            case 0:
 
-                 break;
-             case 1:
-                 if(mModelSelectInfo!=null){
-                     component = mModelSelectInfo.component;
-                     if(component!=null) {
-                         List<String> list = new ArrayList<>();
-                         list.add(mModelSelectInfo.component.elementId);
-                         showSelectedComponent(list);
-                     }
-                 }
-                 break;
-             case 2:
-                 if(mModelSelectInfo!=null){
-                     component = mModelSelectInfo.component;
-                     if(component!=null) {
-                         List<String> list = new ArrayList<>();
-                         list.add(mModelSelectInfo.component.elementId);
-                         showSelectedComponent(list);
-                     }
-                 }
-                 break;
-             case 3:
-                 mPresenter.getElements();
+                break;
+            case 1:
+                if (mModelSelectInfo != null) {
+                    component = mModelSelectInfo.component;
+                    if (component != null) {
+                        List<String> list = new ArrayList<>();
+                        list.add(mModelSelectInfo.component.elementId);
+                        showSelectedComponent(list);
+                    }
+                }
+                break;
+            case 2:
+                if (mModelSelectInfo != null) {
+                    component = mModelSelectInfo.component;
+                    if (component != null) {
+                        List<String> list = new ArrayList<>();
+                        list.add(mModelSelectInfo.component.elementId);
+                        showSelectedComponent(list);
+                    }
+                }
+                break;
+            case 3:
+                mPresenter.getElements();
 //                    showModelHistory(null);
-                 break;
-             case 4:
+                break;
+            case 4:
 
-                 break;
-             case 5:
-                 if(mModelSelectInfo!=null){
-                     component = mModelSelectInfo.component;
-                     if(component!=null) {
-                         List<String> list = new ArrayList<>();
-                         list.add(mModelSelectInfo.component.elementId);
-                         showSelectedComponent(list);
-                     }
-                 }
-                 break;
-             case 6:
-                 mPresenter.getEquipmentList();
-                 break;
-         }
+                break;
+            case 5:
+                if (mModelSelectInfo != null) {
+                    component = mModelSelectInfo.component;
+                    if (component != null) {
+                        List<String> list = new ArrayList<>();
+                        list.add(mModelSelectInfo.component.elementId);
+                        showSelectedComponent(list);
+                    }
+                }
+                break;
+            case 6:
+                mPresenter.getEquipmentList();
+                break;
+        }
 
-     }
+    }
 
     class CustomWebViewClient extends WebViewClient {
 
-        @Override
-        public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
-            LogUtil.e("intercept before,url="+url);
-//            if(!TextUtils.isEmpty(url)){
-//                String pre = "static.bimface.com";
-//                String pro = "api.bimface.com";
-//                String loc = "172.16.233.144:443";
-//                if(url.contains(pre)){
-//                    url = url.replace(pre,loc);
-//                }
-//                if(url.contains(pro))
-//                {
-//                    url = url.replace(pro,loc);
-//                }
-//            }
-//            LogUtil.e("intercept after,url="+url);
-            return super.shouldInterceptRequest(view, url);
-        }
-
-
-
-        @Override
-        public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            LogUtil.e("url="+url);
-            view.loadUrl(url);
-            return true;
-        }
 
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
@@ -625,7 +589,6 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
-//            pageFinished();
             dismissLoadingDialog();
         }
 
@@ -654,7 +617,7 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(mWebview!=null){
+        if (mWebview != null) {
             //清空所有Cookie
             CookieSyncManager.createInstance(BaseApplication.getInstance());  //Create a singleton CookieSyncManager within a context
             CookieManager cookieManager = CookieManager.getInstance(); // the singleton CookieManager instance

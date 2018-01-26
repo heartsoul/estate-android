@@ -14,6 +14,7 @@ import java.util.List;
 public class EquipmentListBeanItem {
     public long id;
     public String code;//单据编号
+    public String updateTime;
     public long projectId;//项目id
     public String projectName;//项目名称
 

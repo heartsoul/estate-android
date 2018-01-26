@@ -44,14 +44,12 @@ public class EquipmentListPresenter implements EquipmentListContract.Presenter {
     private EquipmentListContract.View mView;
     private EquipmentListContract.Model mModel;
     private CompositeSubscription mSubscription;
-    private ProjectListItem mProjectInfo;
     private List<EquipmentListBeanItem> mDataList;
     private String mQcState = CommonConfig.QC_STATE_ALL;
     private int mCurrentPage = 0;
     private int mSize = 20;
     private List<String> mDateKeyList = new ArrayList<>();  //标记分隔时间
     private List<EquipmentListBeanItem> mList = new ArrayList<>(); //添加了分隔时间的数据
-    private int mClickPosition = 0;
     private OnOperateEquipmentSheetListener mListener = new OnOperateEquipmentSheetListener() {
         @Override
         public void delete(EquipmentListBeanItem item, int position) {
@@ -93,7 +91,7 @@ public class EquipmentListPresenter implements EquipmentListContract.Presenter {
         public void detail(EquipmentListBeanItem item, int position) {
             Intent intent = new Intent(mView.getActivity(), CreateEquipmentActivity.class);
             intent.putExtra(CommonConfig.EQUIPMENT_TYPE, CommonConfig.EQUIPMENT_TYPE_DETAIL);
-            intent.putExtra(CommonConfig.EQUIPMENT_LIST_ID,item.id);
+            intent.putExtra(CommonConfig.EQUIPMENT_LIST_ID, item.id);
             mView.getActivity().startActivity(intent);
         }
 
@@ -173,7 +171,7 @@ public class EquipmentListPresenter implements EquipmentListContract.Presenter {
         public void toEdit(EquipmentListBeanItem item, int position) {
             Intent intent = new Intent(mView.getActivity(), CreateEquipmentActivity.class);
             intent.putExtra(CommonConfig.EQUIPMENT_TYPE, CommonConfig.EQUIPMENT_TYPE_EDIT);
-            intent.putExtra(CommonConfig.EQUIPMENT_LIST_ID,item.id);
+            intent.putExtra(CommonConfig.EQUIPMENT_LIST_ID, item.id);
             mView.getActivity().startActivityForResult(intent, RequestCodeConfig.REQUEST_CODE_EQUIPMENT_TO_EDIT);
         }
     };
@@ -187,7 +185,6 @@ public class EquipmentListPresenter implements EquipmentListContract.Presenter {
 
     @Override
     public void initData(ProjectListItem projectInfo) {
-        mProjectInfo = projectInfo;
         getDataList();
     }
 
@@ -207,7 +204,7 @@ public class EquipmentListPresenter implements EquipmentListContract.Presenter {
             if (mView != null) {
                 mView.showLoadingDialog();
             }
-            Subscription sub = mModel.getAllEquipmentList( mCurrentPage, mSize,mQcState)
+            Subscription sub = mModel.getAllEquipmentList(mCurrentPage, mSize, mQcState)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Subscriber<EquipmentListBean>() {
@@ -234,40 +231,7 @@ public class EquipmentListPresenter implements EquipmentListContract.Presenter {
         } else {
             ToastManager.showNetWorkToast();
         }
-//        EquipmentListBean bean = new EquipmentListBean();
-//        bean.content = getList();
-//        handleResult(bean);
     }
-
-//    private List<EquipmentListBeanItem> getList() {
-//        List<EquipmentListBeanItem> list = new ArrayList<>();
-//        for (int i = 0; i < 6; i++) {
-//            EquipmentListBeanItem item = new EquipmentListBeanItem();
-//            item.facilityName = "facilityName " + i;
-//            item.facilityCode = "facilityCode " + i;
-//            item.batchCode = "batchCode " + i;
-//            if (i % 2 == 0) {
-//                item.qcState = CommonConfig.QC_STATE_EDIT;
-//            } else {
-//                item.qcState = CommonConfig.QC_STATE_NOT_STANDARD;
-//                item.qualified = false;
-//            }
-//            item.approachDate = (SystemClock.currentThreadTimeMillis() - i * 1000 * 3600 * 24) + "";
-//            list.add(item);
-//        }
-//        for (int i = 6; i < 10; i++) {
-//            EquipmentListBeanItem item = new EquipmentListBeanItem();
-//            item.facilityName = "facilityName " + i;
-//            item.facilityCode = "facilityCode " + i;
-//            item.batchCode = "batchCode " + i;
-//            item.qcState = CommonConfig.QC_STATE_STANDARD;
-//            item.qualified = true;
-//            item.approachDate = (SystemClock.currentThreadTimeMillis() - i * 1000 * 3600 * 12) + "";
-//            list.add(item);
-//        }
-//
-//        return list;
-//    }
 
     private void handleResult(EquipmentListBean bean) {
         if (bean != null && bean.content != null && bean.content.size() > 0) {
@@ -292,7 +256,7 @@ public class EquipmentListPresenter implements EquipmentListContract.Presenter {
         mList.clear();
         if (mDataList != null && mDataList.size() > 0) {
             for (EquipmentListBeanItem item : mDataList) {
-                String now = DateUtil.getListDate(Long.parseLong(item.approachDate));
+                String now = DateUtil.getListDate(Long.parseLong(item.updateTime));
                 if (CommonConfig.QC_STATE_EDIT.equals(item.getQcState())) {
                     item.showType = 1;
                 } else {
@@ -304,7 +268,7 @@ public class EquipmentListPresenter implements EquipmentListContract.Presenter {
                     EquipmentListBeanItem bean = new EquipmentListBeanItem();
                     bean.showType = 0;
 
-                    bean.approachDate = item.approachDate;
+                    bean.updateTime = item.updateTime;
                     mDateKeyList.add(now);
                     mList.add(bean);
                     mList.add(item);
@@ -362,20 +326,6 @@ public class EquipmentListPresenter implements EquipmentListContract.Presenter {
                     }
                 });
         mSubscription.add(sub);
-//        List<ClassifyNum> classifyNa = new ArrayList<>();
-//        ClassifyNum num = new ClassifyNum();
-//        num.count = 22;
-//        num.qcState = CommonConfig.QC_STATE_EDIT;
-//        classifyNa.add(num);
-//        ClassifyNum num1 = new ClassifyNum();
-//        num1.count = 12;
-//        num1.qcState = CommonConfig.QC_STATE_STANDARD;
-//        classifyNa.add(num1);
-//        ClassifyNum num2 = new ClassifyNum();
-//        num2.count = 3;
-//        num2.qcState = CommonConfig.QC_STATE_NOT_STANDARD;
-//        classifyNa.add(num2);
-//        updateNumber(classifyNa);
     }
 
     private void updateNumber(List<ClassifyNum> classifyNa) {

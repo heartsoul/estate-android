@@ -60,7 +60,7 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
     private String mFileId = "";//图纸id
 
     private RelevantBluePrintAndModelDialog mRepairDialog;
-    private RelevantBluePrintAndModelDialog mReviewDialog;
+    private RelevantBluePrintAndModelDialog mReviewDialog, mQualityDetailDialog;
 
     private RelevantBluePrintContract.Presenter mPresenter;
 
@@ -180,10 +180,11 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
         //初始化底部弹出框
         mRepairDialog = new RelevantBluePrintAndModelDialog(this);
         mReviewDialog = new RelevantBluePrintAndModelDialog(this);
+        mQualityDetailDialog = new RelevantBluePrintAndModelDialog(this);
         //title名字
         mFileName = getIntent().getStringExtra(CommonConfig.BLUE_PRINT_FILE_NAME);
         mFileId = getIntent().getStringExtra(CommonConfig.BLUE_PRINT_FILE_ID);
-        if(!TextUtils.isEmpty(mFileName)) {
+        if (!TextUtils.isEmpty(mFileName)) {
             mTitleView.setText(Html.fromHtml(mFileName));
         }
         //隐藏提示
@@ -291,7 +292,7 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
     }
 
     //新建整改单的弹出框
-    private void showRepairDialog(final BluePrintDotItem dot) {
+    private void showRepairDialog(final BluePrintDotItem dot, boolean create, boolean browser) {
         mRepairDialog.getRepairDialog(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -312,11 +313,11 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
                 intent.putExtra(CommonConfig.QUALITY_CHECK_LIST_ID, dot.inspectionId);
                 startActivity(intent);
             }
-        }).show();
+        }, create, browser).show();
     }
 
     //新建复查单的弹出框
-    private void showReviewDialog(final BluePrintDotItem dot) {
+    private void showReviewDialog(final BluePrintDotItem dot, boolean create, boolean browser) {
         mReviewDialog.getReviewDialog(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -337,13 +338,29 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
                 intent.putExtra(CommonConfig.QUALITY_CHECK_LIST_ID, dot.inspectionId);
                 startActivity(intent);
             }
-        }).show();
+        }, create, browser).show();
     }
+
+    //查看质量详情
+    private void showDetailDialog(final BluePrintDotItem dot, boolean browser) {
+        mQualityDetailDialog.getQualityDetailDialog(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //查看详情
+                Intent intent = new Intent(mActivity, QualityCheckListDetailActivity.class);
+                intent.putExtra(CommonConfig.QUALITY_CHECK_LIST_DEPTID, SharedPreferencesUtil.getProjectId());
+                intent.putExtra(CommonConfig.QUALITY_CHECK_LIST_ID, dot.inspectionId);
+                startActivity(intent);
+            }
+        }, browser).show();
+    }
+
 
     @Override
     public void showTokenError() {
         ToastManager.show("抱歉，您目前没有查看此图纸的权限，请联系系统管理员。");
     }
+
     class ModelEvent {
 
         //token失效的情况
@@ -352,6 +369,7 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
             LogUtil.e("invalidateToken");
             showTokenError();
         }
+
         //长按图纸 返回点的信息
         @JavascriptInterface
         public void getPosition(final String json) {
@@ -384,14 +402,16 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
 //          {"",     "staged", "unrectified",  "unreviewed",  "inspected",  "reviewed",  "delayed","accepted"};
                         switch (dot.qcState) {
                             case CommonConfig.QC_STATE_UNRECTIFIED://"待整改"
-                                if (AuthorityManager.isCreateRepair() && AuthorityManager.isMe(dot.responsibleUserId)) {
-                                    showRepairDialog(dot);
-                                }
+                            case CommonConfig.QC_STATE_DELAYED://"已延迟"
+                                showRepairDialog(dot, AuthorityManager.isCreateRepair() && AuthorityManager.isMe(dot.responsibleUserId), AuthorityManager.isQualityBrowser());
                                 break;
                             case CommonConfig.QC_STATE_UNREVIEWED://"待复查"
-                                if (AuthorityManager.isCreateReview() && AuthorityManager.isMe(dot.inspectionUserId)) {
-                                    showReviewDialog(dot);
-                                }
+                                showReviewDialog(dot, AuthorityManager.isCreateReview() && AuthorityManager.isMe(dot.inspectionUserId), AuthorityManager.isQualityBrowser());
+                                break;
+                            case CommonConfig.QC_STATE_INSPECTED://"已检查"
+                            case CommonConfig.QC_STATE_REVIEWED://"已复查"
+                            case CommonConfig.QC_STATE_ACCEPTED://"已验收"
+                                showDetailDialog(dot, AuthorityManager.isQualityBrowser());
                                 break;
                         }
                     }
@@ -513,7 +533,7 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(mWebview!=null){
+        if (mWebview != null) {
             //清空所有Cookie
             CookieSyncManager.createInstance(BaseApplication.getInstance());  //Create a singleton CookieSyncManager within a context
             CookieManager cookieManager = CookieManager.getInstance(); // the singleton CookieManager instance

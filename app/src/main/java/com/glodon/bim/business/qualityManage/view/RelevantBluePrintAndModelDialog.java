@@ -27,7 +27,7 @@ public class RelevantBluePrintAndModelDialog {
     private Display display;//window展示
     //底部框   新建整改单  查看检查单
     private LinearLayout mBottomParent;
-    private TextView mCreateView,mDetailView;
+    private TextView mCreateView, mDetailView;
 
     public RelevantBluePrintAndModelDialog(Context context) {
         this.context = context;
@@ -40,17 +40,18 @@ public class RelevantBluePrintAndModelDialog {
     /**
      * 新建整改单
      */
-    public RelevantBluePrintAndModelDialog getRepairDialog(final View.OnClickListener createRepairListener, final View.OnClickListener detailListener) {
-        View view = LayoutInflater.from(context).inflate(R.layout.view_relevant_blueprint_model_dialog,null);
+    public RelevantBluePrintAndModelDialog getRepairDialog(final View.OnClickListener createRepairListener, final View.OnClickListener detailListener, boolean create, boolean browser) {
+        View view = LayoutInflater.from(context).inflate(R.layout.view_relevant_blueprint_model_dialog, null);
         mBottomParent = view.findViewById(R.id.relevant_blueprint_bottom);
         mCreateView = view.findViewById(R.id.relevant_blueprint_bottom_create);
         mDetailView = view.findViewById(R.id.relevant_blueprint_bottom_detail);
+        mCreateView.setVisibility(create ? View.VISIBLE : View.GONE);
+        mDetailView.setVisibility(browser ? View.VISIBLE : View.GONE);
         mCreateView.setText("新建整改单");
         mCreateView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(createRepairListener!=null)
-                {
+                if (createRepairListener != null) {
                     createRepairListener.onClick(view);
                 }
                 dismiss();
@@ -59,8 +60,7 @@ public class RelevantBluePrintAndModelDialog {
         mDetailView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(detailListener!=null)
-                {
+                if (detailListener != null) {
                     detailListener.onClick(view);
                 }
                 dismiss();
@@ -74,17 +74,19 @@ public class RelevantBluePrintAndModelDialog {
     /**
      * 新建复查单
      */
-    public RelevantBluePrintAndModelDialog getReviewDialog(final View.OnClickListener createReviewListener, final View.OnClickListener detailListener) {
-        View view = LayoutInflater.from(context).inflate(R.layout.view_relevant_blueprint_model_dialog,null);
+    public RelevantBluePrintAndModelDialog getReviewDialog(final View.OnClickListener createReviewListener, final View.OnClickListener detailListener, boolean create, boolean browser) {
+        View view = LayoutInflater.from(context).inflate(R.layout.view_relevant_blueprint_model_dialog, null);
         mBottomParent = view.findViewById(R.id.relevant_blueprint_bottom);
         mCreateView = view.findViewById(R.id.relevant_blueprint_bottom_create);
         mDetailView = view.findViewById(R.id.relevant_blueprint_bottom_detail);
+        mCreateView.setVisibility(create ? View.VISIBLE : View.GONE);
+        mDetailView.setVisibility(browser ? View.VISIBLE : View.GONE);
+
         mCreateView.setText("新建复查单");
         mCreateView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(createReviewListener!=null)
-                {
+                if (createReviewListener != null) {
                     createReviewListener.onClick(view);
                 }
                 dismiss();
@@ -93,8 +95,7 @@ public class RelevantBluePrintAndModelDialog {
         mDetailView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(detailListener!=null)
-                {
+                if (detailListener != null) {
                     detailListener.onClick(view);
                 }
                 dismiss();
@@ -105,16 +106,16 @@ public class RelevantBluePrintAndModelDialog {
     }
 
     /**
-     * 新建复查单
+     * 查看详情
      */
-    public RelevantBluePrintAndModelDialog getQualityDetailDialog(final View.OnClickListener detailListener) {
-        View view = LayoutInflater.from(context).inflate(R.layout.view_relevant_blueprint_model_detail_dialog,null);
+    public RelevantBluePrintAndModelDialog getQualityDetailDialog(final View.OnClickListener detailListener, boolean browser) {
+        View view = LayoutInflater.from(context).inflate(R.layout.view_relevant_blueprint_model_detail_dialog, null);
         mDetailView = view.findViewById(R.id.relevant_blueprint_bottom_detail_detail);
+        mDetailView.setVisibility(browser ? View.VISIBLE : View.GONE);
         mDetailView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(detailListener!=null)
-                {
+                if (detailListener != null) {
                     detailListener.onClick(view);
                 }
                 dismiss();
@@ -128,24 +129,24 @@ public class RelevantBluePrintAndModelDialog {
      * 材设编辑状态
      */
     public RelevantBluePrintAndModelDialog getEquipmentEditDialog(final OnEquipmentClickListener listener) {
-        View view = LayoutInflater.from(context).inflate(R.layout.view_relevant_equipment_dialog,null);
+        View view = LayoutInflater.from(context).inflate(R.layout.view_relevant_equipment_dialog, null);
         TextView submitView = view.findViewById(R.id.relevant_equipment_bottom_submit);
         View submitLine = view.findViewById(R.id.relevant_equipment_bottom_submit_line);
         TextView deleteView = view.findViewById(R.id.relevant_equipment_bottom_delete);
         View deleteLine = view.findViewById(R.id.relevant_equipment_bottom_delete_line);
         TextView editView = view.findViewById(R.id.relevant_equipment_bottom_edit);
 
-        if(AuthorityManager.isEquipmentModify()){
+        if (AuthorityManager.isEquipmentModify()) {
             submitLine.setVisibility(View.VISIBLE);
             submitView.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             submitLine.setVisibility(View.GONE);
             submitView.setVisibility(View.GONE);
         }
-        if(AuthorityManager.isEquipmentDelete()){
+        if (AuthorityManager.isEquipmentDelete()) {
             deleteLine.setVisibility(View.VISIBLE);
             deleteView.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             deleteLine.setVisibility(View.GONE);
             deleteView.setVisibility(View.GONE);
         }
@@ -153,8 +154,7 @@ public class RelevantBluePrintAndModelDialog {
         submitView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(listener!=null)
-                {
+                if (listener != null) {
                     listener.submit();
                 }
                 dismiss();
@@ -163,8 +163,7 @@ public class RelevantBluePrintAndModelDialog {
         deleteView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(listener!=null)
-                {
+                if (listener != null) {
                     listener.delete();
                 }
                 dismiss();
@@ -173,8 +172,7 @@ public class RelevantBluePrintAndModelDialog {
         editView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(listener!=null)
-                {
+                if (listener != null) {
                     listener.edit();
                 }
                 dismiss();
@@ -188,13 +186,12 @@ public class RelevantBluePrintAndModelDialog {
      * 材设提交状态
      */
     public RelevantBluePrintAndModelDialog getEquipmentDialog(final View.OnClickListener listener) {
-        View view = LayoutInflater.from(context).inflate(R.layout.view_relevant_equipment_detail_dialog,null);
+        View view = LayoutInflater.from(context).inflate(R.layout.view_relevant_equipment_detail_dialog, null);
         TextView detailView = view.findViewById(R.id.relevant_equipment_bottom_detail);
         detailView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(listener!=null)
-                {
+                if (listener != null) {
                     listener.onClick(view);
                 }
                 dismiss();
@@ -234,13 +231,13 @@ public class RelevantBluePrintAndModelDialog {
     }
 
     public void show() {
-        if(dialog!=null) {
+        if (dialog != null) {
             dialog.show();
         }
     }
 
-    public void dismiss(){
-        if(dialog!=null) {
+    public void dismiss() {
+        if (dialog != null) {
             dialog.dismiss();
         }
     }
