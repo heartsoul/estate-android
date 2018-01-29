@@ -88,7 +88,7 @@ public class CreateEquipmentPictureActivity extends BaseActivity implements View
         int id = view.getId();
         switch (id)
         {
-            case R.id.create_equipment_mandatory_header_back:
+            case R.id.create_equipment_picture_header_back:
                 mActivity.finish();
                 break;
             case R.id.create_equipment_picture_photo_0:

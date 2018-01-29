@@ -362,6 +362,9 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
                 break;
             case 6:
                 show = false;
+                if(!AuthorityManager.isEquipmentModify()){
+                    mFinishView.setVisibility(View.GONE);
+                }
                 break;
         }
     }
