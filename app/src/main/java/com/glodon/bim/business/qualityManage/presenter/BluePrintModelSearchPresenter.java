@@ -8,6 +8,7 @@ import com.glodon.bim.basic.utils.NetWorkUtils;
 import com.glodon.bim.basic.utils.SharedPreferencesUtil;
 import com.glodon.bim.business.qualityManage.bean.BluePrintModelSearchBean;
 import com.glodon.bim.business.qualityManage.bean.BluePrintModelSearchBeanItem;
+import com.glodon.bim.business.qualityManage.bean.BlueprintListBeanItem;
 import com.glodon.bim.business.qualityManage.bean.ModelListBeanItem;
 import com.glodon.bim.business.qualityManage.contract.BluePrintModelSearchContract;
 import com.glodon.bim.business.qualityManage.listener.OnBluePrintModelSearchResultClickListener;
@@ -50,79 +51,98 @@ public class BluePrintModelSearchPresenter implements BluePrintModelSearchContra
     //模型
     private ModelListBeanItem mModelSelectInfo;//编辑时有过这个item
     private int modelType = 0;//0新建检查单 1检查单编辑状态 2详情查看  3模型模式
+    private boolean mIsChangeModel = false;//是否是切换模型
 
     private OnBluePrintModelSearchResultClickListener mListener = new OnBluePrintModelSearchResultClickListener() {
         @Override
         public void onSelectBluePrint(BluePrintModelSearchBeanItem item) {
 
-            Intent intent = new Intent(mView.getActivity(), RelevantBluePrintActivity.class);
+            if(mIsChangeModel){
+                Intent data = new Intent();
+                BlueprintListBeanItem result = new BlueprintListBeanItem();
+                result.fileId = item.fileId;
+                result.name = item.name;
+                data.putExtra(CommonConfig.CHANGE_BLUEPRINT_RESULT,result);
+                mView.getActivity().setResult(Activity.RESULT_OK,data);
+                mView.getActivity().finish();
+            }else {
+                Intent intent = new Intent(mView.getActivity(), RelevantBluePrintActivity.class);
 
-            intent.putExtra(CommonConfig.BLUE_PRINT_FILE_NAME, item.name);
-            intent.putExtra(CommonConfig.BLUE_PRINT_FILE_ID, item.fileId);
-            switch (blueprintType)
-            {
-                case 0:
-                    intent.putExtra(CommonConfig.RELEVANT_TYPE, blueprintType);
-                    break;
-                case 1:
-                    if (item.fileId.equals(mSelectId)) {
-                        intent.putExtra(CommonConfig.BLUE_PRINT_POSITION_X, drawingPositionX);
-                        intent.putExtra(CommonConfig.BLUE_PRINT_POSITION_Y, drawingPositionY);
-                        intent.putExtra(CommonConfig.RELEVANT_TYPE, 1);
-                    }else{
-                        intent.putExtra(CommonConfig.RELEVANT_TYPE, 0);
-                    }
-                    break;
-                case 2:
+                intent.putExtra(CommonConfig.BLUE_PRINT_FILE_NAME, item.name);
+                intent.putExtra(CommonConfig.BLUE_PRINT_FILE_ID, item.fileId);
+                switch (blueprintType) {
+                    case 0:
+                        intent.putExtra(CommonConfig.RELEVANT_TYPE, blueprintType);
+                        break;
+                    case 1:
+                        if (item.fileId.equals(mSelectId)) {
+                            intent.putExtra(CommonConfig.BLUE_PRINT_POSITION_X, drawingPositionX);
+                            intent.putExtra(CommonConfig.BLUE_PRINT_POSITION_Y, drawingPositionY);
+                            intent.putExtra(CommonConfig.RELEVANT_TYPE, 1);
+                        } else {
+                            intent.putExtra(CommonConfig.RELEVANT_TYPE, 0);
+                        }
+                        break;
+                    case 2:
 
-                    break;
-                case 3:
-                    intent.putExtra(CommonConfig.RELEVANT_TYPE, blueprintType);
-                    break;
+                        break;
+                    case 3:
+                        intent.putExtra(CommonConfig.RELEVANT_TYPE, blueprintType);
+                        break;
+                }
+
+                mView.getActivity().startActivityForResult(intent, RequestCodeConfig.REQUEST_CODE_TO_RELEVANT_BLUEPRINT);
             }
-
-            mView.getActivity().startActivityForResult(intent, RequestCodeConfig.REQUEST_CODE_TO_RELEVANT_BLUEPRINT);
         }
 
         @Override
         public void onSelectModel(BluePrintModelSearchBeanItem item) {
-            Intent intent = new Intent(mView.getActivity(), RelevantModelActivity.class);
-            intent.putExtra(CommonConfig.BLUE_PRINT_FILE_ID,item.fileId);
-            intent.putExtra(CommonConfig.BLUE_PRINT_FILE_NAME,item.name);
+            if(mIsChangeModel){
+                Intent data = new Intent();
+                ModelListBeanItem modelInfo = new ModelListBeanItem();
+                modelInfo.fileId = item.fileId;
+                modelInfo.fileName = item.name;
+                data.putExtra(CommonConfig.CHANGE_MODEL_RESULT,modelInfo);
+                mView.getActivity().setResult(Activity.RESULT_OK,data);
+                mView.getActivity().finish();
+            }else {
+                Intent intent = new Intent(mView.getActivity(), RelevantModelActivity.class);
+                intent.putExtra(CommonConfig.BLUE_PRINT_FILE_ID, item.fileId);
+                intent.putExtra(CommonConfig.BLUE_PRINT_FILE_NAME, item.name);
 
-            ModelListBeanItem modelInfo = new ModelListBeanItem();
-            modelInfo.fileId = item.fileId;
-            modelInfo.fileName = item.name;
+                ModelListBeanItem modelInfo = new ModelListBeanItem();
+                modelInfo.fileId = item.fileId;
+                modelInfo.fileName = item.name;
 
-            switch (modelType)
-            {
-                case 0:
+                switch (modelType) {
+                    case 0:
 
-                    intent.putExtra(CommonConfig.RELEVANT_TYPE, modelType);
-                    break;
-                case 1:
-                    if(item.fileId.equals(mModelSelectInfo.fileId)){
-                        //同一个模型
-                        intent.putExtra(CommonConfig.RELEVANT_TYPE, 1);
-                        modelInfo.buildingId = mModelSelectInfo.buildingId;
-                        modelInfo.buildingName = mModelSelectInfo.buildingName;
-                        modelInfo.component = mModelSelectInfo.component;
-                    }else{
-                        //不同的模型
-                        intent.putExtra(CommonConfig.RELEVANT_TYPE, 0);
-                    }
-                    break;
-                case 2:
+                        intent.putExtra(CommonConfig.RELEVANT_TYPE, modelType);
+                        break;
+                    case 1:
+                        if (item.fileId.equals(mModelSelectInfo.fileId)) {
+                            //同一个模型
+                            intent.putExtra(CommonConfig.RELEVANT_TYPE, 1);
+                            modelInfo.buildingId = mModelSelectInfo.buildingId;
+                            modelInfo.buildingName = mModelSelectInfo.buildingName;
+                            modelInfo.component = mModelSelectInfo.component;
+                        } else {
+                            //不同的模型
+                            intent.putExtra(CommonConfig.RELEVANT_TYPE, 0);
+                        }
+                        break;
+                    case 2:
 
-                    break;
-                case 3:
-                    intent.putExtra(CommonConfig.RELEVANT_TYPE, modelType);
-                    break;
+                        break;
+                    case 3:
+                        intent.putExtra(CommonConfig.RELEVANT_TYPE, modelType);
+                        break;
+                }
+
+                intent.putExtra(CommonConfig.MODEL_SELECT_INFO, modelInfo);
+
+                mView.getActivity().startActivityForResult(intent, RequestCodeConfig.REQUEST_CODE_OPEN_MODEL);
             }
-
-            intent.putExtra(CommonConfig.MODEL_SELECT_INFO, modelInfo);
-
-            mView.getActivity().startActivityForResult(intent,RequestCodeConfig.REQUEST_CODE_OPEN_MODEL);
         }
     };
 
@@ -141,6 +161,7 @@ public class BluePrintModelSearchPresenter implements BluePrintModelSearchContra
         drawingPositionX = intent.getStringExtra(CommonConfig.BLUE_PRINT_POSITION_X);
         drawingPositionY = intent.getStringExtra(CommonConfig.BLUE_PRINT_POSITION_Y);
         blueprintType = intent.getIntExtra(CommonConfig.RELEVANT_TYPE, 0);
+        mIsChangeModel = intent.getBooleanExtra(CommonConfig.CHANGE_MODEL,false);
         //模型
         mModelSelectInfo = (ModelListBeanItem) intent.getSerializableExtra(CommonConfig.MODEL_SELECT_INFO);
         modelType = intent.getIntExtra(CommonConfig.RELEVANT_TYPE_MODEL,0);

@@ -1,5 +1,6 @@
 package com.glodon.bim.business.qualityManage.presenter;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Handler;
 import android.text.TextUtils;
@@ -13,11 +14,14 @@ import com.glodon.bim.business.qualityManage.bean.EquipmentHistoryItem;
 import com.glodon.bim.business.qualityManage.bean.ModelComponentWorldPosition;
 import com.glodon.bim.business.qualityManage.bean.ModelElementHistory;
 import com.glodon.bim.business.qualityManage.bean.ModelElementInfo;
+import com.glodon.bim.business.qualityManage.bean.ModelListBeanItem;
 import com.glodon.bim.business.qualityManage.bean.ProjectVersionBean;
 import com.glodon.bim.business.qualityManage.bean.RelevantBluePrintToken;
 import com.glodon.bim.business.qualityManage.contract.RelevantModelContract;
 import com.glodon.bim.business.qualityManage.model.RelevantModelModel;
+import com.glodon.bim.business.qualityManage.view.ModelActivity;
 import com.glodon.bim.common.config.CommonConfig;
+import com.glodon.bim.common.config.RequestCodeConfig;
 import com.glodon.bim.customview.ToastManager;
 
 import java.util.ArrayList;
@@ -217,6 +221,13 @@ public class RelevantModelPresenter implements RelevantModelContract.Presenter {
         mView.getActivity().startActivity(intent);
     }
 
+    @Override
+    public void changeModel() {
+        Intent intent = new Intent(mView.getActivity(), ModelActivity.class);
+        intent.putExtra(CommonConfig.CHANGE_MODEL,true);
+        mView.getActivity().startActivityForResult(intent, RequestCodeConfig.REQUEST_CODE_CHANGE_MODEL);
+    }
+
 
     //处理单据状态
     private void handleEquipmentlist(List<EquipmentHistoryItem> items) {
@@ -335,7 +346,24 @@ public class RelevantModelPresenter implements RelevantModelContract.Presenter {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
+        switch (requestCode)
+        {
+            case RequestCodeConfig.REQUEST_CODE_CHANGE_MODEL://模型切换的结果
+                if(resultCode == Activity.RESULT_OK && data!=null)
+                {
+                    //切换后的模型
+                    ModelListBeanItem model = (ModelListBeanItem) data.getSerializableExtra(CommonConfig.CHANGE_MODEL_RESULT);
+                    if(model!=null  && !mFileId.equals(model.fileId)){
+                        //展示新模型
+                        mFileId = model.fileId;
+                        getLatestVersion();
+                        if(mView!=null){
+                            mView.showNewModel(model);
+                        }
+                    }
+                }
+                break;
+        }
     }
 
     @Override

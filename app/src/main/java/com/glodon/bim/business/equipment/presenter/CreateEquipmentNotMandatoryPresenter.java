@@ -14,6 +14,7 @@ import com.glodon.bim.business.qualityManage.bean.ModelElementInfo;
 import com.glodon.bim.business.qualityManage.bean.ModelListBeanItem;
 import com.glodon.bim.business.qualityManage.model.CreateCheckListModel;
 import com.glodon.bim.business.qualityManage.view.ModelActivity;
+import com.glodon.bim.business.qualityManage.view.RelevantModelActivity;
 import com.glodon.bim.common.config.CommonConfig;
 import com.glodon.bim.common.config.RequestCodeConfig;
 
@@ -57,12 +58,13 @@ public class CreateEquipmentNotMandatoryPresenter implements CreateEquipmentNotM
             mIsEdit = true;
             mView.showEditInfo(info);
             mModelSelectInfo = info.model;
-        }
-        //从模型过来
-        mModelSelectInfo = (ModelListBeanItem) intent.getSerializableExtra(CommonConfig.RELEVANT_MODEL);
-        if (mModelSelectInfo!=null && mModelSelectInfo.component != null) {
-            getElementName(mModelSelectInfo.fileId, mModelSelectInfo.component.elementId);
-            mModelType=5;
+        }else {
+            //从模型过来
+            mModelSelectInfo = (ModelListBeanItem) intent.getSerializableExtra(CommonConfig.RELEVANT_MODEL);
+            if (mModelSelectInfo != null && mModelSelectInfo.component != null) {
+                getElementName(mModelSelectInfo.fileId, mModelSelectInfo.component.elementId);
+                mModelType = 5;
+            }
         }
     }
 
@@ -93,11 +95,14 @@ public class CreateEquipmentNotMandatoryPresenter implements CreateEquipmentNotM
 
     @Override
     public void toModel() {
-        Intent intent = new Intent(mView.getActivity(), ModelActivity.class);
+        Intent intent = new Intent();
         LogUtil.e("modelSelectInfo==null?" + (mModelSelectInfo == null));
-        if (mModelSelectInfo != null && !TextUtils.isEmpty(mModelSelectInfo.fileId)) {
-            intent.putExtra(CommonConfig.MODULE_LIST_POSITION, mModelSelectInfo.fileId);
+        if (mModelSelectInfo!=null && !TextUtils.isEmpty(mModelSelectInfo.fileId)) {
+            intent.setClass(mView.getActivity(), RelevantModelActivity.class);
+            intent.putExtra(CommonConfig.BLUE_PRINT_FILE_ID, mModelSelectInfo.fileId);
             intent.putExtra(CommonConfig.MODEL_SELECT_INFO, mModelSelectInfo);
+        }else{
+            intent.setClass(mView.getActivity(), ModelActivity.class);
         }
         LogUtil.e("modelType=" + mModelType);
         intent.putExtra(CommonConfig.RELEVANT_TYPE, mModelType);

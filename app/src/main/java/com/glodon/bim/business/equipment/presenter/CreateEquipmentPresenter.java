@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.text.TextUtils;
 
+import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.basic.utils.LinkedHashList;
 import com.glodon.bim.basic.utils.NetWorkUtils;
 import com.glodon.bim.basic.utils.SharedPreferencesUtil;
@@ -20,9 +21,11 @@ import com.glodon.bim.business.equipment.view.CreateEquipmentNotMandatoryActivit
 import com.glodon.bim.business.equipment.view.CreateEquipmentPictureActivity;
 import com.glodon.bim.business.qualityManage.bean.CreateCheckListParamsFile;
 import com.glodon.bim.business.qualityManage.bean.ModelComponent;
+import com.glodon.bim.business.qualityManage.bean.ModelElementInfo;
 import com.glodon.bim.business.qualityManage.bean.ModelListBeanItem;
 import com.glodon.bim.business.qualityManage.bean.QualityCheckListBeanItemFile;
 import com.glodon.bim.business.qualityManage.listener.OnUploadImageListener;
+import com.glodon.bim.business.qualityManage.model.CreateCheckListModel;
 import com.glodon.bim.business.qualityManage.util.UploadManger;
 import com.glodon.bim.business.qualityManage.view.RelevantModelActivity;
 import com.glodon.bim.common.config.CommonConfig;
@@ -137,6 +140,10 @@ public class CreateEquipmentPresenter implements CreateEquipmentContract.Present
                         public void onNext(EquipmentDetailBean bean) {
                             if(bean!=null){
                                 showInfo(bean);
+                                //收集初步数据
+                                assemBleData();
+                                copy();
+                                mInput = new CreateEquipmentParams();
                             }
                             if (mView != null) {
                                 mView.dismissLoadingDialog();
@@ -179,10 +186,10 @@ public class CreateEquipmentPresenter implements CreateEquipmentContract.Present
                         public void onNext(EquipmentDetailBean bean) {
                             if(bean!=null){
                                 showInfo(bean);
-                                //收集初步数据
-                                assemBleData();
-                                mInitParams = mInput;
-                                mInput = new CreateEquipmentParams();
+//                                //收集初步数据
+//                                assemBleData();
+//                                copy();
+//                                mInput = new CreateEquipmentParams();
                             }
                             if (mView != null) {
                                 mView.dismissLoadingDialog();
@@ -426,7 +433,7 @@ public class CreateEquipmentPresenter implements CreateEquipmentContract.Present
                             if (mView != null) {
                                 mView.dismissLoadingDialog();
                             }
-                            mInitParams = mInput;
+                            copy();
                             mInput = new CreateEquipmentParams();
                         }
                     });
@@ -458,7 +465,7 @@ public class CreateEquipmentPresenter implements CreateEquipmentContract.Present
                                 mIsEdit = true;
                                 mInput.code = bean.code;
                                 //初始化数据  保存验证使用
-                                mInitParams = mInput;
+                                copy();
                                 mInput = new CreateEquipmentParams();
                                 mInput.code = bean.code;
 
@@ -473,6 +480,36 @@ public class CreateEquipmentPresenter implements CreateEquipmentContract.Present
 
 
         }
+    }
+
+    private void copy(){
+        mInitParams.code = mInput.code;
+        mInitParams.projectId = mInput.projectId;
+        mInitParams.projectName = mInput.projectName;
+        mInitParams.batchCode = mInput.batchCode;
+        mInitParams.facilityCode = mInput.facilityCode;
+        mInitParams.facilityName = mInput.facilityName;
+        mInitParams.approachDate = mInput.approachDate;
+
+        mInitParams.quantity = mInput.quantity;
+        mInitParams.unit = mInput.unit;
+        mInitParams.specification = mInput.specification;
+        mInitParams.modelNum = mInput.modelNum;
+        mInitParams.manufacturer = mInput.manufacturer;
+        mInitParams.brand = mInput.brand;
+        mInitParams.supplier = mInput.supplier;
+
+        mInitParams.versionId = mInput.versionId;
+        mInitParams.gdocFileId = mInput.gdocFileId;
+        mInitParams.buildingId = mInput.buildingId;
+        mInitParams.buildingName = mInput.buildingName;
+        mInitParams.elementId = mInput.elementId;
+        mInitParams.elementName = mInput.elementName;
+        mInitParams.files = mInput.files;
+        mInitParams.qualified = mInput.qualified;
+        mInitParams.code = mInput.code;
+        mInitParams.code = mInput.code;
+
     }
 
     @Override
@@ -603,11 +640,11 @@ public class CreateEquipmentPresenter implements CreateEquipmentContract.Present
         //跳转到模型
         if(mMandatoryNotInfo!=null && mMandatoryNotInfo.model!=null && mMandatoryNotInfo.model.component!=null) {
             Intent intent = new Intent(mView.getActivity(), RelevantModelActivity.class);
-            intent.putExtra(CommonConfig.RELEVANT_TYPE, 2);
+            intent.putExtra(CommonConfig.RELEVANT_TYPE, 5);
 
             intent.putExtra(CommonConfig.MODEL_SELECT_INFO, mMandatoryNotInfo.model);
             intent.putExtra(CommonConfig.BLUE_PRINT_FILE_ID, mMandatoryNotInfo.model.fileId);
-            mView.getActivity().startActivity(intent);
+            mView.getActivity().startActivityForResult(intent,RequestCodeConfig.REQUEST_CODE_EQUIPMENT_CHANGE_MODEL);
         }
     }
 
@@ -641,9 +678,55 @@ public class CreateEquipmentPresenter implements CreateEquipmentContract.Present
                     }
                 }
                 break;
-
+            case RequestCodeConfig.REQUEST_CODE_EQUIPMENT_CHANGE_MODEL:
+                if (resultCode == Activity.RESULT_OK && data != null) {
+                    ModelListBeanItem mModelSelectInfo = (ModelListBeanItem) data.getSerializableExtra(CommonConfig.MODEL_SELECT_INFO);
+                    if(mModelSelectInfo!=null) {
+                        if(mMandatoryNotInfo!=null) {
+                            mMandatoryNotInfo.model = mModelSelectInfo;
+                        }
+                        if (mModelSelectInfo.component != null) {
+                            getElementName(mModelSelectInfo.fileId, mModelSelectInfo.component.elementId);
+                        }
+                    }
+                }
+                break;
         }
     }
+
+    //获取构件名称
+    private void getElementName(String fileId, String elementId) {
+        Subscription sub = new CreateCheckListModel().getElementProperty(SharedPreferencesUtil.getProjectId(), SharedPreferencesUtil.getProjectVersionId(), fileId, elementId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<ModelElementInfo>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        LogUtil.e(e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(ModelElementInfo modelElementInfo) {
+                        if (modelElementInfo != null && modelElementInfo.data != null) {
+                            String elementName = modelElementInfo.data.name;
+                            if(mMandatoryNotInfo!=null) {
+                                mMandatoryNotInfo.model.component.elementName = elementName;
+                            }
+                            if (mView != null) {
+                                mView.showModelName(elementName);
+                            }
+                        }
+                    }
+                });
+        mSubscription.add(sub);
+    }
+
+
 
     @Override
     public void onDestroy() {

@@ -28,6 +28,8 @@ import com.glodon.bim.business.qualityManage.view.BluePrintActivity;
 import com.glodon.bim.business.qualityManage.view.ChooseModuleActivity;
 import com.glodon.bim.business.qualityManage.view.ModelActivity;
 import com.glodon.bim.business.qualityManage.view.PhotoEditActivity;
+import com.glodon.bim.business.qualityManage.view.RelevantBluePrintActivity;
+import com.glodon.bim.business.qualityManage.view.RelevantModelActivity;
 import com.glodon.bim.common.config.CommonConfig;
 import com.glodon.bim.common.config.RequestCodeConfig;
 import com.glodon.bim.customview.ToastManager;
@@ -880,27 +882,45 @@ public class CreateCheckListPresenter implements CreateCheckListContract.Present
 
     @Override
     public void toBluePrint() {
-        Intent intent = new Intent(mView.getActivity(), BluePrintActivity.class);
+        Intent intent = new Intent();
         if (!TextUtils.isEmpty(mCurrentBluePrintName) && !TextUtils.isEmpty(mBluePrintSelectInfo.name) && mBluePrintSelectInfo.fileId != null) {
             mCurrentBluePrintName = mView.getBluePrintName();
             if (mCurrentBluePrintName.equals(mBluePrintSelectInfo.name)) {
-                intent.putExtra(CommonConfig.MODULE_LIST_NAME, mBluePrintSelectInfo.name);
-                intent.putExtra(CommonConfig.MODULE_LIST_POSITION, mBluePrintSelectInfo.fileId);
+                intent.setClass(mView.getActivity(), RelevantBluePrintActivity.class);
+                intent.putExtra(CommonConfig.BLUE_PRINT_FILE_NAME, mBluePrintSelectInfo.name);
+                intent.putExtra(CommonConfig.BLUE_PRINT_FILE_ID, mBluePrintSelectInfo.fileId);
                 intent.putExtra(CommonConfig.BLUE_PRINT_POSITION_X, mBluePrintSelectInfo.drawingPositionX);
                 intent.putExtra(CommonConfig.BLUE_PRINT_POSITION_Y, mBluePrintSelectInfo.drawingPositionY);
             }
+        }else{
+            intent.setClass(mView.getActivity(), BluePrintActivity.class);
         }
         intent.putExtra(CommonConfig.RELEVANT_TYPE, mBluePrintType);
         mView.getActivity().startActivityForResult(intent, RequestCodeConfig.REQUEST_CODE_CHOOSE_BLUE_PRINT);
+//        Intent intent = new Intent(mView.getActivity(), BluePrintActivity.class);
+//        if (!TextUtils.isEmpty(mCurrentBluePrintName) && !TextUtils.isEmpty(mBluePrintSelectInfo.name) && mBluePrintSelectInfo.fileId != null) {
+//            mCurrentBluePrintName = mView.getBluePrintName();
+//            if (mCurrentBluePrintName.equals(mBluePrintSelectInfo.name)) {
+//                intent.putExtra(CommonConfig.MODULE_LIST_NAME, mBluePrintSelectInfo.name);
+//                intent.putExtra(CommonConfig.MODULE_LIST_POSITION, mBluePrintSelectInfo.fileId);
+//                intent.putExtra(CommonConfig.BLUE_PRINT_POSITION_X, mBluePrintSelectInfo.drawingPositionX);
+//                intent.putExtra(CommonConfig.BLUE_PRINT_POSITION_Y, mBluePrintSelectInfo.drawingPositionY);
+//            }
+//        }
+//        intent.putExtra(CommonConfig.RELEVANT_TYPE, mBluePrintType);
+//        mView.getActivity().startActivityForResult(intent, RequestCodeConfig.REQUEST_CODE_CHOOSE_BLUE_PRINT);
     }
 
     @Override
     public void toModelList() {
-        Intent intent = new Intent(mView.getActivity(), ModelActivity.class);
+        Intent intent = new Intent();
         LogUtil.e("modelSelectInfo==null?"+(mModelSelectInfo==null));
         if (mModelSelectInfo!=null && !TextUtils.isEmpty(mModelSelectInfo.fileId)) {
-            intent.putExtra(CommonConfig.MODULE_LIST_POSITION, mModelSelectInfo.fileId);
+            intent.setClass(mView.getActivity(), RelevantModelActivity.class);
+            intent.putExtra(CommonConfig.BLUE_PRINT_FILE_ID, mModelSelectInfo.fileId);
             intent.putExtra(CommonConfig.MODEL_SELECT_INFO, mModelSelectInfo);
+        }else{
+            intent.setClass(mView.getActivity(), ModelActivity.class);
         }
         LogUtil.e("modelType="+mModelType);
         intent.putExtra(CommonConfig.RELEVANT_TYPE,mModelType);

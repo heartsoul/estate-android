@@ -105,4 +105,8 @@ public class CommonConfig {
     public static final int EQUIPMENT_TYPE_DETAIL = 2;
     public static final String EQUIPMENT_LIST_ID = "EQUIPMENT_LIST_ID";
     public static final int MODEL_TYPE_EQUIPMENT = 6;
+    public static final String CHANGE_MODEL = "CHANGE_MODEL";
+    public static final String CHANGE_MODEL_RESULT = "CHANGE_MODEL_RESULT";
+    public static final String CHANGE_BLUEPRINT = "CHANGE_BLUEPRINT";
+    public static final String CHANGE_BLUEPRINT_RESULT = "CHANGE_BLUEPRINT_RESULT";
 }

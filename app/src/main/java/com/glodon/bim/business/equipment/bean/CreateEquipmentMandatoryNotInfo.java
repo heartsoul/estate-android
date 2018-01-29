@@ -11,7 +11,7 @@ import java.io.Serializable;
  */
 
 public class CreateEquipmentMandatoryNotInfo implements Serializable{
-    public long quantity;//进场数量
+    public String quantity;//进场数量
     public String unit;//单位
     public String specification;//规格
     public String modelNum;//型号

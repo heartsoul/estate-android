@@ -170,13 +170,13 @@ public class CreateEquipmentNotMandatoryActivity extends BaseActivity implements
 
     private void toNext() {
         CreateEquipmentMandatoryNotInfo info = new CreateEquipmentMandatoryNotInfo();
-//        info.quantity = mNumEt.getText().toString().trim();
-        String quantity = mNumEt.getText().toString().trim();
-        if(TextUtils.isEmpty(quantity)){
-            info.quantity = 0;
-        }else{
-            info.quantity = Long.parseLong(quantity);
-        }
+        info.quantity = mNumEt.getText().toString().trim();
+//        String quantity = mNumEt.getText().toString().trim();
+//        if(TextUtils.isEmpty(quantity)){
+//            info.quantity = 0;
+//        }else{
+//            info.quantity = Long.parseLong(quantity);
+//        }
         info.unit = mUnitEt.getText().toString().trim();
         info.specification = mSpecEt.getText().toString().trim();
         info.modelNum = mModelNumEt.getText().toString().trim();

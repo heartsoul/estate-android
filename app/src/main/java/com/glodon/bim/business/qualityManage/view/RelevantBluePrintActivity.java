@@ -26,6 +26,7 @@ import com.glodon.bim.R;
 import com.glodon.bim.base.BaseActivity;
 import com.glodon.bim.base.BaseApplication;
 import com.glodon.bim.basic.config.AppConfig;
+import com.glodon.bim.basic.listener.ThrottleClickEvents;
 import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.basic.utils.SharedPreferencesUtil;
 import com.glodon.bim.business.authority.AuthorityManager;
@@ -58,6 +59,7 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
     private TextView mTrangleTextView;
     private String mFileName = "";//图纸名
     private String mFileId = "";//图纸id
+    private ImageView mChangeBlueprintView;
 
     private RelevantBluePrintAndModelDialog mRepairDialog;
     private RelevantBluePrintAndModelDialog mReviewDialog, mQualityDetailDialog;
@@ -90,6 +92,7 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
         mWebview = (WebView) findViewById(R.id.relevant_blueprint_webview);
         mTrangleView = (ImageView) findViewById(R.id.relevant_blueprint_trangle);
         mTrangleTextView = (TextView) findViewById(R.id.relevant_blueprint_trangle_content);
+        mChangeBlueprintView = (ImageView) findViewById(R.id.relevant_blueprint_change_blueprint);
 
         initWebview();
     }
@@ -158,6 +161,7 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
 
     private void setListener() {
         mBackView.setOnClickListener(this);
+        ThrottleClickEvents.throttleClick(mChangeBlueprintView,this);
     }
 
     @Override
@@ -166,6 +170,9 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
         switch (id) {
             case R.id.relevant_blueprint_back://返回键
                 mActivity.finish();
+                break;
+            case R.id.relevant_blueprint_change_blueprint://切换图纸
+                mPresenter.changeBlueprint();
                 break;
         }
     }
@@ -210,6 +217,7 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
                 break;
             case 1:
                 show = false;
+//                mChangeBlueprintView.setVisibility(View.VISIBLE);
                 break;
             case 2:
                 mFinishView.setVisibility(View.GONE);
@@ -265,6 +273,7 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
     private void showFinish() {
         mCancelView.setVisibility(View.VISIBLE);
         mBackView.setVisibility(View.GONE);
+        mChangeBlueprintView.setVisibility(View.GONE);
         mFinishView.setText("完成");
         mFinishView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -276,7 +285,7 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
             @Override
             public void onClick(View view) {
                 //消除图钉
-                removePosition("aaa");
+                removePosition();
                 //展示返回按钮
                 hideFinish();
             }
@@ -289,6 +298,9 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
         mBackView.setVisibility(View.VISIBLE);
         mFinishView.setText("长按新建");
         mFinishView.setOnClickListener(null);
+        if(type==1){
+            mChangeBlueprintView.setVisibility(View.VISIBLE);
+        }
     }
 
     //新建整改单的弹出框
@@ -361,6 +373,17 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
         ToastManager.show("抱歉，您目前没有查看此图纸的权限，请联系系统管理员。");
     }
 
+    @Override
+    public void showName(String fileId,String name) {
+        mFileName = name;
+        mFileId = fileId;
+        if (!TextUtils.isEmpty(mFileName)) {
+            mTitleView.setText(Html.fromHtml(mFileName));
+        }
+        drawingPositionY = null;
+        drawingPositionX = null;
+    }
+
     class ModelEvent {
 
         //token失效的情况
@@ -424,8 +447,8 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
 
 
     //消除图钉
-    private void removePosition(String param) {
-        mWebview.loadUrl("javascript:removeDrawableItem('" + param + "')");
+    private void removePosition() {
+        mWebview.loadUrl("javascript:removeDrawableItem()");
     }
 
     //设定图钉
@@ -528,6 +551,14 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
     @Override
     public Activity getActivity() {
         return mActivity;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(mPresenter!=null)
+        {
+            mPresenter.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
     @Override

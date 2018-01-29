@@ -54,64 +54,73 @@ public class ModelPresenter implements ModelContract.Presenter {
 
     private ModelListBeanItem mModelSelectInfo;//编辑时有过这个item
     private int type = 0;//0新建检查单 1检查单编辑状态 2详情查看  3质量模型模式  4新建材设进场 5新增材设进场编辑状态  6材设模型模式
+    private boolean mIsChangeModel = false;//是否切换模型
     private OnModelSelectListener mListener = new OnModelSelectListener() {
         @Override
         public void selectModel(ModelListBeanItem item) {
             if(mView!=null) {
-                Intent intent = new Intent(mView.getActivity(), RelevantModelActivity.class);
-                intent.putExtra(CommonConfig.BLUE_PRINT_FILE_ID,item.fileId);
-                intent.putExtra(CommonConfig.BLUE_PRINT_FILE_NAME,item.fileName);
+                if(mIsChangeModel){
+                    //模型切换，将数据带回模型展示界面
+                    Intent data = new Intent();
+                    data.putExtra(CommonConfig.CHANGE_MODEL_RESULT,item);
+                    mView.getActivity().setResult(Activity.RESULT_OK,data);
+                    mView.getActivity().finish();
+                }else {
+                    //跳转到模型展示
+                    Intent intent = new Intent(mView.getActivity(), RelevantModelActivity.class);
+                    intent.putExtra(CommonConfig.BLUE_PRINT_FILE_ID, item.fileId);
+                    intent.putExtra(CommonConfig.BLUE_PRINT_FILE_NAME, item.fileName);
 
-                ModelListBeanItem modelInfo = new ModelListBeanItem();
-                modelInfo.fileId = item.fileId;
-                modelInfo.fileName = item.fileName;
-                if(mCurrentSingle!=null) {
-                    modelInfo.buildingId = mCurrentSingle.id;
-                    modelInfo.buildingName = mCurrentSingle.name;
+                    ModelListBeanItem modelInfo = new ModelListBeanItem();
+                    modelInfo.fileId = item.fileId;
+                    modelInfo.fileName = item.fileName;
+                    if (mCurrentSingle != null) {
+                        modelInfo.buildingId = mCurrentSingle.id;
+                        modelInfo.buildingName = mCurrentSingle.name;
+                    }
+                    LogUtil.e("selectModel,type=" + type);
+                    switch (type) {
+                        case 0:
+                            intent.putExtra(CommonConfig.RELEVANT_TYPE, type);
+                            break;
+                        case 1:
+                            if (item.fileId.equals(mModelSelectInfo.fileId)) {
+                                //同一个模型
+                                intent.putExtra(CommonConfig.RELEVANT_TYPE, 1);
+                                modelInfo.component = mModelSelectInfo.component;
+                            } else {
+                                //不同的模型
+                                intent.putExtra(CommonConfig.RELEVANT_TYPE, 0);
+                            }
+                            break;
+                        case 2:
+                            break;
+                        case 3:
+                            intent.putExtra(CommonConfig.RELEVANT_TYPE, type);
+                            break;
+                        case 4:
+                            intent.putExtra(CommonConfig.RELEVANT_TYPE, type);
+                            break;
+
+                        case 5:
+                            if (item.fileId.equals(mModelSelectInfo.fileId)) {
+                                //同一个模型
+                                intent.putExtra(CommonConfig.RELEVANT_TYPE, 5);
+                                modelInfo.component = mModelSelectInfo.component;
+                            } else {
+                                //不同的模型
+                                intent.putExtra(CommonConfig.RELEVANT_TYPE, 4);
+                            }
+                            break;
+                        case 6:
+                            intent.putExtra(CommonConfig.RELEVANT_TYPE, type);
+                            break;
+                    }
+
+                    intent.putExtra(CommonConfig.MODEL_SELECT_INFO, modelInfo);
+
+                    mView.getActivity().startActivityForResult(intent, RequestCodeConfig.REQUEST_CODE_MODEL_OPEN_MODEL);
                 }
-                LogUtil.e("selectModel,type="+type);
-                switch (type)
-                {
-                    case 0:
-                        intent.putExtra(CommonConfig.RELEVANT_TYPE, type);
-                        break;
-                    case 1:
-                        if(item.fileId.equals(mModelSelectInfo.fileId)){
-                            //同一个模型
-                            intent.putExtra(CommonConfig.RELEVANT_TYPE, 1);
-                            modelInfo.component = mModelSelectInfo.component;
-                        }else{
-                            //不同的模型
-                            intent.putExtra(CommonConfig.RELEVANT_TYPE, 0);
-                        }
-                        break;
-                    case 2:
-                        break;
-                    case 3:
-                        intent.putExtra(CommonConfig.RELEVANT_TYPE, type);
-                        break;
-                    case 4:
-                        intent.putExtra(CommonConfig.RELEVANT_TYPE, type);
-                        break;
-
-                    case 5:
-                        if(item.fileId.equals(mModelSelectInfo.fileId)){
-                            //同一个模型
-                            intent.putExtra(CommonConfig.RELEVANT_TYPE, 5);
-                            modelInfo.component = mModelSelectInfo.component;
-                        }else{
-                            //不同的模型
-                            intent.putExtra(CommonConfig.RELEVANT_TYPE, 4);
-                        }
-                        break;
-                    case 6:
-                        intent.putExtra(CommonConfig.RELEVANT_TYPE, type);
-                        break;
-                }
-
-                intent.putExtra(CommonConfig.MODEL_SELECT_INFO, modelInfo);
-
-                mView.getActivity().startActivityForResult(intent, RequestCodeConfig.REQUEST_CODE_MODEL_OPEN_MODEL);
             }
         }
 
@@ -169,7 +178,9 @@ public class ModelPresenter implements ModelContract.Presenter {
     public void initData(Intent intent) {
         mModelSelectInfo = (ModelListBeanItem) intent.getSerializableExtra(CommonConfig.MODEL_SELECT_INFO);
         type = intent.getIntExtra(CommonConfig.RELEVANT_TYPE,0);
+        mIsChangeModel = intent.getBooleanExtra(CommonConfig.CHANGE_MODEL,false);
         LogUtil.e("inidData,type="+type);
+        LogUtil.e("mIsChangeModel="+mIsChangeModel);
         //编辑状态直接进入预览
         if(type==1 || type==5){
             toModelPreview();
@@ -193,14 +204,20 @@ public class ModelPresenter implements ModelContract.Presenter {
     @Override
     public void toSearch() {
         Intent intent = new Intent(mView.getActivity(),BluePrintModelSearchActivity.class);
-        intent.putExtra(CommonConfig.SEARCH_TYPE,1);//表示模型
-        //0新建检查单 1检查单编辑状态 2详情查看  3图纸模式
-        if(type==1){
-            //编辑状态 传递其他数据
-            intent.putExtra(CommonConfig.MODEL_SELECT_INFO, mModelSelectInfo);
+        intent.putExtra(CommonConfig.SEARCH_TYPE, 1);//表示模型
+        if(mIsChangeModel)
+        {
+            intent.putExtra(CommonConfig.CHANGE_MODEL,true);
+        }else {
+
+            //0新建检查单 1检查单编辑状态 2详情查看  3图纸模式
+            if (type == 1) {
+                //编辑状态 传递其他数据
+                intent.putExtra(CommonConfig.MODEL_SELECT_INFO, mModelSelectInfo);
+            }
+            intent.putExtra(CommonConfig.RELEVANT_TYPE_MODEL, type);
+            LogUtil.e("toSearch type=" + type);
         }
-        intent.putExtra(CommonConfig.RELEVANT_TYPE_MODEL,type);
-        LogUtil.e("toSearch type="+type);
         mView.getActivity().startActivityForResult(intent, RequestCodeConfig.REQUEST_CODE_MODEL_TO_SEARCH);
     }
 

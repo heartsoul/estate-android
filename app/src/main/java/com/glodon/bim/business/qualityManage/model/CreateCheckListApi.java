@@ -48,7 +48,7 @@ public interface CreateCheckListApi {
      * 获取质检项目列表/{deptId}/checkpoints/templates
      */
     @GET("quality/{deptId}/checkpoints/templates")
-    Observable<List<ModuleListBeanItem>> getModuleList(@Path("deptId") long deptId,@Header("cookie") String cookie);
+    Observable<List<ModuleListBeanItem>> getModuleList(@Path("deptId") long deptId,@Query("ifOther")boolean ifOther,@Header("cookie") String cookie);
 
 //    /**
 //     * 获取质检项目列表

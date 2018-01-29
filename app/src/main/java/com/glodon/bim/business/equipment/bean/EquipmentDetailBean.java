@@ -30,7 +30,7 @@ public class EquipmentDetailBean {
     public String approachDate;//进场日期
 
     //非必填项
-    public long quantity;//进场数量
+    public String quantity;//进场数量
     public String unit;//单位
     public String specification;//规格
     public String modelNum;//型号

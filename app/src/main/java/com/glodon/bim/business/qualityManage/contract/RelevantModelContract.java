@@ -5,6 +5,7 @@ import com.glodon.bim.base.IBaseView;
 import com.glodon.bim.business.qualityManage.bean.EquipmentHistoryItem;
 import com.glodon.bim.business.qualityManage.bean.ModelElementHistory;
 import com.glodon.bim.business.qualityManage.bean.ModelElementInfo;
+import com.glodon.bim.business.qualityManage.bean.ModelListBeanItem;
 import com.glodon.bim.business.qualityManage.bean.ProjectVersionBean;
 import com.glodon.bim.business.qualityManage.bean.RelevantBluePrintToken;
 
@@ -36,6 +37,11 @@ public interface RelevantModelContract {
          * 查看详情
          */
         void detail(EquipmentHistoryItem item);
+
+        /**
+         * 模型切换
+         */
+        void changeModel();
     }
 
     interface View extends IBaseView {
@@ -65,6 +71,11 @@ public interface RelevantModelContract {
          * 清除点的信息
          */
         void clearDots();
+
+        /**
+         * 展示模型
+         */
+        void showNewModel(ModelListBeanItem model);
     }
 
     interface Model {

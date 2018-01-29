@@ -205,7 +205,9 @@ public class CreateEquipmentActivity extends BaseActivity implements View.OnClic
 
     @Override
     public void showOtherInfo(CreateEquipmentMandatoryNotInfo mMandatoryNotInfo) {
-        mNumView.setText(mMandatoryNotInfo.quantity+"");
+        if(!TextUtils.isEmpty(mMandatoryNotInfo.quantity)) {
+            mNumView.setText(mMandatoryNotInfo.quantity + "");
+        }
         mUnitView.setText(mMandatoryNotInfo.unit);
         mSpecView.setText(mMandatoryNotInfo.specification);
         mModelNumView.setText(mMandatoryNotInfo.modelNum);
@@ -307,6 +309,11 @@ public class CreateEquipmentActivity extends BaseActivity implements View.OnClic
             }
         });
         mBackDialog.show();
+    }
+
+    @Override
+    public void showModelName(String elementName) {
+        mModelView.setText(elementName);
     }
 
 

@@ -13,16 +13,17 @@ import android.webkit.CookieSyncManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
-import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.glodon.bim.R;
 import com.glodon.bim.base.BaseActivity;
 import com.glodon.bim.base.BaseApplication;
 import com.glodon.bim.basic.config.AppConfig;
+import com.glodon.bim.basic.listener.ThrottleClickEvents;
 import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.basic.utils.SharedPreferencesUtil;
 import com.glodon.bim.business.authority.AuthorityManager;
@@ -51,8 +52,9 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
     private View mStatusView;
     private RelativeLayout mBackView;
     private RelativeLayout mFinishView;
+    private ImageView mChangeModelView;
     private WebView mWebview;
-    private String mFileName = "";
+//    private String mFileName = "";
     private String mFileId = "";//模型id
 
     private RelevantBluePrintAndModelDialog mRepairDialog, mReviewDialog, mQualityDetailDialog, mEquipmentDetailDialog;
@@ -79,6 +81,7 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
         mStatusView = findViewById(R.id.relevant_model_statusview);
         mBackView = (RelativeLayout) findViewById(R.id.relevant_model_back);
         mFinishView = (RelativeLayout) findViewById(R.id.relevant_model_finish);
+        mChangeModelView = (ImageView) findViewById(R.id.relevant_model_change_model);
         mWebview = (WebView) findViewById(R.id.relevant_model_webview);
         initWebview();
     }
@@ -300,6 +303,7 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
     private void setListener() {
         mBackView.setOnClickListener(this);
         mFinishView.setOnClickListener(this);
+        ThrottleClickEvents.throttleClick(mChangeModelView,this);
 
     }
 
@@ -313,7 +317,7 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
         //入口类型
         type = getIntent().getIntExtra(CommonConfig.RELEVANT_TYPE, 0);
         mModelSelectInfo = (ModelListBeanItem) getIntent().getSerializableExtra(CommonConfig.MODEL_SELECT_INFO);
-        mFileName = getIntent().getStringExtra(CommonConfig.BLUE_PRINT_FILE_NAME);
+//        mFileName = getIntent().getStringExtra(CommonConfig.BLUE_PRINT_FILE_NAME);
         mFileId = getIntent().getStringExtra(CommonConfig.BLUE_PRINT_FILE_ID);
         handleType();
         //初始化底部弹出框
@@ -373,7 +377,14 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
             case R.id.relevant_model_finish://+号
                 getSelectedComponent();
                 break;
+            case R.id.relevant_model_change_model://切换模型
+                changeModel();
+                break;
         }
+    }
+
+    private void changeModel() {
+        mPresenter.changeModel();
     }
 
     //检测是否选择了构件
@@ -445,6 +456,12 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
     public void clearDots() {
         mWebview.loadUrl("javascript:removeDrawableItem()");
     }
+
+    @Override
+    public void showNewModel(ModelListBeanItem model) {
+        mModelSelectInfo = model;
+    }
+
 
     @Override
     public void showTokenError() {
@@ -541,6 +558,13 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
                         list.add(mModelSelectInfo.component.elementId);
                         showSelectedComponent(list);
                     }
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mChangeModelView.setVisibility(View.VISIBLE);
+                        }
+                    });
+
                 }
                 break;
             case 2:
@@ -567,7 +591,14 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
                         List<String> list = new ArrayList<>();
                         list.add(mModelSelectInfo.component.elementId);
                         showSelectedComponent(list);
+
                     }
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mChangeModelView.setVisibility(View.VISIBLE);
+                        }
+                    });
                 }
                 break;
             case 6:
@@ -612,6 +643,14 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
     @Override
     public Activity getActivity() {
         return mActivity;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(mPresenter!=null)
+        {
+            mPresenter.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
     @Override

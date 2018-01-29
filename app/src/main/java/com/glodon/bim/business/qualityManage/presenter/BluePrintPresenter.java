@@ -58,6 +58,7 @@ public class BluePrintPresenter implements BluePrintContract.Presenter {
     private String fileId = "";
     private int pageIndex = 0;
     private boolean mIsFragment = false;
+    private boolean mIsChangeBlueprint = false;//是否是切换图纸
     private OnBlueprintHintClickListener mHintClickListener = new OnBlueprintHintClickListener() {
         @Override
         public void onSelect(BlueprintListBeanItem item) {
@@ -117,16 +118,23 @@ public class BluePrintPresenter implements BluePrintContract.Presenter {
     private OnChooseBlueprintObjListener mObjListener = new OnChooseBlueprintObjListener() {
         @Override
         public void onSelect(BlueprintListBeanItem item, String position) {
-            //新建检查单时
-            Intent intent = new Intent(mView.getActivity(), RelevantBluePrintActivity.class);
-            intent.putExtra(CommonConfig.BLUE_PRINT_FILE_NAME, item.name);
-            intent.putExtra(CommonConfig.BLUE_PRINT_FILE_ID, item.fileId);
-            intent.putExtra(CommonConfig.RELEVANT_TYPE, type);
-            if (item.fileId.equals(mSelectId)) {
-                intent.putExtra(CommonConfig.BLUE_PRINT_POSITION_X, drawingPositionX);
-                intent.putExtra(CommonConfig.BLUE_PRINT_POSITION_Y, drawingPositionY);
+            if(mIsChangeBlueprint){
+                Intent data = new Intent();
+                data.putExtra(CommonConfig.CHANGE_BLUEPRINT_RESULT,item);
+                mView.getActivity().setResult(Activity.RESULT_OK,data);
+                mView.getActivity().finish();
+            }else {
+                //新建检查单时
+                Intent intent = new Intent(mView.getActivity(), RelevantBluePrintActivity.class);
+                intent.putExtra(CommonConfig.BLUE_PRINT_FILE_NAME, item.name);
+                intent.putExtra(CommonConfig.BLUE_PRINT_FILE_ID, item.fileId);
+                intent.putExtra(CommonConfig.RELEVANT_TYPE, type);
+                if (item.fileId.equals(mSelectId)) {
+                    intent.putExtra(CommonConfig.BLUE_PRINT_POSITION_X, drawingPositionX);
+                    intent.putExtra(CommonConfig.BLUE_PRINT_POSITION_Y, drawingPositionY);
+                }
+                mView.getActivity().startActivityForResult(intent, RequestCodeConfig.REQUEST_CODE_TO_RELEVANT);
             }
-            mView.getActivity().startActivityForResult(intent, RequestCodeConfig.REQUEST_CODE_TO_RELEVANT);
         }
     };
 
@@ -144,6 +152,7 @@ public class BluePrintPresenter implements BluePrintContract.Presenter {
 
     @Override
     public void initData(Intent intent) {
+        mIsChangeBlueprint = intent.getBooleanExtra(CommonConfig.CHANGE_BLUEPRINT,false);
         mSelectId = intent.getStringExtra(CommonConfig.MODULE_LIST_POSITION);
         mSelectFileName = intent.getStringExtra(CommonConfig.MODULE_LIST_NAME);
         drawingPositionX = intent.getStringExtra(CommonConfig.BLUE_PRINT_POSITION_X);
@@ -175,15 +184,20 @@ public class BluePrintPresenter implements BluePrintContract.Presenter {
     public void toSearch() {
         Intent intent = new Intent(mView.getActivity(),BluePrintModelSearchActivity.class);
         intent.putExtra(CommonConfig.SEARCH_TYPE,0);//表示图纸
-        //0新建检查单 1检查单编辑状态 2详情查看  3图纸模式
-        if(type==1){
-            //编辑状态 传递其他数据
-            intent.putExtra(CommonConfig.BLUE_PRINT_FILE_NAME, mSelectFileName);
-            intent.putExtra(CommonConfig.BLUE_PRINT_FILE_ID, mSelectId);
-            intent.putExtra(CommonConfig.BLUE_PRINT_POSITION_X, drawingPositionX);
-            intent.putExtra(CommonConfig.BLUE_PRINT_POSITION_Y, drawingPositionY);
+        if(mIsChangeBlueprint){
+            intent.putExtra(CommonConfig.CHANGE_MODEL,true);
+        }else {
+            //0新建检查单 1检查单编辑状态 2详情查看  3图纸模式
+            if (type == 1) {
+                //编辑状态 传递其他数据
+                intent.putExtra(CommonConfig.BLUE_PRINT_FILE_NAME, mSelectFileName);
+                intent.putExtra(CommonConfig.BLUE_PRINT_FILE_ID, mSelectId);
+                intent.putExtra(CommonConfig.BLUE_PRINT_POSITION_X, drawingPositionX);
+                intent.putExtra(CommonConfig.BLUE_PRINT_POSITION_Y, drawingPositionY);
+            }
+            intent.putExtra(CommonConfig.RELEVANT_TYPE,type);
         }
-        intent.putExtra(CommonConfig.RELEVANT_TYPE,type);
+
         mView.getActivity().startActivityForResult(intent,RequestCodeConfig.REQUEST_CODE_TO_SEARCH);
     }
 

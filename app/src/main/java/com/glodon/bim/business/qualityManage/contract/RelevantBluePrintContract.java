@@ -29,6 +29,11 @@ public interface RelevantBluePrintContract {
          * 获取点的信息
          */
         void getBluePrintDots();
+
+        /**
+         * 切换图纸
+         */
+        void changeBlueprint();
     }
 
     interface View extends IBaseView {
@@ -47,6 +52,11 @@ public interface RelevantBluePrintContract {
          * 获取token失败
          */
         void showTokenError();
+
+        /**
+         * 展示图纸名字
+         */
+        void showName(String fileId,String name);
     }
 
     interface Model {

@@ -1,5 +1,6 @@
 package com.glodon.bim.business.qualityManage.presenter;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.text.TextUtils;
 
@@ -10,13 +11,16 @@ import com.glodon.bim.basic.utils.NetWorkUtils;
 import com.glodon.bim.basic.utils.SharedPreferencesUtil;
 import com.glodon.bim.business.greendao.provider.DaoProvider;
 import com.glodon.bim.business.qualityManage.bean.BluePrintDotItem;
+import com.glodon.bim.business.qualityManage.bean.BlueprintListBeanItem;
 import com.glodon.bim.business.qualityManage.bean.ProjectVersionBean;
 import com.glodon.bim.business.qualityManage.bean.ProjectVersionData;
 import com.glodon.bim.business.qualityManage.bean.RelevantBluePrintToken;
 import com.glodon.bim.business.qualityManage.contract.RelevantBluePrintContract;
 import com.glodon.bim.business.qualityManage.model.RelevantBluePrintApi;
 import com.glodon.bim.business.qualityManage.model.RelevantBluePrintModel;
+import com.glodon.bim.business.qualityManage.view.BluePrintActivity;
 import com.glodon.bim.common.config.CommonConfig;
+import com.glodon.bim.common.config.RequestCodeConfig;
 import com.glodon.bim.customview.ToastManager;
 
 import java.io.IOException;
@@ -158,8 +162,29 @@ public class RelevantBluePrintPresenter implements RelevantBluePrintContract.Pre
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void changeBlueprint() {
+        Intent intent = new Intent(mView.getActivity(), BluePrintActivity.class);
+        intent.putExtra(CommonConfig.CHANGE_BLUEPRINT,true);
+        mView.getActivity().startActivityForResult(intent, RequestCodeConfig.REQUEST_CODE_CHANGE_BLUEPRINT);
+    }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode)
+        {
+            case RequestCodeConfig.REQUEST_CODE_CHANGE_BLUEPRINT:
+                if(resultCode== Activity.RESULT_OK && data!=null){
+                    BlueprintListBeanItem item = (BlueprintListBeanItem) data.getSerializableExtra(CommonConfig.CHANGE_BLUEPRINT_RESULT);
+                    if(item!=null && !mFileId.equals(item.fileId)){
+                        mFileId = item.fileId;
+                        getLatestVersion();
+                        if(mView!=null){
+                            mView.showName(item.fileId,item.name);
+                        }
+                    }
+                }
+                break;
+        }
     }
 
     @Override

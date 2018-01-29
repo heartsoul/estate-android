@@ -63,6 +63,11 @@ public interface CreateEquipmentContract {
          * 返回提示框
          */
         void showBackDialog();
+
+        /**
+         * 模型的构件名字展示
+         */
+        void showModelName(String elementName);
     }
 
     interface Presenter extends IBasePresenter{
