@@ -13,7 +13,6 @@
         android:ellipsize="end"
         android:gravity="center_vertical"
         android:maxLines="1"
-        android:text="首开"
         android:textColor="@color/c_b5b5b5"
         android:textSize="@dimen/dimen_14"
         android:layout_marginRight="@dimen/dimen_08"

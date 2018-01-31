@@ -40,7 +40,6 @@
                 android:ellipsize="end"
                 android:gravity="center_vertical"
                 android:maxLines="1"
-                android:text="2017-10-18 21:25:00"
                 android:textColor="@color/c_565656"
                 android:textSize="@dimen/dimen_14" />
 
@@ -70,7 +69,6 @@
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:paddingTop="@dimen/dimen_09"
-                    android:text="批号：XY003"
                     android:textColor="@color/c_666666"
                     android:textSize="@dimen/dimen_14" />
 
@@ -82,7 +80,6 @@
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:paddingTop="@dimen/dimen_09"
-                    android:text="编码：SFD"
                     android:textColor="@color/c_666666"
                     android:textSize="@dimen/dimen_14" />
 
@@ -93,9 +90,7 @@
                     android:layout_marginLeft="@dimen/dimen_10"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:paddingBottom="@dimen/dimen_09"
                     android:paddingTop="@dimen/dimen_09"
-                    android:text="名称：钢材"
                     android:textColor="@color/c_666666"
                     android:textSize="@dimen/dimen_14" />
 

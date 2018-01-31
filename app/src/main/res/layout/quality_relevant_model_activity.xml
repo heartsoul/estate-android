@@ -65,7 +65,7 @@
             android:layout_centerHorizontal="true"
             android:gravity="center_vertical"
             android:maxLength="15"
-            android:text="点击选择"
+            android:text="@string/str_quality_blueprint_title"
             android:textColor="@color/white"
             android:textSize="@dimen/dimen_17" />
 

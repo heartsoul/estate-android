@@ -13,7 +13,6 @@
         android:paddingRight="@dimen/dimen_20"
         android:ellipsize="end"
         android:maxLines="1"
-        android:text="首开"
         android:gravity="center_vertical"
         android:textColor="@color/black"
         android:textSize="@dimen/dimen_16" />

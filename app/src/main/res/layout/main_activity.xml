@@ -45,7 +45,6 @@
                     android:layout_marginBottom="@dimen/dimen_48"
                     android:layout_marginTop="@dimen/dimen_11"
                     android:gravity="center_horizontal"
-                    android:text="青岛花园建筑项目"
                     android:textColor="@color/white"
                     android:textSize="@dimen/dimen_14"
                     android:maxLines="1"
@@ -79,7 +78,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="@dimen/dimen_54"
-                        android:text="质检管理"
+                        android:text="@string/str_main_quality_manage"
                         android:textColor="@color/c_d4d4d4"
                         android:textSize="@dimen/dimen_16" />
                 </RelativeLayout>
@@ -97,7 +96,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dimen_13"
                         android:paddingLeft="@dimen/dimen_54"
-                        android:text="质检清单"
+                        android:text="@string/str_main_quality_list"
                         android:textColor="@color/c_d4d4d4"
                         android:textSize="@dimen/dimen_16" />
 
@@ -107,7 +106,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dimen_13"
                         android:paddingLeft="@dimen/dimen_54"
-                        android:text="图纸"
+                        android:text="@string/str_main_quality_blueprint"
                         android:textColor="@color/c_d4d4d4"
                         android:textSize="@dimen/dimen_16" />
 
@@ -117,7 +116,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dimen_13"
                         android:paddingLeft="@dimen/dimen_54"
-                        android:text="模型"
+                        android:text="@string/str_main_quality_model"
                         android:textColor="@color/c_d4d4d4"
                         android:textSize="@dimen/dimen_16" />
 
@@ -127,7 +126,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dimen_13"
                         android:paddingLeft="@dimen/dimen_54"
-                        android:text="质检项目"
+                        android:text="@string/str_main_quality_module"
                         android:textColor="@color/c_d4d4d4"
                         android:textSize="@dimen/dimen_16" />
                 </LinearLayout>
@@ -168,7 +167,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="@dimen/dimen_54"
-                        android:text="材设进场"
+                        android:text="@string/str_main_equipment_manage"
                         android:textColor="@color/c_d4d4d4"
                         android:textSize="@dimen/dimen_16" />
                 </RelativeLayout>
@@ -187,7 +186,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dimen_13"
                         android:paddingLeft="@dimen/dimen_54"
-                        android:text="材设清单"
+                        android:text="@string/str_main_equipment_list"
                         android:textColor="@color/c_d4d4d4"
                         android:textSize="@dimen/dimen_16" />
 
@@ -198,7 +197,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dimen_13"
                         android:paddingLeft="@dimen/dimen_54"
-                        android:text="模型预览"
+                        android:text="@string/str_main_equipment_model"
                         android:textColor="@color/c_d4d4d4"
                         android:textSize="@dimen/dimen_16" />
 
@@ -231,7 +230,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="@dimen/dimen_54"
-                        android:text="设置"
+                        android:text="@string/str_set"
                         android:textColor="@color/c_d4d4d4"
                         android:textSize="@dimen/dimen_16" />
                 </RelativeLayout>
@@ -303,7 +302,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="质检清单"
+                android:text="@string/str_main_quality_list"
                 android:textColor="@color/white"
                 android:textSize="@dimen/dimen_17" />
 

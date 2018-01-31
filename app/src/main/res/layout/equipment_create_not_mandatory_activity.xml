@@ -36,7 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="新增材设进场记录"
+            android:text="@string/str_equipment_create_mandatory_title"
             android:textColor="@color/white"
             android:textSize="@dimen/dimen_17" />
 
@@ -73,7 +73,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="@dimen/dimen_05"
-                    android:text="请根据需要选择完成下列内容输入"
+                    android:text="@string/str_equipment_create_mandatory_input_"
                     android:textColor="@color/c_00b5f2"
                     android:textSize="@dimen/dimen_14" />
             </LinearLayout>
@@ -93,7 +93,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginRight="@dimen/dimen_14"
-                    android:text="进场数量"
+                    android:text="@string/str_equipment_create_num_"
                     android:textColor="@color/black"
                     android:textSize="@dimen/dimen_16" />
 
@@ -148,7 +148,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginRight="@dimen/dimen_14"
-                    android:text="单位"
+                    android:text="@string/str_equipment_create_unit_"
                     android:textColor="@color/black"
                     android:textSize="@dimen/dimen_16" />
 
@@ -202,7 +202,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginRight="@dimen/dimen_14"
-                    android:text="规格"
+                    android:text="@string/str_equipment_create_spec_"
                     android:textColor="@color/black"
                     android:textSize="@dimen/dimen_16" />
 
@@ -256,7 +256,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginRight="@dimen/dimen_14"
-                    android:text="型号"
+                    android:text="@string/str_equipment_create_model_num_"
                     android:textColor="@color/black"
                     android:textSize="@dimen/dimen_16" />
 
@@ -311,7 +311,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginRight="@dimen/dimen_14"
-                    android:text="构件位置"
+                    android:text="@string/str_equipment_create_model_"
                     android:textColor="@color/black"
                     android:textSize="@dimen/dimen_16"
 
@@ -359,7 +359,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginRight="@dimen/dimen_14"
-                    android:text="厂家"
+                    android:text="@string/str_equipment_create_factory_"
                     android:textColor="@color/black"
                     android:textSize="@dimen/dimen_16" />
 
@@ -413,7 +413,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginRight="@dimen/dimen_14"
-                    android:text="品牌"
+                    android:text="@string/str_equipment_create_make_"
                     android:textColor="@color/black"
                     android:textSize="@dimen/dimen_16" />
 
@@ -467,7 +467,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginRight="@dimen/dimen_14"
-                    android:text="供应商"
+                    android:text="@string/str_equipment_create_supplier_"
                     android:textColor="@color/black"
                     android:textSize="@dimen/dimen_16" />
 
@@ -520,7 +520,7 @@
                     android:layout_marginRight="@dimen/dimen_40"
                     android:layout_marginTop="@dimen/dimen_40"
                     android:background="@drawable/corner_radius_33_blue_bg"
-                    android:text="下一步"
+                    android:text="@string/str_next"
                     android:textColor="@color/white"
                     android:textSize="@dimen/dimen_16" />
 
@@ -530,7 +530,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="@dimen/dimen_30"
-                    android:text="跳过"
+                    android:text="@string/str_over"
                     android:textColor="@color/c_00baf3"
                     android:textSize="@dimen/dimen_16"
                     android:layout_marginBottom="@dimen/dimen_46"/>

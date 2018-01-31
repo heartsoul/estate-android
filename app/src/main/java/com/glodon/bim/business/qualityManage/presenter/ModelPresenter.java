@@ -58,14 +58,14 @@ public class ModelPresenter implements ModelContract.Presenter {
     private OnModelSelectListener mListener = new OnModelSelectListener() {
         @Override
         public void selectModel(ModelListBeanItem item) {
-            if(mView!=null) {
-                if(mIsChangeModel){
+            if (mView != null) {
+                if (mIsChangeModel) {
                     //模型切换，将数据带回模型展示界面
                     Intent data = new Intent();
-                    data.putExtra(CommonConfig.CHANGE_MODEL_RESULT,item);
-                    mView.getActivity().setResult(Activity.RESULT_OK,data);
+                    data.putExtra(CommonConfig.CHANGE_MODEL_RESULT, item);
+                    mView.getActivity().setResult(Activity.RESULT_OK, data);
                     mView.getActivity().finish();
-                }else {
+                } else {
                     //跳转到模型展示
                     Intent intent = new Intent(mView.getActivity(), RelevantModelActivity.class);
                     intent.putExtra(CommonConfig.BLUE_PRINT_FILE_ID, item.fileId);
@@ -74,10 +74,12 @@ public class ModelPresenter implements ModelContract.Presenter {
                     ModelListBeanItem modelInfo = new ModelListBeanItem();
                     modelInfo.fileId = item.fileId;
                     modelInfo.fileName = item.fileName;
-                    if (mCurrentSingle != null) {
-                        modelInfo.buildingId = mCurrentSingle.id;
-                        modelInfo.buildingName = mCurrentSingle.name;
-                    }
+//                    if (mCurrentSingle != null) {
+//                        modelInfo.buildingId = mCurrentSingle.id;
+//                        modelInfo.buildingName = mCurrentSingle.name;
+//                    }
+                    modelInfo.buildingId = item.buildingId;
+                    modelInfo.buildingName = item.buildingName;
                     LogUtil.e("selectModel,type=" + type);
                     switch (type) {
                         case 0:
@@ -129,7 +131,7 @@ public class ModelPresenter implements ModelContract.Presenter {
             mCurrentSingle = item;
             mSingleSelectId = item.id;
             //修改顶部显示的单体
-            if(mView!=null){
+            if (mView != null) {
                 mView.showSingle(item);
             }
             //刷新模型列表
@@ -141,7 +143,7 @@ public class ModelPresenter implements ModelContract.Presenter {
             mCurrentSpecial = item;
             mSpecialSelectId = item.id;
             //修改顶部显示的专业
-            if(mView!=null){
+            if (mView != null) {
                 mView.showSpecial(item);
             }
             //刷新模型列表
@@ -149,8 +151,7 @@ public class ModelPresenter implements ModelContract.Presenter {
         }
     };
 
-    public OnModelSelectListener getListener()
-    {
+    public OnModelSelectListener getListener() {
         return mListener;
     }
 
@@ -158,7 +159,6 @@ public class ModelPresenter implements ModelContract.Presenter {
     public void setIsFragment() {
         type = 3;
     }
-
 
 
     public ModelPresenter(ModelContract.View mView) {
@@ -177,12 +177,12 @@ public class ModelPresenter implements ModelContract.Presenter {
     @Override
     public void initData(Intent intent) {
         mModelSelectInfo = (ModelListBeanItem) intent.getSerializableExtra(CommonConfig.MODEL_SELECT_INFO);
-        type = intent.getIntExtra(CommonConfig.RELEVANT_TYPE,0);
-        mIsChangeModel = intent.getBooleanExtra(CommonConfig.CHANGE_MODEL,false);
-        LogUtil.e("inidData,type="+type);
-        LogUtil.e("mIsChangeModel="+mIsChangeModel);
+        type = intent.getIntExtra(CommonConfig.RELEVANT_TYPE, 0);
+        mIsChangeModel = intent.getBooleanExtra(CommonConfig.CHANGE_MODEL, false);
+        LogUtil.e("inidData,type=" + type);
+        LogUtil.e("mIsChangeModel=" + mIsChangeModel);
         //编辑状态直接进入预览
-        if(type==1 || type==5){
+        if (type == 1 || type == 5) {
             toModelPreview();
         }
 //        getLatestVersion();
@@ -190,8 +190,8 @@ public class ModelPresenter implements ModelContract.Presenter {
         getSingleData();
     }
 
-    private void toModelPreview(){
-        if(mModelSelectInfo!=null) {
+    private void toModelPreview() {
+        if (mModelSelectInfo != null) {
             Intent intent = new Intent(mView.getActivity(), RelevantModelActivity.class);
             intent.putExtra(CommonConfig.BLUE_PRINT_FILE_ID, mModelSelectInfo.fileId);
             intent.putExtra(CommonConfig.BLUE_PRINT_FILE_NAME, mModelSelectInfo.fileName);
@@ -203,12 +203,11 @@ public class ModelPresenter implements ModelContract.Presenter {
 
     @Override
     public void toSearch() {
-        Intent intent = new Intent(mView.getActivity(),BluePrintModelSearchActivity.class);
+        Intent intent = new Intent(mView.getActivity(), BluePrintModelSearchActivity.class);
         intent.putExtra(CommonConfig.SEARCH_TYPE, 1);//表示模型
-        if(mIsChangeModel)
-        {
-            intent.putExtra(CommonConfig.CHANGE_MODEL,true);
-        }else {
+        if (mIsChangeModel) {
+            intent.putExtra(CommonConfig.CHANGE_MODEL, true);
+        } else {
 
             //0新建检查单 1检查单编辑状态 2详情查看  3图纸模式
             if (type == 1) {
@@ -223,13 +222,13 @@ public class ModelPresenter implements ModelContract.Presenter {
 
     @Override
     public void setType(int type) {
-        LogUtil.e("settype="+type);
+        LogUtil.e("settype=" + type);
         this.type = type;
     }
 
 
     //专业列表
-    private void getSpecialData(){
+    private void getSpecialData() {
         Subscription sub = mModel.getSpecialList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -253,7 +252,7 @@ public class ModelPresenter implements ModelContract.Presenter {
     }
 
     //单体列表
-    private void getSingleData(){
+    private void getSingleData() {
         Subscription sub = mModel.getSingleList(mProjectId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -277,8 +276,8 @@ public class ModelPresenter implements ModelContract.Presenter {
     }
 
     //模型列表
-    private void getModelData(){
-        Subscription sub = mModel.getModelList(mProjectId,mProjectVersionId,mCurrentSingle.id,mCurrentSpecial.code)
+    private void getModelData() {
+        Subscription sub = mModel.getModelList(mProjectId, mProjectVersionId, mCurrentSingle.id, mCurrentSpecial.code)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<ModelListBean>() {
@@ -295,17 +294,18 @@ public class ModelPresenter implements ModelContract.Presenter {
                     @Override
                     public void onNext(ModelListBean bean) {
                         mModelList.clear();
-                        LogUtil.e("bean==null?"+(bean==null));
-                        if(bean!=null){
-                            LogUtil.e("bean.tostring="+new GsonBuilder().create().toJson(bean));
-                            if(bean.data!=null) {
+                        LogUtil.e("bean==null?" + (bean == null));
+                        if (bean != null) {
+                            LogUtil.e("bean.tostring=" + new GsonBuilder().create().toJson(bean));
+                            if (bean.data != null) {
                                 LogUtil.e("bean.size=" + bean.data.size());
                             }
-                            if(bean.data!=null && bean.data.size()>0){
+                            if (bean.data != null && bean.data.size() > 0) {
                                 mModelList = bean.data;
+                                handleBuildingName();
                             }
                         }
-                        if(mView!=null){
+                        if (mView != null) {
                             mView.updateModelList(mModelList);
                         }
                     }
@@ -313,9 +313,28 @@ public class ModelPresenter implements ModelContract.Presenter {
         mSubscription.add(sub);
     }
 
+    private void handleBuildingName() {
+        for (int i = 0; i < mModelList.size(); i++) {
+            if(mModelList.get(i).buildingId!=null) {
+                mModelList.get(i).buildingName = getSingleName(mModelList.get(i).buildingId);
+            }
+        }
+    }
+
+    private String getSingleName(long singleId) {
+        if (mSingleList != null && mSingleList.size() > 0) {
+            for (ModelSingleListItem item : mSingleList) {
+                if (singleId == item.id) {
+                    return item.name;
+                }
+            }
+        }
+        return null;
+    }
+
     @Override
     public void showSpecialList() {
-        if(mCurrentSpecial!=null && mCurrentSpecial.id>=0){
+        if (mCurrentSpecial != null && mCurrentSpecial.id >= 0) {
             mSpecialSelectId = mCurrentSpecial.id;
         }
         mView.updateSpecialList(mSpecialList, mSpecialSelectId);
@@ -323,7 +342,7 @@ public class ModelPresenter implements ModelContract.Presenter {
 
     @Override
     public void showSingleList() {
-        if(mCurrentSingle!=null && mCurrentSingle.id>=0){
+        if (mCurrentSingle != null && mCurrentSingle.id >= 0) {
             mSingleSelectId = mCurrentSingle.id;
         }
         mView.updateSingleList(mSingleList, mSingleSelectId);
@@ -332,15 +351,15 @@ public class ModelPresenter implements ModelContract.Presenter {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode){
+        switch (requestCode) {
             case RequestCodeConfig.REQUEST_CODE_MODEL_OPEN_MODEL:
-                if(resultCode == Activity.RESULT_OK && mView!=null) {
+                if (resultCode == Activity.RESULT_OK && mView != null) {
                     mView.getActivity().setResult(Activity.RESULT_OK, data);
                     mView.getActivity().finish();
                 }
                 break;
             case RequestCodeConfig.REQUEST_CODE_MODEL_TO_SEARCH:
-                if(resultCode == Activity.RESULT_OK && mView!=null) {
+                if (resultCode == Activity.RESULT_OK && mView != null) {
                     mView.getActivity().setResult(Activity.RESULT_OK, data);
                     mView.getActivity().finish();
                 }

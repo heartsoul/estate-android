@@ -34,7 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="意见反馈"
+            android:text="@string/str_set_feedback_title"
             android:textColor="@color/white"
             android:textSize="@dimen/dimen_17" />
 
@@ -45,7 +45,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/dimen_10"
-            android:text="提交"
+            android:text="@string/str_submit"
             android:textColor="@color/white"
             android:textSize="@dimen/dimen_14" />
     </RelativeLayout>
@@ -67,7 +67,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="姓名："
+                    android:text="@string/str_set_feedback_name"
                     android:textSize="@dimen/dimen_16"
                     android:textColor="@color/c_5b5b5b"
                     android:layout_gravity="center_vertical"
@@ -105,7 +105,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="邮箱："
+                    android:text="@string/str_set_feedback_email"
                     android:textSize="@dimen/dimen_16"
                     android:textColor="@color/c_5b5b5b"
                     />
@@ -139,7 +139,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="标题："
+                    android:text="@string/str_set_feedback_title_text"
                     android:textSize="@dimen/dimen_16"
                     android:textColor="@color/c_5b5b5b"
                     />
@@ -168,7 +168,7 @@
                 android:textColor="@color/c_5b5b5b"
                 android:textSize="@dimen/dimen_16"
                 android:textCursorDrawable="@drawable/edit_cursor_color"
-                android:hint="留言内容...."
+                android:hint="@string/str_set_feedback_content_hint"
                 android:textColorHint="@color/c_acacac"
                 android:minLines="5"
                 android:maxLength="255"

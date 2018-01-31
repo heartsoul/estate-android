@@ -26,7 +26,6 @@
             android:layout_marginLeft="@dimen/dimen_12"
             android:ellipsize="end"
             android:maxLines="2"
-            android:text="首开"
             android:textColor="@color/c_565656"
             android:textSize="@dimen/dimen_16" />
 

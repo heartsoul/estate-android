@@ -43,7 +43,7 @@
                     android:layout_marginTop="@dimen/dimen_19"
                     android:textColor="@color/white"
                     android:textSize="@dimen/dimen_24"
-                    android:text="您的专属BIM协同管理"
+                    android:text="@string/str_set_second_title"
                     android:gravity="center_horizontal"
                     />
             </LinearLayout>
@@ -75,7 +75,7 @@
                     android:layout_centerVertical="true"
                     android:textSize="@dimen/dimen_14"
                     android:textColor="@color/black"
-                    android:text="修改密码"
+                    android:text="@string/str_set_change_psd"
                     android:layout_marginLeft="@dimen/dimen_20"
                     />
             </RelativeLayout>
@@ -113,7 +113,7 @@
                     android:layout_centerVertical="true"
                     android:textSize="@dimen/dimen_14"
                     android:textColor="@color/black"
-                    android:text="版本信息"
+                    android:text="@string/str_set_version_info"
                     android:layout_marginLeft="@dimen/dimen_20"
                     />
                 <TextView
@@ -124,7 +124,7 @@
                     android:layout_centerVertical="true"
                     android:textSize="@dimen/dimen_14"
                     android:textColor="@color/c_999992"
-                    android:text="版本号V1.0.0"
+                    android:text="@string/str_set_version"
                     android:layout_marginRight="@dimen/dimen_11"
                     />
 
@@ -162,7 +162,7 @@
                     android:layout_centerVertical="true"
                     android:textSize="@dimen/dimen_14"
                     android:textColor="@color/black"
-                    android:text="意见反馈"
+                    android:text="@string/str_set_feedback_title"
                     android:layout_marginLeft="@dimen/dimen_20"
                     />
             </RelativeLayout>
@@ -200,7 +200,7 @@
                     android:layout_centerVertical="true"
                     android:textSize="@dimen/dimen_14"
                     android:textColor="@color/black"
-                    android:text="联系我们"
+                    android:text="@string/str_set_contact"
                     android:layout_marginLeft="@dimen/dimen_20"
                     />
                 <TextView
@@ -248,7 +248,7 @@
                     android:layout_centerVertical="true"
                     android:textSize="@dimen/dimen_14"
                     android:textColor="@color/black"
-                    android:text="关于我们"
+                    android:text="@string/str_set_about_us"
                     android:layout_marginLeft="@dimen/dimen_20"
                     />
             </RelativeLayout>
@@ -263,7 +263,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/dimen_30"
                 android:background="@drawable/corner_radius_33_blue_bg"
-                android:text="退出登录"
+                android:text="@string/str_set_login_out"
                 android:textColor="@color/white"
                 android:textSize="@dimen/dimen_16"
                 />

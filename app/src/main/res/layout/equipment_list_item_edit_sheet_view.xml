@@ -38,7 +38,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/dimen_14"
-                android:text="待提交"
+                android:text="@string/str_equipment_create_list_stay_submit"
                 android:textColor="@color/c_f39b3d"
                 android:textSize="@dimen/dimen_14" />
 
@@ -53,7 +53,6 @@
                 android:layout_toRightOf="@id/equipment_list_edit_time_icon"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="2017-10-18 21:25:00"
                 android:textColor="@color/c_565656"
                 android:textSize="@dimen/dimen_14" />
 
@@ -84,7 +83,6 @@
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:paddingTop="@dimen/dimen_09"
-                    android:text="批号：XY003"
                     android:textColor="@color/c_666666"
                     android:textSize="@dimen/dimen_14" />
 
@@ -101,7 +99,7 @@
                 android:paddingTop="@dimen/dimen_09"
                 android:textSize="@dimen/dimen_14"
                 android:textColor="@color/c_666666"
-                android:text="编码：SFD" />
+                 />
 
             <TextView
                 android:id="@+id/equipment_list_edit_name"
@@ -111,10 +109,9 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:paddingTop="@dimen/dimen_09"
-                android:paddingBottom="@dimen/dimen_09"
                 android:textSize="@dimen/dimen_14"
                 android:textColor="@color/c_666666"
-                android:text="名称：钢材" />
+                 />
 
         </LinearLayout>
         <View
@@ -139,7 +136,7 @@
                 android:paddingLeft="@dimen/dimen_13"
                 android:paddingRight="@dimen/dimen_13"
                 android:paddingTop="@dimen/dimen_04"
-                android:text="提交"
+                android:text="@string/str_submit"
                 android:textColor="@color/c_979797"
                 android:textSize="@dimen/dimen_14" />
 
@@ -155,7 +152,7 @@
                 android:paddingLeft="@dimen/dimen_13"
                 android:paddingRight="@dimen/dimen_13"
                 android:paddingTop="@dimen/dimen_04"
-                android:text="删除"
+                android:text="@string/str_delete"
                 android:textColor="@color/c_979797"
                 android:textSize="@dimen/dimen_14" />
 

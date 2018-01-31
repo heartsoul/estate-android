@@ -11,7 +11,6 @@
         android:layout_marginLeft="@dimen/dimen_20"
         android:ellipsize="end"
         android:maxLines="1"
-        android:text="首开"
         android:textColor="@color/c_565656"
         android:textSize="@dimen/dimen_14"
         android:gravity="center_vertical"/>

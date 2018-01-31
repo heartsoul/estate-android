@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dimen_11"
             android:layout_marginTop="@dimen/dimen_20"
-            android:text="取消"
+            android:text="@string/str_cancel"
             android:textColor="@color/white"
             android:textSize="@dimen/dimen_16"/>
     </RelativeLayout>
@@ -44,7 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/dimen_11"
             android:layout_marginTop="@dimen/dimen_20"
-            android:text="完成"
+            android:text="@string/str_finish"
             android:textColor="@color/c_02ff00"
             android:textSize="@dimen/dimen_17"/>
     </RelativeLayout>
@@ -134,7 +134,7 @@
                         android:layout_marginTop="@dimen/dimen_05"
                         android:textColor="@color/white"
                         android:textSize="@dimen/dimen_14"
-                        android:text="    取消    " />
+                        android:text="@string/str_quality_photo_cancel" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -157,7 +157,7 @@
                         android:layout_marginTop="@dimen/dimen_05"
                         android:textColor="@color/white"
                         android:textSize="@dimen/dimen_14"
-                        android:text="使用照片" />
+                        android:text="@string/str_quality_photo_use_photo" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -265,7 +265,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="拖动到此处删除"
+            android:text="@string/str_quality_create_delete_text"
             android:layout_marginBottom="@dimen/dimen_19"
             android:layout_marginTop="@dimen/dimen_07"
             android:textColor="@color/white"

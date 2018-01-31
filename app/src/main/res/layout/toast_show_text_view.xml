@@ -11,7 +11,7 @@
         android:id="@+id/toast_show_view_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="图片保存成功"
+        android:text="@string/str_toast_save_photo_success"
         android:gravity="center_horizontal"
         android:textColor="#FFFFFF"
         android:textSize="@dimen/dimen_18"

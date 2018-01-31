@@ -62,6 +62,8 @@ public class BluePrintModelSearchPresenter implements BluePrintModelSearchContra
                 BlueprintListBeanItem result = new BlueprintListBeanItem();
                 result.fileId = item.fileId;
                 result.name = item.name;
+//                result.buildingId = item.buildingId;
+//                result.buildingName = item.buildingName;
                 data.putExtra(CommonConfig.CHANGE_BLUEPRINT_RESULT,result);
                 mView.getActivity().setResult(Activity.RESULT_OK,data);
                 mView.getActivity().finish();
@@ -102,6 +104,8 @@ public class BluePrintModelSearchPresenter implements BluePrintModelSearchContra
                 ModelListBeanItem modelInfo = new ModelListBeanItem();
                 modelInfo.fileId = item.fileId;
                 modelInfo.fileName = item.name;
+                modelInfo.buildingId = item.buildingId;
+                modelInfo.buildingName = item.buildingName;
                 data.putExtra(CommonConfig.CHANGE_MODEL_RESULT,modelInfo);
                 mView.getActivity().setResult(Activity.RESULT_OK,data);
                 mView.getActivity().finish();
@@ -113,7 +117,8 @@ public class BluePrintModelSearchPresenter implements BluePrintModelSearchContra
                 ModelListBeanItem modelInfo = new ModelListBeanItem();
                 modelInfo.fileId = item.fileId;
                 modelInfo.fileName = item.name;
-
+                modelInfo.buildingId = item.buildingId;
+                modelInfo.buildingName = item.buildingName;
                 switch (modelType) {
                     case 0:
 
@@ -123,8 +128,8 @@ public class BluePrintModelSearchPresenter implements BluePrintModelSearchContra
                         if (item.fileId.equals(mModelSelectInfo.fileId)) {
                             //同一个模型
                             intent.putExtra(CommonConfig.RELEVANT_TYPE, 1);
-                            modelInfo.buildingId = mModelSelectInfo.buildingId;
-                            modelInfo.buildingName = mModelSelectInfo.buildingName;
+//                            modelInfo.buildingId = mModelSelectInfo.buildingId;
+//                            modelInfo.buildingName = mModelSelectInfo.buildingName;
                             modelInfo.component = mModelSelectInfo.component;
                         } else {
                             //不同的模型

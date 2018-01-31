@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/dimen_29"
-            android:text="账号或密码不正确"
+            android:text="@string/str_login_error_psd"
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_16" />
 
@@ -40,7 +40,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="确定"
+                android:text="@string/str_sure"
                 android:textColor="@color/c_5b5b5b"
                 android:textSize="@dimen/dimen_18" />
 
@@ -55,7 +55,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="找回密码"
+                android:text="@string/str_login_error_find_psd"
                 android:textColor="@color/c_00baf3"
                 android:textSize="@dimen/dimen_18" />
         </LinearLayout>

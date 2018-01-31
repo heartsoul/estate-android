@@ -21,7 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="取消"
+            android:text="@string/str_cancel"
             android:textColor="@color/white"
             android:textSize="@dimen/dimen_14"
             android:layout_marginLeft="@dimen/dimen_10"/>
@@ -30,7 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="相机胶卷"
+            android:text="@string/str_quality_photo_title"
             android:textColor="@color/white"
             android:textSize="@dimen/dimen_17" />
 
@@ -41,7 +41,7 @@
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/dimen_10"
-            android:text="完成"
+            android:text="@string/str_finish"
             android:textColor="@color/white"
             android:textSize="@dimen/dimen_14" />
     </RelativeLayout>
@@ -59,7 +59,7 @@
         android:id="@+id/album_edit_preview"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_45"
-        android:text="预览"
+        android:text="@string/str_quality_photo_preview"
         android:textSize="@dimen/dimen_16"
         android:textColor="@color/white"
         android:gravity="center_vertical"

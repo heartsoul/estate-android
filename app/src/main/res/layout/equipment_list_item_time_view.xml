@@ -42,7 +42,6 @@
             android:layout_height="wrap_content"
             android:textSize="@dimen/dimen_14"
             android:textColor="@color/c_b0b0b0"
-            android:text="昨天"
             android:layout_marginLeft="@dimen/dimen_05"
             android:layout_marginRight="@dimen/dimen_11"
             android:layout_gravity="center"

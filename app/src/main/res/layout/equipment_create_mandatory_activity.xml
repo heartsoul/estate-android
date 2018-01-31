@@ -35,7 +35,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="新增材设进场记录"
+            android:text="@string/str_equipment_create_mandatory_title"
             android:textColor="@color/white"
             android:textSize="@dimen/dimen_17" />
 
@@ -60,7 +60,7 @@
             android:layout_gravity="center_vertical"
             android:textColor="@color/c_00b5f2"
             android:textSize="@dimen/dimen_14"
-            android:text="请依次完成下列内容输入"
+            android:text="@string/str_equipment_create_mandatory_input"
             android:layout_marginLeft="@dimen/dimen_05"
             />
     </LinearLayout>
@@ -76,7 +76,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:text="批次编号"
+            android:text="@string/str_equipment_create_index_"
             android:textColor="@color/black"
             android:layout_marginRight="@dimen/dimen_20"
             android:textSize="@dimen/dimen_16"
@@ -129,7 +129,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:text="进场日期"
+            android:text="@string/str_equipment_create_date_"
             android:textColor="@color/black"
             android:layout_marginRight="@dimen/dimen_20"
             android:textSize="@dimen/dimen_16"
@@ -173,7 +173,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:text="材设编码"
+            android:text="@string/str_equipment_create_code_"
             android:textColor="@color/black"
             android:layout_marginRight="@dimen/dimen_20"
             android:textSize="@dimen/dimen_16"
@@ -225,7 +225,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:text="材设名称"
+            android:text="@string/str_equipment_create_name_"
             android:textColor="@color/black"
             android:layout_marginRight="@dimen/dimen_20"
             android:textSize="@dimen/dimen_16"
@@ -279,7 +279,7 @@
             android:layout_marginRight="@dimen/dimen_40"
             android:layout_marginTop="@dimen/dimen_40"
             android:background="@drawable/corner_radius_33_gray_bg"
-            android:text="下一步"
+            android:text="@string/str_next"
             android:textColor="@color/white"
             android:textSize="@dimen/dimen_16" />
     </LinearLayout>

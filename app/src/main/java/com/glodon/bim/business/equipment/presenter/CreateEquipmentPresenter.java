@@ -640,7 +640,8 @@ public class CreateEquipmentPresenter implements CreateEquipmentContract.Present
         //跳转到模型
         if(mMandatoryNotInfo!=null && mMandatoryNotInfo.model!=null && mMandatoryNotInfo.model.component!=null) {
             Intent intent = new Intent(mView.getActivity(), RelevantModelActivity.class);
-            intent.putExtra(CommonConfig.RELEVANT_TYPE, 5);
+
+            intent.putExtra(CommonConfig.RELEVANT_TYPE,mType==CommonConfig.EQUIPMENT_TYPE_DETAIL?2:5 );
 
             intent.putExtra(CommonConfig.MODEL_SELECT_INFO, mMandatoryNotInfo.model);
             intent.putExtra(CommonConfig.BLUE_PRINT_FILE_ID, mMandatoryNotInfo.model.fileId);

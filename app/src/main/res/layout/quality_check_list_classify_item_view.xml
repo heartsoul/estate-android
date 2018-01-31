@@ -11,7 +11,7 @@
         android:layout_centerVertical="true"
         android:textSize="@dimen/dimen_14"
         android:textColor="@color/c_535353"
-        android:text="全部"/>
+        />
 
     <ImageView
         android:id="@+id/quality_check_list_classify_item_line"
@@ -30,7 +30,7 @@
         android:textColor="@color/white"
         android:layout_toRightOf="@id/quality_check_list_classify_item_name"
         android:layout_marginTop="@dimen/dimen_07"
-        android:text="23"
+
         android:background="@drawable/corner_red_point"
         android:paddingRight="@dimen/dimen_05"
         android:paddingLeft="@dimen/dimen_05"

@@ -22,7 +22,7 @@
                 android:id="@+id/quality_check_list_detail_inspection_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="检查单位："
+                android:text="@string/str_quality_create_inpector"
                 android:textColor="@color/c_757575"
                 android:textSize="@dimen/dimen_14" />
 
@@ -44,7 +44,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="施工单位："
+                android:text="@string/str_quality_create_company"
                 android:textColor="@color/c_757575"
                 android:textSize="@dimen/dimen_14" />
 
@@ -66,7 +66,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="责任人："
+                android:text="@string/str_quality_create_responsible"
                 android:textColor="@color/c_757575"
                 android:textSize="@dimen/dimen_14" />
 
@@ -89,7 +89,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:text="质检项目："
+                android:text="@string/str_quality_create_module"
                 android:textColor="@color/c_757575"
                 android:textSize="@dimen/dimen_14" />
 
@@ -121,7 +121,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="现场描述："
+                android:text="@string/str_quality_create_des"
                 android:textColor="@color/c_757575"
                 android:textSize="@dimen/dimen_14" />
 
@@ -143,7 +143,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="保存时间："
+                android:text="@string/str_quality_create_save_titme"
                 android:textColor="@color/c_757575"
                 android:textSize="@dimen/dimen_14" />
 
@@ -165,7 +165,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="提交时间："
+                android:text="@string/str_quality_create_submit_time"
                 android:textColor="@color/c_757575"
                 android:textSize="@dimen/dimen_14" />
 
@@ -187,7 +187,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="关联图纸："
+                android:text="@string/str_quality_create_blueprint"
                 android:textColor="@color/c_757575"
                 android:textSize="@dimen/dimen_14" />
 
@@ -209,7 +209,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="关联模型："
+                android:text="@string/str_quality_create_model"
                 android:textColor="@color/c_757575"
                 android:textSize="@dimen/dimen_14" />
 

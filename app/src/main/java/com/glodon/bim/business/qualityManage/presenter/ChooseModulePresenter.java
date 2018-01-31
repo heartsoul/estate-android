@@ -131,7 +131,7 @@ public class ChooseModulePresenter implements ChooseModuleContract.Presenter {
 
     @Override
     public void initData(Intent intent) {
-        mSelectId = intent.getLongExtra(CommonConfig.MODULE_LIST_POSITION, -1);
+        mSelectId = intent.getLongExtra(CommonConfig.MODULE_LIST_POSITION, -11);
         if (NetWorkUtils.isNetworkAvailable(mView.getActivity())) {
             if (mView != null) {
                 mView.showLoadingDialog();

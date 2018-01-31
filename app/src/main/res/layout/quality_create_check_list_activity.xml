@@ -39,7 +39,7 @@
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/dimen_10"
             android:gravity="center_vertical"
-            android:text="提交"
+            android:text="@string/str_submit"
             android:textColor="@color/white"
             android:textSize="@dimen/dimen_14" />
 
@@ -58,7 +58,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:text="检查单"
+                    android:text="@string/str_quality_create_title"
                     android:textColor="@color/white"
                     android:textSize="@dimen/dimen_17" />
 
@@ -82,7 +82,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:text="验收单"
+                    android:text="@string/str_quality_create_yanshou_title"
                     android:textColor="@color/white"
                     android:textSize="@dimen/dimen_15" />
 

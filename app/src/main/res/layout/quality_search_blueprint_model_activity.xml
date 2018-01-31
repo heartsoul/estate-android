@@ -44,7 +44,7 @@
                 android:background="@color/white"
                 android:ellipsize="end"
                 android:gravity="center_vertical"
-                android:hint="搜索"
+                android:hint="@string/str_search"
                 android:maxLines="1"
                 android:textColor="@color/black"
                 android:textColorHint="@color/c_5b5b5b"
@@ -60,7 +60,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/dimen_12"
             android:layout_marginRight="@dimen/dimen_13"
-            android:text="取消"
+            android:text="@string/str_cancel"
             android:textColor="@color/white"
             android:textSize="@dimen/dimen_14" />
     </LinearLayout>
@@ -89,20 +89,12 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/dimen_16"
-                android:text="抱歉，未找到您要的内容"
+                android:text="@string/str_main_category_search_hint"
                 android:textColor="@color/c_999992"
                 android:textSize="@dimen/dimen_12" />
         </LinearLayout>
 
-      <!--  <include
-            android:id="@+id/blueprint_model_search_content"
-            layout="@layout/view_pullrefresh_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:visibility="gone"/>-->
+
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/blueprint_model_search_content"

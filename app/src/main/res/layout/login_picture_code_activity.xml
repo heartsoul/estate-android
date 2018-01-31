@@ -55,7 +55,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="账户名"
+            android:text="@string/str_login_account_name"
             android:textColor="@color/c_999992"
             android:textSize="@dimen/dimen_12"
             />
@@ -137,7 +137,7 @@
                 android:maxLength="4"
                 android:textCursorDrawable="@drawable/edit_cursor_color"
                 android:background="@color/white"
-                android:hint="图片验证码"
+                android:hint="@string/str_login_photo_code"
                 android:textColorHint="@color/c_999992"
                 android:layout_gravity="center_vertical"
                 />
@@ -186,7 +186,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimen_40"
             android:layout_marginTop="@dimen/dimen_47"
-            android:text="下一步"
+            android:text="@string/str_next"
             android:textColor="@color/white"
             android:background="@drawable/corner_radius_33_gray_bg"
             android:textSize="@dimen/dimen_16"

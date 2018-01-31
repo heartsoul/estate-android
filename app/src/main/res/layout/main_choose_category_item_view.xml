@@ -29,7 +29,6 @@
             android:layout_marginTop="@dimen/dimen_10"
             android:ellipsize="end"
             android:maxLines="1"
-            android:text="图纸"
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_12" />
         </LinearLayout>

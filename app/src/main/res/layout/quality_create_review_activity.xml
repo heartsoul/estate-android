@@ -25,7 +25,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:text="取消"
+                android:text="@string/str_cancel"
                 android:textColor="@color/white"
                 android:textSize="@dimen/dimen_15"
                 android:layout_marginLeft="@dimen/dimen_10"
@@ -38,7 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="复查单"
+            android:text="@string/str_quality_create_review"
             android:textColor="@color/white"
             android:textSize="@dimen/dimen_17" />
         <RelativeLayout
@@ -52,7 +52,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/dimen_11"
                 android:layout_marginLeft="@dimen/dimen_10"
-                android:text="提交"
+                android:text="@string/str_submit"
                 android:textColor="@color/white"
                 android:textSize="@dimen/dimen_15"
                 />
@@ -85,7 +85,7 @@
                     android:minHeight="@dimen/dimen_86"
                     android:background="@color/white"
                     android:gravity="top"
-                    android:hint="现场情况描述...."
+                    android:hint="@string/str_quality_create_des_"
                     android:paddingBottom="@dimen/dimen_13"
                     android:paddingLeft="@dimen/dimen_20"
                     android:paddingRight="@dimen/dimen_20"
@@ -116,7 +116,7 @@
                 android:textColor="@color/c_dedede"
                 android:background="@color/white"
                 android:gravity="right"
-                android:text="255字"
+                android:text="@string/str_quality_create_limit_nums"
                 android:paddingRight="@dimen/dimen_20"
                 />
             <LinearLayout
@@ -179,7 +179,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:text="复查合格"
+                        android:text="@string/str_quality_create_reviewed"
                         android:textColor="@color/black"
                         android:textSize="@dimen/dimen_16" />
 
@@ -210,7 +210,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="@dimen/dimen_20"
-                        android:text="整改期限"
+                        android:text="@string/str_quality_create_repair_date"
                         android:textColor="@color/black"
                         android:textSize="@dimen/dimen_16" />
 
@@ -257,7 +257,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:text="检查单"
+                    android:text="@string/str_quality_create_title"
                     android:textColor="@color/black"
                     android:textSize="@dimen/dimen_16" />
 
@@ -297,7 +297,7 @@
                     android:layout_marginRight="@dimen/dimen_38"
                     android:layout_marginTop="@dimen/dimen_30"
                     android:background="@drawable/corner_radius_33_blue_bg"
-                    android:text="保存"
+                    android:text="@string/str_save"
                     android:textColor="@color/white"
                     android:textSize="@dimen/dimen_16" />
 
@@ -309,7 +309,7 @@
                     android:layout_marginRight="@dimen/dimen_38"
                     android:layout_marginTop="@dimen/dimen_20"
                     android:background="@drawable/corner_radius_33_gray_bg"
-                    android:text="删除"
+                    android:text="@string/str_delete"
                     android:textColor="@color/c_5b5b5b"
                     android:textSize="@dimen/dimen_16"
                     android:visibility="gone" />

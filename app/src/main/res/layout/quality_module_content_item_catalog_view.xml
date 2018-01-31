@@ -27,7 +27,6 @@
         android:layout_height="@dimen/dimen_52"
         android:textSize="@dimen/dimen_16"
         android:textColor="@color/c_333333"
-        android:text="首开"
         android:gravity="center_vertical"
         android:maxLines="1"
         android:ellipsize="end"

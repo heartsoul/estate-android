@@ -32,7 +32,7 @@
                 android:layout_toLeftOf="@id/model_special_trangle"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="专业"
+                android:text="@string/str_quality_model_special"
                 android:maxLength="7"
                 android:textColor="@color/black"
                 android:textSize="@dimen/dimen_14" />
@@ -53,7 +53,7 @@
                 android:ellipsize="end"
                 android:maxLength="7"
                 android:maxLines="1"
-                android:text="单体"
+                android:text="@string/str_quality_model_single"
                 android:textColor="@color/black"
                 android:textSize="@dimen/dimen_14" />
 
@@ -94,7 +94,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/dimen_16"
-                android:text="请先选择具体专业和单体进行筛选"
+                android:text="@string/str_quality_model_hint"
                 android:textColor="@color/c_999992"
                 android:textSize="@dimen/dimen_12" />
         </LinearLayout>

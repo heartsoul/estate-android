@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:textSize="@dimen/dimen_14"
         android:textColor="@color/c_5e5e5e"
-        android:text="今天"
+        android:text="@string/str_quality_create_today"
         android:visibility="gone"
         />
 
@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:textSize="@dimen/dimen_14"
             android:textColor="@color/c_b0b0b0"
-            android:text="昨天"
+            android:text="@string/str_quality_create_yesterday"
             android:layout_marginLeft="@dimen/dimen_11"
             android:layout_marginRight="@dimen/dimen_11"
             android:layout_gravity="center"

@@ -11,14 +11,12 @@
         android:layout_height="wrap_content"
         android:maxLines="1"
         android:ellipsize="end"
-        android:text="具备资料"
         android:textColor="@color/black"
         />
     <TextView
         android:id="@+id/module_standard_obj_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="物质基地应具备下李艾"
         android:textColor="@color/c_333333"
         android:layout_marginTop="@dimen/dimen_14"
         />

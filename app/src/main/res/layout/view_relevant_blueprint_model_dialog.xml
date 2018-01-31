@@ -12,7 +12,7 @@
         android:layout_height="@dimen/dimen_56"
         android:background="@color/white"
         android:gravity="center"
-        android:text="你可以选择"
+        android:text="@string/str_dialog_choose_title"
         android:textColor="@color/c_464646"
         android:textSize="@dimen/dimen_14" />
 
@@ -27,7 +27,7 @@
         android:layout_height="@dimen/dimen_56"
         android:background="@color/white"
         android:gravity="center"
-        android:text="新建整改单"
+        android:text="@string/str_dialog_new_repair"
         android:textColor="@color/c_00b5f2"
         android:textSize="@dimen/dimen_20" />
 
@@ -42,7 +42,7 @@
         android:layout_height="@dimen/dimen_56"
         android:background="@color/white"
         android:gravity="center"
-        android:text="查看检查单"
+        android:text="@string/str_dialog_inpection_detail"
         android:textColor="@color/c_464646"
         android:textSize="@dimen/dimen_20" />
 </LinearLayout>

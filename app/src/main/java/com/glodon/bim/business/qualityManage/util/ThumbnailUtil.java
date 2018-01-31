@@ -39,7 +39,7 @@ public class ThumbnailUtil {
                     @Override
                     public void onResponse(Call<ThumbnailBean> call, Response<ThumbnailBean> response) {
                         if(response!=null){
-                            LogUtil.e("body = "+new GsonBuilder().create().toJson(response.body()));
+//                            LogUtil.e("body = "+new GsonBuilder().create().toJson(response.body()));
                             if(response.body()!=null) {
                                 ThumbnailBean bean = response.body();
                                 String url = "";
