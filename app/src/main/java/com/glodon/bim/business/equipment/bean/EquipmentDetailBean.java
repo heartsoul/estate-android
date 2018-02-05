@@ -24,6 +24,8 @@ public class EquipmentDetailBean {
     public String elementId;//构件id
     public String elementName;//构件name
     //必填项
+    public long acceptanceCompanyId;//验收单位
+    public String acceptanceCompanyName;//验收单位
     public String batchCode;//批次编号
     public String facilityCode;//材设编码
     public String facilityName;//材设名称

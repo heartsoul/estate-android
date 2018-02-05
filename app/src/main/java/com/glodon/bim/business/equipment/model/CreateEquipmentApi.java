@@ -3,6 +3,9 @@ package com.glodon.bim.business.equipment.model;
 import com.glodon.bim.business.equipment.bean.CreateEquipmentBean;
 import com.glodon.bim.business.equipment.bean.CreateEquipmentParams;
 import com.glodon.bim.business.equipment.bean.EquipmentDetailBean;
+import com.glodon.bim.business.qualityManage.bean.InspectionCompanyItem;
+
+import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -61,5 +64,9 @@ public interface CreateEquipmentApi {
     @GET("quality/{deptId}/facilityAcceptance/{id}")
     Observable<EquipmentDetailBean> detail(@Path("deptId") long deptId, @Path("id") long id, @Header("cookie") String cookie);
 
-
+    /**
+     * 获取项目下验收单位列表
+     */
+    @GET("quality/{deptId}/facilityAcceptance/acceptanceCompanys")
+    Observable<List<InspectionCompanyItem>> getAcceptanceCompanies(@Path("deptId") long deptId, @Header("cookie") String cookie);
 }

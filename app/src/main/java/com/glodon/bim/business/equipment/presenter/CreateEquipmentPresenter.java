@@ -204,6 +204,8 @@ public class CreateEquipmentPresenter implements CreateEquipmentContract.Present
 
     private void showInfo(EquipmentDetailBean bean){
         mMandatoryInfo = new CreateEquipmentMandatoryInfo();
+        mMandatoryInfo.acceptanceCompanyId = bean.acceptanceCompanyId;
+        mMandatoryInfo.acceptanceCompanyName = bean.acceptanceCompanyName;
         mMandatoryInfo.approachDate = bean.approachDate;
         mMandatoryInfo.batchCode = bean.batchCode;
         mMandatoryInfo.facilityCode = bean.facilityCode;
@@ -483,6 +485,8 @@ public class CreateEquipmentPresenter implements CreateEquipmentContract.Present
     }
 
     private void copy(){
+        mInitParams.acceptanceCompanyId = mInput.acceptanceCompanyId;
+        mInitParams.acceptanceCompanyName = mInput.acceptanceCompanyName;
         mInitParams.code = mInput.code;
         mInitParams.projectId = mInput.projectId;
         mInitParams.projectName = mInput.projectName;
@@ -575,6 +579,8 @@ public class CreateEquipmentPresenter implements CreateEquipmentContract.Present
         mInput.projectId = SharedPreferencesUtil.getProjectId();
         mInput.projectName = SharedPreferencesUtil.getProjectName();
         if(mMandatoryInfo!=null){
+            mInput.acceptanceCompanyId = mMandatoryInfo.acceptanceCompanyId;
+            mInput.acceptanceCompanyName = mMandatoryInfo.acceptanceCompanyName;
             mInput.batchCode = mMandatoryInfo.batchCode;
             mInput.approachDate = mMandatoryInfo.approachDate;
             mInput.facilityCode = mMandatoryInfo.facilityCode;

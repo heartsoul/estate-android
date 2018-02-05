@@ -116,10 +116,12 @@
 
     <string name="str_equipment_create_title">材设进场记录</string>
     <string name="str_equipment_create_basic_info">基本信息</string>
+    <string name="str_equipment_create_inspection_">验收单位</string>
     <string name="str_equipment_create_index_">批次编号</string>
     <string name="str_equipment_create_date_">进场日期</string>
     <string name="str_equipment_create_code_">材设编码</string>
     <string name="str_equipment_create_name_">材设名称</string>
+    <string name="str_equipment_create_inspection">验收单位：</string>
     <string name="str_equipment_create_index">批次编号：</string>
     <string name="str_equipment_create_date">进场日期：</string>
     <string name="str_equipment_create_code">材设编码：</string>

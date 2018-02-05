@@ -19,6 +19,8 @@ public class CreateEquipmentParams {
 
 
     //必填项
+    public long acceptanceCompanyId;//验收单位
+    public String acceptanceCompanyName;//验收单位
     public String batchCode;//批次编号
     public String facilityCode;//材设编码
     public String facilityName;//材设名称
@@ -50,6 +52,7 @@ public class CreateEquipmentParams {
     public String toString() {
         return "CreateEquipmentParams{" +
                 "code='" + code + '\'' +
+                "acceptanceCompanyId='" + acceptanceCompanyId + '\'' +
                 ", projectId=" + projectId +
                 ", projectName='" + projectName + '\'' +
                 ", batchCode='" + batchCode + '\'' +

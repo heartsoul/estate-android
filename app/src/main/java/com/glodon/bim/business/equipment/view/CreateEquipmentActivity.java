@@ -43,7 +43,7 @@ public class CreateEquipmentActivity extends BaseActivity implements View.OnClic
     private TextView mSubmitView;
     //基本信息
     private LinearLayout mBasicParent;
-    private TextView mIndexView,mDateView,mCodeView,mNameView;
+    private TextView mAccepitonCompany,mIndexView,mDateView,mCodeView,mNameView;
     private ImageView mStandardView;
 
     //其他信息
@@ -77,6 +77,7 @@ public class CreateEquipmentActivity extends BaseActivity implements View.OnClic
         mSubmitView = (TextView) findViewById(R.id.create_equipment_header_submit);
         //基本信息
         mBasicParent = (LinearLayout) findViewById(R.id.create_equipment_basic);
+        mAccepitonCompany = (TextView) findViewById(R.id.create_equipment_basic_acception);
         mIndexView = (TextView) findViewById(R.id.create_equipment_basic_index);
         mDateView = (TextView) findViewById(R.id.create_equipment_basic_date);
         mCodeView = (TextView) findViewById(R.id.create_equipment_basic_code);
@@ -197,6 +198,7 @@ public class CreateEquipmentActivity extends BaseActivity implements View.OnClic
 
     @Override
     public void showBasicInfo(CreateEquipmentMandatoryInfo mMandatoryInfo) {
+        mAccepitonCompany.setText(mMandatoryInfo.acceptanceCompanyName);
         mIndexView.setText(mMandatoryInfo.batchCode);
         mDateView.setText(DateUtil.getShowDate(mMandatoryInfo.approachDate));
         mCodeView.setText(mMandatoryInfo.facilityCode);

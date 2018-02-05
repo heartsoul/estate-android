@@ -15,15 +15,21 @@ import android.widget.TextView;
 
 import com.glodon.bim.R;
 import com.glodon.bim.base.BaseActivity;
+import com.glodon.bim.basic.listener.ThrottleClickEvents;
 import com.glodon.bim.basic.utils.DateUtil;
 import com.glodon.bim.business.equipment.bean.CreateEquipmentMandatoryInfo;
 import com.glodon.bim.business.equipment.contract.CreateEquipmentMandatoryContract;
 import com.glodon.bim.business.equipment.presenter.CreateEquipmentMandatoryPresenter;
+import com.glodon.bim.business.qualityManage.bean.InspectionCompanyItem;
+import com.glodon.bim.business.qualityManage.listener.OnChooseListListener;
+import com.glodon.bim.business.qualityManage.view.ChooseListDialog;
 import com.glodon.bim.customview.datepicker.CustomDatePickerUtils;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -36,6 +42,8 @@ public class CreateEquipmentMandatoryActivity extends BaseActivity implements Vi
     private View mStatusView;
     private RelativeLayout mBackView;
     private TextView mTitleView;
+    private LinearLayout mInspectionParent;
+    private TextView mInspectionText;
     private EditText mIndexEt,mCodeEt,mNameEt;
     private RelativeLayout mIndexDelete,mCodeDelete,mNameDelete;
     private LinearLayout mDateParent;
@@ -43,6 +51,7 @@ public class CreateEquipmentMandatoryActivity extends BaseActivity implements Vi
     private Button mNextBtn;
     private CreateEquipmentMandatoryContract.Presenter mPresenter;
     private String mDate;
+    private InspectionCompanyItem mSelectAcceptionItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +68,8 @@ public class CreateEquipmentMandatoryActivity extends BaseActivity implements Vi
         mStatusView = findViewById(R.id.create_equipment_mandatory_header_top);
         mBackView = (RelativeLayout) findViewById(R.id.create_equipment_mandatory_header_back);
         mTitleView = (TextView) findViewById(R.id.create_equipment_mandatory_header_title);
+        mInspectionParent = (LinearLayout) findViewById(R.id.create_equipment_mandatory_inspection);
+        mInspectionText = (TextView) findViewById(R.id.create_equipment_mandatory_inspection_text);
         mIndexEt = (EditText) findViewById(R.id.create_equipment_mandatory_index);
         mCodeEt = (EditText) findViewById(R.id.create_equipment_mandatory_code);
         mNameEt = (EditText) findViewById(R.id.create_equipment_mandatory_name);
@@ -77,6 +88,7 @@ public class CreateEquipmentMandatoryActivity extends BaseActivity implements Vi
         mCodeDelete.setOnClickListener(this);
         mNameDelete.setOnClickListener(this);
         mDateParent.setOnClickListener(this);
+        ThrottleClickEvents.throttleClick(mInspectionParent,this);
 
         TextWatcher mTextWatcher = new TextWatcher() {
             @Override
@@ -102,6 +114,7 @@ public class CreateEquipmentMandatoryActivity extends BaseActivity implements Vi
 
     //控制是否显示下一步按钮
     private void showNext() {
+        String company = mInspectionText.getText().toString().trim();
         String index = mIndexEt.getText().toString().trim();
         String date = mDateTv.getText().toString().trim();
         String code = mCodeEt.getText().toString().trim();
@@ -109,7 +122,7 @@ public class CreateEquipmentMandatoryActivity extends BaseActivity implements Vi
         mIndexDelete.setVisibility(TextUtils.isEmpty(index)?View.GONE:View.VISIBLE);
         mCodeDelete.setVisibility(TextUtils.isEmpty(code)?View.GONE:View.VISIBLE);
         mNameDelete.setVisibility(TextUtils.isEmpty(name)?View.GONE:View.VISIBLE);
-        if(!TextUtils.isEmpty(index)&&!TextUtils.isEmpty(date)&&!TextUtils.isEmpty(code)&&!TextUtils.isEmpty(name)){
+        if(!TextUtils.isEmpty(index)&&!TextUtils.isEmpty(date)&&!TextUtils.isEmpty(code)&&!TextUtils.isEmpty(name)&&!TextUtils.isEmpty(company)){
             mNextBtn.setOnClickListener(this);
             mNextBtn.setBackgroundResource(R.drawable.corner_radius_33_blue_bg);
         }else{
@@ -125,6 +138,11 @@ public class CreateEquipmentMandatoryActivity extends BaseActivity implements Vi
 
     @Override
     public void showMandatoryInfo(CreateEquipmentMandatoryInfo info) {
+        mSelectAcceptionItem = new InspectionCompanyItem();
+        mSelectAcceptionItem.id = info.acceptanceCompanyId;
+        mSelectAcceptionItem.name = info.acceptanceCompanyName;
+
+        mInspectionText.setText(info.acceptanceCompanyName);
         mIndexEt.setText(info.batchCode);
         mDate = info.approachDate;
         mDateTv.setText(DateUtil.getShowDate(mDate));
@@ -135,10 +153,37 @@ public class CreateEquipmentMandatoryActivity extends BaseActivity implements Vi
     }
 
     @Override
+    public void showAccpecionCompany(InspectionCompanyItem item) {
+        mSelectAcceptionItem = item;
+        mInspectionText.setText(item.name);
+    }
+
+    @Override
+    public void showCompanyList(final List<InspectionCompanyItem> mInspectionCompanyItems, int position) {
+        ChooseListDialog mInspectionCompanyListDialog = new ChooseListDialog(getActivity(), position, "选择验收单位");
+        final List<String> mInspectionCompanyNameList = new ArrayList<>();
+        for(InspectionCompanyItem item:mInspectionCompanyItems){
+            mInspectionCompanyNameList.add(item.name);
+        }
+        mInspectionCompanyListDialog.builder(new OnChooseListListener() {
+            @Override
+            public void onSelect(int position) {
+                mSelectAcceptionItem = mInspectionCompanyItems.get(position);
+                mInspectionText.setText(mInspectionCompanyNameList.get(position));
+
+            }
+        }, mInspectionCompanyNameList);
+        mInspectionCompanyListDialog.show();
+    }
+
+    @Override
     public void onClick(View view) {
         int id = view.getId();
         switch (id)
         {
+            case R.id.create_equipment_mandatory_inspection:
+                mPresenter.showAcceptionCompany(mSelectAcceptionItem);
+                break;
             case R.id.create_equipment_mandatory_header_back:
                 mActivity.finish();
                 break;
@@ -177,6 +222,10 @@ public class CreateEquipmentMandatoryActivity extends BaseActivity implements Vi
 
     private void toNext() {
         CreateEquipmentMandatoryInfo info = new CreateEquipmentMandatoryInfo();
+        if(mSelectAcceptionItem!=null){
+            info.acceptanceCompanyId = mSelectAcceptionItem.id;
+            info.acceptanceCompanyName = mSelectAcceptionItem.name;
+        }
         info.batchCode = mIndexEt.getText().toString().trim();
         info.approachDate = mDate;
         info.facilityCode = mCodeEt.getText().toString().trim();

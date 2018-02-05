@@ -65,6 +65,50 @@
             />
     </LinearLayout>
     <LinearLayout
+        android:id="@+id/create_equipment_mandatory_inspection"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_48"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/dimen_20"
+        android:background="@color/white"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="@string/str_equipment_create_inspection_"
+            android:textColor="@color/black"
+            android:layout_marginRight="@dimen/dimen_20"
+            android:textSize="@dimen/dimen_16"
+
+            />
+        <TextView
+            android:id="@+id/create_equipment_mandatory_inspection_text"
+            android:layout_width="@dimen/dimen_0"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:textColor="@color/c_666666"
+            android:textSize="@dimen/dimen_16"
+            android:background="@color/white"
+            />
+        <ImageView
+            android:layout_width="@dimen/dimen_05"
+            android:layout_height="@dimen/dimen_12"
+            android:background="@drawable/icon_arrow_right_gray"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="@dimen/dimen_15"
+            />
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_0.5"
+        android:layout_marginLeft="@dimen/dimen_20"
+        android:background="@color/c_e9e9e9"
+        />
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_48"
         android:orientation="horizontal"
