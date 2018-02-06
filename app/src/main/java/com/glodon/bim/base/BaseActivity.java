@@ -93,14 +93,12 @@ public class BaseActivity extends AppCompatActivity {
             Window w = getWindow();
             w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,  //设置StatusBar透明
                     WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            int id = 0;
+            int id;
             id = getResources().getIdentifier("status_bar_height", "dimen", //获取状态栏的高度
                     "android");
             if (id > 0) {
                 mStatusView.getLayoutParams().height = getResources() //设置状态栏的高度
                         .getDimensionPixelOffset(id);
-//                mStatusView.getLayoutParams().height = getResources() //设置状态栏的高度
-//                        .getDimensionPixelOffset(fileId);
             }
         }
     }

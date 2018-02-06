@@ -48,6 +48,10 @@
     <string name="str_main_quality_list_">质检单</string>
     <string name="str_main_project_title">项目列表</string>
     <string name="str_main_tenant_title">租户列表</string>
+    <string name="str_main_lab_main_page">首页</string>
+    <string name="str_main_lab_subscribe">订阅</string>
+    <string name="str_main_lab_message">消息</string>
+    <string name="str_main_lab_mine">我的</string>
 
     <!-- 质检清单 -->
     <string name="str_quality_photo_title">相机胶卷</string>

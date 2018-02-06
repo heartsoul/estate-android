@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/main_page_lab_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/c_00baf3"
+        android:textSize="@dimen/dimen_16"
+        android:layout_gravity="center_horizontal"
+        />
+    <ImageView
+        android:id="@+id/main_page_lab_line"
+        android:layout_width="@dimen/dimen_40"
+        android:layout_height="@dimen/dimen_04"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/dimen_11"
+        android:background="@drawable/icon_main_page_lab_line"
+        />
+</LinearLayout>
