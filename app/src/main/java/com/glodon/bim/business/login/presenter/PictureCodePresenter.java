@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
-import com.glodon.bim.basic.config.AppConfig;
 import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.basic.network.NetRequest;
 import com.glodon.bim.basic.utils.NetWorkUtils;
@@ -57,7 +56,7 @@ public class PictureCodePresenter implements PictureCodeContract.Presenter{
     public void getPictureCode(){
 
         if(NetWorkUtils.isNetworkAvailable(mView.getActivity())) {
-            NetRequest.getInstance().getCall(AppConfig.BASE_URL, LoginApi.class)
+            NetRequest.getInstance().getCall(LoginApi.class)
                     .getPictureCode()
                     .enqueue(new Callback<ResponseBody>() {
                         @Override

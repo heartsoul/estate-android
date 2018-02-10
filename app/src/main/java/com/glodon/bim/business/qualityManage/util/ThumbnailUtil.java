@@ -4,15 +4,12 @@ import android.app.Activity;
 import android.text.TextUtils;
 import android.widget.ImageView;
 
-import com.glodon.bim.R;
-import com.glodon.bim.basic.config.AppConfig;
 import com.glodon.bim.basic.image.ImageLoader;
 import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.basic.network.NetRequest;
 import com.glodon.bim.business.greendao.provider.DaoProvider;
 import com.glodon.bim.business.qualityManage.bean.ThumbnailBean;
 import com.glodon.bim.business.qualityManage.model.ThumbnailApi;
-import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
 
@@ -34,7 +31,7 @@ public class ThumbnailUtil {
      * @param view  展示的view
      */
     public static void getThumbnail(final Activity mActivity, long projectId, String projectVersionId, String fileId, final ImageView view,final int defaultIcon){
-        NetRequest.getInstance().getCall(AppConfig.BASE_URL, ThumbnailApi.class).getBluePrint(projectId,projectVersionId,fileId,new DaoProvider().getCookie())
+        NetRequest.getInstance().getCall(ThumbnailApi.class).getBluePrint(projectId,projectVersionId,fileId,new DaoProvider().getCookie())
                 .enqueue(new Callback<ThumbnailBean>() {
                     @Override
                     public void onResponse(Call<ThumbnailBean> call, Response<ThumbnailBean> response) {

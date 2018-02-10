@@ -1,16 +1,11 @@
 package com.glodon.bim.business.qualityManage.model;
 
-import com.glodon.bim.basic.config.AppConfig;
 import com.glodon.bim.basic.network.NetRequest;
 import com.glodon.bim.basic.utils.SharedPreferencesUtil;
 import com.glodon.bim.business.greendao.provider.DaoProvider;
 import com.glodon.bim.business.qualityManage.bean.BluePrintModelSearchBean;
 import com.glodon.bim.business.qualityManage.contract.BluePrintModelSearchContract;
 
-import retrofit2.http.Header;
-import retrofit2.http.POST;
-import retrofit2.http.Path;
-import retrofit2.http.Query;
 import rx.Observable;
 
 /**
@@ -37,7 +32,7 @@ public class BluePrintModelSearchModel implements BluePrintModelSearchContract.M
      * @param suffix  模型rvt  图纸dwg
      */
     public Observable<BluePrintModelSearchBean> search( String name, String suffix){
-        return NetRequest.getInstance().getCall(AppConfig.BASE_URL,BluePrintModelSearchApi.class).search(projectId,projectVersionId,name,suffix,cookie);
+        return NetRequest.getInstance().getCall(BluePrintModelSearchApi.class).search(projectId,projectVersionId,name,suffix,cookie);
     }
 
 }

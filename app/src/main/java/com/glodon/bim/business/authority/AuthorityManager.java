@@ -1,16 +1,11 @@
 package com.glodon.bim.business.authority;
 
-import android.content.Intent;
-
-import com.glodon.bim.base.BaseApplication;
-import com.glodon.bim.basic.config.AppConfig;
 import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.basic.network.NetRequest;
 import com.glodon.bim.basic.utils.SharedPreferencesUtil;
 import com.glodon.bim.business.greendao.provider.DaoProvider;
 import com.glodon.bim.business.main.listener.OnGetAuthorityListener;
 import com.glodon.bim.common.config.AuthorityConfig;
-import com.glodon.bim.common.config.CommonConfig;
 
 import java.util.List;
 
@@ -182,7 +177,7 @@ public class AuthorityManager {
     }
     //质量检查记录
     public static void getAuthorityCheck(final OnGetAuthorityListener listener){
-        NetRequest.getInstance().getCall(AppConfig.BASE_URL,AuthorityApi.class).getAuthority(appCode, AuthorityConfig.Quality_Check, SharedPreferencesUtil.getProjectId(),new DaoProvider().getCookie())
+        NetRequest.getInstance().getCall(AuthorityApi.class).getAuthority(appCode, AuthorityConfig.Quality_Check, SharedPreferencesUtil.getProjectId(),new DaoProvider().getCookie())
                 .enqueue(new Callback<AuthorityBean>() {
                     @Override
                     public void onResponse(Call<AuthorityBean> call, Response<AuthorityBean> response) {
@@ -211,7 +206,7 @@ public class AuthorityManager {
     }
     //质量验收记录
     public static void getAuthorityAccept(final OnGetAuthorityListener listener){
-        NetRequest.getInstance().getCall(AppConfig.BASE_URL,AuthorityApi.class).getAuthority(appCode, AuthorityConfig.Quality_Accept, SharedPreferencesUtil.getProjectId(),new DaoProvider().getCookie())
+        NetRequest.getInstance().getCall(AuthorityApi.class).getAuthority(appCode, AuthorityConfig.Quality_Accept, SharedPreferencesUtil.getProjectId(),new DaoProvider().getCookie())
                 .enqueue(new Callback<AuthorityBean>() {
                     @Override
                     public void onResponse(Call<AuthorityBean> call, Response<AuthorityBean> response) {
@@ -236,7 +231,7 @@ public class AuthorityManager {
     }
     //质量隐患记录
     public static void getAuthorityRisk(final OnGetAuthorityListener listener){
-        NetRequest.getInstance().getCall(AppConfig.BASE_URL,AuthorityApi.class).getAuthority(appCode, AuthorityConfig.Quality_Risk, SharedPreferencesUtil.getProjectId(),new DaoProvider().getCookie())
+        NetRequest.getInstance().getCall(AuthorityApi.class).getAuthority(appCode, AuthorityConfig.Quality_Risk, SharedPreferencesUtil.getProjectId(),new DaoProvider().getCookie())
                 .enqueue(new Callback<AuthorityBean>() {
                     @Override
                     public void onResponse(Call<AuthorityBean> call, Response<AuthorityBean> response) {
@@ -261,7 +256,7 @@ public class AuthorityManager {
     }
     //材料设备进场验收
     public static void getAuthorityFacility(final OnGetAuthorityListener listener){
-        NetRequest.getInstance().getCall(AppConfig.BASE_URL,AuthorityApi.class).getAuthority(appCode, AuthorityConfig.Quality_Facility, SharedPreferencesUtil.getProjectId(),new DaoProvider().getCookie())
+        NetRequest.getInstance().getCall(AuthorityApi.class).getAuthority(appCode, AuthorityConfig.Quality_Facility, SharedPreferencesUtil.getProjectId(),new DaoProvider().getCookie())
                 .enqueue(new Callback<AuthorityBean>() {
                     @Override
                     public void onResponse(Call<AuthorityBean> call, Response<AuthorityBean> response) {
@@ -286,7 +281,7 @@ public class AuthorityManager {
     }
     //质量整改记录
     public static void getAuthorityRectification(final OnGetAuthorityListener listener){
-        NetRequest.getInstance().getCall(AppConfig.BASE_URL,AuthorityApi.class).getAuthority(appCode, AuthorityConfig.Quality_Rectification, SharedPreferencesUtil.getProjectId(),new DaoProvider().getCookie())
+        NetRequest.getInstance().getCall(AuthorityApi.class).getAuthority(appCode, AuthorityConfig.Quality_Rectification, SharedPreferencesUtil.getProjectId(),new DaoProvider().getCookie())
                 .enqueue(new Callback<AuthorityBean>() {
                     @Override
                     public void onResponse(Call<AuthorityBean> call, Response<AuthorityBean> response) {

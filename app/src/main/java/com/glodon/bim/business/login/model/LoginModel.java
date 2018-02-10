@@ -2,7 +2,6 @@ package com.glodon.bim.business.login.model;
 
 import android.text.TextUtils;
 
-import com.glodon.bim.basic.config.AppConfig;
 import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.basic.network.NetRequest;
 import com.glodon.bim.basic.network.OAuth2Request;
@@ -152,7 +151,7 @@ public class LoginModel implements LoginContract.Model {
      */
     @Override
     public Observable<User> getUserInfo(String cookie) {
-        return NetRequest.getInstance().getCall(AppConfig.BASE_URL, LoginApi.class).getUserInfo(cookie);
+        return NetRequest.getInstance().getCall( LoginApi.class).getUserInfo(cookie);
     }
 
     @Override

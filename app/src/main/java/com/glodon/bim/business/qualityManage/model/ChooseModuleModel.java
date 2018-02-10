@@ -1,8 +1,6 @@
 package com.glodon.bim.business.qualityManage.model;
 
-import com.glodon.bim.basic.config.AppConfig;
 import com.glodon.bim.basic.network.NetRequest;
-import com.glodon.bim.basic.utils.SharedPreferencesUtil;
 import com.glodon.bim.business.greendao.provider.DaoProvider;
 import com.glodon.bim.business.qualityManage.bean.ModuleListBeanItem;
 import com.glodon.bim.business.qualityManage.contract.ChooseModuleContract;
@@ -21,7 +19,7 @@ public class ChooseModuleModel implements ChooseModuleContract.Model {
 
     @Override
     public Observable<List<ModuleListBeanItem>> getModuleList(long deptId){
-        return NetRequest.getInstance().getCall(AppConfig.BASE_URL,CreateCheckListApi.class).getModuleList(deptId,true,new DaoProvider().getCookie());
+        return NetRequest.getInstance().getCall(CreateCheckListApi.class).getModuleList(deptId,true,new DaoProvider().getCookie());
 //        String versionId = SharedPreferencesUtil.getProjectVersionId(deptId);
 //        return NetRequest.getInstance().getCall(AppConfig.BASE_URL,CreateCheckListApi.class).getModuleList(deptId,versionId,new DaoProvider().getCookie());
     }

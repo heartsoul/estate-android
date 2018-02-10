@@ -1,6 +1,5 @@
 package com.glodon.bim.business.qualityManage.model;
 
-import com.glodon.bim.basic.config.AppConfig;
 import com.glodon.bim.basic.network.NetRequest;
 import com.glodon.bim.business.greendao.provider.DaoProvider;
 import com.glodon.bim.business.qualityManage.bean.ModuleStandardItem;
@@ -19,6 +18,6 @@ import rx.Observable;
 public class ModuleStandardModel implements ModuleStandardContract.Model {
     @Override
     public Observable<List<ModuleStandardItem>> getModuleStandardList(long templateId) {
-        return NetRequest.getInstance().getCall(AppConfig.BASE_URL,CreateCheckListApi.class).getModuleStandard(templateId,new DaoProvider().getCookie());
+        return NetRequest.getInstance().getCall(CreateCheckListApi.class).getModuleStandard(templateId,new DaoProvider().getCookie());
     }
 }

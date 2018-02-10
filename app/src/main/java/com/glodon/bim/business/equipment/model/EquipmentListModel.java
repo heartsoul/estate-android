@@ -1,6 +1,5 @@
 package com.glodon.bim.business.equipment.model;
 
-import com.glodon.bim.basic.config.AppConfig;
 import com.glodon.bim.basic.network.NetRequest;
 import com.glodon.bim.basic.utils.SharedPreferencesUtil;
 import com.glodon.bim.business.equipment.bean.EquipmentListBean;
@@ -51,7 +50,7 @@ public class EquipmentListModel implements EquipmentListContract.Model {
      * 全部
      */
     private Observable<EquipmentListBean> getEquipmentList(int page, int size) {
-        return NetRequest.getInstance().getCall(AppConfig.BASE_URL, EquipmentListApi.class).getEquipmentList(projectId, page, size, sort, cookie);
+        return NetRequest.getInstance().getCall(EquipmentListApi.class).getEquipmentList(projectId, page, size, sort, cookie);
     }
 
     /**
@@ -59,7 +58,7 @@ public class EquipmentListModel implements EquipmentListContract.Model {
      * 待提交
      */
     private Observable<EquipmentListBean> getToCommitEquipmentList(int page, int size) {
-        return NetRequest.getInstance().getCall(AppConfig.BASE_URL, EquipmentListApi.class).getToCommitEquipmentList(projectId, page, size, false, sort, cookie);
+        return NetRequest.getInstance().getCall( EquipmentListApi.class).getToCommitEquipmentList(projectId, page, size, false, sort, cookie);
     }
 
     /**
@@ -67,7 +66,7 @@ public class EquipmentListModel implements EquipmentListContract.Model {
      * 合格不合格
      */
     private Observable<EquipmentListBean> getQualifyEquipmentList(int page, int size, boolean qualified) {
-        return NetRequest.getInstance().getCall(AppConfig.BASE_URL, EquipmentListApi.class).getqualifyEquipmentList(projectId, page, size, true, qualified, sort, cookie);
+        return NetRequest.getInstance().getCall(EquipmentListApi.class).getqualifyEquipmentList(projectId, page, size, true, qualified, sort, cookie);
     }
 
     /**
@@ -75,6 +74,6 @@ public class EquipmentListModel implements EquipmentListContract.Model {
      * 合格不合格
      */
     public Observable<EquipmentNumBean> getEquipmentListNum() {
-        return NetRequest.getInstance().getCall(AppConfig.BASE_URL, EquipmentListApi.class).getEquipmentListNum(projectId, cookie);
+        return NetRequest.getInstance().getCall( EquipmentListApi.class).getEquipmentListNum(projectId, cookie);
     }
 }

@@ -1,6 +1,5 @@
 package com.glodon.bim.business.qualityManage.model;
 
-import com.glodon.bim.basic.config.AppConfig;
 import com.glodon.bim.basic.network.NetRequest;
 import com.glodon.bim.business.greendao.provider.DaoProvider;
 import com.glodon.bim.business.qualityManage.bean.QualityGetRepairInfo;
@@ -25,7 +24,7 @@ public class CreateReviewModel implements CreateReviewContract.Model {
      */
     @Override
     public Observable<SaveBean> createSaveRepair(long deptId,QualityRepairParams props){
-        return NetRequest.getInstance().getCall(AppConfig.BASE_URL,CreateReviewApi.class).createSaveRepair(deptId,props,new DaoProvider().getCookie());
+        return NetRequest.getInstance().getCall(CreateReviewApi.class).createSaveRepair(deptId,props,new DaoProvider().getCookie());
     }
 
     /**
@@ -33,7 +32,7 @@ public class CreateReviewModel implements CreateReviewContract.Model {
      */
     @Override
     public Observable<ResponseBody> editSaveRepair(long deptId,long id, QualityRepairParams props){
-        return NetRequest.getInstance().getCall(AppConfig.BASE_URL,CreateReviewApi.class).editSaveRepair(deptId,id,props,new DaoProvider().getCookie());
+        return NetRequest.getInstance().getCall(CreateReviewApi.class).editSaveRepair(deptId,id,props,new DaoProvider().getCookie());
     }
 
 
@@ -42,7 +41,7 @@ public class CreateReviewModel implements CreateReviewContract.Model {
      */
     @Override
     public Observable<SaveBean> createSubmitRepair(long deptId, QualityRepairParams props){
-        return NetRequest.getInstance().getCall(AppConfig.BASE_URL,CreateReviewApi.class).createSubmitRepair(deptId,props,new DaoProvider().getCookie());
+        return NetRequest.getInstance().getCall(CreateReviewApi.class).createSubmitRepair(deptId,props,new DaoProvider().getCookie());
     }
 
     /**
@@ -50,7 +49,7 @@ public class CreateReviewModel implements CreateReviewContract.Model {
      */
     @Override
     public Observable<ResponseBody> editSubmitRepair(long deptId,long id, QualityRepairParams props){
-        return NetRequest.getInstance().getCall(AppConfig.BASE_URL,CreateReviewApi.class).editSubmitRepair(deptId,id,props,new DaoProvider().getCookie());
+        return NetRequest.getInstance().getCall(CreateReviewApi.class).editSubmitRepair(deptId,id,props,new DaoProvider().getCookie());
     }
 
     /**
@@ -58,7 +57,7 @@ public class CreateReviewModel implements CreateReviewContract.Model {
      */
     @Override
     public Observable<ResponseBody> deleteRepair(long deptId,  long id){
-        return NetRequest.getInstance().getCall(AppConfig.BASE_URL,CreateReviewApi.class).deleteRepair(deptId,id,new DaoProvider().getCookie());
+        return NetRequest.getInstance().getCall(CreateReviewApi.class).deleteRepair(deptId,id,new DaoProvider().getCookie());
     }
 
     /**
@@ -66,7 +65,7 @@ public class CreateReviewModel implements CreateReviewContract.Model {
      */
     @Override
     public Observable<QualityGetRepairInfo> getRepairInfo( long deptId,  long inspectionId){
-        return NetRequest.getInstance().getCall(AppConfig.BASE_URL,CreateReviewApi.class).getRepairInfo(deptId,inspectionId,new DaoProvider().getCookie());
+        return NetRequest.getInstance().getCall(CreateReviewApi.class).getRepairInfo(deptId,inspectionId,new DaoProvider().getCookie());
     }
 
 
@@ -75,7 +74,7 @@ public class CreateReviewModel implements CreateReviewContract.Model {
      */
     @Override
     public Observable<SaveBean> createSaveReview(long deptId,QualityReviewParams props){
-        return NetRequest.getInstance().getCall(AppConfig.BASE_URL,CreateReviewApi.class).createSaveReview(deptId,props,new DaoProvider().getCookie());
+        return NetRequest.getInstance().getCall(CreateReviewApi.class).createSaveReview(deptId,props,new DaoProvider().getCookie());
     }
 
     /**
@@ -83,7 +82,7 @@ public class CreateReviewModel implements CreateReviewContract.Model {
      */
     @Override
     public Observable<ResponseBody> editSaveReview( long deptId, long id, QualityReviewParams props){
-        return NetRequest.getInstance().getCall(AppConfig.BASE_URL,CreateReviewApi.class).editSaveReview(deptId,id,props,new DaoProvider().getCookie());
+        return NetRequest.getInstance().getCall(CreateReviewApi.class).editSaveReview(deptId,id,props,new DaoProvider().getCookie());
     }
 
     /**
@@ -91,7 +90,7 @@ public class CreateReviewModel implements CreateReviewContract.Model {
      */
     @Override
     public Observable<SaveBean> createSubmitReview(long deptId,QualityReviewParams props){
-        return NetRequest.getInstance().getCall(AppConfig.BASE_URL,CreateReviewApi.class).createSubmitReview(deptId,props,new DaoProvider().getCookie());
+        return NetRequest.getInstance().getCall(CreateReviewApi.class).createSubmitReview(deptId,props,new DaoProvider().getCookie());
     }
 
     /**
@@ -99,7 +98,7 @@ public class CreateReviewModel implements CreateReviewContract.Model {
      */
     @Override
     public Observable<ResponseBody> editSubmitReview(long deptId, long id,  QualityReviewParams props){
-        return NetRequest.getInstance().getCall(AppConfig.BASE_URL,CreateReviewApi.class).editSubmitReview(deptId,id,props,new DaoProvider().getCookie());
+        return NetRequest.getInstance().getCall(CreateReviewApi.class).editSubmitReview(deptId,id,props,new DaoProvider().getCookie());
     }
 
 
@@ -108,7 +107,7 @@ public class CreateReviewModel implements CreateReviewContract.Model {
      */
     @Override
     public Observable<QualityGetReviewInfo> getReviewInfo(long deptId,long inspectionId){
-        return NetRequest.getInstance().getCall(AppConfig.BASE_URL,CreateReviewApi.class).getReviewInfo(deptId,inspectionId,new DaoProvider().getCookie());
+        return NetRequest.getInstance().getCall(CreateReviewApi.class).getReviewInfo(deptId,inspectionId,new DaoProvider().getCookie());
     }
 
     /**
@@ -116,6 +115,6 @@ public class CreateReviewModel implements CreateReviewContract.Model {
      */
     @Override
     public Observable<ResponseBody> deleteReview(long deptId, long id){
-        return NetRequest.getInstance().getCall(AppConfig.BASE_URL,CreateReviewApi.class).deleteReview(deptId,id,new DaoProvider().getCookie());
+        return NetRequest.getInstance().getCall(CreateReviewApi.class).deleteReview(deptId,id,new DaoProvider().getCookie());
     }
 }

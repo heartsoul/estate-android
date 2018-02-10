@@ -80,7 +80,7 @@ public class UploadManger {
         LogUtil.e("name="+name);
         long length = file.length();
         //http://172.16.233.183:8093/v1/operationCodes
-        NetRequest.getInstance().getCall(AppConfig.BASE_URL, UploadImageApi.class).getOperationCode(containerId,name,digest,length,new DaoProvider().getCookie())
+        NetRequest.getInstance().getCall( UploadImageApi.class).getOperationCode(containerId,name,digest,length,new DaoProvider().getCookie())
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -172,7 +172,7 @@ public class UploadManger {
     }
 
     public static void loadOriginalUrl(final Context context, String objectId, final ImageView view){
-        NetRequest.getInstance().getCall(AppConfig.BASE_URL,UploadImageApi.class).getOriginalUrl(objectId,false,new DaoProvider().getCookie())
+        NetRequest.getInstance().getCall(UploadImageApi.class).getOriginalUrl(objectId,false,new DaoProvider().getCookie())
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

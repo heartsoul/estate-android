@@ -1,20 +1,10 @@
 package com.glodon.bim.business.qualityManage.model;
 
-import android.util.Log;
-
-import com.glodon.bim.basic.config.AppConfig;
-import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.basic.network.NetRequest;
 import com.glodon.bim.business.greendao.provider.DaoProvider;
 import com.glodon.bim.business.qualityManage.bean.QualityCheckListDetailBean;
 import com.glodon.bim.business.qualityManage.contract.QualityCheckListDetailViewContract;
 
-import java.io.IOException;
-
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import rx.Observable;
 
 /**
@@ -27,7 +17,7 @@ public class QualityCheckListDetailViewModel implements QualityCheckListDetailVi
 
     @Override
     public Observable<QualityCheckListDetailBean> getQualityCheckListDetail(long deptId,long id){
-        return NetRequest.getInstance().getCall(AppConfig.BASE_URL,QualityCheckListApi.class).getQualityCheckListDetail(deptId,id,new DaoProvider().getCookie());
+        return NetRequest.getInstance().getCall(QualityCheckListApi.class).getQualityCheckListDetail(deptId,id,new DaoProvider().getCookie());
     }
 
 

@@ -1,6 +1,5 @@
 package com.glodon.bim.business.qualityManage.model;
 
-import com.glodon.bim.basic.config.AppConfig;
 import com.glodon.bim.basic.network.NetRequest;
 import com.glodon.bim.business.greendao.provider.DaoProvider;
 import com.glodon.bim.business.qualityManage.bean.BluePrintDotItem;
@@ -10,9 +9,6 @@ import com.glodon.bim.business.qualityManage.contract.RelevantBluePrintContract;
 
 import java.util.List;
 
-import retrofit2.http.Header;
-import retrofit2.http.Path;
-import retrofit2.http.Query;
 import rx.Observable;
 
 /**
@@ -30,15 +26,15 @@ public class RelevantBluePrintModel implements RelevantBluePrintContract.Model{
 
     @Override
     public Observable<ProjectVersionBean> getLatestVersion(long projectId) {
-        return NetRequest.getInstance().getCall(AppConfig.BASE_URL, RelevantBluePrintApi.class).getLatestVersion(projectId, cookie);
+        return NetRequest.getInstance().getCall( RelevantBluePrintApi.class).getLatestVersion(projectId, cookie);
     }
     @Override
     public Observable<RelevantBluePrintToken> getToken(long projectId, String projectVersionId, String fileId){
-        return NetRequest.getInstance().getCall(AppConfig.BASE_URL,RelevantBluePrintApi.class).getToken(projectId,projectVersionId,fileId,cookie);
+        return NetRequest.getInstance().getCall(RelevantBluePrintApi.class).getToken(projectId,projectVersionId,fileId,cookie);
     }
 
     @Override
     public Observable<List<BluePrintDotItem>> getBluePrintDots(long deptId,String drawingGdocFileId){
-        return NetRequest.getInstance().getCall(AppConfig.BASE_URL,RelevantBluePrintApi.class).getBluePrintDots(deptId,drawingGdocFileId,cookie);
+        return NetRequest.getInstance().getCall(RelevantBluePrintApi.class).getBluePrintDots(deptId,drawingGdocFileId,cookie);
     }
 }

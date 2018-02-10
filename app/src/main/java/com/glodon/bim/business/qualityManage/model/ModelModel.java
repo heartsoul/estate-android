@@ -2,7 +2,6 @@ package com.glodon.bim.business.qualityManage.model;
 
 import android.text.TextUtils;
 
-import com.glodon.bim.basic.config.AppConfig;
 import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.basic.network.NetRequest;
 import com.glodon.bim.business.greendao.provider.DaoProvider;
@@ -36,7 +35,7 @@ public class ModelModel implements ModelContract.Model {
      */
     @Override
     public Observable<List<ModelSingleListItem>> getSingleList(long id) {
-        return NetRequest.getInstance().getCall(AppConfig.BASE_URL, ModelApi.class).getSingleList(id, cookie);
+        return NetRequest.getInstance().getCall( ModelApi.class).getSingleList(id, cookie);
     }
 
     /**
@@ -44,7 +43,7 @@ public class ModelModel implements ModelContract.Model {
      */
     @Override
     public Observable<List<ModelSpecialListItem>> getSpecialList() {
-        return NetRequest.getInstance().getCall(AppConfig.BASE_URL, ModelApi.class).getSpecialList(false,cookie);
+        return NetRequest.getInstance().getCall( ModelApi.class).getSpecialList(false,cookie);
     }
 
     /**
@@ -52,7 +51,7 @@ public class ModelModel implements ModelContract.Model {
      */
     @Override
     public Observable<ProjectVersionBean> getLatestVersion(long projectId) {
-        return NetRequest.getInstance().getCall(AppConfig.BASE_URL, ModelApi.class).getLatestVersion(projectId, cookie);
+        return NetRequest.getInstance().getCall( ModelApi.class).getLatestVersion(projectId, cookie);
     }
 
     /**
@@ -70,11 +69,11 @@ public class ModelModel implements ModelContract.Model {
         LogUtil.e("buildingId="+buildingId);
         LogUtil.e("specialtyCode="+specialtyCode);
         if (buildingId != 0 && !TextUtils.isEmpty(specialtyCode)) {
-            return NetRequest.getInstance().getCall(AppConfig.BASE_URL, ModelApi.class).getModelList(projectId, projectVersionId, buildingId, specialtyCode, cookie);
+            return NetRequest.getInstance().getCall(ModelApi.class).getModelList(projectId, projectVersionId, buildingId, specialtyCode, cookie);
         } else if (buildingId != 0) {
-            return NetRequest.getInstance().getCall(AppConfig.BASE_URL, ModelApi.class).getModelList(projectId, projectVersionId, buildingId, cookie);
+            return NetRequest.getInstance().getCall( ModelApi.class).getModelList(projectId, projectVersionId, buildingId, cookie);
         } else if (!TextUtils.isEmpty(specialtyCode)) {
-            return NetRequest.getInstance().getCall(AppConfig.BASE_URL, ModelApi.class).getModelList(projectId, projectVersionId, specialtyCode, cookie);
+            return NetRequest.getInstance().getCall( ModelApi.class).getModelList(projectId, projectVersionId, specialtyCode, cookie);
         }
         return null;
     }

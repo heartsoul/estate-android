@@ -1,6 +1,5 @@
 package com.glodon.bim.business.main.model;
 
-import com.glodon.bim.basic.config.AppConfig;
 import com.glodon.bim.basic.network.NetRequest;
 import com.glodon.bim.business.greendao.provider.DaoProvider;
 import com.glodon.bim.business.main.bean.ParamSetCurrentTenant;
@@ -21,7 +20,7 @@ public class ChooseTenantModel implements ChooseTenantContract.Model {
     public Observable<ResponseBody> setCurrentTenant(long tenantId){
         ParamSetCurrentTenant param = new ParamSetCurrentTenant();
         param.tenantId = tenantId;
-        return NetRequest.getInstance().getCall(AppConfig.BASE_URL, ChooseTenantApi.class).currentTenant(param,new DaoProvider().getCookie());
+        return NetRequest.getInstance().getCall(ChooseTenantApi.class).currentTenant(param,new DaoProvider().getCookie());
 //        ChooseTenantApi obj = NetRequest.getInstance().getCall(AppConfig.BASE_URL,ChooseTenantApi.class);
 //        NetRequest.getInstance().getResponse(obj.currentTenant(param, new DaoProvider().getCookie()), new NetRequestCallback<ResponseBody>() {
 //            @Override

@@ -1,6 +1,5 @@
 package com.glodon.bim.business.qualityManage.model;
 
-import com.glodon.bim.basic.config.AppConfig;
 import com.glodon.bim.basic.network.NetRequest;
 import com.glodon.bim.business.greendao.provider.DaoProvider;
 import com.glodon.bim.business.qualityManage.bean.CompanyItem;
@@ -35,7 +34,7 @@ public class CreateCheckListModel implements CreateCheckListContract.Model {
      */
     @Override
     public Observable<List<CompanyItem>> getCompaniesList(long id, List<String> deptTypeEnums) {
-        return NetRequest.getInstance().getCall(AppConfig.BASE_URL, CreateCheckListApi.class).getCompaniesList(id, deptTypeEnums, new DaoProvider().getCookie());
+        return NetRequest.getInstance().getCall( CreateCheckListApi.class).getCompaniesList(id, deptTypeEnums, new DaoProvider().getCookie());
     }
 
     /**
@@ -46,7 +45,7 @@ public class CreateCheckListModel implements CreateCheckListContract.Model {
      */
     @Override
     public Observable<List<PersonItem>> gePersonList(long id, long coperationCorpId) {
-        return NetRequest.getInstance().getCall(AppConfig.BASE_URL, CreateCheckListApi.class).getPersonList(id, coperationCorpId, true, new DaoProvider().getCookie());
+        return NetRequest.getInstance().getCall( CreateCheckListApi.class).getPersonList(id, coperationCorpId, true, new DaoProvider().getCookie());
     }
 
     /**
@@ -131,7 +130,7 @@ public class CreateCheckListModel implements CreateCheckListContract.Model {
      */
     @Override
     public Observable<SaveBean> createSubmitInspection(long deptId, CreateCheckListParams props) {
-        return NetRequest.getInstance().getCall(AppConfig.BASE_URL, CreateCheckListApi.class).createSubmitInspection(deptId, props, new DaoProvider().getCookie());
+        return NetRequest.getInstance().getCall( CreateCheckListApi.class).createSubmitInspection(deptId, props, new DaoProvider().getCookie());
     }
 
     /**
@@ -141,7 +140,7 @@ public class CreateCheckListModel implements CreateCheckListContract.Model {
      */
     @Override
     public Observable<SaveBean> createSaveInspection(long deptId, CreateCheckListParams props) {
-        return NetRequest.getInstance().getCall(AppConfig.BASE_URL, CreateCheckListApi.class).createSaveInspection(deptId, props, new DaoProvider().getCookie());
+        return NetRequest.getInstance().getCall( CreateCheckListApi.class).createSaveInspection(deptId, props, new DaoProvider().getCookie());
     }
 
     /**
@@ -149,7 +148,7 @@ public class CreateCheckListModel implements CreateCheckListContract.Model {
      */
     @Override
     public Observable<ResponseBody> editSubmitInspection(long deptId, long id, CreateCheckListParams props) {
-        return NetRequest.getInstance().getCall(AppConfig.BASE_URL, CreateCheckListApi.class).editSubmitInspection(deptId, id, props, new DaoProvider().getCookie());
+        return NetRequest.getInstance().getCall( CreateCheckListApi.class).editSubmitInspection(deptId, id, props, new DaoProvider().getCookie());
     }
 
 
@@ -158,7 +157,7 @@ public class CreateCheckListModel implements CreateCheckListContract.Model {
      */
     @Override
     public Observable<ResponseBody> editSaveInspection(long deptId, long id, CreateCheckListParams props) {
-        return NetRequest.getInstance().getCall(AppConfig.BASE_URL, CreateCheckListApi.class).editSaveInspection(deptId, id, props, new DaoProvider().getCookie());
+        return NetRequest.getInstance().getCall( CreateCheckListApi.class).editSaveInspection(deptId, id, props, new DaoProvider().getCookie());
     }
 
     /**
@@ -166,7 +165,7 @@ public class CreateCheckListModel implements CreateCheckListContract.Model {
      */
     @Override
     public Observable<ResponseBody> createDeleteInspection(long deptId, long id) {
-        return NetRequest.getInstance().getCall(AppConfig.BASE_URL, CreateCheckListApi.class).createDeleteInspection(deptId, id, new DaoProvider().getCookie());
+        return NetRequest.getInstance().getCall( CreateCheckListApi.class).createDeleteInspection(deptId, id, new DaoProvider().getCookie());
     }
 
     /**
@@ -174,7 +173,7 @@ public class CreateCheckListModel implements CreateCheckListContract.Model {
      */
     @Override
     public Observable<SaveBean> createSubmitAcceptance(long deptId, CreateCheckListParams props) {
-        return NetRequest.getInstance().getCall(AppConfig.BASE_URL, CreateCheckListApi.class).createSubmitAcceptance(deptId, props, new DaoProvider().getCookie());
+        return NetRequest.getInstance().getCall( CreateCheckListApi.class).createSubmitAcceptance(deptId, props, new DaoProvider().getCookie());
     }
 
     /**
@@ -182,7 +181,7 @@ public class CreateCheckListModel implements CreateCheckListContract.Model {
      */
     @Override
     public Observable<SaveBean> createSaveAcceptance(long deptId, CreateCheckListParams props) {
-        return NetRequest.getInstance().getCall(AppConfig.BASE_URL, CreateCheckListApi.class).createSaveAcceptance(deptId, props, new DaoProvider().getCookie());
+        return NetRequest.getInstance().getCall( CreateCheckListApi.class).createSaveAcceptance(deptId, props, new DaoProvider().getCookie());
     }
 
     /**
@@ -190,7 +189,7 @@ public class CreateCheckListModel implements CreateCheckListContract.Model {
      */
     @Override
     public Observable<ResponseBody> editSubmitAcceptance(long deptId, long id, CreateCheckListParams props) {
-        return NetRequest.getInstance().getCall(AppConfig.BASE_URL, CreateCheckListApi.class).editSubmitAcceptance(deptId, id, props, new DaoProvider().getCookie());
+        return NetRequest.getInstance().getCall( CreateCheckListApi.class).editSubmitAcceptance(deptId, id, props, new DaoProvider().getCookie());
     }
 
 
@@ -199,7 +198,7 @@ public class CreateCheckListModel implements CreateCheckListContract.Model {
      */
     @Override
     public Observable<ResponseBody> editSaveAcceptance(long deptId, long id, CreateCheckListParams props) {
-        return NetRequest.getInstance().getCall(AppConfig.BASE_URL, CreateCheckListApi.class).editSaveAcceptance(deptId, id, props, new DaoProvider().getCookie());
+        return NetRequest.getInstance().getCall(CreateCheckListApi.class).editSaveAcceptance(deptId, id, props, new DaoProvider().getCookie());
     }
 
 
@@ -208,7 +207,7 @@ public class CreateCheckListModel implements CreateCheckListContract.Model {
      */
     @Override
     public Observable<ResponseBody> createDeleteAcceptance(long deptId, long id) {
-        return NetRequest.getInstance().getCall(AppConfig.BASE_URL, CreateCheckListApi.class).createDeleteAcceptance(deptId, id, new DaoProvider().getCookie());
+        return NetRequest.getInstance().getCall( CreateCheckListApi.class).createDeleteAcceptance(deptId, id, new DaoProvider().getCookie());
     }
 
 
@@ -222,13 +221,13 @@ public class CreateCheckListModel implements CreateCheckListContract.Model {
      */
     @Override
     public Observable<List<InspectionCompanyItem>> getInspectionCompanies( long deptId){
-        return NetRequest.getInstance().getCall(AppConfig.BASE_URL,CreateCheckListApi.class).getInspectionCompanies(deptId,new DaoProvider().getCookie());
+        return NetRequest.getInstance().getCall(CreateCheckListApi.class).getInspectionCompanies(deptId,new DaoProvider().getCookie());
     }
 
     /**
      * 根据构件id获取构件名称
      */
     public Observable<ModelElementInfo> getElementProperty(long projectId,String versionId,String fileId,String elementId){
-        return NetRequest.getInstance().getCall(AppConfig.BASE_URL,CreateCheckListApi.class).getElementProperty(projectId,versionId,fileId,elementId,new DaoProvider().getCookie());
+        return NetRequest.getInstance().getCall(CreateCheckListApi.class).getElementProperty(projectId,versionId,fileId,elementId,new DaoProvider().getCookie());
     }
 }

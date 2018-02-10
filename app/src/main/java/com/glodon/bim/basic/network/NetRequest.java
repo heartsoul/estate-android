@@ -1,5 +1,7 @@
 package com.glodon.bim.basic.network;
 
+import com.glodon.bim.basic.config.AppConfig;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -41,6 +43,22 @@ public class NetRequest {
     public <T> T getCall(String baseUrl, Class<T> tClass) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .build();
+        return retrofit.create(tClass);
+
+    }
+    /**
+     * 获取接口实例
+     *
+     * @param tClass  定义的接口
+     * @param <T>     返回值类的泛型
+     * @return 接口实例
+     */
+    public <T> T getCall(Class<T> tClass) {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(AppConfig.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build();

@@ -1,6 +1,5 @@
 package com.glodon.bim.business.qualityManage.model;
 
-import com.glodon.bim.basic.config.AppConfig;
 import com.glodon.bim.basic.network.NetRequest;
 import com.glodon.bim.business.greendao.provider.DaoProvider;
 import com.glodon.bim.business.qualityManage.bean.EquipmentHistoryItem;
@@ -29,31 +28,31 @@ public class RelevantModelModel implements RelevantModelContract.Model{
 
     @Override
     public Observable<ProjectVersionBean> getLatestVersion(long projectId) {
-        return NetRequest.getInstance().getCall(AppConfig.BASE_URL, RelevantModelApi.class).getLatestVersion(projectId, cookie);
+        return NetRequest.getInstance().getCall( RelevantModelApi.class).getLatestVersion(projectId, cookie);
     }
     @Override
     public Observable<RelevantBluePrintToken> getToken(long projectId, String projectVersionId, String integrateId){
-        return NetRequest.getInstance().getCall(AppConfig.BASE_URL,RelevantModelApi.class).getToken(projectId,projectVersionId,integrateId,cookie);
+        return NetRequest.getInstance().getCall(RelevantModelApi.class).getToken(projectId,projectVersionId,integrateId,cookie);
     }
 
     /**
      * App端查询模型文件对应的所有关联构件
      */
     public Observable<List<ModelElementHistory>> getElements(long deptId, String gdocFileId){
-        return NetRequest.getInstance().getCall(AppConfig.BASE_URL,RelevantModelApi.class).getElements(deptId,gdocFileId,cookie);
+        return NetRequest.getInstance().getCall(RelevantModelApi.class).getElements(deptId,gdocFileId,cookie);
     }
 
     /**
      * 根据构件id获取构件名称
      */
     public Observable<ModelElementInfo> getElementProperty(long projectId, String versionId, String fileId, String elementId){
-        return NetRequest.getInstance().getCall(AppConfig.BASE_URL,CreateCheckListApi.class).getElementProperty(projectId,versionId,fileId,elementId,new DaoProvider().getCookie());
+        return NetRequest.getInstance().getCall(CreateCheckListApi.class).getElementProperty(projectId,versionId,fileId,elementId,new DaoProvider().getCookie());
     }
 
     /**
      * 根据模型获取材设单据列表
      */
     public Observable<List<EquipmentHistoryItem>> getEquipmentList(long deptId,String gdocFileId){
-        return NetRequest.getInstance().getCall(AppConfig.BASE_URL,RelevantModelApi.class).getEquipmentList(deptId,gdocFileId,cookie);
+        return NetRequest.getInstance().getCall(RelevantModelApi.class).getEquipmentList(deptId,gdocFileId,cookie);
     }
 }

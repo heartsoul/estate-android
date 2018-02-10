@@ -1,6 +1,5 @@
 package com.glodon.bim.business.equipment.model;
 
-import com.glodon.bim.basic.config.AppConfig;
 import com.glodon.bim.basic.network.NetRequest;
 import com.glodon.bim.basic.utils.SharedPreferencesUtil;
 import com.glodon.bim.business.equipment.contract.CreateEquipmentMandatoryContract;
@@ -22,7 +21,7 @@ public class CreateEquipmentMandatoryModel implements CreateEquipmentMandatoryCo
      * 获取项目下验收单位列表
      */
     public Observable<List<InspectionCompanyItem>> getAcceptanceCompanies(){
-        return NetRequest.getInstance().getCall(AppConfig.BASE_URL,CreateEquipmentApi.class).getAcceptanceCompanies(
+        return NetRequest.getInstance().getCall(CreateEquipmentApi.class).getAcceptanceCompanies(
                 SharedPreferencesUtil.getProjectId(),new DaoProvider().getCookie()
         );
     }

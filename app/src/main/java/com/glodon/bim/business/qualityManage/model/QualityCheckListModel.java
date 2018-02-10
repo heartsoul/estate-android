@@ -1,23 +1,13 @@
 package com.glodon.bim.business.qualityManage.model;
 
-import com.glodon.bim.basic.config.AppConfig;
-import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.basic.network.NetRequest;
 import com.glodon.bim.business.greendao.provider.DaoProvider;
 import com.glodon.bim.business.qualityManage.bean.ClassifyNum;
 import com.glodon.bim.business.qualityManage.bean.QualityCheckListBean;
 import com.glodon.bim.business.qualityManage.contract.QualityCheckListContract;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.http.Header;
-import retrofit2.http.Path;
 import rx.Observable;
 
 /**
@@ -30,7 +20,7 @@ public class QualityCheckListModel implements QualityCheckListContract.Model{
     @Override
     public Observable<QualityCheckListBean> getQualityCheckList(long deptId,String qcState, int page, int size) {
         String[] sort = {"updateTime,desc"};
-        return NetRequest.getInstance().getCall(AppConfig.BASE_URL,QualityCheckListApi.class).getQualityCheckList(deptId,qcState,page,size,sort,new DaoProvider().getCookie());
+        return NetRequest.getInstance().getCall(QualityCheckListApi.class).getQualityCheckList(deptId,qcState,page,size,sort,new DaoProvider().getCookie());
     }
 
     /**
@@ -38,15 +28,15 @@ public class QualityCheckListModel implements QualityCheckListContract.Model{
      */
     public Observable<QualityCheckListBean> getQualityCheckList(long deptId, String qcState,int page, int size, long qualityCheckpointId, String qualityCheckpointName){
         String[] sort = {"updateTime,desc"};
-        return NetRequest.getInstance().getCall(AppConfig.BASE_URL,QualityCheckListApi.class).getQualityCheckList(deptId,qcState,page,size,sort,qualityCheckpointId,qualityCheckpointName,new DaoProvider().getCookie());
+        return NetRequest.getInstance().getCall(QualityCheckListApi.class).getQualityCheckList(deptId,qcState,page,size,sort,qualityCheckpointId,qualityCheckpointName,new DaoProvider().getCookie());
     }
 
     @Override
     public Observable<List<ClassifyNum>> getStatusNum(long deptId){
-        return NetRequest.getInstance().getCall(AppConfig.BASE_URL,QualityCheckListApi.class).getStatusNum(deptId,new DaoProvider().getCookie());
+        return NetRequest.getInstance().getCall(QualityCheckListApi.class).getStatusNum(deptId,new DaoProvider().getCookie());
     }
     @Override
     public Observable<List<ClassifyNum>> getStatusNum(long deptId,long qualityCheckpointId,String qualityCheckpointName){
-        return NetRequest.getInstance().getCall(AppConfig.BASE_URL,QualityCheckListApi.class).getStatusNum(deptId,qualityCheckpointId,qualityCheckpointName,new DaoProvider().getCookie());
+        return NetRequest.getInstance().getCall(QualityCheckListApi.class).getStatusNum(deptId,qualityCheckpointId,qualityCheckpointName,new DaoProvider().getCookie());
     }
 }

@@ -1,6 +1,5 @@
 package com.glodon.bim.business.equipment.model;
 
-import com.glodon.bim.basic.config.AppConfig;
 import com.glodon.bim.basic.network.NetRequest;
 import com.glodon.bim.basic.utils.SharedPreferencesUtil;
 import com.glodon.bim.business.equipment.bean.CreateEquipmentBean;
@@ -31,40 +30,40 @@ public class CreateEquipmentModel implements CreateEquipmentContract.Model{
      * 新增保存
      */
     public Observable<CreateEquipmentBean> newSave(CreateEquipmentParams props){
-        return NetRequest.getInstance().getCall(AppConfig.BASE_URL,CreateEquipmentApi.class).newSave(projectId,props,cookie);
+        return NetRequest.getInstance().getCall(CreateEquipmentApi.class).newSave(projectId,props,cookie);
     }
 
     /**
      * 新增提交
      */
     public Observable<CreateEquipmentBean> newSubmit(CreateEquipmentParams props){
-        return NetRequest.getInstance().getCall(AppConfig.BASE_URL,CreateEquipmentApi.class).newSubmit(projectId,props,cookie);
+        return NetRequest.getInstance().getCall(CreateEquipmentApi.class).newSubmit(projectId,props,cookie);
     }
 
     /**
      * 编辑保存
      */
     public Observable<ResponseBody> editSave(long id, CreateEquipmentParams props){
-        return NetRequest.getInstance().getCall(AppConfig.BASE_URL,CreateEquipmentApi.class).editSave(projectId,id,props,cookie);
+        return NetRequest.getInstance().getCall(CreateEquipmentApi.class).editSave(projectId,id,props,cookie);
     }
     /**
      * 编辑提交
      */
     public Observable<ResponseBody> editSubmit(long id, CreateEquipmentParams props){
-        return NetRequest.getInstance().getCall(AppConfig.BASE_URL,CreateEquipmentApi.class).editSubmit(projectId,id,props,cookie);
+        return NetRequest.getInstance().getCall(CreateEquipmentApi.class).editSubmit(projectId,id,props,cookie);
     }
 
     /**
      * 删除
      */
     public Observable<ResponseBody> delete(long id){
-        return NetRequest.getInstance().getCall(AppConfig.BASE_URL,CreateEquipmentApi.class).delete(projectId,id,cookie);
+        return NetRequest.getInstance().getCall(CreateEquipmentApi.class).delete(projectId,id,cookie);
     }
 
     /**
      * 根据id查询详情和保存后的编辑信息
      */
     public Observable<EquipmentDetailBean> detail(long id){
-        return NetRequest.getInstance().getCall(AppConfig.BASE_URL,CreateEquipmentApi.class).detail(projectId,id,cookie);
+        return NetRequest.getInstance().getCall(CreateEquipmentApi.class).detail(projectId,id,cookie);
     }
 }
