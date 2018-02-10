@@ -73,12 +73,14 @@ public class SharedPreferencesUtil {
      * 选择的项目信息
      */
     public static void setProjectInfo(ProjectListItem item){
-        SharedPreferences preferences= BaseApplication.getInstance().getSharedPreferences(NAME,Context.MODE_PRIVATE);
-        Editor editor=preferences.edit();
-        editor.putString(PROJECT_NAME, item.name);
-        editor.putLong(PROJECT_ID,item.deptId);
-        editor.putString(PROJECT_TYPE_CODE,item.projectTypeCode);
-        editor.commit();
+        if(item!=null) {
+            SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(NAME, Context.MODE_PRIVATE);
+            Editor editor = preferences.edit();
+            editor.putString(PROJECT_NAME, item.name);
+            editor.putLong(PROJECT_ID, item.deptId);
+            editor.putString(PROJECT_TYPE_CODE, item.projectTypeCode);
+            editor.commit();
+        }
     }
 
     /**

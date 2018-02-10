@@ -76,6 +76,37 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,M
         mMessageTab.setOnClickListener(this);
         mMineTab.setOnClickListener(this);
         mCreateTab.setOnClickListener(this);
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                //改变状态栏颜色
+                switch (position)
+                {
+                    case 0:
+                        mStatusView.setBackgroundResource(R.color.white);
+                        break;
+                    case 1:
+                        mStatusView.setBackgroundResource(R.color.white);
+                        break;
+                    case 2:
+                        mStatusView.setBackgroundResource(R.color.white);
+                        break;
+                    case 3:
+                        mStatusView.setBackgroundResource(R.color.c_00baf3);
+                        break;
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     private void initData() {
@@ -102,6 +133,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,M
                 break;
             case R.id.main_activity_main_page:
                 mViewPager.setCurrentItem(0);
+
                 break;
             case R.id.main_activity_subscribe:
                 mViewPager.setCurrentItem(1);
@@ -111,6 +143,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,M
                 break;
             case R.id.main_activity_mine:
                 mViewPager.setCurrentItem(3);
+
                 break;
         }
     }

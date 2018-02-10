@@ -19,8 +19,6 @@ import com.glodon.bim.common.config.CommonConfig;
 import com.glodon.bim.customview.ToastManager;
 import com.google.gson.GsonBuilder;
 
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,8 +70,8 @@ public class ChooseProjectPresenter implements ChooseProjectContract.Presenter {
         AuthorityManager.getAuthorities(new OnGetAuthorityListener() {
             @Override
             public void finish() {
-//                Intent intent = new Intent(mView.getActivity(), MainActivity.class);
-                Intent intent = new Intent(mView.getActivity(), ChooseCategoryItemActivity.class);
+                Intent intent = new Intent(mView.getActivity(), MainActivity.class);
+//                Intent intent = new Intent(mView.getActivity(), ChooseCategoryItemActivity.class);
                 intent.putExtra(CommonConfig.PROJECT_LIST_ITEM, item);
                 mView.getActivity().startActivity(intent);
             }

@@ -103,13 +103,17 @@
     <string name="str_set_feedback_email">邮箱：</string>
     <string name="str_set_feedback_title_text">标题：</string>
     <string name="str_set_feedback_content_hint">留言内容....</string>
-    <string name="str_set_second_title">您的专属BIM协同管理</string>
+    <!--<string name="str_set_second_title">您的专属BIM协同管理</string>-->
     <string name="str_set_change_psd">修改密码</string>
     <string name="str_set_version_info">版本信息</string>
     <string name="str_set_version">版本号V1.1.0</string>
     <string name="str_set_contact">联系我们</string>
     <string name="str_set_about_us">关于我们</string>
+    <string name="str_set_offline">离线设置</string>
     <string name="str_set_login_out">退出登录</string>
+    <!--我的-->
+    <string name="str_mine_pemission">我的任务</string>
+    <string name="str_mine_plan">我的计划</string>
     <!--qrcode-->
     <string name="str_scan_title">扫一扫</string>
     <string name="str_open_light">开启闪光灯</string>

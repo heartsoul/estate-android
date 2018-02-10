@@ -8,45 +8,153 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_43"
+        android:layout_height="@dimen/dimen_210"
         android:background="@color/c_00baf3">
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent">
-            <ImageView
-                android:layout_width="@dimen/dimen_09"
-                android:layout_height="@dimen/dimen_20"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/dimen_10"
-                android:layout_marginRight="@dimen/dimen_10"
-                android:background="@drawable/icon_back_white" />
-        </RelativeLayout>
-
-
-        <TextView
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="@string/str_main_lab_mine"
-            android:textColor="@color/white"
-            android:textSize="@dimen/dimen_17" />
+            android:orientation="vertical"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/dimen_20"
+            >
+            <ImageView
+                android:layout_width="@dimen/dimen_90"
+                android:layout_height="@dimen/dimen_90"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/icon_mine_default_header"
+                />
 
-        <ImageView
-            android:layout_width="@dimen/dimen_24"
-            android:layout_height="@dimen/dimen_24"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/dimen_14"
-            android:background="@drawable/icon_search_white"
-            android:visibility="gone"/>
+            <TextView
+                android:id="@+id/mine_fragment_username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:textSize="@dimen/dimen_22"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/dimen_07"/>
+        </LinearLayout>
     </RelativeLayout>
-
-    <RelativeLayout
+    <View
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-
-    </RelativeLayout>
+        android:layout_height="@dimen/dimen_37"
+        android:background="@drawable/icon_mine_wave"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/white">
+        <RelativeLayout
+            android:id="@+id/mine_fragment_pemission"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_50"
+            android:background="@color/white">
+            <ImageView
+                android:id="@+id/mine_fragment_pemission_icon"
+                android:layout_width="@dimen/dimen_24"
+                android:layout_height="@dimen/dimen_24"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/dimen_22"
+                android:background="@drawable/icon_mine_permission"
+                />
+            <ImageView
+                android:layout_width="@dimen/dimen_05"
+                android:layout_height="@dimen/dimen_12"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/dimen_20"
+                android:background="@drawable/icon_arrow_right_gray"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/mine_fragment_pemission_icon"
+                android:layout_centerVertical="true"
+                android:textSize="@dimen/dimen_14"
+                android:textColor="@color/c_6f899b"
+                android:text="@string/str_mine_pemission"
+                android:layout_marginLeft="@dimen/dimen_17"
+                />
+        </RelativeLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_01"
+            android:layout_marginLeft="@dimen/dimen_20"
+            android:background="@color/c_f7f7f7"/>
+        <RelativeLayout
+            android:id="@+id/mine_fragment_plan"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_50"
+            android:background="@color/white">
+            <ImageView
+                android:id="@+id/mine_fragment_plan_icon"
+                android:layout_width="@dimen/dimen_24"
+                android:layout_height="@dimen/dimen_24"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/dimen_22"
+                android:background="@drawable/icon_mine_plan"
+                />
+            <ImageView
+                android:layout_width="@dimen/dimen_05"
+                android:layout_height="@dimen/dimen_12"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/dimen_20"
+                android:background="@drawable/icon_arrow_right_gray"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/mine_fragment_plan_icon"
+                android:layout_centerVertical="true"
+                android:textSize="@dimen/dimen_14"
+                android:textColor="@color/c_6f899b"
+                android:text="@string/str_mine_plan"
+                android:layout_marginLeft="@dimen/dimen_17"
+                />
+        </RelativeLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_01"
+            android:layout_marginLeft="@dimen/dimen_20"
+            android:background="@color/c_f7f7f7"/>
+        <RelativeLayout
+            android:id="@+id/mine_fragment_set"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_50"
+            android:background="@color/white">
+            <ImageView
+                android:id="@+id/mine_fragment_set_icon"
+                android:layout_width="@dimen/dimen_24"
+                android:layout_height="@dimen/dimen_24"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/dimen_22"
+                android:background="@drawable/icon_mine_setting"
+                />
+            <ImageView
+                android:layout_width="@dimen/dimen_05"
+                android:layout_height="@dimen/dimen_12"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/dimen_20"
+                android:background="@drawable/icon_arrow_right_gray"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/mine_fragment_set_icon"
+                android:layout_centerVertical="true"
+                android:textSize="@dimen/dimen_14"
+                android:textColor="@color/c_6f899b"
+                android:text="@string/str_set"
+                android:layout_marginLeft="@dimen/dimen_17"
+                />
+        </RelativeLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/c_f5f8f9"/>
+    </LinearLayout>
 
 </LinearLayout>
