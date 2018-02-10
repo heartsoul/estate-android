@@ -26,7 +26,6 @@ import com.glodon.bim.customview.photopreview.PhotoPreviewActivity;
 
 public class CreateEquipmentPicturePresenter implements CreateEquipmentPictureContract.Presenter {
     private CreateEquipmentPictureContract.View mView;
-    private CreateEquipmentPictureContract.Model mModel;
     //图片
     private LinkedHashList<String, ImageItem> mSelectedMap;
     private String mPhotoPath;//拍照的路径

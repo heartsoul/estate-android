@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import com.glodon.bim.R;
 import com.glodon.bim.base.BaseFragment;
+import com.glodon.bim.basic.utils.ResourceUtil;
 import com.glodon.bim.business.main.bean.ProjectListItem;
 import com.glodon.bim.business.qualityManage.listener.OnTitleChangerListener;
 
@@ -24,7 +25,7 @@ public class EquipmentListFragment extends BaseFragment{
     public void setProjectInfo(ProjectListItem info) {
         this.mProjectInfo = info;
     }
-    private String mCurrentTitle = "材设清单";
+    private String mCurrentTitle = ResourceUtil.getResourceString(R.string.str_main_equipment_list);
     private OnTitleChangerListener mTitleListener;
 
     public void setTitleChangeListener(OnTitleChangerListener listner){

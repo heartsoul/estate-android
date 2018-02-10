@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import com.glodon.bim.R;
 import com.glodon.bim.base.BaseFragment;
+import com.glodon.bim.basic.utils.ResourceUtil;
 import com.glodon.bim.business.main.bean.ProjectListItem;
 import com.glodon.bim.business.qualityManage.listener.OnTitleChangerListener;
 import com.glodon.bim.business.qualityManage.view.ModelView;
@@ -22,11 +23,11 @@ import com.glodon.bim.common.config.CommonConfig;
 
 public class EquipmentModelFragment extends BaseFragment {
     private ModelView mModelView;
-    private ProjectListItem mProjectInfo;
-    public void setProjectInfo(ProjectListItem info) {
-        this.mProjectInfo = info;
-    }
-    private String mCurrentTitle = "模型预览";
+//    private ProjectListItem mProjectInfo;
+//    public void setProjectInfo(ProjectListItem info) {
+//        this.mProjectInfo = info;
+//    }
+    private String mCurrentTitle = ResourceUtil.getResourceString(R.string.str_main_equipment_model);
     private OnTitleChangerListener mTitleListener;
 
     public void setTitleChangeListener(OnTitleChangerListener listner){

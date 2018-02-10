@@ -294,7 +294,7 @@ public class CreateEquipmentPresenter implements CreateEquipmentContract.Present
                         }
                         if (mIsShowUploadErrorToast) {
                             mIsShowUploadErrorToast = false;
-                            ToastManager.show("图片上传失败！");
+                            ToastManager.showUploadPictureFailedToast();
                         }
 
                     }

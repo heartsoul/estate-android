@@ -17,6 +17,7 @@ import com.glodon.bim.R;
 import com.glodon.bim.base.BaseFragment;
 import com.glodon.bim.basic.listener.ThrottleClickEvents;
 import com.glodon.bim.basic.log.LogUtil;
+import com.glodon.bim.basic.utils.ResourceUtil;
 import com.glodon.bim.basic.utils.ScreenUtil;
 import com.glodon.bim.basic.utils.SharedPreferencesUtil;
 import com.glodon.bim.business.authority.AuthorityManager;
@@ -212,7 +213,7 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
         View equipmentView = inflate(R.layout.quality_main_fragment_main_page_lab);
         TextView equipmentName = equipmentView.findViewById(R.id.main_page_lab_title);
         View equipmentLine = equipmentView.findViewById(R.id.main_page_lab_line);
-        equipmentName.setText("材设进场");
+        equipmentName.setText(ResourceUtil.getResourceString(R.string.str_main_equipment_manage));
         equipmentName.setTextColor(getResources().getColor(R.color.c_00baf3));
         equipmentLine.setVisibility(View.VISIBLE);
         equipmentView.setOnClickListener(new View.OnClickListener() {

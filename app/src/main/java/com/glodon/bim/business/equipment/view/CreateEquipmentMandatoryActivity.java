@@ -17,6 +17,7 @@ import com.glodon.bim.R;
 import com.glodon.bim.base.BaseActivity;
 import com.glodon.bim.basic.listener.ThrottleClickEvents;
 import com.glodon.bim.basic.utils.DateUtil;
+import com.glodon.bim.basic.utils.ResourceUtil;
 import com.glodon.bim.business.equipment.bean.CreateEquipmentMandatoryInfo;
 import com.glodon.bim.business.equipment.contract.CreateEquipmentMandatoryContract;
 import com.glodon.bim.business.equipment.presenter.CreateEquipmentMandatoryPresenter;
@@ -148,8 +149,8 @@ public class CreateEquipmentMandatoryActivity extends BaseActivity implements Vi
         mDateTv.setText(DateUtil.getShowDate(mDate));
         mCodeEt.setText(info.facilityCode);
         mNameEt.setText(info.facilityName);
-        mNextBtn.setText("确定");
-        mTitleView.setText("编辑材设基本信息");
+        mNextBtn.setText(ResourceUtil.getResourceString(R.string.str_sure));
+        mTitleView.setText(ResourceUtil.getResourceString(R.string.str_equipment_edit_title));
     }
 
     @Override
@@ -160,7 +161,7 @@ public class CreateEquipmentMandatoryActivity extends BaseActivity implements Vi
 
     @Override
     public void showCompanyList(final List<InspectionCompanyItem> mInspectionCompanyItems, int position) {
-        ChooseListDialog mInspectionCompanyListDialog = new ChooseListDialog(getActivity(), position, "选择验收单位");
+        ChooseListDialog mInspectionCompanyListDialog = new ChooseListDialog(getActivity(), position, ResourceUtil.getResourceString(R.string.str_equipment_edit_choose_company));
         final List<String> mInspectionCompanyNameList = new ArrayList<>();
         for(InspectionCompanyItem item:mInspectionCompanyItems){
             mInspectionCompanyNameList.add(item.name);

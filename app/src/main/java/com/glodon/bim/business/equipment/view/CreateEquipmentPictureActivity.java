@@ -16,6 +16,7 @@ import com.glodon.bim.basic.image.ImageLoader;
 import com.glodon.bim.basic.listener.ThrottleClickEvents;
 import com.glodon.bim.basic.utils.CameraUtil;
 import com.glodon.bim.basic.utils.LinkedHashList;
+import com.glodon.bim.basic.utils.ResourceUtil;
 import com.glodon.bim.business.equipment.bean.CreateEquipmentPictureInfo;
 import com.glodon.bim.business.equipment.contract.CreateEquipmentPictureContract;
 import com.glodon.bim.business.equipment.presenter.CreateEquipmentPicturePresenter;
@@ -188,8 +189,8 @@ public class CreateEquipmentPictureActivity extends BaseActivity implements View
     public void showPhotoInfo(CreateEquipmentPictureInfo info) {
         mFlag.setBackgroundResource(info.qualified ?R.drawable.icon_flag_open:R.drawable.icon_flag_close);
         mState = info.qualified;
-        mNextBtn.setText("确定");
-        mTitleView.setText("编辑现场照片");
+        mNextBtn.setText(ResourceUtil.getResourceString(R.string.str_sure));
+        mTitleView.setText(ResourceUtil.getResourceString(R.string.str_equipment_edit_photo_title));
     }
 
     @Override

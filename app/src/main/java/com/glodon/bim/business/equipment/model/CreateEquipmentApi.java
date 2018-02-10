@@ -31,8 +31,6 @@ public interface CreateEquipmentApi {
      */
     @POST("quality/{deptId}/facilityAcceptance")
     Observable<CreateEquipmentBean> newSave(@Path("deptId") long deptId, @Body CreateEquipmentParams props, @Header("cookie") String cookie);
-    @POST("quality/{deptId}/facilityAcceptance")
-    Call<ResponseBody> newSave2(@Path("deptId") long deptId, @Body CreateEquipmentParams props, @Header("cookie") String cookie);
 
     /**
      * 新增提交

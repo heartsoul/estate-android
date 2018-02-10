@@ -1,6 +1,5 @@
 package com.glodon.bim.business.equipment.model;
 
-import com.glodon.bim.business.equipment.bean.EquipmentDetailBean;
 import com.glodon.bim.business.equipment.bean.EquipmentListBean;
 import com.glodon.bim.business.equipment.bean.EquipmentNumBean;
 

@@ -32,7 +32,6 @@ import rx.subscriptions.CompositeSubscription;
 
 public class CreateEquipmentNotMandatoryPresenter implements CreateEquipmentNotMandatoryContract.Presenter {
     private CreateEquipmentNotMandatoryContract.View mView;
-    private CreateEquipmentNotMandatoryContract.Model mModel;
     private ModelListBeanItem mModelSelectInfo;
     private CreateEquipmentMandatoryInfo mCreateEquipmentMandatoryInfo;
     private int mModelType = 4;//0新建检查单 1检查单编辑状态 2详情查看  3图纸模式 4新建材设进场 5新增材设进场编辑状态

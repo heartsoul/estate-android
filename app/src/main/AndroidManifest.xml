@@ -110,9 +110,6 @@
             android:name=".business.login.view.ResetPasswordActivity"
             android:screenOrientation="portrait" />
         <!-- 项目目录 -->
-        <activity
-            android:name=".business.main.view.ChooseCategoryActivity"
-            android:screenOrientation="portrait" />
         <!-- 项目功能 -->
         <activity
             android:name=".business.main.view.ChooseCategoryItemActivity"

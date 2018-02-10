@@ -33,11 +33,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,M
     //底部tab标签
     private LinearLayout mMainPageTab,mSubscribeTab,mMessageTab,mMineTab;
     private ImageView mCreateTab;
-    //四个fragment
-//    private MainPageFragment mMainPageFragment;
-//    private MessageFragment mMessageFragment;
-//    private MineFragment mMineFragment;
-//    private SubscribeFragment mSubscribeFragment;
 
     private List<BaseFragment> mFragmentList ;
 

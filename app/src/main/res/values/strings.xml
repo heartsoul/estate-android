@@ -121,7 +121,10 @@
     <string name="str_scan_hint">取景框对准二维码, 即可自动扫描</string>
     <string name="str_editphoto_wrapper_title">打开相册</string>
     <!--材设进场记录-->
-
+    <string name="str_equipment_edit_photo_title">"编辑现场照片"</string>
+    <string name="str_equipment_edit_detail_title">"编辑材设详情"</string>
+    <string name="str_equipment_edit_title">编辑材设基本信息</string>
+    <string name="str_equipment_edit_choose_company">"选择验收单位"</string>
     <string name="str_equipment_create_title">材设进场记录</string>
     <string name="str_equipment_create_basic_info">基本信息</string>
     <string name="str_equipment_create_inspection_">验收单位</string>
@@ -131,9 +134,12 @@
     <string name="str_equipment_create_name_">材设名称</string>
     <string name="str_equipment_create_inspection">验收单位：</string>
     <string name="str_equipment_create_index">批次编号：</string>
+    <string name="str_equipment_create_index__">批号：</string>
     <string name="str_equipment_create_date">进场日期：</string>
     <string name="str_equipment_create_code">材设编码：</string>
+    <string name="str_equipment_create_code__">编码：</string>
     <string name="str_equipment_create_name">材设名称：</string>
+    <string name="str_equipment_create_name__">名称：</string>
 
     <string name="str_equipment_create_other_info">其他信息</string>
     <string name="str_equipment_create_num">进场数量：</string>
@@ -164,6 +170,10 @@
 
     <!--Toast-->
     <string name="str_toast_save_photo_success">图片保存成功</string>
+    <string name="str_toast_network_bad">"网络较差，请稍后重试！"</string>
+    <string name="str_toast_upload_fail">"图片上传失败！"</string>
+    <string name="str_toast_submit_success">"提交成功！"</string>
+    <string name="str_toast_save_success">"保存成功！"</string>
 
     <!--Dialog-->
     <string name="str_dialog_loading">加载中...</string>

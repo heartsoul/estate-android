@@ -55,20 +55,26 @@ public class ToastManager {
      * 网络差提示
      */
     public static void showNetWorkToast(){
-        show("网络较差，请稍后重试！",R.drawable.icon_toast_network);
+        show(BaseApplication.getInstance().getResources().getString(R.string.str_toast_network_bad),R.drawable.icon_toast_network);
     }
 
+    /**
+     * 图片上传失败提示
+     */
+    public static void showUploadPictureFailedToast(){
+        show(BaseApplication.getInstance().getResources().getString(R.string.str_toast_upload_fail));
+    }
     /**
      * 新建检查单 提交成功提示
      */
     public static void showSubmitToast(){
-        show("提交成功！",R.drawable.icon_toast_submit_success);
+        show(BaseApplication.getInstance().getResources().getString(R.string.str_toast_submit_success),R.drawable.icon_toast_submit_success);
     }
 
     /**
      * 新建检查单 保存成功提示
      */
     public static void showSaveToast(){
-        show("保存成功！",R.drawable.icon_toast_submit_success);
+        show(BaseApplication.getInstance().getResources().getString(R.string.str_toast_save_success),R.drawable.icon_toast_submit_success);
     }
 }

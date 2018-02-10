@@ -45,7 +45,6 @@ public class BluePrintModelSearchActivity extends BaseActivity implements View.O
     private View mStatusView;
     private EditText mInputView;
     private TextView mCancelView;
-//    private PullRefreshView mPullRefreshView;
     private RecyclerView mContentRecyclerView, mHistoryRecyclerView;
 
     private LinearLayout mDefaultBg;
@@ -78,21 +77,6 @@ public class BluePrintModelSearchActivity extends BaseActivity implements View.O
     }
 
     private void initContentRecyclerView() {
-//        mPullRefreshView.setPullDownEnable(false);
-//        mPullRefreshView.setPullUpEnable(true);
-//        mPullRefreshView.setOnPullRefreshListener(new OnPullRefreshListener() {
-//            @Override
-//            public void onPullDown() {
-//                mPullRefreshView.onPullDownComplete();
-//            }
-//
-//            @Override
-//            public void onPullUp() {
-//                mPresenter.pullUp();
-//                mPullRefreshView.onPullUpComplete();
-//            }
-//        });
-//        mContentRecyclerView = mPullRefreshView.getmRecyclerView();
 
         mContentRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mContentRecyclerView.setVerticalScrollBarEnabled(true);

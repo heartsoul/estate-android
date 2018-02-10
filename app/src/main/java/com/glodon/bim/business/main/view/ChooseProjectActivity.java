@@ -34,7 +34,6 @@ public class ChooseProjectActivity extends BaseActivity implements View.OnClickL
     private RelativeLayout mBackView;
     private ImageView mSearchView;
 
-    private RelativeLayout mContentParent;
     private PullRefreshView mPullRefreshView;
     private RecyclerView mRecyclerView;
     private ImageView mBgView;
@@ -45,7 +44,6 @@ public class ChooseProjectActivity extends BaseActivity implements View.OnClickL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.main_choose_project_activity);
 
         initView();
@@ -58,7 +56,6 @@ public class ChooseProjectActivity extends BaseActivity implements View.OnClickL
         mStatusView = findViewById(R.id.choose_project_header_top);
         mBackView = (RelativeLayout) findViewById(R.id.choose_project_header_back);
         mSearchView = (ImageView) findViewById(R.id.choose_project_header_search);
-        mContentParent = (RelativeLayout) findViewById(R.id.choose_project_content);
         mPullRefreshView = (PullRefreshView) findViewById(R.id.choose_project_recyclerview);
         mBgView = (ImageView) findViewById(R.id.choose_project_content_bg);
         initRecyclerView();

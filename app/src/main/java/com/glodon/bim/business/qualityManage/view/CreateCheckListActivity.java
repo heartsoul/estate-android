@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.glodon.bim.R;
 import com.glodon.bim.base.BaseActivity;
 import com.glodon.bim.basic.listener.ThrottleClickEvents;
+import com.glodon.bim.basic.utils.ResourceUtil;
 import com.glodon.bim.business.qualityManage.bean.CreateCheckListParams;
 import com.glodon.bim.common.config.CommonConfig;
 import com.glodon.bim.common.config.RequestCodeConfig;
@@ -80,7 +81,7 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         if(mInspectionFragment == null){
             mInspectionFragment = new CreateInspectionAcceptionFragment();
-            mInspectionFragment.setInspectionCompanyTitle("检查单位");
+            mInspectionFragment.setInspectionCompanyTitle(ResourceUtil.getResourceString(R.string.str_quality_create_inpector_));
             if(mParams!=null && !CommonConfig.TYPE_INSPECTION.equals(mParams.inspectionType)){
                 data.removeExtra(CommonConfig.CREATE_CHECK_LIST_PROPS);
             }
@@ -101,7 +102,7 @@ public class CreateCheckListActivity extends BaseActivity implements View.OnClic
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         if(mAcceptionFragment == null){
             mAcceptionFragment = new CreateInspectionAcceptionFragment();
-            mAcceptionFragment.setInspectionCompanyTitle("验收单位");
+            mAcceptionFragment.setInspectionCompanyTitle(ResourceUtil.getResourceString(R.string.str_equipment_create_inspection_));
             if(mParams!=null && !CommonConfig.TYPE_ACCEPTANCE.equals(mParams.inspectionType)){
                 data.removeExtra(CommonConfig.CREATE_CHECK_LIST_PROPS);
             }

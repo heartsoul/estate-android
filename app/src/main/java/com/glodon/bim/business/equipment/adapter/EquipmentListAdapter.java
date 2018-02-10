@@ -64,10 +64,10 @@ public class EquipmentListAdapter extends RecyclerView.Adapter<RecyclerView.View
         final EquipmentListBeanItem item = mDataList.get(position);
         if(holder instanceof SheetHolder){
             SheetHolder sHolder = (SheetHolder) holder;
-            sHolder.mTimeView.setText("进场日期:"+DateUtil.getShowDate(item.approachDate));
-            sHolder.mIndexView.setText("批号："+item.batchCode);
-            sHolder.mCodeView.setText("编码："+item.facilityCode);
-            sHolder.mNameView.setText("名称："+item.facilityName);
+            sHolder.mTimeView.setText(mContext.getResources().getString(R.string.str_equipment_create_date)+DateUtil.getShowDate(item.approachDate));
+            sHolder.mIndexView.setText(mContext.getResources().getString(R.string.str_equipment_create_index__)+item.batchCode);
+            sHolder.mCodeView.setText(mContext.getResources().getString(R.string.str_equipment_create_code__)+item.facilityCode);
+            sHolder.mNameView.setText(mContext.getResources().getString(R.string.str_equipment_create_name__)+item.facilityName);
             sHolder.mStandardView.setBackgroundResource(item.qualified ?R.drawable.icon_up_to_standard:R.drawable.icon_not_up_to_standard);
             ThrottleClickEvents.throttleClick(sHolder.mParent, new View.OnClickListener() {
                 @Override
@@ -80,10 +80,10 @@ public class EquipmentListAdapter extends RecyclerView.Adapter<RecyclerView.View
         }
         if (holder instanceof SheetEditHolder) {
             SheetEditHolder sHolder = (SheetEditHolder) holder;
-            sHolder.mTimeView.setText("进场日期:"+DateUtil.getShowDate(item.approachDate));
-            sHolder.mIndexView.setText("批号："+item.batchCode);
-            sHolder.mCodeView.setText("编码："+item.facilityCode);
-            sHolder.mNameView.setText("名称："+item.facilityName);
+            sHolder.mTimeView.setText(mContext.getResources().getString(R.string.str_equipment_create_date)+DateUtil.getShowDate(item.approachDate));
+            sHolder.mIndexView.setText(mContext.getResources().getString(R.string.str_equipment_create_index__)+item.batchCode);
+            sHolder.mCodeView.setText(mContext.getResources().getString(R.string.str_equipment_create_code__)+item.facilityCode);
+            sHolder.mNameView.setText(mContext.getResources().getString(R.string.str_equipment_create_name__)+item.facilityName);
             ThrottleClickEvents.throttleClick(sHolder.mParent, new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -116,10 +116,11 @@ public class EquipmentListAdapter extends RecyclerView.Adapter<RecyclerView.View
 
         if (holder instanceof TimeHolder) {
             TimeHolder tHolder = (TimeHolder) holder;
+            int padding = 20;
             if (position == 0) {
-                tHolder.mTimeParent.setPadding(ScreenUtil.dp2px(20), ScreenUtil.dp2px(20), ScreenUtil.dp2px(20), 0);
+                tHolder.mTimeParent.setPadding(ScreenUtil.dp2px(padding), ScreenUtil.dp2px(padding), ScreenUtil.dp2px(padding), 0);
             } else {
-                tHolder.mTimeParent.setPadding(ScreenUtil.dp2px(20), ScreenUtil.dp2px(10), ScreenUtil.dp2px(20), 0);
+                tHolder.mTimeParent.setPadding(ScreenUtil.dp2px(padding), ScreenUtil.dp2px(10), ScreenUtil.dp2px(padding), 0);
             }
             tHolder.mTimeView.setText(DateUtil.getListDate(Long.parseLong(item.updateTime)));
         }

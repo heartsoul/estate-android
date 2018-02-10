@@ -552,7 +552,7 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
                     mEquipmentModelFragment = new EquipmentModelFragment();
                     transaction.add(R.id.main_fragment_content, mEquipmentModelFragment);
                 }
-                mEquipmentModelFragment.setProjectInfo(mProjectInfo);
+//                mEquipmentModelFragment.setProjectInfo(mProjectInfo);
                 mEquipmentModelFragment.setTitleChangeListener(new OnTitleChangerListener() {
                     @Override
                     public void onTitleChange(String name) {

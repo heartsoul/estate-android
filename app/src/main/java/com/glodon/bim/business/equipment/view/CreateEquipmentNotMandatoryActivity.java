@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.glodon.bim.R;
 import com.glodon.bim.base.BaseActivity;
+import com.glodon.bim.basic.utils.ResourceUtil;
 import com.glodon.bim.business.equipment.bean.CreateEquipmentMandatoryNotInfo;
 import com.glodon.bim.business.equipment.contract.CreateEquipmentNotMandatoryContract;
 import com.glodon.bim.business.equipment.presenter.CreateEquipmentNotMandatoryPresenter;
@@ -171,12 +172,6 @@ public class CreateEquipmentNotMandatoryActivity extends BaseActivity implements
     private void toNext() {
         CreateEquipmentMandatoryNotInfo info = new CreateEquipmentMandatoryNotInfo();
         info.quantity = mNumEt.getText().toString().trim();
-//        String quantity = mNumEt.getText().toString().trim();
-//        if(TextUtils.isEmpty(quantity)){
-//            info.quantity = 0;
-//        }else{
-//            info.quantity = Long.parseLong(quantity);
-//        }
         info.unit = mUnitEt.getText().toString().trim();
         info.specification = mSpecEt.getText().toString().trim();
         info.modelNum = mModelNumEt.getText().toString().trim();
@@ -227,8 +222,8 @@ public class CreateEquipmentNotMandatoryActivity extends BaseActivity implements
 
     @Override
     public void showEditInfo(CreateEquipmentMandatoryNotInfo info) {
-        mTitleView.setText("编辑材设详情");
-        mNextBtn.setText("确定");
+        mTitleView.setText(ResourceUtil.getResourceString(R.string.str_equipment_edit_detail_title));
+        mNextBtn.setText(ResourceUtil.getResourceString(R.string.str_sure));
         mSkipTv.setVisibility(View.GONE);
         mNumEt.setText(info.quantity+"");
         mUnitEt.setText(info.unit);

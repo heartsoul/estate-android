@@ -21,12 +21,10 @@ import rx.Observable;
 public class CreateEquipmentModel implements CreateEquipmentContract.Model{
     private String cookie;
     private long projectId;
-    private String[] sort;
 
     public CreateEquipmentModel() {
         cookie = new DaoProvider().getCookie();
         projectId = SharedPreferencesUtil.getProjectId();
-        sort = new String[]{"approachDate,desc"};
     }
 
     /**
