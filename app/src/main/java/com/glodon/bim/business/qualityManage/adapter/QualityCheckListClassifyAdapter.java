@@ -12,9 +12,8 @@ import android.widget.TextView;
 
 import com.glodon.bim.R;
 import com.glodon.bim.basic.listener.ThrottleClickEvents;
-import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.basic.utils.ScreenUtil;
-import com.glodon.bim.business.qualityManage.OnClassifyItemClickListener;
+import com.glodon.bim.business.qualityManage.listener.OnClassifyItemClickListener;
 import com.glodon.bim.business.qualityManage.bean.ClassifyItem;
 
 import java.util.List;

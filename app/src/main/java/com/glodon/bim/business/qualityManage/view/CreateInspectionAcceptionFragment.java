@@ -28,6 +28,7 @@ import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.basic.utils.CameraUtil;
 import com.glodon.bim.basic.utils.DateUtil;
 import com.glodon.bim.basic.utils.LinkedHashList;
+import com.glodon.bim.basic.utils.ResourceUtil;
 import com.glodon.bim.business.qualityManage.bean.CompanyItem;
 import com.glodon.bim.business.qualityManage.bean.CreateCheckListParams;
 import com.glodon.bim.business.qualityManage.bean.InspectionCompanyItem;
@@ -121,8 +122,8 @@ public class CreateInspectionAcceptionFragment extends BaseFragment implements V
     private String mInspetionType;
 
     //当施工单位和责任人为空时处理
-    private String mCompanyEmptyText = "您需要去PC端添加施工单位数据";
-    private String mPersonEmptyText = "您需要去PC端添加责任人数据";
+    private String mCompanyEmptyText = ResourceUtil.getResourceString(R.string.str_quality_create_company_default_text);
+    private String mPersonEmptyText = ResourceUtil.getResourceString(R.string.str_quality_create_rsponsible_default_text);
     private boolean mIsCompanyAble = true;//是否可用
     private boolean mIsPersonAble = true;//是否可用
     View view;
@@ -493,7 +494,7 @@ public class CreateInspectionAcceptionFragment extends BaseFragment implements V
 
     @Override
     public void showCompanyList(final List<String> mCompanyNameList, final int mCompanySelectPosition) {
-        ChooseListDialog mChooseCompanyListDialog = new ChooseListDialog(getActivity(), mCompanySelectPosition, "选择施工单位");
+        ChooseListDialog mChooseCompanyListDialog = new ChooseListDialog(getActivity(), mCompanySelectPosition, ResourceUtil.getResourceString(R.string.str_quality_choose_company));
         mChooseCompanyListDialog.builder(new OnChooseListListener() {
             @Override
             public void onSelect(int position) {
@@ -511,7 +512,7 @@ public class CreateInspectionAcceptionFragment extends BaseFragment implements V
 
     @Override
     public void showInspectionCompanyList(final List<String> mInspectionCompanyNameList, final int mInspectionCompanySelectPosition) {
-        ChooseListDialog mInspectionCompanyListDialog = new ChooseListDialog(getActivity(), mInspectionCompanySelectPosition, "选择检查单位");
+        ChooseListDialog mInspectionCompanyListDialog = new ChooseListDialog(getActivity(), mInspectionCompanySelectPosition, ResourceUtil.getResourceString(R.string.str_quality_choose_inspection_company));
         mInspectionCompanyListDialog.builder(new OnChooseListListener() {
             @Override
             public void onSelect(int position) {
@@ -525,7 +526,7 @@ public class CreateInspectionAcceptionFragment extends BaseFragment implements V
 
     @Override
     public void showPersonList(final List<String> mPersonNameList, int mPersonSelectPosition) {
-        ChooseListDialog mChoosePersonListDialog = new ChooseListDialog(getActivity(), mPersonSelectPosition, "选择责任人");
+        ChooseListDialog mChoosePersonListDialog = new ChooseListDialog(getActivity(), mPersonSelectPosition, ResourceUtil.getResourceString(R.string.str_quality_choose_resoponsible));
         mChoosePersonListDialog.builder(new OnChooseListListener() {
             @Override
             public void onSelect(int position) {
@@ -741,7 +742,7 @@ public class CreateInspectionAcceptionFragment extends BaseFragment implements V
         String inspectionCompanyName = mInspectionCompanyName.getText().toString().trim();
         if (TextUtils.isEmpty(inspectionCompanyName)) {
             mInspectionCompanyStar.setVisibility(View.VISIBLE);
-            temp.add("检查单位");
+            temp.add(ResourceUtil.getResourceString(R.string.str_quality_create_inpector_));
         } else {
             mInspectionCompanyStar.setVisibility(View.INVISIBLE);
         }
@@ -751,7 +752,7 @@ public class CreateInspectionAcceptionFragment extends BaseFragment implements V
         }
         if (TextUtils.isEmpty(companyName)) {
             mCompanyStar.setVisibility(View.VISIBLE);
-            temp.add("施工单位");
+            temp.add(ResourceUtil.getResourceString(R.string.str_quality_create_company_));
         } else {
             mCompanyStar.setVisibility(View.INVISIBLE);
         }
@@ -761,21 +762,21 @@ public class CreateInspectionAcceptionFragment extends BaseFragment implements V
         }
         if (TextUtils.isEmpty(personName)) {
             mPersonStar.setVisibility(View.VISIBLE);
-            temp.add("责任人");
+            temp.add(ResourceUtil.getResourceString(R.string.str_quality_create_responsible_));
         } else {
             mPersonStar.setVisibility(View.INVISIBLE);
         }
         String siteContent = mSiteDescription.getText().toString();
         if (TextUtils.isEmpty(siteContent)) {
             mSiteStar.setVisibility(View.VISIBLE);
-            temp.add("现场描述");
+            temp.add(ResourceUtil.getResourceString(R.string.str_quality_create_des__));
         } else {
             mSiteStar.setVisibility(View.INVISIBLE);
         }
         String moduleName = mModuleName.getText().toString().trim();
         if (TextUtils.isEmpty(moduleName)) {
             mModuleStar.setVisibility(View.VISIBLE);
-            temp.add("质检项目");
+            temp.add(ResourceUtil.getResourceString(R.string.str_main_quality_module));
         } else {
             mModuleStar.setVisibility(View.INVISIBLE);
         }
@@ -784,7 +785,7 @@ public class CreateInspectionAcceptionFragment extends BaseFragment implements V
             String dateText = mRemainName.getText().toString().trim();
             if (TextUtils.isEmpty(dateText)) {
                 mRemainStar.setVisibility(View.VISIBLE);
-                temp.add("整改期限");
+                temp.add(ResourceUtil.getResourceString(R.string.str_quality_create_repair_date));
             } else {
                 mRemainStar.setVisibility(View.INVISIBLE);
             }
@@ -792,24 +793,28 @@ public class CreateInspectionAcceptionFragment extends BaseFragment implements V
         int size = temp.size();
         if (size > 0) {
             String content = "";
+            String choose = ResourceUtil.getResourceString(R.string.str_quality_create_choose_hint);
+            String and = ResourceUtil.getResourceString(R.string.str_quality_create_and);
+            String dot = ResourceUtil.getResourceString(R.string.str_quality_create_dot);
+            String end = ResourceUtil.getResourceString(R.string.str_quality_create_sign);
             //有必填项没有填写
             if (size == 1) {
-                content = "您还未选择" + temp.get(0) + "!";
+                content = choose + temp.get(0) + end;
             }
             if (size == 2) {
-                content = "您还未选择" + temp.get(0) + "和" + temp.get(1) + "!";
+                content = choose + temp.get(0) + and + temp.get(1) + end;
             }
             if (size == 3) {
-                content = "您还未选择" + temp.get(0) + "、" + temp.get(1) + "和" + temp.get(2) + "!";
+                content = choose + temp.get(0) + dot + temp.get(1) + and + temp.get(2) + end;
             }
             if (size == 4) {
-                content = "您还未选择" + temp.get(0) + "、" + temp.get(1) + "、" + temp.get(2) + "和" + temp.get(3) + "!";
+                content = choose + temp.get(0) + dot + temp.get(1) + dot + temp.get(2) + and + temp.get(3) + end;
             }
             if (size == 5) {
-                content = "您还未选择" + temp.get(0) + "、" + temp.get(1) + "、" + temp.get(2) + "、" + temp.get(3) + "和" + temp.get(4) + "!";
+                content = choose + temp.get(0) + dot + temp.get(1) + dot + temp.get(2) + dot + temp.get(3) + and + temp.get(4) + end;
             }
             if (size == 6) {
-                content = "您还未选择" + temp.get(0) + "、" + temp.get(1) + "、" + temp.get(2) + "、" + temp.get(3) + "、" + temp.get(4) + "和" + temp.get(5) + "!";
+                content = choose + temp.get(0) + dot + temp.get(1) + dot + temp.get(2) + dot + temp.get(3) + dot + temp.get(4) + and + temp.get(5) + end;
             }
             SaveDeleteDialog mHintDialog = new SaveDeleteDialog(getActivity());
             mHintDialog.getHintDialog(content);
@@ -820,7 +825,7 @@ public class CreateInspectionAcceptionFragment extends BaseFragment implements V
         if (mRemainFlagState) {
             String dateText = mRemainName.getText().toString().trim();
             if (!TextUtils.isEmpty(dateText)) {
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                SimpleDateFormat sdf = new SimpleDateFormat(ResourceUtil.getResourceString(R.string.str_date_format));
                 try {
                     long millionSeconds = sdf.parse(dateText).getTime();//毫秒
                     Calendar calendar = Calendar.getInstance();
@@ -829,7 +834,7 @@ public class CreateInspectionAcceptionFragment extends BaseFragment implements V
                     int DD = calendar.get(Calendar.DATE);
                     long today = sdf.parse(YY + "-" + MM + "-" + DD).getTime();
                     if (millionSeconds < today) {
-                        ToastManager.show("整改期限不能早于当前日期！");
+                        ToastManager.show(ResourceUtil.getResourceString(R.string.str_toast_date_hint));
                         return false;
                     }
                 } catch (ParseException e) {

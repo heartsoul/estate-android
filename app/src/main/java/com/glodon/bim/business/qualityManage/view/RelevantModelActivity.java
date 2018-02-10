@@ -25,6 +25,7 @@ import com.glodon.bim.base.BaseApplication;
 import com.glodon.bim.basic.config.AppConfig;
 import com.glodon.bim.basic.listener.ThrottleClickEvents;
 import com.glodon.bim.basic.log.LogUtil;
+import com.glodon.bim.basic.utils.ResourceUtil;
 import com.glodon.bim.basic.utils.SharedPreferencesUtil;
 import com.glodon.bim.business.authority.AuthorityManager;
 import com.glodon.bim.business.equipment.view.CreateEquipmentMandatoryActivity;
@@ -394,7 +395,7 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
     private boolean checkComponent() {
         if (component == null || TextUtils.isEmpty(component.elementId) || "undefined".equals(component.elementId)) {
             SaveDeleteDialog mHintDialog = new SaveDeleteDialog(getActivity());
-            mHintDialog.getModelHintDialog("您还未选择构件!");
+            mHintDialog.getModelHintDialog(ResourceUtil.getResourceString(R.string.str_quality_model_choose_component_hint));
             mHintDialog.show();
             return false;
         }
@@ -468,7 +469,7 @@ public class RelevantModelActivity extends BaseActivity implements View.OnClickL
 
     @Override
     public void showTokenError() {
-        ToastManager.show("抱歉，您目前没有查看此模型的权限，请联系系统管理员。");
+        ToastManager.show(ResourceUtil.getResourceString(R.string.str_toast_authority_hint));
     }
 
 

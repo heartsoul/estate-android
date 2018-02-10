@@ -15,6 +15,7 @@ import com.glodon.bim.basic.image.ImageLoader;
 import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.basic.utils.DateUtil;
 import com.glodon.bim.basic.utils.LinkedHashList;
+import com.glodon.bim.basic.utils.ResourceUtil;
 import com.glodon.bim.basic.utils.ScreenUtil;
 import com.glodon.bim.business.qualityManage.bean.ModelComponent;
 import com.glodon.bim.business.qualityManage.bean.ModelListBeanItem;
@@ -118,10 +119,10 @@ public class QualityCheckListDetailView implements QualityCheckListDetailViewCon
         final QualityCheckListDetailInspectionInfo info = mBean.inspectionInfo;
         switch (info.inspectionType){
             case CommonConfig.TYPE_INSPECTION:
-                mInspectionCompanyTitle.setText("检查单位");
+                mInspectionCompanyTitle.setText(ResourceUtil.getResourceString(R.string.str_quality_create_inpector_));
                 break;
             case CommonConfig.TYPE_ACCEPTANCE:
-                mInspectionCompanyTitle.setText("验收单位");
+                mInspectionCompanyTitle.setText(ResourceUtil.getResourceString(R.string.str_equipment_create_inspection_));
                 break;
         }
         mInspectionCompanyView.setText(info.inspectionCompanyName);
@@ -219,7 +220,7 @@ public class QualityCheckListDetailView implements QualityCheckListDetailViewCon
         //状态
         statusView.setBackgroundResource(R.drawable.check_list_status_blue);
         statusView.setTextColor(mActivity.getResources().getColor(R.color.c_00b5f2));
-        statusView.setText("inspection".equals(info.inspectionType) ? "检查" : "验收");
+        statusView.setText("inspection".equals(info.inspectionType) ? ResourceUtil.getResourceString(R.string.str_quality_inspection) : ResourceUtil.getResourceString(R.string.str_quality_acception));
         //时间
         if (info.commitTime > 0) {
             timeView.setText(DateUtil.getNormalTime(info.commitTime));
@@ -229,7 +230,7 @@ public class QualityCheckListDetailView implements QualityCheckListDetailViewCon
 
         //整改期限
         if (info.lastRectificationDate > 0) {
-            timeLimitView.setText("整改期：" + DateUtil.getNormalDate(info.lastRectificationDate));
+            timeLimitView.setText(ResourceUtil.getResourceString(R.string.str_quality_repair_date) + DateUtil.getNormalDate(info.lastRectificationDate));
         }
         //图片
         List<QualityCheckListBeanItemFile> files = info.files;
@@ -335,7 +336,6 @@ public class QualityCheckListDetailView implements QualityCheckListDetailViewCon
 //        ImageLoader.showHeadIcon(mActivity,"",headIcon);
         //创建者
 
-        LogUtil.e("history title=" + info.handlerTitle);
         nameView.setText(info.handlerName + (TextUtils.isEmpty(info.handlerTitle) ? "" : "-" + info.handlerTitle));
         //最新时间
         if (info.commitTime > 0) {
@@ -344,18 +344,18 @@ public class QualityCheckListDetailView implements QualityCheckListDetailViewCon
         //状态
         String billType = info.billType;
         statusView.setText(billType);
-        if ("整改".equals(info.billType)) {
+        if (ResourceUtil.getResourceString(R.string.str_quality_repair_test).equals(info.billType)) {
             statusView.setBackgroundResource(R.drawable.check_list_status_orange);
             statusView.setTextColor(mActivity.getResources().getColor(R.color.c_f6ad5f));
             timeLimitView.setVisibility(View.GONE);
-        } else if ("复查".equals(info.billType)) {
+        } else if (ResourceUtil.getResourceString(R.string.str_quality_review_test).equals(info.billType)) {
             statusView.setBackgroundResource(R.drawable.check_list_status_red);
             statusView.setTextColor(mActivity.getResources().getColor(R.color.c_f33d3d));
             timeLimitView.setVisibility(View.VISIBLE);
             //整改期限
             if (info.lastRectificationDate != null && Long.parseLong(info.lastRectificationDate) > 0) {
                 timeLimitView.setVisibility(View.GONE);
-                timeLimitView.setText("整改期：" + DateUtil.getNormalDate(Long.parseLong(info.lastRectificationDate)));
+                timeLimitView.setText(ResourceUtil.getResourceString(R.string.str_quality_repair_date) + DateUtil.getNormalDate(Long.parseLong(info.lastRectificationDate)));
             } else {
                 timeLimitView.setVisibility(View.GONE);
             }

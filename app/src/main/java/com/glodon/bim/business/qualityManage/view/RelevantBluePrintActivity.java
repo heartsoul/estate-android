@@ -28,6 +28,7 @@ import com.glodon.bim.base.BaseApplication;
 import com.glodon.bim.basic.config.AppConfig;
 import com.glodon.bim.basic.listener.ThrottleClickEvents;
 import com.glodon.bim.basic.log.LogUtil;
+import com.glodon.bim.basic.utils.ResourceUtil;
 import com.glodon.bim.basic.utils.SharedPreferencesUtil;
 import com.glodon.bim.business.authority.AuthorityManager;
 import com.glodon.bim.business.qualityManage.bean.BluePrintDotItem;
@@ -274,7 +275,7 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
         mCancelView.setVisibility(View.VISIBLE);
         mBackView.setVisibility(View.GONE);
         mChangeBlueprintView.setVisibility(View.GONE);
-        mFinishView.setText("完成");
+        mFinishView.setText(ResourceUtil.getResourceString(R.string.str_finish));
         mFinishView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -296,7 +297,7 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
     private void hideFinish() {
         mCancelView.setVisibility(View.GONE);
         mBackView.setVisibility(View.VISIBLE);
-        mFinishView.setText("长按新建");
+        mFinishView.setText(ResourceUtil.getResourceString(R.string.str_quality_blueprint_create_hint));
         mFinishView.setOnClickListener(null);
         if(type==1){
             mChangeBlueprintView.setVisibility(View.VISIBLE);
@@ -370,7 +371,7 @@ public class RelevantBluePrintActivity extends BaseActivity implements View.OnCl
 
     @Override
     public void showTokenError() {
-        ToastManager.show("抱歉，您目前没有查看此图纸的权限，请联系系统管理员。");
+        ToastManager.show(ResourceUtil.getResourceString(R.string.str_toast_authority_hint));
     }
 
     @Override

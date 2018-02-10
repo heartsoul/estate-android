@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.glodon.bim.R;
 import com.glodon.bim.base.BaseActivity;
+import com.glodon.bim.basic.utils.ResourceUtil;
 import com.glodon.bim.basic.utils.SharedPreferencesUtil;
 import com.glodon.bim.business.authority.AuthorityManager;
 import com.glodon.bim.business.qualityManage.bean.QualityCheckListDetailBean;
@@ -111,10 +112,10 @@ public class QualityCheckListDetailActivity extends BaseActivity implements View
                     //设置title
                     switch (info.inspectionType){
                         case CommonConfig.TYPE_INSPECTION:
-                            mTitleView.setText("检查单");
+                            mTitleView.setText(ResourceUtil.getResourceString(R.string.str_quality_create_title));
                             break;
                         case CommonConfig.TYPE_ACCEPTANCE:
-                            mTitleView.setText("验收单");
+                            mTitleView.setText(ResourceUtil.getResourceString(R.string.str_quality_create_yanshou_title));
                             break;
                     }
                     //设置整改单还是复查单按钮
@@ -122,7 +123,7 @@ public class QualityCheckListDetailActivity extends BaseActivity implements View
                         case CommonConfig.QC_STATE_UNRECTIFIED://待整改
                             if(AuthorityManager.isCreateRepair()&& AuthorityManager.isMe(info.responsibleUserId)) {
                                 mRepairView.setVisibility(View.VISIBLE);
-                                mRepairView.setText("+整改单");
+                                mRepairView.setText(ResourceUtil.getResourceString(R.string.str_quality_create_title_repai));
                                 mRepairView.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
@@ -142,7 +143,7 @@ public class QualityCheckListDetailActivity extends BaseActivity implements View
                         case CommonConfig.QC_STATE_UNREVIEWED://待复查
                             if(AuthorityManager.isCreateReview()&& AuthorityManager.isMe(info.creatorId)) {
                                 mRepairView.setVisibility(View.VISIBLE);
-                                mRepairView.setText("+复查单");
+                                mRepairView.setText(ResourceUtil.getResourceString(R.string.str_quality_create_title_review));
                                 mRepairView.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {

@@ -15,7 +15,7 @@ import com.glodon.bim.business.equipment.bean.EquipmentListBeanItem;
 import com.glodon.bim.business.equipment.contract.EquipmentListContract;
 import com.glodon.bim.business.equipment.presenter.EquipmentListPresenter;
 import com.glodon.bim.business.main.bean.ProjectListItem;
-import com.glodon.bim.business.qualityManage.OnClassifyItemClickListener;
+import com.glodon.bim.business.qualityManage.listener.OnClassifyItemClickListener;
 import com.glodon.bim.business.qualityManage.adapter.QualityCheckListClassifyAdapter;
 import com.glodon.bim.business.qualityManage.bean.ClassifyItem;
 import com.glodon.bim.business.qualityManage.bean.ClassifyNum;

@@ -115,7 +115,6 @@ public interface LoginApi {
     @GET("uaa/user/password/forgot/facilityCode/verify")
     Observable<CheckAccountBean> checkSmsCode(@Query("mobile") String mobile,@Query("verifyCode")String verifyCode);
 
-
     /**
      * 重置密码
      */

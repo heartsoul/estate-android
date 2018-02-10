@@ -14,6 +14,7 @@
     <string name="str_search">搜索</string>
     <string name="str_set">设置</string>
     <string name="str_edit">编辑</string>
+    <string name="str_date_format">yyyy-MM-dd</string>
 
     <!-- 启动界面 -->
 
@@ -54,15 +55,23 @@
     <string name="str_main_lab_mine">我的</string>
 
     <!-- 质检清单 -->
+    <string name="str_quality_create_review_num_limit">字</string>
+    <string name="str_quality_repair_date">整改期：</string>
+    <string name="str_quality_repair_test">整改</string>
+    <string name="str_quality_review_test">复查</string>
+    <string name="str_quality_inspection">检查</string>
+    <string name="str_quality_acception">验收</string>
     <string name="str_quality_photo_title">相机胶卷</string>
     <string name="str_quality_photo_preview">预览</string>
     <string name="str_quality_create_title">检查单</string>
     <string name="str_quality_create_title_repai">+整改单</string>
+    <string name="str_quality_create_title_review">+复查单</string>
     <string name="str_quality_create_inpector">检查单位：</string>
     <string name="str_quality_create_company">施工单位：</string>
     <string name="str_quality_create_responsible">责任人：</string>
     <string name="str_quality_create_module">质检项目：</string>
     <string name="str_quality_create_des">现场描述：</string>
+    <string name="str_quality_create_des__">现场描述</string>
     <string name="str_quality_create_save_titme">保存时间：</string>
     <string name="str_quality_create_submit_time">提交时间：</string>
     <string name="str_quality_create_blueprint">关联图纸：</string>
@@ -95,6 +104,16 @@
     <string name="str_quality_blueprint_long_press_hint">手指长按屏幕可以在当前位\n置新建检查单或者质检单哦</string>
     <string name="str_quality_blueprint_title">点击选择</string>
     <string name="str_quality_choose_company">选择施工单位</string>
+    <string name="str_quality_choose_inspection_company">选择检查单位</string>
+    <string name="str_quality_choose_resoponsible">选择责任人</string>
+    <string name="str_quality_model_choose_component_hint">您还未选择构件!</string>
+    <string name="str_quality_blueprint_create_hint">长按新建</string>
+    <string name="str_quality_create_company_default_text">您需要去PC端添加施工单位数据</string>
+    <string name="str_quality_create_rsponsible_default_text">您需要去PC端添加责任人数据</string>
+    <string name="str_quality_create_choose_hint">您还未选择</string>
+    <string name="str_quality_create_and">和</string>
+    <string name="str_quality_create_dot">、</string>
+    <string name="str_quality_create_sign">!</string>
     <!--搜索-->
     <string name="str_search_empty_hint">抱歉，未找到您要的内容</string>
     <!--设置-->
@@ -103,7 +122,6 @@
     <string name="str_set_feedback_email">邮箱：</string>
     <string name="str_set_feedback_title_text">标题：</string>
     <string name="str_set_feedback_content_hint">留言内容....</string>
-    <!--<string name="str_set_second_title">您的专属BIM协同管理</string>-->
     <string name="str_set_change_psd">修改密码</string>
     <string name="str_set_version_info">版本信息</string>
     <string name="str_set_version">版本号V1.1.0</string>
@@ -121,8 +139,8 @@
     <string name="str_scan_hint">取景框对准二维码, 即可自动扫描</string>
     <string name="str_editphoto_wrapper_title">打开相册</string>
     <!--材设进场记录-->
-    <string name="str_equipment_edit_photo_title">"编辑现场照片"</string>
-    <string name="str_equipment_edit_detail_title">"编辑材设详情"</string>
+    <string name="str_equipment_edit_photo_title">编辑现场照片</string>
+    <string name="str_equipment_edit_detail_title">编辑材设详情</string>
     <string name="str_equipment_edit_title">编辑材设基本信息</string>
     <string name="str_equipment_edit_choose_company">"选择验收单位"</string>
     <string name="str_equipment_create_title">材设进场记录</string>
@@ -174,6 +192,8 @@
     <string name="str_toast_upload_fail">"图片上传失败！"</string>
     <string name="str_toast_submit_success">"提交成功！"</string>
     <string name="str_toast_save_success">"保存成功！"</string>
+    <string name="str_toast_authority_hint">抱歉，您目前没有查看此模型的权限，请联系系统管理员。</string>
+    <string name="str_toast_date_hint">整改期限不能早于当前日期！</string>
 
     <!--Dialog-->
     <string name="str_dialog_loading">加载中...</string>
@@ -183,8 +203,18 @@
     <string name="str_dialog_choose_title">你可以选择</string>
     <string name="str_dialog_inpection_detail">查看检查单</string>
     <string name="str_dialog_new_repair">新建整改单</string>
+    <string name="str_dialog_new_review">新建复查单</string>
     <string name="str_dialog_detail">查看详情</string>
     <string name="str_dialog_cho">选择施工单位</string>
+    <string name="str_dialog_save_delete_not_save_yet">您还未保存当前数据!</string>
+    <string name="str_dialog_save_delete_make_sure">是否确认退出当前页面？</string>
+    <string name="str_dialog_save_delete_hint">删除当前数据后，数据不可恢复哦!</string>
+    <string name="str_dialog_save_delete_sure">是否确认删除？</string>
+    <string name="str_dialog_save_know">知道了</string>
+    <string name="str_dialog_save_hint_message">提示信息</string>
+    <string name="str_dialog_create_review_des_hint">您还未选择现场情况描述!</string>
+    <string name="str_dialog_create_review_des_date_hint">您还未选择现场情况描述和整改期限!</string>
+    <string name="str_dialog_create_review_date_hint">您还未选择整改期限!</string>
 
     <!--customview-->
     <string name="str_view_load_more_hint_down">下拉刷新数据...</string>

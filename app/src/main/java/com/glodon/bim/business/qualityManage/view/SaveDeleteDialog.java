@@ -11,6 +11,7 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.glodon.bim.R;
+import com.glodon.bim.basic.utils.ResourceUtil;
 
 
 /**
@@ -45,9 +46,9 @@ public class SaveDeleteDialog {
         mRightView = view.findViewById(R.id.save_delete_dialog_right);
         mLineView = view.findViewById(R.id.save_delete_dialog_middle_line);
 
-        mTitleView.setText("提示信息");
+        mTitleView.setText(ResourceUtil.getResourceString(R.string.str_dialog_save_hint_message));
         mContentView.setText(content);
-        mLeftView.setText("取消");
+        mLeftView.setText(ResourceUtil.getResourceString(R.string.str_cancel));
         mLeftView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -56,7 +57,7 @@ public class SaveDeleteDialog {
         });
         mMiddleView.setVisibility(View.GONE);
         mLineView.setVisibility(View.GONE);
-        mRightView.setText("知道了");
+        mRightView.setText(ResourceUtil.getResourceString(R.string.str_dialog_save_know));
         mRightView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -82,9 +83,9 @@ public class SaveDeleteDialog {
         mRightView = view.findViewById(R.id.save_delete_dialog_right);
         mLineView = view.findViewById(R.id.save_delete_dialog_middle_line);
 
-        mTitleView.setText("提示信息");
+        mTitleView.setText(ResourceUtil.getResourceString(R.string.str_dialog_save_hint_message));
         mContentView.setText(content);
-        mLeftView.setText("取消");
+        mLeftView.setText(ResourceUtil.getResourceString(R.string.str_cancel));
         mLeftView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -94,7 +95,7 @@ public class SaveDeleteDialog {
         mLeftView.setVisibility(View.GONE);
         mMiddleView.setVisibility(View.GONE);
         mLineView.setVisibility(View.GONE);
-        mRightView.setText("知道了");
+        mRightView.setText(ResourceUtil.getResourceString(R.string.str_dialog_save_know));
         mRightView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -120,9 +121,9 @@ public class SaveDeleteDialog {
         mRightView = view.findViewById(R.id.save_delete_dialog_right);
         mLineView = view.findViewById(R.id.save_delete_dialog_middle_line);
 
-        mTitleView.setText("是否确认删除？");
-        mContentView.setText("删除当前数据后，数据不可恢复哦!");
-        mLeftView.setText("取消");
+        mTitleView.setText(ResourceUtil.getResourceString(R.string.str_dialog_save_delete_sure));
+        mContentView.setText(ResourceUtil.getResourceString(R.string.str_dialog_save_delete_hint));
+        mLeftView.setText(ResourceUtil.getResourceString(R.string.str_cancel));
         mLeftView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -131,7 +132,7 @@ public class SaveDeleteDialog {
         });
         mMiddleView.setVisibility(View.GONE);
         mLineView.setVisibility(View.GONE);
-        mRightView.setText("删除");
+        mRightView.setText(ResourceUtil.getResourceString(R.string.str_delete));
         mRightView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -161,9 +162,9 @@ public class SaveDeleteDialog {
         mRightView = view.findViewById(R.id.save_delete_dialog_right);
         mLineView = view.findViewById(R.id.save_delete_dialog_middle_line);
 
-        mTitleView.setText("是否确认退出当前页面？");
-        mContentView.setText("您还未保存当前数据!");
-        mLeftView.setText("取消");
+        mTitleView.setText(ResourceUtil.getResourceString(R.string.str_dialog_save_delete_make_sure));
+        mContentView.setText(ResourceUtil.getResourceString(R.string.str_dialog_save_delete_not_save_yet));
+        mLeftView.setText(ResourceUtil.getResourceString(R.string.str_cancel));
         mLeftView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -172,7 +173,7 @@ public class SaveDeleteDialog {
         });
         mMiddleView.setVisibility(View.VISIBLE);
         mLineView.setVisibility(View.VISIBLE);
-        mMiddleView.setText("不保存");
+        mMiddleView.setText(ResourceUtil.getResourceString(R.string.str_not_save));
         mMiddleView.setTextColor(context.getResources().getColor(R.color.c_e75452));
         mMiddleView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -184,7 +185,7 @@ public class SaveDeleteDialog {
                 }
             }
         });
-        mRightView.setText("保存");
+        mRightView.setText(ResourceUtil.getResourceString(R.string.str_save));
         mRightView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

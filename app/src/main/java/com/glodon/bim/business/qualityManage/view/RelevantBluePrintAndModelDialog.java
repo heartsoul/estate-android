@@ -8,12 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.glodon.bim.R;
-import com.glodon.bim.business.authority.AuthorityManager;
-import com.glodon.bim.business.qualityManage.listener.OnEquipmentClickListener;
+import com.glodon.bim.basic.utils.ResourceUtil;
 
 
 /**
@@ -26,7 +24,7 @@ public class RelevantBluePrintAndModelDialog {
     private Dialog dialog; //悬浮框
     private Display display;//window展示
     //底部框   新建整改单  查看检查单
-    private LinearLayout mBottomParent;
+//    private LinearLayout mBottomParent;
     private TextView mCreateView, mDetailView;
 
     public RelevantBluePrintAndModelDialog(Context context) {
@@ -42,12 +40,12 @@ public class RelevantBluePrintAndModelDialog {
      */
     public RelevantBluePrintAndModelDialog getRepairDialog(final View.OnClickListener createRepairListener, final View.OnClickListener detailListener, boolean create, boolean browser) {
         View view = LayoutInflater.from(context).inflate(R.layout.view_relevant_blueprint_model_dialog, null);
-        mBottomParent = view.findViewById(R.id.relevant_blueprint_bottom);
+//        mBottomParent = view.findViewById(R.id.relevant_blueprint_bottom);
         mCreateView = view.findViewById(R.id.relevant_blueprint_bottom_create);
         mDetailView = view.findViewById(R.id.relevant_blueprint_bottom_detail);
         mCreateView.setVisibility(create ? View.VISIBLE : View.GONE);
         mDetailView.setVisibility(browser ? View.VISIBLE : View.GONE);
-        mCreateView.setText("新建整改单");
+        mCreateView.setText(ResourceUtil.getResourceString(R.string.str_dialog_new_repair));
         mCreateView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -76,13 +74,13 @@ public class RelevantBluePrintAndModelDialog {
      */
     public RelevantBluePrintAndModelDialog getReviewDialog(final View.OnClickListener createReviewListener, final View.OnClickListener detailListener, boolean create, boolean browser) {
         View view = LayoutInflater.from(context).inflate(R.layout.view_relevant_blueprint_model_dialog, null);
-        mBottomParent = view.findViewById(R.id.relevant_blueprint_bottom);
+//        mBottomParent = view.findViewById(R.id.relevant_blueprint_bottom);
         mCreateView = view.findViewById(R.id.relevant_blueprint_bottom_create);
         mDetailView = view.findViewById(R.id.relevant_blueprint_bottom_detail);
         mCreateView.setVisibility(create ? View.VISIBLE : View.GONE);
         mDetailView.setVisibility(browser ? View.VISIBLE : View.GONE);
 
-        mCreateView.setText("新建复查单");
+        mCreateView.setText(ResourceUtil.getResourceString(R.string.str_dialog_new_review));
         mCreateView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -128,59 +126,59 @@ public class RelevantBluePrintAndModelDialog {
     /**
      * 材设编辑状态
      */
-    public RelevantBluePrintAndModelDialog getEquipmentEditDialog(final OnEquipmentClickListener listener) {
-        View view = LayoutInflater.from(context).inflate(R.layout.view_relevant_equipment_dialog, null);
-        TextView submitView = view.findViewById(R.id.relevant_equipment_bottom_submit);
-        View submitLine = view.findViewById(R.id.relevant_equipment_bottom_submit_line);
-        TextView deleteView = view.findViewById(R.id.relevant_equipment_bottom_delete);
-        View deleteLine = view.findViewById(R.id.relevant_equipment_bottom_delete_line);
-        TextView editView = view.findViewById(R.id.relevant_equipment_bottom_edit);
-
-        if (AuthorityManager.isEquipmentModify()) {
-            submitLine.setVisibility(View.VISIBLE);
-            submitView.setVisibility(View.VISIBLE);
-        } else {
-            submitLine.setVisibility(View.GONE);
-            submitView.setVisibility(View.GONE);
-        }
-        if (AuthorityManager.isEquipmentDelete()) {
-            deleteLine.setVisibility(View.VISIBLE);
-            deleteView.setVisibility(View.VISIBLE);
-        } else {
-            deleteLine.setVisibility(View.GONE);
-            deleteView.setVisibility(View.GONE);
-        }
-
-        submitView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (listener != null) {
-                    listener.submit();
-                }
-                dismiss();
-            }
-        });
-        deleteView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (listener != null) {
-                    listener.delete();
-                }
-                dismiss();
-            }
-        });
-        editView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (listener != null) {
-                    listener.edit();
-                }
-                dismiss();
-            }
-        });
-        dialogSetting(view);
-        return this;
-    }
+//    public RelevantBluePrintAndModelDialog getEquipmentEditDialog(final OnEquipmentClickListener listener) {
+//        View view = LayoutInflater.from(context).inflate(R.layout.view_relevant_equipment_dialog, null);
+//        TextView submitView = view.findViewById(R.id.relevant_equipment_bottom_submit);
+//        View submitLine = view.findViewById(R.id.relevant_equipment_bottom_submit_line);
+//        TextView deleteView = view.findViewById(R.id.relevant_equipment_bottom_delete);
+//        View deleteLine = view.findViewById(R.id.relevant_equipment_bottom_delete_line);
+//        TextView editView = view.findViewById(R.id.relevant_equipment_bottom_edit);
+//
+//        if (AuthorityManager.isEquipmentModify()) {
+//            submitLine.setVisibility(View.VISIBLE);
+//            submitView.setVisibility(View.VISIBLE);
+//        } else {
+//            submitLine.setVisibility(View.GONE);
+//            submitView.setVisibility(View.GONE);
+//        }
+//        if (AuthorityManager.isEquipmentDelete()) {
+//            deleteLine.setVisibility(View.VISIBLE);
+//            deleteView.setVisibility(View.VISIBLE);
+//        } else {
+//            deleteLine.setVisibility(View.GONE);
+//            deleteView.setVisibility(View.GONE);
+//        }
+//
+//        submitView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if (listener != null) {
+//                    listener.submit();
+//                }
+//                dismiss();
+//            }
+//        });
+//        deleteView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if (listener != null) {
+//                    listener.delete();
+//                }
+//                dismiss();
+//            }
+//        });
+//        editView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if (listener != null) {
+//                    listener.edit();
+//                }
+//                dismiss();
+//            }
+//        });
+//        dialogSetting(view);
+//        return this;
+//    }
 
     /**
      * 材设提交状态

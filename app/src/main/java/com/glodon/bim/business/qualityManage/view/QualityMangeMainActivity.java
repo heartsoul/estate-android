@@ -20,6 +20,7 @@ import com.glodon.bim.R;
 import com.glodon.bim.base.BaseActivity;
 import com.glodon.bim.base.BaseFragment;
 import com.glodon.bim.basic.log.LogUtil;
+import com.glodon.bim.basic.utils.ResourceUtil;
 import com.glodon.bim.basic.utils.ScreenUtil;
 import com.glodon.bim.basic.utils.SharedPreferencesUtil;
 import com.glodon.bim.business.authority.AuthorityManager;
@@ -256,7 +257,7 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
                 showFragmentById(mQualityCheckListFragmentId);
                 hideDrawer(300);
                 mIsDrawerOpen = false;
-                mTitleView.setText("质检清单");
+                mTitleView.setText(ResourceUtil.getResourceString(R.string.str_main_quality_list));
                 SharedPreferencesUtil.setSelectModuleInfo(-1, "");
                 break;
             case R.id.main_drawer_quality_blueprint://点击图纸
@@ -264,7 +265,7 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
                 showFragmentById(mBluePrintFragmentId);
                 hideDrawer(300);
                 mIsDrawerOpen = false;
-                mTitleView.setText("图纸");
+                mTitleView.setText(ResourceUtil.getResourceString(R.string.str_main_quality_blueprint));
                 SharedPreferencesUtil.setSelectModuleInfo(-1, "");
                 break;
             case R.id.main_drawer_quality_model://点击模型
@@ -272,7 +273,7 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
                 showFragmentById(mModelFragmentId);
                 hideDrawer(300);
                 mIsDrawerOpen = false;
-                mTitleView.setText("模型");
+                mTitleView.setText(ResourceUtil.getResourceString(R.string.str_main_quality_model));
                 SharedPreferencesUtil.setSelectModuleInfo(-1, "");//清空当前选中的质检项目
                 break;
             case R.id.main_drawer_quality_module://点击质检项目
@@ -385,22 +386,22 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
         String title = "";
         switch (fromType) {
             case 0:
-                title = "质检清单";
+                title = ResourceUtil.getResourceString(R.string.str_main_quality_list);
                 break;
             case 1:
-                title = "图纸";
+                title = ResourceUtil.getResourceString(R.string.str_main_quality_blueprint);
                 break;
             case 2:
-                title = "模型";
+                title = ResourceUtil.getResourceString(R.string.str_main_quality_model);
                 break;
             case 3:
-                title = "质检项目";
+                title = ResourceUtil.getResourceString(R.string.str_main_quality_module);
                 break;
             case 4:
-                title = "材设清单";
+                title = ResourceUtil.getResourceString(R.string.str_main_equipment_list);
                 break;
             case 5:
-                title = "模型预览";
+                title = ResourceUtil.getResourceString(R.string.str_main_equipment_model);
                 break;
         }
         mTitleView.setText(title);

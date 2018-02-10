@@ -22,6 +22,7 @@ import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.basic.utils.CameraUtil;
 import com.glodon.bim.basic.utils.DateUtil;
 import com.glodon.bim.basic.utils.LinkedHashList;
+import com.glodon.bim.basic.utils.ResourceUtil;
 import com.glodon.bim.business.qualityManage.bean.CreateCheckListParamsFile;
 import com.glodon.bim.business.qualityManage.bean.QualityCheckListBeanItemFile;
 import com.glodon.bim.business.qualityManage.bean.QualityCheckListDetailBean;
@@ -174,7 +175,7 @@ public class CreateReviewActivity extends BaseActivity implements View.OnClickLi
                 } else {
                     num = 255 - text.length();
                 }
-                mDesNumView.setText(num + "字");
+                mDesNumView.setText(num + ResourceUtil.getResourceString(R.string.str_quality_create_review_num_limit));
             }
         });
     }
@@ -286,24 +287,24 @@ public class CreateReviewActivity extends BaseActivity implements View.OnClickLi
             if (mIsUpToStandard) {
                 if (TextUtils.isEmpty(desText)) {
                     mHintDialog = new SaveDeleteDialog(mActivity);
-                    mHintDialog.getHintDialog("您还未选择现场情况描述!");
+                    mHintDialog.getHintDialog(ResourceUtil.getResourceString(R.string.str_dialog_create_review_des_hint));
                     mHintDialog.show();
                     return false;
                 }
             } else {
                 if (TextUtils.isEmpty(desText) && TextUtils.isEmpty(dateText)) {
                     mHintDialog = new SaveDeleteDialog(mActivity);
-                    mHintDialog.getHintDialog("您还未选择现场情况描述和整改期限!");
+                    mHintDialog.getHintDialog(ResourceUtil.getResourceString(R.string.str_dialog_create_review_des_date_hint));
                     mHintDialog.show();
                     return false;
                 } else if (TextUtils.isEmpty(desText)) {
                     mHintDialog = new SaveDeleteDialog(mActivity);
-                    mHintDialog.getHintDialog("您还未选择现场情况描述!");
+                    mHintDialog.getHintDialog(ResourceUtil.getResourceString(R.string.str_dialog_create_review_des_hint));
                     mHintDialog.show();
                     return false;
                 } else if (TextUtils.isEmpty(dateText)) {
                     mHintDialog = new SaveDeleteDialog(mActivity);
-                    mHintDialog.getHintDialog("您还未选择整改期限!");
+                    mHintDialog.getHintDialog(ResourceUtil.getResourceString(R.string.str_dialog_create_review_date_hint));
                     mHintDialog.show();
                     return false;
                 }
@@ -321,7 +322,7 @@ public class CreateReviewActivity extends BaseActivity implements View.OnClickLi
                         int DD = calendar.get(Calendar.DATE);
                         long today = sdf.parse(YY + "-" + MM + "-" + DD).getTime();
                         if (millionSeconds < today) {
-                            ToastManager.show("整改期限不能早于当前日期！");
+                            ToastManager.show(ResourceUtil.getResourceString(R.string.str_toast_date_hint));
                             return false;
                         }
                     } catch (ParseException e) {
@@ -334,7 +335,7 @@ public class CreateReviewActivity extends BaseActivity implements View.OnClickLi
         if (CommonConfig.CREATE_TYPE_REPAIR.equals(mCreateType)) {
             if (TextUtils.isEmpty(desText)) {
                 mHintDialog = new SaveDeleteDialog(mActivity);
-                mHintDialog.getHintDialog("您还未选择现场情况描述!");
+                mHintDialog.getHintDialog(ResourceUtil.getResourceString(R.string.str_dialog_create_review_des_hint));
                 mHintDialog.show();
                 return false;
             }
@@ -428,10 +429,10 @@ public class CreateReviewActivity extends BaseActivity implements View.OnClickLi
     public void showTitleByType(String mCreateType) {
         this.mCreateType = mCreateType;
         if (CommonConfig.CREATE_TYPE_REPAIR.equals(mCreateType)) {
-            mTitleView.setText("整改单");
+            mTitleView.setText(ResourceUtil.getResourceString(R.string.str_quality_create_repair));
             mRemain.setVisibility(View.GONE);
         } else if (CommonConfig.CREATE_TYPE_REVIEW.equals(mCreateType)) {
-            mTitleView.setText("复查单");
+            mTitleView.setText(ResourceUtil.getResourceString(R.string.str_quality_create_review));
             mRemain.setVisibility(View.VISIBLE);
         }
     }

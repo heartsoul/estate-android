@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import com.glodon.bim.R;
 import com.glodon.bim.basic.listener.ThrottleClickEvents;
 import com.glodon.bim.business.main.bean.ProjectListItem;
-import com.glodon.bim.business.qualityManage.OnClassifyItemClickListener;
+import com.glodon.bim.business.qualityManage.listener.OnClassifyItemClickListener;
 import com.glodon.bim.business.qualityManage.adapter.QualityCheckListAdapter;
 import com.glodon.bim.business.qualityManage.adapter.QualityCheckListClassifyAdapter;
 import com.glodon.bim.business.qualityManage.bean.ClassifyItem;
