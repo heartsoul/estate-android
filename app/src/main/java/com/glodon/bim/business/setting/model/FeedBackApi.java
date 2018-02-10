@@ -3,8 +3,6 @@ package com.glodon.bim.business.setting.model;
 import com.glodon.bim.business.setting.bean.FeedBackBean;
 import com.glodon.bim.business.setting.bean.FeedBackParams;
 
-import okhttp3.ResponseBody;
-import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
 import rx.Observable;
@@ -19,7 +17,7 @@ public interface FeedBackApi {
 
     @POST("/backend/feedbacks")
     Observable<FeedBackBean> addFeedBack(@Body FeedBackParams props);
-    @POST("/feedbacks")
-    Call<ResponseBody> addFeedBack2(@Body FeedBackParams props);
+//    @POST("/feedbacks")
+//    Call<ResponseBody> addFeedBack2(@Body FeedBackParams props);
 
 }
