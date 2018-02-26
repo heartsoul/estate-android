@@ -78,7 +78,7 @@ jfbim+pmdeploy
 二维码：
 
 测试：192.168.81.30
-1，生成http://192.168.81.30/app/bimcop_app_test_v1.1.0.apk二维码
+1，生成http://192.168.81.30/app/bimcop_app_test_v1.1.0_201802261049.apk二维码
 2，覆盖/usr/share/nginx/html/daily/imgs/app_qr_code.png图片
 
 预发：

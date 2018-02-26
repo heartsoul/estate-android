@@ -116,7 +116,11 @@ public class AuthorityManager {
         return Quality_Rectification_Bean!=null &&
                 Quality_Rectification_Bean.actionRights!=null &&
                 Quality_Rectification_Bean.actionRights.size()>0 &&
-                (Quality_Rectification_Bean.actionRights.contains(AuthorityConfig.BrowseAll)||Quality_Rectification_Bean.actionRights.contains(AuthorityConfig.BrowseSelf) );
+                (
+                        Quality_Rectification_Bean.actionRights.contains(AuthorityConfig.BrowseAll)||
+                        Quality_Rectification_Bean.actionRights.contains(AuthorityConfig.BrowseSelf)||
+                        Quality_Rectification_Bean.actionRights.contains(AuthorityConfig.BrowseGrant)
+                );
     }
 
     //判断是不是我
@@ -158,7 +162,11 @@ public class AuthorityManager {
         return Quality_Facility_Bean!=null &&
                 Quality_Facility_Bean.actionRights!=null &&
                 Quality_Facility_Bean.actionRights.size()>0 &&
-                (Quality_Facility_Bean.actionRights.contains(AuthorityConfig.BrowseAll)||Quality_Facility_Bean.actionRights.contains(AuthorityConfig.BrowseSelf) );
+                (
+                        Quality_Facility_Bean.actionRights.contains(AuthorityConfig.BrowseAll)||
+                        Quality_Facility_Bean.actionRights.contains(AuthorityConfig.BrowseSelf)||
+                        Quality_Facility_Bean.actionRights.contains(AuthorityConfig.BrowseGrant)
+                );
     }
 
     //---------------------------材设--------------------------------------

@@ -5,47 +5,53 @@
     android:background="@color/white"
     android:orientation="vertical">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_43"
-        android:background="@color/c_00baf3">
+    <!--<RelativeLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="@dimen/dimen_43"-->
+        <!--android:background="@color/c_00baf3">-->
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent">
-            <ImageView
-                android:layout_width="@dimen/dimen_09"
-                android:layout_height="@dimen/dimen_20"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/dimen_10"
-                android:layout_marginRight="@dimen/dimen_10"
-                android:background="@drawable/icon_back_white" />
-        </RelativeLayout>
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="@string/str_main_lab_message"
-            android:textColor="@color/white"
-            android:textSize="@dimen/dimen_17" />
-
-        <ImageView
-            android:layout_width="@dimen/dimen_24"
-            android:layout_height="@dimen/dimen_24"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/dimen_14"
-            android:background="@drawable/icon_search_white"
-            android:visibility="gone"/>
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        <!--<RelativeLayout-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="match_parent">-->
+            <!--<ImageView-->
+                <!--android:layout_width="@dimen/dimen_09"-->
+                <!--android:layout_height="@dimen/dimen_20"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:layout_marginLeft="@dimen/dimen_10"-->
+                <!--android:layout_marginRight="@dimen/dimen_10"-->
+                <!--android:background="@drawable/icon_back_white" />-->
+        <!--</RelativeLayout>-->
 
 
-    </RelativeLayout>
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_centerInParent="true"-->
+            <!--android:text="@string/str_main_lab_message"-->
+            <!--android:textColor="@color/white"-->
+            <!--android:textSize="@dimen/dimen_17" />-->
 
+        <!--<ImageView-->
+            <!--android:layout_width="@dimen/dimen_24"-->
+            <!--android:layout_height="@dimen/dimen_24"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_marginRight="@dimen/dimen_14"-->
+            <!--android:background="@drawable/icon_search_white"-->
+            <!--android:visibility="gone"/>-->
+    <!--</RelativeLayout>-->
+
+    <!--<RelativeLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent">-->
+
+
+    <!--</RelativeLayout>-->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="敬请期待"
+        android:layout_gravity="center"
+        android:layout_marginTop="200dp"
+        android:textSize="@dimen/dimen_20"/>
 </LinearLayout>
