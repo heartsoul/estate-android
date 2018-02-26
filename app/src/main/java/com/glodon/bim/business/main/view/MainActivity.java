@@ -32,6 +32,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,M
     private MainAdapter mAdapter;
     //底部tab标签
     private LinearLayout mMainPageTab,mSubscribeTab,mMessageTab,mMineTab;
+    private ImageView mMainPageTabIcon,mSubscribeTabIcon,mMessageTabIcon,mMineTabIcon;
+
     private ImageView mCreateTab;
 
     private List<BaseFragment> mFragmentList ;
@@ -61,6 +63,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,M
         mSubscribeTab = (LinearLayout) findViewById(R.id.main_activity_subscribe);
         mMessageTab = (LinearLayout) findViewById(R.id.main_activity_message);
         mMineTab = (LinearLayout) findViewById(R.id.main_activity_mine);
+        mMainPageTabIcon = (ImageView) findViewById(R.id.main_activity_main_page_icon);
+        mSubscribeTabIcon = (ImageView) findViewById(R.id.main_activity_subscribe_icon);
+        mMessageTabIcon = (ImageView) findViewById(R.id.main_activity_message_icon);
+        mMineTabIcon = (ImageView) findViewById(R.id.main_activity_mine_icon);
         mCreateTab = (ImageView) findViewById(R.id.main_activity_create);
     }
 
@@ -95,6 +101,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,M
                         mStatusView.setBackgroundResource(R.color.c_00baf3);
                         break;
                 }
+
+                setSelectedIcon(position);
             }
 
             @Override
@@ -102,6 +110,37 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,M
 
             }
         });
+    }
+
+    //设定选中的fragment的底部icon的选中状态
+    private void setSelectedIcon(int position){
+        switch (position){
+            case 0:
+                mMainPageTabIcon.setBackgroundResource(R.drawable.icon_main_page_selected);
+                mSubscribeTabIcon.setBackgroundResource(R.drawable.icon_main_subscribe);
+                mMessageTabIcon.setBackgroundResource(R.drawable.icon_main_message);
+                mMineTabIcon.setBackgroundResource(R.drawable.icon_main_mine);
+                break;
+            case 1:
+                mMainPageTabIcon.setBackgroundResource(R.drawable.icon_main_main_page);
+                mSubscribeTabIcon.setBackgroundResource(R.drawable.icon_main_subscribe_selected);
+                mMessageTabIcon.setBackgroundResource(R.drawable.icon_main_message);
+                mMineTabIcon.setBackgroundResource(R.drawable.icon_main_mine);
+                break;
+            case 2:
+                mMainPageTabIcon.setBackgroundResource(R.drawable.icon_main_main_page);
+                mSubscribeTabIcon.setBackgroundResource(R.drawable.icon_main_subscribe);
+                mMessageTabIcon.setBackgroundResource(R.drawable.icon_main_message_selected);
+                mMineTabIcon.setBackgroundResource(R.drawable.icon_main_mine);
+                break;
+            case 3:
+                mMainPageTabIcon.setBackgroundResource(R.drawable.icon_main_main_page);
+                mSubscribeTabIcon.setBackgroundResource(R.drawable.icon_main_subscribe);
+                mMessageTabIcon.setBackgroundResource(R.drawable.icon_main_message);
+                mMineTabIcon.setBackgroundResource(R.drawable.icon_main_mine_selected);
+                break;
+
+        }
     }
 
     private void initData() {
