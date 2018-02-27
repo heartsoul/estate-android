@@ -18,6 +18,7 @@ public class PictureCodeModel implements PictureCodeContract.Model {
      * 验证用户是否存在
      */
     public Observable<CheckAccountBean> checkAccount(String identity){
+
         return NetRequest.getInstance().getCall(LoginApi.class).checkAccount(identity);
     }
 
