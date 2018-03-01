@@ -9,6 +9,7 @@ import com.glodon.bim.business.setting.bean.FeedBackParams;
 import com.glodon.bim.business.setting.contract.FeedBackContract;
 import com.glodon.bim.business.setting.model.FeedBackModel;
 import com.glodon.bim.customview.ToastManager;
+import com.google.gson.GsonBuilder;
 
 import rx.Subscriber;
 import rx.Subscription;
@@ -83,6 +84,7 @@ public class FeedBackPresenter implements FeedBackContract.Presenter {
                                 mView.dismissLoadingDialog();
                             }
                             if (feedBackBean != null) {
+//                                LogUtil.e(new GsonBuilder().create().toJson(feedBackBean));
                                 ToastManager.show("意见已提交！");
 
                                 if (mView != null) {

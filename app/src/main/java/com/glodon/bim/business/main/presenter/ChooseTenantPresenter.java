@@ -1,5 +1,6 @@
 package com.glodon.bim.business.main.presenter;
 
+import android.app.Activity;
 import android.content.Intent;
 
 import com.glodon.bim.basic.log.LogUtil;
@@ -8,6 +9,8 @@ import com.glodon.bim.basic.utils.SharedPreferencesUtil;
 import com.glodon.bim.business.main.contract.ChooseTenantContract;
 import com.glodon.bim.business.main.model.ChooseTenantModel;
 import com.glodon.bim.business.main.view.ChooseProjectActivity;
+import com.glodon.bim.common.config.CommonConfig;
+import com.glodon.bim.common.config.RequestCodeConfig;
 import com.glodon.bim.common.login.User;
 import com.glodon.bim.common.login.UserTenant;
 import com.glodon.bim.customview.ToastManager;
@@ -34,6 +37,7 @@ public class ChooseTenantPresenter implements ChooseTenantContract.Presenter {
     private ChooseTenantContract.Model mModel;
     private List<UserTenant> mDataList;
     private CompositeSubscription mSubscriptions;
+    private boolean mIsChangeProject = false;//是否是切换项目
 
     public ChooseTenantPresenter(ChooseTenantContract.View mView) {
         this.mView = mView;
@@ -44,7 +48,8 @@ public class ChooseTenantPresenter implements ChooseTenantContract.Presenter {
 
     @Override
     public void initData(Intent intent) {
-        User user = (User) intent.getSerializableExtra("user");
+        User user = SharedPreferencesUtil.getUserInfo();
+        mIsChangeProject = intent.getBooleanExtra(CommonConfig.CHANGE_PROJECT,false);
         if(user!=null && user.accountInfo!=null && user.accountInfo.userTenants!=null){
             mDataList.addAll(user.accountInfo.userTenants);
         }
@@ -59,6 +64,7 @@ public class ChooseTenantPresenter implements ChooseTenantContract.Presenter {
     @Override
     public void clickTenant(UserTenant tenant) {
         LogUtil.toJson(tenant);
+        SharedPreferencesUtil.setTenantInfo(tenant);
         if(NetWorkUtils.isNetworkAvailable(mView.getActivity())) {
             //保存当前的租户下的用户id
             SharedPreferencesUtil.setUserId(tenant.id);
@@ -79,7 +85,8 @@ public class ChooseTenantPresenter implements ChooseTenantContract.Presenter {
                         @Override
                         public void onNext(ResponseBody response) {
                             Intent intent = new Intent(mView.getActivity(), ChooseProjectActivity.class);
-                            mView.getActivity().startActivity(intent);
+                            intent.putExtra(CommonConfig.CHANGE_PROJECT,mIsChangeProject);
+                            mView.getActivity().startActivityForResult(intent, RequestCodeConfig.REQUEST_CODE_CLOSE_TENANT);
                         }
                     });
             mSubscriptions.add(sub);
@@ -90,7 +97,15 @@ public class ChooseTenantPresenter implements ChooseTenantContract.Presenter {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
+        switch (requestCode)
+        {
+            case RequestCodeConfig.REQUEST_CODE_CLOSE_TENANT:
+                if(mView!=null && resultCode == Activity.RESULT_OK){
+                    mView.getActivity().setResult(Activity.RESULT_OK);
+                    mView.getActivity().finish();
+                }
+                break;
+        }
     }
 
     @Override

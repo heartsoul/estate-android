@@ -27,7 +27,6 @@ import com.glodon.bim.business.authority.AuthorityManager;
 import com.glodon.bim.business.equipment.view.EquipmentListFragment;
 import com.glodon.bim.business.equipment.view.EquipmentModelFragment;
 import com.glodon.bim.business.greendao.provider.DaoProvider;
-import com.glodon.bim.business.main.bean.ProjectListItem;
 import com.glodon.bim.business.qualityManage.contract.QualityMangeMainContract;
 import com.glodon.bim.business.qualityManage.listener.OnTitleChangerListener;
 import com.glodon.bim.business.qualityManage.presenter.QualityMangeMainPresenter;
@@ -97,7 +96,7 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
 
     private PhotoAlbumDialog mPhotoAlbumDialog;//拍照相册弹出框
 
-    private ProjectListItem mProjectInfo;//项目信息
+//    private ProjectListItem mProjectInfo;//项目信息
     private List<TextView> mContentList;
 
     private int mFromType = 0;//0质检清单  1图纸  2 模型   3质检项目 4材设清单  5模型预览
@@ -107,7 +106,7 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.quality_manage_main_activity);
         mActivity = this;
-        mProjectInfo = (ProjectListItem) getIntent().getSerializableExtra(CommonConfig.PROJECT_LIST_ITEM);
+//        mProjectInfo = (ProjectListItem) getIntent().getSerializableExtra(CommonConfig.PROJECT_LIST_ITEM);
 
         mFromType = getIntent().getIntExtra(CommonConfig.MAIN_FROM_TYPE, 0);
         initView();
@@ -304,7 +303,7 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
                 SharedPreferencesUtil.setSelectModuleInfo(-1, "");
                 break;
             case R.id.main_drawer_setting://点击进入设置
-                mPresenter.toSetting(mProjectInfo);
+                mPresenter.toSetting();
                 break;
 
         }
@@ -409,9 +408,7 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
 
     //初始化drawer数据
     private void initDrawer() {
-        if (mProjectInfo != null) {
-            mProjectNameView.setText(mProjectInfo.name);
-        }
+            mProjectNameView.setText(SharedPreferencesUtil.getProjectName());
 
         mProjectNameView.setOnClickListener(this);
         mProjectNameIcon.setOnClickListener(this);
@@ -496,7 +493,7 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
                     mQualityCheckListFragment = new QualityCheckListFragment();
                     transaction.add(R.id.main_fragment_content, mQualityCheckListFragment);
                 }
-                mQualityCheckListFragment.setProjectInfo(mProjectInfo);
+//                mQualityCheckListFragment.setProjectInfo(mProjectInfo);
                 currentFragment = mQualityCheckListFragment;
                 checkQualityAuthority();
                 break;
@@ -521,7 +518,7 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
                     mQualityCheckModuleFragment = new QualityCheckModuleFragment();
                     transaction.add(R.id.main_fragment_content, mQualityCheckModuleFragment);
                 }
-                mQualityCheckModuleFragment.setProjectInfo(mProjectInfo);
+//                mQualityCheckModuleFragment.setProjectInfo(mProjectInfo);
                 mQualityCheckModuleFragment.setTitleChangeListener(new OnTitleChangerListener() {
                     @Override
                     public void onTitleChange(String name) {
@@ -537,7 +534,7 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
                     mEquipmentListFragment = new EquipmentListFragment();
                     transaction.add(R.id.main_fragment_content, mEquipmentListFragment);
                 }
-                mEquipmentListFragment.setProjectInfo(mProjectInfo);
+//                mEquipmentListFragment.setProjectInfo(mProjectInfo);
                 mEquipmentListFragment.setTitleChangeListener(new OnTitleChangerListener() {
                     @Override
                     public void onTitleChange(String name) {

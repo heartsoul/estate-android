@@ -127,6 +127,7 @@
     <string name="str_set_version">版本号V1.1.0</string>
     <string name="str_set_contact">联系我们</string>
     <string name="str_set_about_us">关于我们</string>
+    <string name="str_set_change_project">切换项目</string>
     <string name="str_set_offline">离线设置</string>
     <string name="str_set_login_out">退出登录</string>
     <!--我的-->

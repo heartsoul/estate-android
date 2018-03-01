@@ -42,7 +42,7 @@ public interface QualityMangeMainContract {
         /**
          * 设置界面
          */
-        void toSetting(ProjectListItem mProjectInfo);
+        void toSetting();
 
         /**
          * 创建材设进场记录

@@ -4,21 +4,20 @@ package com.glodon.bim.basic.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.icu.text.DisplayContext;
 import android.text.TextUtils;
 
 import com.glodon.bim.base.BaseApplication;
 import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.business.authority.AuthorityBean;
 import com.glodon.bim.business.main.bean.ProjectListItem;
+import com.glodon.bim.common.config.CommonConfig;
+import com.glodon.bim.common.login.User;
+import com.glodon.bim.common.login.UserTenant;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-
-import static android.R.attr.id;
 
 /**
  * 描述：SharedPreference工具类
@@ -40,6 +39,9 @@ public class SharedPreferencesUtil {
     private static final String MODULE_INFO_NAME = "MODULE_INFO_NAME";
     private static final String MODULE_INFO_ID = "MODULE_INFO_ID";
     private static final String USER_NAME = "user_name";
+    private static final String PROJECT_INFO = "project_info";
+    private static final String TENANT_INFO = "tenant_info";
+    private static final String USER_INFO = "user_info";
 
     //权限
     public static String QUALITY_CHECK_BEAN = "QUALITY_CHECK_BEAN";//质量检查记录
@@ -76,6 +78,7 @@ public class SharedPreferencesUtil {
         if(item!=null) {
             SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(NAME, Context.MODE_PRIVATE);
             Editor editor = preferences.edit();
+            editor.putString(PROJECT_INFO,new GsonBuilder().create().toJson(item));
             editor.putString(PROJECT_NAME, item.name);
             editor.putLong(PROJECT_ID, item.deptId);
             editor.putString(PROJECT_TYPE_CODE, item.projectTypeCode);
@@ -84,8 +87,117 @@ public class SharedPreferencesUtil {
     }
 
     /**
+     * 保存选择的租户信息
+     */
+    public static void setTenantInfo(UserTenant item){
+        if(item!=null) {
+            SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(NAME, Context.MODE_PRIVATE);
+            Editor editor = preferences.edit();
+            editor.putString(TENANT_INFO,new GsonBuilder().create().toJson(item));
+            editor.commit();
+        }
+    }
+
+    /**
+     * 保存用户信息
+     */
+    public static void setUserInfo(User item){
+        if(item!=null) {
+            SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(NAME, Context.MODE_PRIVATE);
+            Editor editor = preferences.edit();
+            editor.putString(USER_INFO,new GsonBuilder().create().toJson(item));
+            editor.commit();
+        }
+    }
+    /**
+     * 获取用户信息
+     */
+    public static User getUserInfo(){
+        SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(NAME, Context.MODE_PRIVATE);
+        String json = preferences.getString(USER_INFO,"");
+        if(!TextUtils.isEmpty(json)){
+            User user = new GsonBuilder().create().fromJson(json,User.class);
+            if(user!=null){
+                return user;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 删除用户信息
+     */
+    public static void deleteUserInfo(){
+        SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(NAME, Context.MODE_PRIVATE);
+        Editor editor = preferences.edit();
+        editor.putString(USER_INFO,"");
+        editor.commit();
+    }
+
+    /**
+     * 清楚登录信息
+     */
+    public static void clear(){
+        deleteTenantInfo();
+        deleteProjectInfo();
+        deleteUserInfo();
+        setString(CommonConfig.USERNAME,"");
+        setString(CommonConfig.PASSWORD,"");
+    }
+
+    /**
+     * 获取保存的租户信息
+     */
+    public static UserTenant getTenantInfo(){
+        SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(NAME, Context.MODE_PRIVATE);
+        String json = preferences.getString(TENANT_INFO,"");
+        if(!TextUtils.isEmpty(json)){
+            UserTenant tenant = new GsonBuilder().create().fromJson(json,UserTenant.class);
+            if(tenant!=null){
+                return tenant;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 获取保存的项目信息
+     */
+    public static ProjectListItem getProjectInfo(){
+        SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(NAME, Context.MODE_PRIVATE);
+        String json = preferences.getString(PROJECT_INFO,"");
+        if(!TextUtils.isEmpty(json)){
+            ProjectListItem project = new GsonBuilder().create().fromJson(json,ProjectListItem.class);
+            if(project!=null){
+                return project;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * 删除保存的项目信息
+     */
+    public static void deleteProjectInfo(){
+        SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(NAME, Context.MODE_PRIVATE);
+        Editor editor = preferences.edit();
+        editor.putString(PROJECT_INFO,"");
+        editor.commit();
+    }
+
+    /**
+     * 删除保存的租户信息
+     */
+    public static void deleteTenantInfo(){
+        SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(NAME, Context.MODE_PRIVATE);
+        Editor editor = preferences.edit();
+        editor.putString(TENANT_INFO,"");
+        editor.commit();
+    }
+
+    /**
      * 获取项目id
-     * @return
      */
     public static long getProjectId(){
         SharedPreferences preferences= BaseApplication.getInstance().getSharedPreferences(NAME,Context.MODE_PRIVATE);
@@ -94,7 +206,6 @@ public class SharedPreferencesUtil {
 
     /**
      * 获取项目版本id
-     * @return
      */
     public static String getProjectVersionId(long projectId){
         SharedPreferences preferences= BaseApplication.getInstance().getSharedPreferences(NAME,Context.MODE_PRIVATE);
@@ -102,7 +213,6 @@ public class SharedPreferencesUtil {
     }
     /**
      * 获取项目版本id
-     * @return
      */
     public static String getProjectVersionId(){
         SharedPreferences preferences= BaseApplication.getInstance().getSharedPreferences(NAME,Context.MODE_PRIVATE);
@@ -110,7 +220,6 @@ public class SharedPreferencesUtil {
     }
     /**
      * 获取项目名称
-     * @return
      */
     public static String getProjectName(){
         SharedPreferences preferences= BaseApplication.getInstance().getSharedPreferences(NAME,Context.MODE_PRIVATE);
@@ -119,7 +228,6 @@ public class SharedPreferencesUtil {
 
     /**
      * 获取项目类型
-     * @return
      */
     public static String getProjectTypeCode(){
         SharedPreferences preferences= BaseApplication.getInstance().getSharedPreferences(NAME,Context.MODE_PRIVATE);

@@ -10,8 +10,6 @@ import android.widget.ImageView;
 
 import com.glodon.bim.R;
 import com.glodon.bim.basic.listener.ThrottleClickEvents;
-import com.glodon.bim.business.main.bean.ProjectListItem;
-import com.glodon.bim.business.qualityManage.listener.OnClassifyItemClickListener;
 import com.glodon.bim.business.qualityManage.adapter.QualityCheckListAdapter;
 import com.glodon.bim.business.qualityManage.adapter.QualityCheckListClassifyAdapter;
 import com.glodon.bim.business.qualityManage.bean.ClassifyItem;
@@ -19,6 +17,7 @@ import com.glodon.bim.business.qualityManage.bean.ClassifyNum;
 import com.glodon.bim.business.qualityManage.bean.ModuleListBeanItem;
 import com.glodon.bim.business.qualityManage.bean.QualityCheckListBeanItem;
 import com.glodon.bim.business.qualityManage.contract.QualityCheckListContract;
+import com.glodon.bim.business.qualityManage.listener.OnClassifyItemClickListener;
 import com.glodon.bim.business.qualityManage.presenter.QualityCheckListPresenter;
 import com.glodon.bim.common.config.CommonConfig;
 import com.glodon.bim.customview.dialog.LoadingDialogManager;
@@ -43,7 +42,7 @@ public class QualityCheckListView implements QualityCheckListContract.View {
     private ImageView mToTopView;
     private QualityCheckListAdapter mAdapter;
     private QualityCheckListContract.Presenter mPresenter;
-    private ProjectListItem mProjectInfo;
+//    private ProjectListItem mProjectInfo;
 
     private RecyclerView mClassifesView;
     private QualityCheckListClassifyAdapter mCalssifyAdapter;
@@ -56,9 +55,9 @@ public class QualityCheckListView implements QualityCheckListContract.View {
 
 
     private Activity mActivity;
-    public QualityCheckListView(Activity activity,View view,ProjectListItem info){
+    public QualityCheckListView(Activity activity,View view){
         this.mActivity = activity;
-        this.mProjectInfo = info;
+//        this.mProjectInfo = info;
         initView(view);
     }
 
@@ -175,7 +174,7 @@ public class QualityCheckListView implements QualityCheckListContract.View {
         mPresenter = new QualityCheckListPresenter(this);
         mAdapter = new QualityCheckListAdapter(mActivity, mPresenter.getListener());
         mRecyclerView.setAdapter(mAdapter);
-        mPresenter.initData(mProjectInfo);
+        mPresenter.initData();
 
     }
 
@@ -187,7 +186,7 @@ public class QualityCheckListView implements QualityCheckListContract.View {
         mPresenter.setModuleSelectInfo(item);
         mAdapter = new QualityCheckListAdapter(mActivity, mPresenter.getListener());
         mRecyclerView.setAdapter(mAdapter);
-        mPresenter.initData(mProjectInfo);
+        mPresenter.initData();
 
     }
 

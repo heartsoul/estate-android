@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -17,7 +16,6 @@ import com.glodon.bim.base.BaseActivity;
 import com.glodon.bim.basic.listener.ThrottleClickEvents;
 import com.glodon.bim.basic.utils.SharedPreferencesUtil;
 import com.glodon.bim.business.login.view.PictureCodeActivity;
-import com.glodon.bim.business.main.bean.ProjectListItem;
 import com.glodon.bim.business.setting.contract.SettingContract;
 import com.glodon.bim.business.setting.presenter.SettingPresenter;
 import com.glodon.bim.common.config.CommonConfig;
@@ -34,7 +32,7 @@ public class SettingActivity extends BaseActivity implements SettingContract.Vie
     private View mStatusView;
     private SettingContract.Presenter mPresenter;
     private RelativeLayout mBackView;
-    private RelativeLayout mChangePassword,mVersionInfo,mFeedBack,mContactUs,mAboutUs,mOffline;
+    private RelativeLayout mChangePassword,mVersionInfo,mFeedBack,mContactUs,mAboutUs,mChangeProject,mOffline;
     private TextView mVersionInfoText,mPhoneNumber;
     private Button mSignOutBtn;
 
@@ -60,6 +58,7 @@ public class SettingActivity extends BaseActivity implements SettingContract.Vie
         mFeedBack = (RelativeLayout) findViewById(R.id.setting_feedback);
         mContactUs = (RelativeLayout) findViewById(R.id.setting_contact_us);
         mAboutUs = (RelativeLayout) findViewById(R.id.setting_about_us);
+        mChangeProject = (RelativeLayout) findViewById(R.id.setting_change_project);
         mOffline = (RelativeLayout) findViewById(R.id.setting_offline);
         mVersionInfoText = (TextView) findViewById(R.id.setting_version_info_text);
         mPhoneNumber = (TextView) findViewById(R.id.setting_contact_us_text);
@@ -74,6 +73,7 @@ public class SettingActivity extends BaseActivity implements SettingContract.Vie
         ThrottleClickEvents.throttleClick(mFeedBack,this);
         ThrottleClickEvents.throttleClick(mContactUs,this);
         ThrottleClickEvents.throttleClick(mAboutUs,this);
+        ThrottleClickEvents.throttleClick(mChangeProject,this);
         ThrottleClickEvents.throttleClick(mOffline,this);
         mSignOutBtn.setOnClickListener(this);
     }
@@ -109,6 +109,9 @@ public class SettingActivity extends BaseActivity implements SettingContract.Vie
                 break;
             case R.id.setting_about_us:
                 showToast();
+                break;
+            case R.id.setting_change_project:
+                mPresenter.toTenantList();
                 break;
             case R.id.setting_offline:
                 showToast();
@@ -150,4 +153,19 @@ public class SettingActivity extends BaseActivity implements SettingContract.Vie
         return mActivity;
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(mPresenter!=null){
+            mPresenter.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(mPresenter!=null){
+            mPresenter.onDestroy();
+        }
+    }
 }

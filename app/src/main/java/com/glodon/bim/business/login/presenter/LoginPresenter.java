@@ -1,5 +1,6 @@
 package com.glodon.bim.business.login.presenter;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.text.TextUtils;
 
@@ -10,7 +11,9 @@ import com.glodon.bim.business.login.listener.OnLoginListener;
 import com.glodon.bim.business.login.model.LoginModel;
 import com.glodon.bim.business.login.view.PictureCodeActivity;
 import com.glodon.bim.business.main.view.ChooseTenantActivity;
+import com.glodon.bim.business.main.view.MainActivity;
 import com.glodon.bim.common.config.CommonConfig;
+import com.glodon.bim.common.config.RequestCodeConfig;
 import com.glodon.bim.common.login.User;
 import com.glodon.bim.customview.ToastManager;
 
@@ -84,15 +87,20 @@ public class LoginPresenter implements LoginContract.Presenter {
                                 @Override
                                 public void onNext(User user) {
 //                                    LogUtil.d(user.toString());
+                                    SharedPreferencesUtil.setUserInfo(user);
                                     SharedPreferencesUtil.setUserName(user.accountInfo.name);
                                     if (mView != null) {
                                         mView.dismissLoadingDialog();
                                     }
-
-                                    Intent intent = new Intent(mView.getActivity(), ChooseTenantActivity.class);
-                                    intent.putExtra("user", user);
-                                    mView.getActivity().startActivity(intent);
-//                                mView.getActivity().finish();
+                                    if(SharedPreferencesUtil.getProjectInfo()!=null){
+                                        //如果之前选择过项目  直接进入主页
+                                        Intent intent = new Intent(mView.getActivity(), MainActivity.class);
+                                        mView.getActivity().startActivity(intent);
+                                        mView.getActivity().finish();
+                                    }else {
+                                        Intent intent = new Intent(mView.getActivity(), ChooseTenantActivity.class);
+                                        mView.getActivity().startActivityForResult(intent, RequestCodeConfig.REQUEST_CODE_CLOSE_LOGIN);
+                                    }
                                 }
                             }));
                 }
@@ -127,7 +135,14 @@ public class LoginPresenter implements LoginContract.Presenter {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
+        switch (requestCode)
+        {
+            case RequestCodeConfig.REQUEST_CODE_CLOSE_LOGIN:
+                if(mView!=null && resultCode == Activity.RESULT_OK){
+                    mView.getActivity().finish();
+                }
+                break;
+        }
     }
 
     @Override

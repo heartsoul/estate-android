@@ -2,7 +2,6 @@ package com.glodon.bim.business.qualityManage.contract;
 
 import com.glodon.bim.base.IBasePresenter;
 import com.glodon.bim.base.IBaseView;
-import com.glodon.bim.business.main.bean.ProjectListItem;
 import com.glodon.bim.business.qualityManage.bean.ClassifyNum;
 import com.glodon.bim.business.qualityManage.bean.ModuleListBeanItem;
 import com.glodon.bim.business.qualityManage.bean.QualityCheckListBean;
@@ -11,9 +10,6 @@ import com.glodon.bim.business.qualityManage.listener.OnOperateSheetListener;
 
 import java.util.List;
 
-import retrofit2.http.Header;
-import retrofit2.http.Path;
-import retrofit2.http.Query;
 import rx.Observable;
 
 /**
@@ -29,7 +25,7 @@ public interface QualityCheckListContract {
         /**
          * 初始化传参
          */
-        void initData(ProjectListItem mProjectInfo);
+        void initData();
 
         /**
          * 获取监听接口

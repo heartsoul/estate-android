@@ -18,18 +18,18 @@ import com.glodon.bim.business.main.bean.ProjectListItem;
  */
 
 public class QualityCheckListFragment extends BaseFragment{
-    private ProjectListItem mProjectInfo;
+//    private ProjectListItem mProjectInfo;
     private QualityCheckListView mQualityCheckListView;
-    public void setProjectInfo(ProjectListItem info) {
-        this.mProjectInfo = info;
-    }
+//    public void setProjectInfo(ProjectListItem info) {
+//        this.mProjectInfo = info;
+//    }
 
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflate(R.layout.quality_check_list_fragment);
-        mQualityCheckListView = new QualityCheckListView(getActivity(),view,mProjectInfo);
+        mQualityCheckListView = new QualityCheckListView(getActivity(),view);
         mQualityCheckListView.initData();
         return view;
     }

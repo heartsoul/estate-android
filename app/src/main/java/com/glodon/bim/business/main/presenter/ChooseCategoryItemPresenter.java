@@ -7,10 +7,8 @@ import android.view.View;
 import com.glodon.bim.R;
 import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.basic.utils.CameraUtil;
-import com.glodon.bim.basic.utils.SharedPreferencesUtil;
 import com.glodon.bim.business.authority.AuthorityManager;
 import com.glodon.bim.business.main.bean.ChooseCategoryItem;
-import com.glodon.bim.business.main.bean.ProjectListItem;
 import com.glodon.bim.business.main.contract.ChooseCategoryItemContract;
 import com.glodon.bim.business.qualityManage.view.CreateCheckListActivity;
 import com.glodon.bim.business.qualityManage.view.PhotoEditActivity;
@@ -33,7 +31,7 @@ public class ChooseCategoryItemPresenter implements ChooseCategoryItemContract.P
 
     private ChooseCategoryItemContract.View mView;
     private String mPhotoPath;
-    private ProjectListItem mProjectInfo;
+//    private ProjectListItem mProjectInfo;
     private List<ChooseCategoryItem> mDataList;
 
     public ChooseCategoryItemPresenter(ChooseCategoryItemContract.View mView) {
@@ -95,8 +93,8 @@ public class ChooseCategoryItemPresenter implements ChooseCategoryItemContract.P
 
     @Override
     public void initData(Intent intent) {
-        mProjectInfo = (ProjectListItem) intent.getSerializableExtra(CommonConfig.PROJECT_LIST_ITEM);
-        SharedPreferencesUtil.setProjectInfo(mProjectInfo);
+//        mProjectInfo = (ProjectListItem) intent.getSerializableExtra(CommonConfig.PROJECT_LIST_ITEM);
+//        SharedPreferencesUtil.setProjectInfo(mProjectInfo);
         assembleData();
         handleCreate();
     }
@@ -142,7 +140,7 @@ public class ChooseCategoryItemPresenter implements ChooseCategoryItemContract.P
     public void toQualityChickList(int type) {
         LogUtil.e("type="+type);
         Intent intent = new Intent(mView.getActivity(), QualityMangeMainActivity.class);
-        intent.putExtra(CommonConfig.PROJECT_LIST_ITEM,mProjectInfo);
+//        intent.putExtra(CommonConfig.PROJECT_LIST_ITEM,mProjectInfo);
         intent.putExtra(CommonConfig.MAIN_FROM_TYPE,type);
         mView.getActivity().startActivityForResult(intent,RequestCodeConfig.REQUEST_CODE_CHANGE_PROJECT);
     }
@@ -150,7 +148,7 @@ public class ChooseCategoryItemPresenter implements ChooseCategoryItemContract.P
     @Override
     public void toSetting() {
         Intent intent = new Intent(mView.getActivity(), SettingActivity.class);
-        intent.putExtra(CommonConfig.PROJECT_LIST_ITEM,mProjectInfo);
+//        intent.putExtra(CommonConfig.PROJECT_LIST_ITEM,mProjectInfo);
         mView.getActivity().startActivity(intent);
     }
 
@@ -196,7 +194,7 @@ public class ChooseCategoryItemPresenter implements ChooseCategoryItemContract.P
     @Override
     public void onDestroy() {
         mView = null;
-        mProjectInfo = null;
+//        mProjectInfo = null;
         mPhotoPath = null;
     }
 }

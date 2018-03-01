@@ -68,9 +68,9 @@ public class QualityMangeMainPresenter implements QualityMangeMainContract.Prese
     }
 
     @Override
-    public void toSetting(ProjectListItem mProjectInfo) {
+    public void toSetting() {
         Intent intent = new Intent(mView.getActivity(), SettingActivity.class);
-        intent.putExtra(CommonConfig.PROJECT_LIST_ITEM,mProjectInfo);
+//        intent.putExtra(CommonConfig.PROJECT_LIST_ITEM,mProjectInfo);
         mView.getActivity().startActivity(intent);
     }
 

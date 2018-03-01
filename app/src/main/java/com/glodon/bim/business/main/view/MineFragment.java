@@ -1,5 +1,6 @@
 package com.glodon.bim.business.main.view;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -14,6 +15,7 @@ import com.glodon.bim.base.BaseFragment;
 import com.glodon.bim.basic.listener.ThrottleClickEvents;
 import com.glodon.bim.basic.utils.SharedPreferencesUtil;
 import com.glodon.bim.business.setting.view.SettingActivity;
+import com.glodon.bim.common.config.RequestCodeConfig;
 
 /**
  * 描述：质量下模型
@@ -60,6 +62,15 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode)
+        {
+            case RequestCodeConfig.REQUEST_CODE_CLOSE_MAIN:
+                if(resultCode == Activity.RESULT_OK)
+                {
+                    getActivity().finish();
+                }
+                break;
+        }
     }
 
 
@@ -76,7 +87,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
                 break;
             case R.id.mine_fragment_set:
                 Intent intent = new Intent(getActivity(), SettingActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, RequestCodeConfig.REQUEST_CODE_CLOSE_MAIN);
                 break;
         }
     }

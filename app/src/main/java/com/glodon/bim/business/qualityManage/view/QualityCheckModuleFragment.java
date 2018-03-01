@@ -34,7 +34,7 @@ import java.util.List;
 public class QualityCheckModuleFragment extends BaseFragment implements QulityCheckModuleContract.View{
     private QulityCheckModuleContract.Presenter mPresenter;
     //项目信息
-    private ProjectListItem mProjectInfo;
+//    private ProjectListItem mProjectInfo;
 
     //分类与列表的父
     private LinearLayout mListParent;
@@ -88,7 +88,7 @@ public class QualityCheckModuleFragment extends BaseFragment implements QulityCh
         mCheckPointParent = view.findViewById(R.id.quality_check_module_checkpoint_parent);
         mCheckPointBase = view.findViewById(R.id.quality_check_module_checkpoint_base);
 
-        mQualityCheckListView = new QualityCheckListView(getActivity(),mListParent,mProjectInfo);
+        mQualityCheckListView = new QualityCheckListView(getActivity(),mListParent);
     }
 
     //返回键,奇幻质检项目和质检清单列表
@@ -229,10 +229,10 @@ public class QualityCheckModuleFragment extends BaseFragment implements QulityCh
         dismissLoadDialog();
     }
 
-    public void setProjectInfo(ProjectListItem info)
-    {
-        this.mProjectInfo = info;
-    }
+//    public void setProjectInfo(ProjectListItem info)
+//    {
+//        this.mProjectInfo = info;
+//    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

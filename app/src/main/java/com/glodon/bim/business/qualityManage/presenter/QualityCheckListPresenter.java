@@ -12,7 +12,6 @@ import com.glodon.bim.basic.utils.DateUtils;
 import com.glodon.bim.basic.utils.NetWorkUtils;
 import com.glodon.bim.basic.utils.SharedPreferencesUtil;
 import com.glodon.bim.business.authority.AuthorityManager;
-import com.glodon.bim.business.main.bean.ProjectListItem;
 import com.glodon.bim.business.qualityManage.bean.ClassifyNum;
 import com.glodon.bim.business.qualityManage.bean.CreateCheckListParams;
 import com.glodon.bim.business.qualityManage.bean.ModuleListBeanItem;
@@ -57,7 +56,7 @@ public class QualityCheckListPresenter implements QualityCheckListContract.Prese
     private QualityCheckListContract.View mView;
     private QualityCheckListContract.Model mModel;
     private CompositeSubscription mSubscription;
-    private ProjectListItem mProjectInfo;
+//    private ProjectListItem mProjectInfo;
     private List<QualityCheckListBeanItem> mDataList;
     private String mQcState = "";
     private int mCurrentPage = 0;
@@ -276,8 +275,8 @@ public class QualityCheckListPresenter implements QualityCheckListContract.Prese
     }
 
     @Override
-    public void initData(ProjectListItem projectInfo) {
-        mProjectInfo = projectInfo;
+    public void initData() {
+//        mProjectInfo = projectInfo;
         getDataList();
     }
 
@@ -297,8 +296,7 @@ public class QualityCheckListPresenter implements QualityCheckListContract.Prese
                 mView.showLoadingDialog();
             }
             if(mSelectModuleInfo!=null &&(mSelectModuleInfo.id>0 || !TextUtils.isEmpty(mSelectModuleInfo.name))){
-                if (mProjectInfo != null) {
-                    Subscription sub = mModel.getQualityCheckList(mProjectInfo.deptId, mQcState, mCurrentPage, mSize,mSelectModuleInfo.id,mSelectModuleInfo.name)
+                    Subscription sub = mModel.getQualityCheckList(SharedPreferencesUtil.getProjectId(), mQcState, mCurrentPage, mSize,mSelectModuleInfo.id,mSelectModuleInfo.name)
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(new Subscriber<QualityCheckListBean>() {
@@ -321,14 +319,8 @@ public class QualityCheckListPresenter implements QualityCheckListContract.Prese
                                 }
                             });
                     mSubscription.add(sub);
-                }else{
-                    if (mView != null) {
-                        mView.dismissLoadingDialog();
-                    }
-                }
             }else {
-                if (mProjectInfo != null) {
-                    Subscription sub = mModel.getQualityCheckList(mProjectInfo.deptId, mQcState, mCurrentPage, mSize)
+                    Subscription sub = mModel.getQualityCheckList(SharedPreferencesUtil.getProjectId(), mQcState, mCurrentPage, mSize)
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(new Subscriber<QualityCheckListBean>() {
@@ -351,11 +343,6 @@ public class QualityCheckListPresenter implements QualityCheckListContract.Prese
                                 }
                             });
                     mSubscription.add(sub);
-                }else{
-                    if (mView != null) {
-                        mView.dismissLoadingDialog();
-                    }
-                }
             }
         }else{
             ToastManager.showNetWorkToast();
@@ -458,7 +445,7 @@ public class QualityCheckListPresenter implements QualityCheckListContract.Prese
 
     private void updateStatusNum(){
         if(mSelectModuleInfo!=null &&(mSelectModuleInfo.id>0 || !TextUtils.isEmpty(mSelectModuleInfo.name))) {
-            Subscription sub = mModel.getStatusNum(mProjectInfo.deptId,mSelectModuleInfo.id,mSelectModuleInfo.name)
+            Subscription sub = mModel.getStatusNum(SharedPreferencesUtil.getProjectId(),mSelectModuleInfo.id,mSelectModuleInfo.name)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Subscriber<List<ClassifyNum>>() {
@@ -479,7 +466,7 @@ public class QualityCheckListPresenter implements QualityCheckListContract.Prese
                     });
             mSubscription.add(sub);
         }else{
-            Subscription sub = mModel.getStatusNum(mProjectInfo.deptId)
+            Subscription sub = mModel.getStatusNum(SharedPreferencesUtil.getProjectId())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Subscriber<List<ClassifyNum>>() {

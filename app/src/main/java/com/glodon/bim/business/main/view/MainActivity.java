@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.os.SystemClock;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.ImageView;
@@ -15,12 +18,13 @@ import com.glodon.bim.base.BaseFragment;
 import com.glodon.bim.business.main.adapter.MainAdapter;
 import com.glodon.bim.business.main.contract.MainContract;
 import com.glodon.bim.business.main.presenter.MainPresenter;
+import com.glodon.bim.customview.ToastManager;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 描述：选择租户界面
+ * 描述：主界面
  * 作者：zhourf on 2017/9/8
  * 邮箱：zhourf@glodon.com
  */
@@ -37,6 +41,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,M
     private ImageView mCreateTab;
 
     private List<BaseFragment> mFragmentList ;
+
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+        }
+    };
+
+    private long mStartTime = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -201,6 +214,26 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,M
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         mPresenter.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onBackPressed() {
+        back();
+    }
+
+    public void back(){
+        if (mStartTime == -1) {
+            mStartTime = SystemClock.currentThreadTimeMillis();
+            ToastManager.show("再按一次退出BIM协同！");
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mStartTime = -1;
+                }
+            }, 2000);
+        } else {
+            finish();
+        }
     }
 
     @Override

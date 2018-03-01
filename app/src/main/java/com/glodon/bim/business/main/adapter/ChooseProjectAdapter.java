@@ -1,7 +1,6 @@
 package com.glodon.bim.business.main.adapter;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,8 +12,6 @@ import android.widget.TextView;
 import com.glodon.bim.R;
 import com.glodon.bim.business.main.bean.ProjectListItem;
 import com.glodon.bim.business.main.listener.OnProjectClickListener;
-import com.glodon.bim.business.main.view.ChooseCategoryItemActivity;
-import com.glodon.bim.common.config.CommonConfig;
 
 import java.util.ArrayList;
 import java.util.List;

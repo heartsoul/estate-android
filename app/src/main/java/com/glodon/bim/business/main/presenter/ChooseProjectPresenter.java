@@ -1,5 +1,6 @@
 package com.glodon.bim.business.main.presenter;
 
+import android.app.Activity;
 import android.content.Intent;
 
 import com.glodon.bim.basic.log.LogUtil;
@@ -12,7 +13,6 @@ import com.glodon.bim.business.main.contract.ChooseProjectContract;
 import com.glodon.bim.business.main.listener.OnGetAuthorityListener;
 import com.glodon.bim.business.main.listener.OnProjectClickListener;
 import com.glodon.bim.business.main.model.ChooseProjectModel;
-import com.glodon.bim.business.main.view.ChooseCategoryItemActivity;
 import com.glodon.bim.business.main.view.MainActivity;
 import com.glodon.bim.business.qualityManage.bean.ProjectVersionBean;
 import com.glodon.bim.common.config.CommonConfig;
@@ -42,6 +42,7 @@ public class ChooseProjectPresenter implements ChooseProjectContract.Presenter {
     private CompositeSubscription mSubscription;
     private int mCurrentPage = 0;
     private int mSize = 35;
+    private boolean mIsChangeProject = false;//是否是切换项目
     private OnProjectClickListener mListener = new OnProjectClickListener() {
         @Override
         public void clickTenant(ProjectListItem item) {
@@ -72,8 +73,10 @@ public class ChooseProjectPresenter implements ChooseProjectContract.Presenter {
             public void finish() {
                 Intent intent = new Intent(mView.getActivity(), MainActivity.class);
 //                Intent intent = new Intent(mView.getActivity(), ChooseCategoryItemActivity.class);
-                intent.putExtra(CommonConfig.PROJECT_LIST_ITEM, item);
+//                intent.putExtra(CommonConfig.PROJECT_LIST_ITEM, item);
                 mView.getActivity().startActivity(intent);
+                mView.getActivity().setResult(Activity.RESULT_OK);
+                mView.getActivity().finish();
             }
         });
 
@@ -108,6 +111,7 @@ public class ChooseProjectPresenter implements ChooseProjectContract.Presenter {
 
     @Override
     public void initData(Intent intent) {
+        mIsChangeProject = intent.getBooleanExtra(CommonConfig.CHANGE_PROJECT,false);
         if(NetWorkUtils.isNetworkAvailable(mView.getActivity())) {
             if(mView!=null){
                 mView.showLoadingDialog();
@@ -140,7 +144,7 @@ public class ChooseProjectPresenter implements ChooseProjectContract.Presenter {
                                     mCurrentPage++;
                                 }
                                 //如果只有一个项目 直接进入
-                                if (mDataList.size() == 1) {
+                                if (!mIsChangeProject && mDataList.size() == 1) {
                                     clickProject(mDataList.get(0));
                                 }
                             }

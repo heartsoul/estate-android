@@ -18,6 +18,12 @@ public interface SettingContract {
          * 点击忘记密码
          */
         void signOut();
+
+        /**
+         * 到租户选择页面
+         */
+        void toTenantList();
+
     }
 
     interface View extends IBaseView {

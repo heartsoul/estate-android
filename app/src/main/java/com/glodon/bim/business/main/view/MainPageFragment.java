@@ -16,7 +16,6 @@ import android.widget.TextView;
 import com.glodon.bim.R;
 import com.glodon.bim.base.BaseFragment;
 import com.glodon.bim.basic.listener.ThrottleClickEvents;
-import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.basic.utils.ResourceUtil;
 import com.glodon.bim.basic.utils.ScreenUtil;
 import com.glodon.bim.basic.utils.SharedPreferencesUtil;
@@ -237,7 +236,7 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
         int id = view.getId();
         switch (id) {
             case R.id.quality_main_page_header_back:
-                getActivity().finish();
+                ((MainActivity)getActivity()).back();
                 break;
             case R.id.quality_main_page_search:
 
