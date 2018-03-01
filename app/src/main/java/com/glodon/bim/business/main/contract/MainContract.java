@@ -18,6 +18,11 @@ public interface MainContract {
 
     interface Presenter extends IBasePresenter{
 
+        void openPhoto();
+
+        void openAlbum();
+
+        void toCreate();
     }
 
     interface Model{

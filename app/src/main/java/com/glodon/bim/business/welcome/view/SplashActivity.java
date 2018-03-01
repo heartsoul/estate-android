@@ -1,5 +1,6 @@
 package com.glodon.bim.business.welcome.view;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Window;
@@ -7,9 +8,11 @@ import android.view.Window;
 import com.glodon.bim.R;
 import com.glodon.bim.base.BaseActivity;
 import com.glodon.bim.basic.utils.SharedPreferencesUtil;
+import com.glodon.bim.business.authority.AuthorityManager;
 import com.glodon.bim.business.login.listener.OnLoginListener;
 import com.glodon.bim.business.login.util.LoginManager;
 import com.glodon.bim.business.login.view.LoginActivity;
+import com.glodon.bim.business.main.listener.OnGetAuthorityListener;
 import com.glodon.bim.business.main.view.MainActivity;
 
 import okhttp3.ResponseBody;
@@ -52,6 +55,7 @@ public class SplashActivity extends BaseActivity {
                     Intent intent = new Intent(SplashActivity.this, MainActivity.class);
                     startActivity(intent);
                     finish();
+
                 }
 
                 @Override

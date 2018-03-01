@@ -9,7 +9,8 @@
         android:id="@+id/main_activity_status"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/transparent"/>
+        android:background="@color/transparent"
+        />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -153,6 +154,22 @@
             </LinearLayout>
         </LinearLayout>
 
+        <RelativeLayout
+            android:id="@+id/main_activity_create_bg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/c_b3000000"
+            android:visibility="gone"
+            >
+            <LinearLayout
+                android:id="@+id/main_activity_create_bg_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_centerHorizontal="true">
+
+            </LinearLayout>
+        </RelativeLayout>
         <ImageView
             android:id="@+id/main_activity_create"
             android:layout_width="@dimen/dimen_60"

@@ -64,6 +64,8 @@
     <color name="c_a3cccccc">#A3CCCCCC</color>
     <!--不透明度67  000000-->
     <color name="c_ab000000">#ab000000</color>
+    <!--不透明度70  000000-->
+    <color name="c_b3000000">#b3000000</color>
     <!--不透明度50  纯黑-->
     <color name="c_80000000">#80000000</color>
     <color name="c_80d8d8d8">#80d8d8d8</color>
