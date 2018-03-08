@@ -81,10 +81,10 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
             @Override
             public void onPageSelected(int position) {
                 clickCatalog(position);
-                if(position == 0){
+                if (position == 0) {
                     showQualityAnim();
                 }
-                if(position == 1){
+                if (position == 1) {
                     showEquipmentAnim();
                 }
             }
@@ -102,11 +102,11 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
         initCatalog();
         if (mCatalogMap.size() > 1) {
             clickCatalog(0);
-        }else if (mCatalogMap.size() == 1) {
+        } else if (mCatalogMap.size() == 1) {
             clickCatalog(mIndex);
         }
 
-        mMainPagerAdapter = new MainPagerAdapter(getChildFragmentManager(),mFragmentList);
+        mMainPagerAdapter = new MainPagerAdapter(getChildFragmentManager(), mFragmentList);
         mViewPager.setAdapter(mMainPagerAdapter);
     }
 
@@ -149,36 +149,36 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
         }
     }
 
-    private void initEquipmentAnim(){
-        int equipX = -ScreenUtil.widthPixels/2-mEquipmentIcon.getWidth()/2;
-        ObjectAnimator.ofFloat(mEquipmentIcon,"translationX",equipX)
+    private void initEquipmentAnim() {
+        int equipX = -ScreenUtil.widthPixels / 2 - mEquipmentIcon.getWidth() / 2;
+        ObjectAnimator.ofFloat(mEquipmentIcon, "translationX", equipX)
                 .setDuration(600)
                 .start();
     }
 
-    private void showQualityAnim(){
+    private void showQualityAnim() {
         mEquipmentIcon.setVisibility(View.VISIBLE);
         mQualityIcon.setVisibility(View.VISIBLE);
         int qualityX = 0;
-        ObjectAnimator.ofFloat(mQualityIcon,"translationX",qualityX)
+        ObjectAnimator.ofFloat(mQualityIcon, "translationX", qualityX)
                 .setDuration(500)
                 .start();
-        int equipX = -ScreenUtil.widthPixels/2-mEquipmentIcon.getWidth()/2;
-        ObjectAnimator.ofFloat(mEquipmentIcon,"translationX",equipX)
+        int equipX = -ScreenUtil.widthPixels / 2 - mEquipmentIcon.getWidth() / 2;
+        ObjectAnimator.ofFloat(mEquipmentIcon, "translationX", equipX)
                 .setDuration(600)
                 .start();
     }
 
-    private void showEquipmentAnim(){
+    private void showEquipmentAnim() {
         mEquipmentIcon.setVisibility(View.VISIBLE);
         mQualityIcon.setVisibility(View.VISIBLE);
-        int qualityX = -ScreenUtil.widthPixels/2-mQualityIcon.getWidth()/2;
-        ObjectAnimator.ofFloat(mQualityIcon,"translationX",qualityX)
+        int qualityX = -ScreenUtil.widthPixels / 2 - mQualityIcon.getWidth() / 2;
+        ObjectAnimator.ofFloat(mQualityIcon, "translationX", qualityX)
                 .setDuration(600)
                 .start();
 
         int equipX = 0;
-        ObjectAnimator.ofFloat(mEquipmentIcon,"translationX",equipX)
+        ObjectAnimator.ofFloat(mEquipmentIcon, "translationX", equipX)
                 .setDuration(500)
                 .start();
 
@@ -195,7 +195,7 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
         qualityView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(mCurrentKey!=0){
+                if (mCurrentKey != 0) {
                     showQualityAnim();
                 }
                 clickCatalog(0);
@@ -218,7 +218,7 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
         equipmentView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(mCurrentKey!=1){
+                if (mCurrentKey != 1) {
                     showEquipmentAnim();
                 }
                 clickCatalog(1);
@@ -236,12 +236,21 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
         int id = view.getId();
         switch (id) {
             case R.id.quality_main_page_header_back:
-                ((MainActivity)getActivity()).back();
+                ((MainActivity) getActivity()).back();
                 break;
             case R.id.quality_main_page_search:
-
+                //跳转混合搜索页面
+                toSearchPage();
                 break;
         }
+    }
+
+    /**
+     * 跳转到搜索页面
+     */
+    private void toSearchPage() {
+        Intent intent = new Intent(getActivity(), MainPageSearchActivity.class);
+        startActivity(intent);
     }
 
     @Override

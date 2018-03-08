@@ -116,6 +116,11 @@
     <string name="str_quality_create_sign">!</string>
     <!--搜索-->
     <string name="str_search_empty_hint">抱歉，未找到您要的内容</string>
+    <string name="str_search_type_quality_list">质检清单</string>
+    <string name="str_search_type_equipment_list">材设清单</string>
+    <string name="str_search_more_quality">查看更多质检清单</string>
+    <string name="str_search_more_equipment">查看更多材设清单</string>
+
     <!--设置-->
     <string name="str_set_feedback_title">意见反馈</string>
     <string name="str_set_feedback_name">姓名：</string>

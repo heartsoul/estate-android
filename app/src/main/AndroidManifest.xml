@@ -46,24 +46,19 @@
         <!-- 主界面 -->
         <activity
             android:name=".business.qualityManage.view.QualityMangeMainActivity"
-            android:screenOrientation="portrait">
-        </activity>
-        <activity android:name="com.glodon.bim.business.main.view.MainActivity"
-            android:screenOrientation="portrait">
-
-        </activity>
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".business.main.view.MainActivity"
+            android:screenOrientation="portrait" />
         <!-- 登录界面 -->
         <activity
             android:name=".business.login.view.LoginActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan">
-
-        </activity>
+            android:windowSoftInputMode="adjustPan" />
         <!-- 启动界面 -->
         <activity
             android:name=".business.welcome.view.SplashActivity"
-            android:screenOrientation="portrait"
-             >
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -84,8 +79,6 @@
         <meta-data
             android:name="com.glodon.bim.basic.image.GlideConfig"
             android:value="GlideModule" />
-
-
 
         <!-- 启动页后的左右滑动viewpager界面 -->
         <activity
@@ -115,7 +108,7 @@
         <!-- 项目功能 -->
         <activity
             android:name=".business.main.view.ChooseCategoryItemActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <!-- 图纸 -->
         <activity
             android:name=".business.qualityManage.view.BluePrintActivity"
@@ -147,11 +140,13 @@
             android:name=".business.qualityManage.view.CreateCheckListActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan">
-            <!--<intent-filter>-->
-            <!--<action android:fileName="android.intent.action.MAIN" />-->
 
-            <!--<category android:fileName="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
+            <!-- <intent-filter> -->
+            <!-- <action android:fileName="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:fileName="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
 
         </activity>
         <!-- 选择质检项目 -->
@@ -160,7 +155,7 @@
             android:screenOrientation="portrait" />
         <!-- 质检标准 -->
         <activity
-            android:name="com.glodon.bim.business.qualityManage.view.ModuleStandardActivity"
+            android:name=".business.qualityManage.view.ModuleStandardActivity"
             android:screenOrientation="portrait" />
         <!-- 设置 -->
         <activity
@@ -168,58 +163,68 @@
             android:screenOrientation="portrait" />
         <!-- 意见反馈 -->
         <activity
-            android:name="com.glodon.bim.business.setting.view.FeedBackActivity"
+            android:name=".business.setting.view.FeedBackActivity"
             android:screenOrientation="portrait" />
-        <!--相册-->
+        <!-- 相册 -->
         <activity
             android:name=".customview.album.AlbumEditActivity"
             android:screenOrientation="portrait">
-            <!--<intent-filter>-->
-            <!--<action android:fileName="android.intent.action.MAIN" />-->
+
+            <!-- <intent-filter> -->
+            <!-- <action android:fileName="android.intent.action.MAIN" /> -->
 
 
-            <!--<category android:fileName="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
+            <!-- <category android:fileName="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
-        <!--图片预览-->
+        <!-- 图片预览 -->
         <activity
-            android:name="com.glodon.bim.customview.photopreview.PhotoPreviewActivity"
+            android:name=".customview.photopreview.PhotoPreviewActivity"
             android:screenOrientation="portrait" />
-        <!--检查单详情-->
+        <!-- 检查单详情 -->
         <activity
-            android:name="com.glodon.bim.business.qualityManage.view.QualityCheckListDetailActivity"
+            android:name=".business.qualityManage.view.QualityCheckListDetailActivity"
             android:screenOrientation="portrait" />
-        <!--创建复查单-->
+        <!-- 创建复查单 -->
         <activity
-            android:name="com.glodon.bim.business.qualityManage.view.CreateReviewActivity"
+            android:name=".business.qualityManage.view.CreateReviewActivity"
             android:screenOrientation="portrait" />
-        <!--关联图纸-具体展示图纸-->
+        <!-- 关联图纸-具体展示图纸 -->
         <activity
-            android:name="com.glodon.bim.business.qualityManage.view.RelevantBluePrintActivity"
-            android:screenOrientation="portrait">
-
-        </activity>
-        <!--关联模型-具体展示模型-->
+            android:name=".business.qualityManage.view.RelevantBluePrintActivity"
+            android:screenOrientation="portrait" />
+        <!-- 关联模型-具体展示模型 -->
         <activity
-            android:name="com.glodon.bim.business.qualityManage.view.RelevantModelActivity"
+            android:name=".business.qualityManage.view.RelevantModelActivity"
+            android:hardwareAccelerated="true"
+            android:screenOrientation="portrait" />
+        <!-- 搜索模型或图纸 -->
+        <activity
+            android:name=".business.qualityManage.view.BluePrintModelSearchActivity"
+            android:screenOrientation="portrait" />
+        <!-- 创建材设进场记录-必填项页面 -->
+        <activity
+            android:name=".business.equipment.view.CreateEquipmentMandatoryActivity"
+            android:screenOrientation="portrait" />
+        <!-- 创建材设进场记录-非必填项页面 -->
+        <activity
+            android:name=".business.equipment.view.CreateEquipmentNotMandatoryActivity"
+            android:screenOrientation="portrait" />
+        <!-- 创建材设进场记录-拍照页面 -->
+        <activity
+            android:name=".business.equipment.view.CreateEquipmentPictureActivity"
+            android:screenOrientation="portrait" />
+        <!-- 创建材设进场记录 - 提交页面 -->
+        <activity
+            android:name=".business.equipment.view.CreateEquipmentActivity"
+            android:screenOrientation="portrait" />
+        <!-- 主页面搜索，质检清单、材设混合搜索 -->
+        <activity
+            android:name=".business.main.view.MainPageSearchActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".business.main.view.QualityEquipmentSearchActivity"
             android:screenOrientation="portrait"
-            android:hardwareAccelerated="true"/>
-        <!--搜索模型或图纸-->
-        <activity android:name="com.glodon.bim.business.qualityManage.view.BluePrintModelSearchActivity"
-            android:screenOrientation="portrait"/>
-        <!--创建材设进场记录-必填项页面-->
-        <activity android:name="com.glodon.bim.business.equipment.view.CreateEquipmentMandatoryActivity"
-            android:screenOrientation="portrait"/>
-        <!--创建材设进场记录-非必填项页面-->
-        <activity android:name="com.glodon.bim.business.equipment.view.CreateEquipmentNotMandatoryActivity"
-            android:screenOrientation="portrait"/>
-        <!--创建材设进场记录-拍照页面-->
-        <activity android:name="com.glodon.bim.business.equipment.view.CreateEquipmentPictureActivity"
-            android:screenOrientation="portrait"/>
-        <!--创建材设进场记录 - 提交页面-->
-        <activity android:name="com.glodon.bim.business.equipment.view.CreateEquipmentActivity"
-            android:screenOrientation="portrait"/>
-
+            />
     </application>
 
 </manifest>

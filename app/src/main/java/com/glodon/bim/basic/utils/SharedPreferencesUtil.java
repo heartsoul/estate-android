@@ -52,6 +52,7 @@ public class SharedPreferencesUtil {
     //搜索
     private static final String SEARCH_KEY_BLUEPRINT = "SEARCH_KEY_BLUEPRINT";//图纸搜索历史
     private static final String SEARCH_KEY_MODEL = "SEARCH_KEY_MODEL";//模型搜索历史
+    private static final String SEARCH_KEY_QUALITY_EQUIPMENT = "SEARCH_KEY_QUALITY_EQUIPMENT";//质检清单、材设搜索历史
 
     /**
      * 保存字符串
@@ -385,6 +386,14 @@ public class SharedPreferencesUtil {
     }
 
     /**
+     * 保存搜索质检清单、材设的记录
+     * @param key
+     */
+    public static void saveQualityEquipmentSearchKey(String key) {
+        saveSearchKey(SEARCH_KEY_QUALITY_EQUIPMENT,key);
+    }
+
+    /**
      * 获取模型搜索历史
      */
     public static List<String> getModelSearchKey(){
@@ -397,6 +406,15 @@ public class SharedPreferencesUtil {
     public static List<String> getBluePrintSearchKey(){
         return getSearchKey(SEARCH_KEY_BLUEPRINT);
     }
+
+    /**
+     * 获取质检清单、材设清单搜索历史
+     * @return 搜索历史列表
+     */
+    public static List<String> getQualityEquipmentSearchKey(){
+        return getSearchKey(SEARCH_KEY_QUALITY_EQUIPMENT);
+    }
+
 
     /**
      * 保存搜索历史

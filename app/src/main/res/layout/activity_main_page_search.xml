@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <View
+        android:id="@+id/main_page_search_statusview"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_20"
+        android:background="@color/c_00baf3" />
+
+    <!--search bar-->
+    <LinearLayout
+        android:id="@+id/main_page_search_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_44"
+        android:background="@color/c_00baf3"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="@dimen/dimen_0"
+            android:layout_height="@dimen/dimen_28"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/dimen_11"
+            android:layout_weight="1"
+            android:background="@drawable/corner_radius_33_white_bg"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="@dimen/dimen_20"
+                android:layout_height="@dimen/dimen_20"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/dimen_07"
+                android:background="@drawable/icon_search_gray" />
+
+            <EditText
+                android:id="@+id/main_page_search_input"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_28"
+                android:layout_marginLeft="@dimen/dimen_05"
+                android:layout_marginRight="@dimen/dimen_15"
+                android:background="@color/white"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:hint="@string/str_search"
+                android:imeOptions="actionSearch"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textColorHint="@color/c_5b5b5b"
+                android:textCursorDrawable="@drawable/edit_cursor_color"
+                android:textSize="@dimen/dimen_14" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/main_page_search_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/dimen_12"
+            android:layout_marginRight="@dimen/dimen_13"
+            android:text="@string/str_cancel"
+            android:textColor="@color/white"
+            android:textSize="@dimen/dimen_14" />
+    </LinearLayout>
+
+    <!--搜索历史-->
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/main_page_search_history"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+
+    <ScrollView
+        android:id="@+id/main_page_search_sv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/dimen_50">
+            <!--质检清单-->
+            <TextView
+                android:id="@+id/main_page_search_quality_tag_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/str_search_type_quality_list"
+                android:visibility="gone" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/main_page_search_quality_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone" />
+            </RelativeLayout>
+            <!--查看更多质检清单-->
+            <LinearLayout
+                android:id="@+id/main_page_search_quality_more_ll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="@dimen/dimen_20"
+                    android:layout_height="@dimen/dimen_20"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/dimen_07"
+                    android:background="@drawable/icon_search_gray" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:text="@string/str_search_more_quality" />
+
+                <ImageView
+                    android:layout_width="@dimen/dimen_05"
+                    android:layout_height="@dimen/dimen_12"
+                    android:layout_alignParentRight="true"
+                    android:layout_gravity="center_vertical|right"
+                    android:layout_marginRight="@dimen/dimen_21"
+                    android:background="@drawable/icon_arrow_right_gray" />
+            </LinearLayout>
+
+            <!--材设清单-->
+            <TextView
+                android:id="@+id/main_page_search_equipment_tag_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/str_search_type_equipment_list" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/main_page_search_equipment_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone" />
+            </RelativeLayout>
+            <!--查看更多材设清单-->
+            <LinearLayout
+                android:id="@+id/main_page_search_equipment_more_ll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/dimen_20"
+                    android:layout_height="@dimen/dimen_20"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/dimen_07"
+                    android:background="@drawable/icon_search_gray" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:text="@string/str_search_more_equipment" />
+
+                <ImageView
+                    android:layout_width="@dimen/dimen_05"
+                    android:layout_height="@dimen/dimen_12"
+                    android:layout_alignParentRight="true"
+                    android:layout_gravity="center_vertical|right"
+                    android:layout_marginRight="@dimen/dimen_21"
+                    android:background="@drawable/icon_arrow_right_gray" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+
+</LinearLayout>
