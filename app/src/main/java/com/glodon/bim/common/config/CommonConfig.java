@@ -29,6 +29,7 @@ public class CommonConfig {
     public static final String CREATE_TYPE_CHECK = "0";//新建检查单
     public static final String CREATE_TYPE_REPAIR = "1";//新建整改单
     public static final String CREATE_TYPE_REVIEW = "2";//新建复查单
+    public static final String SEARCH_KEY = "searchKey";//质检清单、材设清单搜索内容
 
     /**
      * 质检清单

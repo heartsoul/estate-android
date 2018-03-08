@@ -50,7 +50,6 @@ public class MainPageSearchActivity extends BaseActivity implements QualityEquip
     private LinearLayout mQualityMoreLl;
     private LinearLayout mEquipmentMoreLl;
 
-
     private QualityEquipmentSearchHistoryAdapter mHistoryAdapter;//历史
     private QualityCheckListAdapter mQualityResultAdapter;//质检清单结果
     private EquipmentListAdapter mEquipmentResultAdapter;//材设清单结果

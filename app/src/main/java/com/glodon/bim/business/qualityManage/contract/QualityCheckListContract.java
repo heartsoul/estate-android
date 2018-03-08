@@ -67,6 +67,8 @@ public interface QualityCheckListContract {
          * 选中的质检项目
          */
         void setModuleSelectInfo(ModuleListBeanItem item);
+
+        void search(String searchKey);
     }
 
     interface View extends IBaseView {

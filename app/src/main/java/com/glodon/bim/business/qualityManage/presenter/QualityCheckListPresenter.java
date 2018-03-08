@@ -576,4 +576,10 @@ public class QualityCheckListPresenter implements QualityCheckListContract.Prese
 
     }
 
+    @Override
+    public void search(String searchKey) {
+        if (!TextUtils.isEmpty(searchKey)) {
+            getDataList();
+        }
+    }
 }

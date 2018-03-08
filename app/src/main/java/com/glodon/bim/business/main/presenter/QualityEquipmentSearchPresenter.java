@@ -19,7 +19,7 @@ import com.glodon.bim.business.equipment.model.EquipmentListModel;
 import com.glodon.bim.business.equipment.view.CreateEquipmentActivity;
 import com.glodon.bim.business.main.contract.QualityEquipmentSearchContract;
 import com.glodon.bim.business.main.model.QualityEquipmentSearchModel;
-import com.glodon.bim.business.main.view.QualityEquipmentSearchActivity;
+import com.glodon.bim.business.qualityManage.view.QualityCheckListSearchActivity;
 import com.glodon.bim.business.qualityManage.bean.CreateCheckListParams;
 import com.glodon.bim.business.qualityManage.bean.CreateCheckListParamsFile;
 import com.glodon.bim.business.qualityManage.bean.QualityCheckListBean;
@@ -510,13 +510,14 @@ public class QualityEquipmentSearchPresenter implements QualityEquipmentSearchCo
 
     @Override
     public void searchMoreQualityCheckList() {
-        Intent intent = new Intent(mView.getActivity(), QualityEquipmentSearchActivity.class);
+        Intent intent = new Intent(mView.getActivity(), QualityCheckListSearchActivity.class);
+        intent.putExtra(CommonConfig.SEARCH_KEY, searchKey);
         mView.getActivity().startActivity(intent);
     }
 
     @Override
     public void searchMoreEquipmentList() {
-        Intent intent = new Intent(mView.getActivity(), QualityEquipmentSearchActivity.class);
+        Intent intent = new Intent(mView.getActivity(), QualityCheckListSearchActivity.class);
         mView.getActivity().startActivity(intent);
     }
 
