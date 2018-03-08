@@ -17,6 +17,7 @@ import com.glodon.bim.business.equipment.listener.OnOperateEquipmentSheetListene
 import com.glodon.bim.business.equipment.model.CreateEquipmentModel;
 import com.glodon.bim.business.equipment.model.EquipmentListModel;
 import com.glodon.bim.business.equipment.view.CreateEquipmentActivity;
+import com.glodon.bim.business.equipment.view.EquipmentSearchActivity;
 import com.glodon.bim.business.main.contract.QualityEquipmentSearchContract;
 import com.glodon.bim.business.main.model.QualityEquipmentSearchModel;
 import com.glodon.bim.business.qualityManage.view.QualityCheckListSearchActivity;
@@ -517,7 +518,8 @@ public class QualityEquipmentSearchPresenter implements QualityEquipmentSearchCo
 
     @Override
     public void searchMoreEquipmentList() {
-        Intent intent = new Intent(mView.getActivity(), QualityCheckListSearchActivity.class);
+        Intent intent = new Intent(mView.getActivity(), EquipmentSearchActivity.class);
+        intent.putExtra(CommonConfig.SEARCH_KEY, searchKey);
         mView.getActivity().startActivity(intent);
     }
 

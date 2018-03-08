@@ -46,6 +46,8 @@ public interface EquipmentListContract {
         OnOperateEquipmentSheetListener getListener();
 
         void initData(ProjectListItem mProjectInfo);
+
+        void search(String searchKey);
     }
 
     interface Model {

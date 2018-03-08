@@ -222,9 +222,10 @@
         <activity
             android:name=".business.main.view.MainPageSearchActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".business.qualityManage.view.QualityCheckListSearchActivity"
-            android:screenOrientation="portrait"
-            />
+        <activity
+            android:name=".business.qualityManage.view.QualityCheckListSearchActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".business.equipment.view.EquipmentSearchActivity"></activity>
     </application>
 
 </manifest>

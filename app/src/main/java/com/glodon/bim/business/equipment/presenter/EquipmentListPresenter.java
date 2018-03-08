@@ -3,6 +3,7 @@ package com.glodon.bim.business.equipment.presenter;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.SystemClock;
+import android.text.TextUtils;
 
 import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.basic.utils.DateUtil;
@@ -186,6 +187,13 @@ public class EquipmentListPresenter implements EquipmentListContract.Presenter {
     @Override
     public void initData(ProjectListItem projectInfo) {
         getDataList();
+    }
+
+    @Override
+    public void search(String searchKey) {
+        if (!TextUtils.isEmpty(searchKey)) {
+            getDataList();
+        }
     }
 
 
