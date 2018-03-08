@@ -47,7 +47,7 @@ public class AppConfig {
     //预生产 47.95.204.243
 //    public static String BASE_UPLOAD_URL = "https://api.glodon.com/nss/";//图片上传
 //    public static String BASE_URL = "http://47.95.204.243/";
-//    public static final String BASE_URL_BLUEPRINT_TOKEN = BASE_URL + "app.html?param=";//图纸的url地址
+//    public static final String BASE_URL_BLUEPRINT_TOKEN = BASE_URL + "src/main/app.html";//图纸的url地址
 
     //生产 47.95.204.243
 //    public static String BASE_UPLOAD_URL =  "https://api.glodon.com/nss/";//图片上传
@@ -87,7 +87,7 @@ jfbim+pmdeploy
 
 
 生产：
-1，生成http://bimcop.glodon.com/app/文件名 二维码
+1，生成http://bimcop.glodon.com/app/文件名 二维码生产
 2，覆盖/usr/share/nginx/html/最新版本号/imgs/app_qr_code.png图片
      */
 }
