@@ -155,7 +155,12 @@ public class QualityCheckListSearchActivity extends BaseActivity implements View
         });
         mHistoryRecyclerView.setAdapter(mHistoryAdapter);
 
-        showSearchHistory();
+        if (TextUtils.isEmpty(searchKey)) {
+            showSearchHistory();
+        } else {
+            mInputView.setText(searchKey);
+            InputMethodutil.HideKeyboard(mInputView);
+        }
 
     }
 
