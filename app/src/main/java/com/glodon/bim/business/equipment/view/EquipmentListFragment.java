@@ -66,7 +66,7 @@ public class EquipmentListFragment extends BaseFragment{
 
     @Override
     public void clickSearch(){
-//        Intent intent = new Intent(getActivity(), EquipmentSearchActivity.class);
-//        startActivity(intent);
+        Intent intent = new Intent(getActivity(), EquipmentSearchActivity.class);
+        startActivity(intent);
     }
 }

@@ -54,7 +54,7 @@ public class QualityCheckListFragment extends BaseFragment{
 
     @Override
     public void clickSearch(){
-//        Intent intent = new Intent(getActivity(), QualityCheckListSearchActivity.class);
-//        startActivity(intent);
+        Intent intent = new Intent(getActivity(), QualityCheckListSearchActivity.class);
+        startActivity(intent);
     }
 }

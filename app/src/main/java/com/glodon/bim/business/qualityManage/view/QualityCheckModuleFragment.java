@@ -31,7 +31,7 @@ import java.util.List;
  * 邮箱：zhourf@glodon.com
  */
 
-public class QualityCheckModuleFragment extends BaseFragment implements QulityCheckModuleContract.View{
+public class QualityCheckModuleFragment extends BaseFragment implements QulityCheckModuleContract.View {
     private QulityCheckModuleContract.Presenter mPresenter;
     //项目信息
 //    private ProjectListItem mProjectInfo;
@@ -46,9 +46,10 @@ public class QualityCheckModuleFragment extends BaseFragment implements QulityCh
 
     private OnTitleChangerListener mTitleListener;
 
-    public void setTitleChangeListener(OnTitleChangerListener listner){
+    public void setTitleChangeListener(OnTitleChangerListener listner) {
         mTitleListener = listner;
     }
+
     private String mCurrentTitle = "质检项目";
     private ModuleListBeanItem mCurrentModuleInfo;
 
@@ -67,12 +68,11 @@ public class QualityCheckModuleFragment extends BaseFragment implements QulityCh
 
     }
 
-    public void changeTitle(){
-        if(mTitleListener!=null)
-        {
+    public void changeTitle() {
+        if (mTitleListener != null) {
             mTitleListener.onTitleChange(mCurrentTitle);
-            if(mCurrentModuleInfo!=null){
-                SharedPreferencesUtil.setSelectModuleInfo(mCurrentModuleInfo.id.longValue(),mCurrentModuleInfo.name);
+            if (mCurrentModuleInfo != null) {
+                SharedPreferencesUtil.setSelectModuleInfo(mCurrentModuleInfo.id.longValue(), mCurrentModuleInfo.name);
             }
         }
     }
@@ -88,14 +88,14 @@ public class QualityCheckModuleFragment extends BaseFragment implements QulityCh
         mCheckPointParent = view.findViewById(R.id.quality_check_module_checkpoint_parent);
         mCheckPointBase = view.findViewById(R.id.quality_check_module_checkpoint_base);
 
-        mQualityCheckListView = new QualityCheckListView(getActivity(),mListParent);
+        mQualityCheckListView = new QualityCheckListView(getActivity(), mListParent);
     }
 
     //返回键,奇幻质检项目和质检清单列表
-    public void back(){
-        if(mCheckPointParent.getVisibility() == View.VISIBLE){
+    public void back() {
+        if (mCheckPointParent.getVisibility() == View.VISIBLE) {
             getActivity().finish();
-        }else {
+        } else {
             mListParent.setVisibility(View.GONE);
             mCheckPointParent.setVisibility(View.VISIBLE);
         }
@@ -103,28 +103,27 @@ public class QualityCheckModuleFragment extends BaseFragment implements QulityCh
 
     @Override
     public void updateList(List<ModuleListBeanItem> mRootList) {
-        addList(mCheckPointBase,mRootList);
+        addList(mCheckPointBase, mRootList);
     }
 
-    private void addList(LinearLayout parent,List<ModuleListBeanItem> mRootList){
-        if(mRootList!=null && mRootList.size()>0){
-            for(ModuleListBeanItem item:mRootList){
+    private void addList(LinearLayout parent, List<ModuleListBeanItem> mRootList) {
+        if (mRootList != null && mRootList.size() > 0) {
+            for (ModuleListBeanItem item : mRootList) {
                 //0目录，1具体的项
-                switch (item.viewType)
-                {
+                switch (item.viewType) {
                     case 0:
-                        addCatalog(parent,item);
+                        addCatalog(parent, item);
                         break;
                     case 1:
-                        addObj(parent,item);
+                        addObj(parent, item);
                         break;
                 }
             }
         }
     }
 
-    private void addCatalog(LinearLayout parent, final ModuleListBeanItem item){
-        View view = LayoutInflater.from(getActivity()).inflate(R.layout.quality_modulelist_item_catalog,null);
+    private void addCatalog(LinearLayout parent, final ModuleListBeanItem item) {
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.quality_modulelist_item_catalog, null);
         //名称
         TextView mNameView = view.findViewById(R.id.quality_model_list_item_catalog_name);
         //箭头
@@ -137,15 +136,14 @@ public class QualityCheckModuleFragment extends BaseFragment implements QulityCh
             @Override
             public void onClick(View view) {
                 //点击整体item
-                if(mChildParent.getVisibility() == View.GONE)
-                {
-                    if(mChildParent.getChildCount()==0){
-                        addList(mChildParent,mPresenter.getChildList(item.id));
+                if (mChildParent.getVisibility() == View.GONE) {
+                    if (mChildParent.getChildCount() == 0) {
+                        addList(mChildParent, mPresenter.getChildList(item.id));
                     }
                     mChildParent.setVisibility(View.VISIBLE);
                     mArrowView.setBackgroundResource(R.drawable.icon_draw_arrow_up);
 
-                }else{
+                } else {
                     mChildParent.setVisibility(View.GONE);
                     mArrowView.setBackgroundResource(R.drawable.icon_drawer_arrow_down);
                 }
@@ -154,8 +152,8 @@ public class QualityCheckModuleFragment extends BaseFragment implements QulityCh
         parent.addView(view);
     }
 
-    private void addObj(LinearLayout parent,final ModuleListBeanItem item){
-        View view = LayoutInflater.from(getActivity()).inflate(R.layout.quality_modulelist_item_obj,null);
+    private void addObj(LinearLayout parent, final ModuleListBeanItem item) {
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.quality_modulelist_item_obj, null);
         //名称
         TextView mNameView = view.findViewById(R.id.quality_model_list_item_obj_name);
         //标准
@@ -167,7 +165,7 @@ public class QualityCheckModuleFragment extends BaseFragment implements QulityCh
         mStandardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                IntentManager.toModuleStandard(getActivity(),item.id,item.name);
+                IntentManager.toModuleStandard(getActivity(), item.id, item.name);
             }
         });
         mCreateView.setOnClickListener(new View.OnClickListener() {
@@ -175,7 +173,7 @@ public class QualityCheckModuleFragment extends BaseFragment implements QulityCh
             public void onClick(View view) {
                 //新建检查单
                 create();
-                SharedPreferencesUtil.setSelectModuleInfo(item.id.longValue(),item.name);
+                SharedPreferencesUtil.setSelectModuleInfo(item.id.longValue(), item.name);
             }
         });
         view.setOnClickListener(new View.OnClickListener() {
@@ -188,7 +186,7 @@ public class QualityCheckModuleFragment extends BaseFragment implements QulityCh
                 mCurrentTitle = item.name;
                 mCurrentModuleInfo = item;
                 changeTitle();
-                SharedPreferencesUtil.setSelectModuleInfo(item.id.longValue(),item.name);
+                SharedPreferencesUtil.setSelectModuleInfo(item.id.longValue(), item.name);
             }
         });
         parent.addView(view);
@@ -237,11 +235,10 @@ public class QualityCheckModuleFragment extends BaseFragment implements QulityCh
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(mPresenter!=null){
+        if (mPresenter != null) {
             mPresenter.onActivityResult(requestCode, resultCode, data);
         }
-        if(mQualityCheckListView!=null)
-        {
+        if (mQualityCheckListView != null) {
             mQualityCheckListView.onActivityResult(requestCode, resultCode, data);
         }
     }
@@ -249,15 +246,24 @@ public class QualityCheckModuleFragment extends BaseFragment implements QulityCh
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        SharedPreferencesUtil.setSelectModuleInfo(-1,"");
-        if(mQualityCheckListView!=null)
-        {
+        SharedPreferencesUtil.setSelectModuleInfo(-1, "");
+        if (mQualityCheckListView != null) {
             mQualityCheckListView.onDestroyView();
         }
     }
 
     @Override
-    public void clickSearch(){
-
+    public void clickSearch() {
+        Intent intent = new Intent(getActivity(), QualityCheckListSearchActivity.class);
+        String checkModuleType = null;
+        if (mListParent.getVisibility() == View.VISIBLE) {
+            //按构件搜索
+            checkModuleType = "";//mCurrentModuleInfo 可以拿到构件信息
+        } else {
+            //按质检项目搜索
+            checkModuleType = "";
+        }
+        intent.putExtra("CheckModuleType", checkModuleType);
+        startActivity(intent);
     }
 }
