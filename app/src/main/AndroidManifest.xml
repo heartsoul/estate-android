@@ -225,7 +225,8 @@
         <activity
             android:name=".business.qualityManage.view.QualityCheckListSearchActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".business.equipment.view.EquipmentSearchActivity"></activity>
+        <activity android:name=".business.equipment.view.EquipmentSearchActivity" />
+        <activity android:name=".business.qualityManage.view.QualityCheckModuleSearchActivity"></activity>
     </application>
 
 </manifest>
