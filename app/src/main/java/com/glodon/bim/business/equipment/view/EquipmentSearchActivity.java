@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -36,7 +38,7 @@ import java.util.List;
  * Created by cwj on 2018/3/8.
  * Description:材设清单搜索
  */
-public class EquipmentSearchActivity extends BaseActivity implements View.OnClickListener,EquipmentListContract.View{
+public class EquipmentSearchActivity extends BaseActivity implements View.OnClickListener, EquipmentListContract.View {
 
     private View mStatusView;
     private TextView mCancelView;
@@ -48,7 +50,7 @@ public class EquipmentSearchActivity extends BaseActivity implements View.OnClic
     private EquipmentListAdapter mAdapter;
     private EquipmentListContract.Presenter mPresenter;
 
-    private String searchKey;
+    private String searchKey;//每次搜索的内容
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +75,10 @@ public class EquipmentSearchActivity extends BaseActivity implements View.OnClic
         initPullRefreshView();
         initRecyclerView(mHistoryRecyclerView);
         initRecyclerView(mContentRecyclerView);
+
+        mInputView.clearFocus();
     }
+
     private void initPullRefreshView() {
         mPullRefreshView.setPullDownEnable(true);
         mPullRefreshView.setPullUpEnable(true);
@@ -93,6 +98,7 @@ public class EquipmentSearchActivity extends BaseActivity implements View.OnClic
 
         mContentRecyclerView = mPullRefreshView.getmRecyclerView();
     }
+
     private void initRecyclerView(RecyclerView recyclerView) {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setVerticalScrollBarEnabled(true);
@@ -102,6 +108,7 @@ public class EquipmentSearchActivity extends BaseActivity implements View.OnClic
 
     private void setListener() {
         mCancelView.setOnClickListener(this);
+
         mInputView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -112,6 +119,8 @@ public class EquipmentSearchActivity extends BaseActivity implements View.OnClic
                 }
             }
         });
+
+
         mInputView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -155,17 +164,15 @@ public class EquipmentSearchActivity extends BaseActivity implements View.OnClic
             }
         });
         mHistoryRecyclerView.setAdapter(mHistoryAdapter);
-
-        showSearchHistory();
+        if (TextUtils.isEmpty(searchKey)) {
+            showSearchHistory();
+        } else {
+            mInputView.setText(searchKey);
+            InputMethodutil.HideKeyboard(mInputView);
+        }
     }
 
     private void showSearchHistory() {
-        if (!TextUtils.isEmpty(searchKey)) {
-            mInputView.setText(searchKey);
-            mInputView.clearFocus();
-            InputMethodutil.HideKeyboard(mInputView);
-            return;
-        }
         mInputView.requestFocus();
         List<String> list = SharedPreferencesUtil.getQualityEquipmentSearchKey();
 
@@ -184,9 +191,11 @@ public class EquipmentSearchActivity extends BaseActivity implements View.OnClic
     private void saveKey(String key) {
         SharedPreferencesUtil.saveQualityEquipmentSearchKey(key);
     }
+
     private void search(String key) {
         InputMethodutil.HideKeyboard(mInputView);
         if (!TextUtils.isEmpty(key)) {
+            searchKey = key;
             mPresenter.search(key);
         }
     }
@@ -195,8 +204,22 @@ public class EquipmentSearchActivity extends BaseActivity implements View.OnClic
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.equipment_search_cancel:
-                finish();
+                cancelSearch();
                 break;
+        }
+    }
+
+    /**
+     * 点击取消按钮时：返回原始搜索或退出页面
+     */
+    private void cancelSearch() {
+        if (mHistoryRecyclerView.getVisibility() == View.VISIBLE && !TextUtils.isEmpty(searchKey)) {
+            hideHistory();
+            mInputView.setText(searchKey);
+            mInputView.clearFocus();
+            InputMethodutil.HideKeyboard(mInputView);
+        } else {
+            finish();
         }
     }
 
@@ -214,12 +237,15 @@ public class EquipmentSearchActivity extends BaseActivity implements View.OnClic
     public Activity getActivity() {
         return mActivity;
     }
+
     @Override
     public void updateData(List<EquipmentListBeanItem> mDataList) {
+        hideHistory();
         mAdapter.updateList(mDataList);
         mInputView.clearFocus();
         InputMethodutil.HideKeyboard(mInputView);
     }
+
     @Override
     public void updateClassifyCount(List<ClassifyNum> list) {
 

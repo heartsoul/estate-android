@@ -55,6 +55,7 @@ public class MainPageSearchActivity extends BaseActivity implements QualityEquip
     private EquipmentListAdapter mEquipmentResultAdapter;//材设清单结果
 
     private PhotoAlbumDialog mPhotoAlbumDialog;//拍照相册弹出框
+    private String searchKey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +86,8 @@ public class MainPageSearchActivity extends BaseActivity implements QualityEquip
         initRecyclerView(mQualityContentRecyclerView, false);
         initRecyclerView(mEquipmentContentRecyclerView, false);
         initRecyclerView(mHistoryRecyclerView, true);
+
+        mInputView.clearFocus();
 
     }
 
@@ -208,6 +211,8 @@ public class MainPageSearchActivity extends BaseActivity implements QualityEquip
         } else {
             setEquipmentViewVisibility(View.VISIBLE);
         }
+        mInputView.clearFocus();
+        InputMethodutil.HideKeyboard(mInputView);
     }
 
     /**
@@ -280,6 +285,7 @@ public class MainPageSearchActivity extends BaseActivity implements QualityEquip
     private void search(String key) {
         InputMethodutil.HideKeyboard(mInputView);
         if (!TextUtils.isEmpty(key)) {
+            searchKey = key;
             mPresenter.search(key);
         }
     }
@@ -288,7 +294,7 @@ public class MainPageSearchActivity extends BaseActivity implements QualityEquip
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.main_page_search_cancel:
-                finish();
+                cancelSearch();
                 break;
             case R.id.main_page_search_quality_more_ll:
                 if (mPresenter != null) {
@@ -302,7 +308,19 @@ public class MainPageSearchActivity extends BaseActivity implements QualityEquip
                 break;
         }
     }
-
+    /**
+     * 点击取消按钮时：返回原始搜索或退出页面
+     */
+    private void cancelSearch() {
+        if (mHistoryRecyclerView.getVisibility() == View.VISIBLE && !TextUtils.isEmpty(searchKey)) {
+            hideHistory();
+            mInputView.setText(searchKey);
+            mInputView.clearFocus();
+            InputMethodutil.HideKeyboard(mInputView);
+        } else {
+            finish();
+        }
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

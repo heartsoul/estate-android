@@ -68,6 +68,8 @@ public class QualityCheckListSearchActivity extends BaseActivity implements View
         initPullRefreshView();
         initRecyclerView(mHistoryRecyclerView);
         initRecyclerView(mContentRecyclerView);
+
+        mInputView.clearFocus();
     }
 
     private void initPullRefreshView() {
@@ -158,12 +160,6 @@ public class QualityCheckListSearchActivity extends BaseActivity implements View
     }
 
     private void showSearchHistory() {
-        if (!TextUtils.isEmpty(searchKey)) {
-            mInputView.setText(searchKey);
-            mInputView.clearFocus();
-            InputMethodutil.HideKeyboard(mInputView);
-            return;
-        }
         mInputView.requestFocus();
         List<String> list = SharedPreferencesUtil.getQualityEquipmentSearchKey();
 
@@ -186,6 +182,7 @@ public class QualityCheckListSearchActivity extends BaseActivity implements View
     private void search(String key) {
         InputMethodutil.HideKeyboard(mInputView);
         if (!TextUtils.isEmpty(key)) {
+            searchKey = key;
             mPresenter.search(key);
         }
     }
@@ -194,11 +191,23 @@ public class QualityCheckListSearchActivity extends BaseActivity implements View
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.quality_search_cancel:
-                finish();
+                cancelSearch();
                 break;
         }
     }
-
+    /**
+     * 点击取消按钮时：返回原始搜索或退出页面
+     */
+    private void cancelSearch() {
+        if (mHistoryRecyclerView.getVisibility() == View.VISIBLE && !TextUtils.isEmpty(searchKey)) {
+            hideHistory();
+            mInputView.setText(searchKey);
+            mInputView.clearFocus();
+            InputMethodutil.HideKeyboard(mInputView);
+        } else {
+            finish();
+        }
+    }
     @Override
     public void showLoadingDialog() {
         showLoadDialog(true);
