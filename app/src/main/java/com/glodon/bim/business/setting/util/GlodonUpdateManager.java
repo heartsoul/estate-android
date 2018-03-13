@@ -64,7 +64,7 @@ public class GlodonUpdateManager {
      * @param url     下载地址
      */
     public void download(final Context context, String url) {
-        mBuilder = new NotificationCompat.Builder(context);
+        mBuilder = new NotificationCompat.Builder(context,"11");
         mNotifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         fileName = "test.apk";
         call = GlodonDownloadManager.getInstance().download(url, DOWNLOAD_PATH, fileName, new DownloadResponseHandler() {
@@ -109,7 +109,6 @@ public class GlodonUpdateManager {
 
         mBuilder.setContentTitle("BIM协同").setSmallIcon(icon);
         mBuilder.setContentText(contentText)
-                .setChannel("11")
                 .setProgress(100, progress, false);
         // setContentInent如果不设置在4.0+上没有问题，在4.0以下会报异常
         PendingIntent pendingintent = PendingIntent.getActivity(context, 0,
