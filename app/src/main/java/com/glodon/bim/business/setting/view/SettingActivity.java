@@ -18,6 +18,7 @@ import com.glodon.bim.basic.utils.SharedPreferencesUtil;
 import com.glodon.bim.business.login.view.PictureCodeActivity;
 import com.glodon.bim.business.setting.contract.SettingContract;
 import com.glodon.bim.business.setting.presenter.SettingPresenter;
+import com.glodon.bim.business.setting.util.GlodonUpdateManager;
 import com.glodon.bim.common.config.CommonConfig;
 import com.glodon.bim.customview.ToastManager;
 
@@ -98,7 +99,7 @@ public class SettingActivity extends BaseActivity implements SettingContract.Vie
                 startActivity(intent);
                 break;
             case R.id.setting_version_info:
-
+                GlodonUpdateManager.getInstance().showUpdateDialog(getActivity());
                 break;
             case R.id.setting_feedback:
                 Intent feedbackIntent = new Intent(mActivity,FeedBackActivity.class);

@@ -221,8 +221,16 @@
     <string name="str_dialog_create_review_des_hint">您还未选择现场情况描述!</string>
     <string name="str_dialog_create_review_des_date_hint">您还未选择现场情况描述和整改期限!</string>
     <string name="str_dialog_create_review_date_hint">您还未选择整改期限!</string>
+    <string name="str_dialog_update">更新</string>
+    <string name="str_dialog_wait">稍后再说</string>
 
     <!--customview-->
     <string name="str_view_load_more_hint_down">下拉刷新数据...</string>
     <string name="str_view_load_more_hint">上拉加载更多...</string>
+
+    <!--下载-->
+    <string name="str_notification_download_progress">正在下载:%1$d%%</string>
+    <string name="str_notification_download_success">下载完成，点击安装</string>
+
+
 </resources>

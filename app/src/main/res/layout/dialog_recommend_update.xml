@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/transparent"
+    android:orientation="vertical"
+    android:paddingTop="20dp">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_10"
+        android:background="@drawable/corner_radius_6_white_bg"
+        android:paddingBottom="@dimen/dimen_10">
+
+        <TextView
+            android:id="@+id/update_title_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dimen_10"
+            android:layout_marginLeft="@dimen/dimen_20"
+            android:layout_marginRight="@dimen/dimen_20"
+            android:layout_marginTop="@dimen/dimen_10"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="系统最新版本为V2.0.1，是否更新"
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_18" />
+
+        <View
+            android:id="@+id/update_divider_view"
+            android:layout_width="1dp"
+            android:layout_height="1dp"
+            android:layout_centerHorizontal="true" />
+
+        <TextView
+            android:id="@+id/update_sure_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/update_title_tv"
+            android:layout_marginRight="@dimen/dimen_10"
+            android:layout_toLeftOf="@id/update_divider_view"
+            android:text="@string/str_dialog_update"
+            android:textColor="@color/c_00baf3"
+            android:textSize="@dimen/dimen_16" />
+
+        <TextView
+            android:id="@+id/update_wait_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/update_title_tv"
+            android:layout_marginLeft="@dimen/dimen_10"
+            android:layout_toRightOf="@id/update_divider_view"
+            android:text="@string/str_dialog_wait"
+            android:textColor="@color/c_00baf3"
+            android:textSize="@dimen/dimen_16" />
+
+    </RelativeLayout>
+
+</LinearLayout>
