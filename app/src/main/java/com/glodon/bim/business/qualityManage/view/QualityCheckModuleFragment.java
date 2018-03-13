@@ -254,16 +254,16 @@ public class QualityCheckModuleFragment extends BaseFragment implements QulityCh
 
     @Override
     public void clickSearch() {
-        Intent intent = new Intent(getActivity(), QualityCheckListSearchActivity.class);
-        String checkModuleType = null;
-        if (mListParent.getVisibility() == View.VISIBLE) {
-            //按构件搜索
-            checkModuleType = "";//mCurrentModuleInfo 可以拿到构件信息
-        } else {
-            //按质检项目搜索
-            checkModuleType = "";
-        }
-        intent.putExtra("CheckModuleType", checkModuleType);
-        startActivity(intent);
+//        Intent intent = new Intent(getActivity(), QualityCheckListSearchActivity.class);
+//        String checkModuleType = null;
+//        if (mListParent.getVisibility() == View.VISIBLE) {
+//            //按构件搜索
+//            checkModuleType = "";//mCurrentModuleInfo 可以拿到构件信息
+//        } else {
+//            //按质检项目搜索
+//            checkModuleType = "";
+//        }
+//        intent.putExtra("CheckModuleType", checkModuleType);
+//        startActivity(intent);
     }
 }
