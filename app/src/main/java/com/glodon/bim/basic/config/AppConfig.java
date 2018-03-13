@@ -14,7 +14,7 @@ public class AppConfig {
     /**
      * 控制是否生成log日志文件   true 生成  false 不生成
      */
-    public static boolean LOG_ERR_SAVE = true;
+    public static boolean LOG_ERR_SAVE = false;
 
     /**
      * log的存放目录
@@ -45,14 +45,14 @@ public class AppConfig {
 //    public static final String BASE_URL_BLUEPRINT_TOKEN = BASE_URL+"app.html?param=";//图纸的url地址
 
     //预生产 47.95.204.243
-    public static String BASE_UPLOAD_URL = "https://api.glodon.com/nss/";//图片上传
-    public static String BASE_URL = "http://47.95.204.243/";
-    public static final String BASE_URL_BLUEPRINT_TOKEN = BASE_URL + "app.html?param=";//图纸的url地址
+//    public static String BASE_UPLOAD_URL = "https://api.glodon.com/nss/";//图片上传
+//    public static String BASE_URL = "http://47.95.204.243/";
+//    public static final String BASE_URL_BLUEPRINT_TOKEN = BASE_URL + "app.html?param=";//图纸的url地址
 
     //生产 47.95.204.243
-//    public static String BASE_UPLOAD_URL =  "https://api.glodon.com/nss/";//图片上传
-//    public static String BASE_URL = "http://bimcop.glodon.com/";
-//    public static final String BASE_URL_BLUEPRINT_TOKEN = BASE_URL+"app.html?param=";//图纸的url地址
+    public static String BASE_UPLOAD_URL =  "https://api.glodon.com/nss/";//图片上传
+    public static String BASE_URL = "http://bimcop.glodon.com/";
+    public static final String BASE_URL_BLUEPRINT_TOKEN = BASE_URL+"app.html?param=";//图纸的url地址
 
 
     /*
@@ -87,7 +87,7 @@ jfbim+pmdeploy
 
 
 生产：
-1，生成http://bimcop.glodon.com/app/文件名 二维码生产
+1，生成http://bimcop.glodon.com/app/bimcop_app_prod_v1.2.0_201803131051.apk文件名 二维码生产
 2，覆盖/usr/share/nginx/html/最新版本号/imgs/app_qr_code.png图片
      */
 }
