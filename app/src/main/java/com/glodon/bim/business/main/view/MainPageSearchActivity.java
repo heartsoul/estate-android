@@ -11,7 +11,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -47,8 +47,8 @@ public class MainPageSearchActivity extends BaseActivity implements QualityEquip
     private RecyclerView mQualityContentRecyclerView, mEquipmentContentRecyclerView, mHistoryRecyclerView;
     private TextView mQualityTagTv;
     private TextView mEquipmentTagTv;
-    private LinearLayout mQualityMoreLl;
-    private LinearLayout mEquipmentMoreLl;
+    private RelativeLayout mQualityMoreRl;
+    private RelativeLayout mEquipmentMoreRl;
 
     private QualityEquipmentSearchHistoryAdapter mHistoryAdapter;//历史
     private QualityCheckListAdapter mQualityResultAdapter;//质检清单结果
@@ -76,8 +76,8 @@ public class MainPageSearchActivity extends BaseActivity implements QualityEquip
 
         mQualityTagTv = (TextView) findViewById(R.id.main_page_search_quality_tag_tv);
         mEquipmentTagTv = (TextView) findViewById(R.id.main_page_search_equipment_tag_tv);
-        mQualityMoreLl = (LinearLayout) findViewById(R.id.main_page_search_quality_more_ll);
-        mEquipmentMoreLl = (LinearLayout) findViewById(R.id.main_page_search_equipment_more_ll);
+        mQualityMoreRl =  findViewById(R.id.main_page_search_quality_more_rl);
+        mEquipmentMoreRl =  findViewById(R.id.main_page_search_equipment_more_rl);
 
         mQualityContentRecyclerView = (RecyclerView) findViewById(R.id.main_page_search_quality_content);
         mEquipmentContentRecyclerView = (RecyclerView) findViewById(R.id.main_page_search_equipment_content);
@@ -108,8 +108,8 @@ public class MainPageSearchActivity extends BaseActivity implements QualityEquip
 
     private void setListener() {
         mCancelView.setOnClickListener(this);
-        mQualityMoreLl.setOnClickListener(this);
-        mEquipmentMoreLl.setOnClickListener(this);
+        mQualityMoreRl.setOnClickListener(this);
+        mEquipmentMoreRl.setOnClickListener(this);
 
         mInputView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -221,7 +221,7 @@ public class MainPageSearchActivity extends BaseActivity implements QualityEquip
      */
     private void setQualityViewVisibility(int visibility){
         mQualityTagTv.setVisibility(visibility);
-        mQualityMoreLl.setVisibility(visibility);
+        mQualityMoreRl.setVisibility(visibility);
         mQualityContentRecyclerView.setVisibility(visibility);
     }
 
@@ -231,7 +231,7 @@ public class MainPageSearchActivity extends BaseActivity implements QualityEquip
      */
     private void setEquipmentViewVisibility(int visibility){
         mEquipmentTagTv.setVisibility(visibility);
-        mEquipmentMoreLl.setVisibility(visibility);
+        mEquipmentMoreRl.setVisibility(visibility);
         mEquipmentContentRecyclerView.setVisibility(visibility);
     }
 
@@ -296,12 +296,12 @@ public class MainPageSearchActivity extends BaseActivity implements QualityEquip
             case R.id.main_page_search_cancel:
                 cancelSearch();
                 break;
-            case R.id.main_page_search_quality_more_ll:
+            case R.id.main_page_search_quality_more_rl:
                 if (mPresenter != null) {
                     mPresenter.searchMoreQualityCheckList();
                 }
                 break;
-            case R.id.main_page_search_equipment_more_ll:
+            case R.id.main_page_search_equipment_more_rl:
                 if (mPresenter != null) {
                     mPresenter.searchMoreEquipmentList();
                 }

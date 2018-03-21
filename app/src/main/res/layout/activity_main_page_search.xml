@@ -92,7 +92,7 @@
                 android:layout_marginLeft="@dimen/dimen_20"
                 android:layout_marginTop="@dimen/dimen_05"
                 android:text="@string/str_search_type_quality_list"
-                android:textColor="@color/c_565656"
+                android:textColor="@color/c_5e5e5e"
                 android:textSize="@dimen/dimen_14"
                 android:visibility="gone" />
 
@@ -107,41 +107,59 @@
                     android:visibility="gone" />
             </RelativeLayout>
             <!--查看更多质检清单-->
-            <LinearLayout
-                android:id="@+id/main_page_search_quality_more_ll"
+            <RelativeLayout
+                android:id="@+id/main_page_search_quality_more_rl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:layout_marginTop="@dimen/dimen_05"
-                android:orientation="horizontal"
-                android:visibility="gone">
+               >
 
-                <ImageView
-                    android:layout_width="@dimen/dimen_20"
-                    android:layout_height="@dimen/dimen_20"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="@dimen/dimen_20"
-                    android:background="@drawable/icon_search_gray" />
-
-                <TextView
-                    android:layout_width="0dp"
+                <LinearLayout
+                    android:id="@+id/main_page_search_quality_more"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="7dp"
-                    android:layout_weight="1"
-                    android:ellipsize="end"
-                    android:singleLine="true"
-                    android:text="@string/str_search_more_quality"
-                    android:textColor="@color/c_565656"
-                    android:textSize="@dimen/dimen_14" />
+                    android:layout_centerInParent="true"
+                    android:layout_marginLeft="@dimen/dimen_10"
+                    android:layout_marginRight="@dimen/dimen_10"
+                    android:orientation="horizontal">
 
-                <ImageView
-                    android:layout_width="@dimen/dimen_05"
-                    android:layout_height="@dimen/dimen_12"
-                    android:layout_alignParentRight="true"
-                    android:layout_gravity="center_vertical|right"
-                    android:layout_marginRight="@dimen/dimen_21"
-                    android:background="@drawable/icon_arrow_right_gray" />
-            </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:ellipsize="end"
+                        android:singleLine="true"
+                        android:text="@string/str_search_more"
+                        android:textColor="@color/c_b0b0b0"
+                        android:textSize="@dimen/dimen_14" />
+
+                    <ImageView
+                        android:layout_width="@dimen/dimen_14"
+                        android:layout_height="@dimen/dimen_08"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="5dp"
+                        android:background="@drawable/icon_drawer_arrow_down" />
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/main_page_search_quality_l_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_01"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="20dp"
+                    android:layout_toLeftOf="@+id/main_page_search_quality_more"
+                    android:background="@color/c_e6e6e6" />
+
+                <View
+                    android:id="@+id/main_page_search_quality_r_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_01"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="20dp"
+                    android:layout_toRightOf="@+id/main_page_search_quality_more"
+                    android:background="@color/c_e6e6e6" />
+            </RelativeLayout>
 
             <!--材设清单-->
             <TextView
@@ -151,7 +169,7 @@
                 android:layout_marginLeft="@dimen/dimen_20"
                 android:layout_marginTop="@dimen/dimen_05"
                 android:text="@string/str_search_type_equipment_list"
-                android:textColor="@color/c_565656"
+                android:textColor="@color/c_5e5e5e"
                 android:textSize="@dimen/dimen_14"
                 android:visibility="gone" />
 
@@ -166,41 +184,61 @@
                     android:visibility="gone" />
             </RelativeLayout>
             <!--查看更多材设清单-->
-            <LinearLayout
-                android:id="@+id/main_page_search_equipment_more_ll"
+            <RelativeLayout
+                android:id="@+id/main_page_search_equipment_more_rl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_05"
-                android:orientation="horizontal"
-                android:visibility="gone">
+                android:visibility="gone"
+                android:orientation="horizontal">
 
-                <ImageView
-                    android:layout_width="@dimen/dimen_20"
-                    android:layout_height="@dimen/dimen_20"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="@dimen/dimen_20"
-                    android:background="@drawable/icon_search_gray" />
 
-                <TextView
-                    android:layout_width="0dp"
+                <LinearLayout
+                    android:id="@+id/main_page_search_equipment_more"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="7dp"
-                    android:layout_weight="1"
-                    android:ellipsize="end"
-                    android:singleLine="true"
-                    android:text="@string/str_search_more_equipment"
-                    android:textColor="@color/c_565656"
-                    android:textSize="@dimen/dimen_14" />
+                    android:layout_centerInParent="true"
+                    android:layout_marginLeft="@dimen/dimen_10"
+                    android:layout_marginRight="@dimen/dimen_10"
+                    android:orientation="horizontal">
 
-                <ImageView
-                    android:layout_width="@dimen/dimen_05"
-                    android:layout_height="@dimen/dimen_12"
-                    android:layout_alignParentRight="true"
-                    android:layout_gravity="center_vertical|right"
-                    android:layout_marginRight="@dimen/dimen_21"
-                    android:background="@drawable/icon_arrow_right_gray" />
-            </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:ellipsize="end"
+                        android:singleLine="true"
+                        android:text="@string/str_search_more"
+                        android:textColor="@color/c_b0b0b0"
+                        android:textSize="@dimen/dimen_14" />
+
+                    <ImageView
+                        android:layout_width="@dimen/dimen_14"
+                        android:layout_height="@dimen/dimen_08"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="5dp"
+                        android:background="@drawable/icon_drawer_arrow_down" />
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/main_page_search_equipment_l_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_01"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="20dp"
+                    android:layout_toLeftOf="@+id/main_page_search_equipment_more"
+                    android:background="@color/c_e6e6e6" />
+
+                <View
+                    android:id="@+id/main_page_search_equipment_r_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_01"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="20dp"
+                    android:layout_toRightOf="@+id/main_page_search_equipment_more"
+                    android:background="@color/c_e6e6e6" />
+
+            </RelativeLayout>
 
         </LinearLayout>
     </ScrollView>
