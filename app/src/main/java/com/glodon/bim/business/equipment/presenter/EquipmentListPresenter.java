@@ -198,6 +198,8 @@ public class EquipmentListPresenter implements EquipmentListContract.Presenter {
     public void search(String searchKey) {
         if (!TextUtils.isEmpty(searchKey)) {
             this.searchKey = searchKey;
+            mCurrentPage = 0;
+            mDataList.clear();
             getDataList();
         }
     }

@@ -38,8 +38,6 @@ public class QualityCheckListSearchActivity extends BaseSearchActivity implement
 
     @Override
     public void presenterSearch(String key) {
-        // TODO: 2018/3/9 从质检项目进入时，要区分质检项目和构件
-
         mPresenter.search(key);
     }
 
