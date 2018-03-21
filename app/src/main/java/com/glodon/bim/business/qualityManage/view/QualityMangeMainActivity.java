@@ -448,6 +448,12 @@ public class QualityMangeMainActivity extends BaseActivity implements View.OnCli
                 tv.setTextColor(getResources().getColor(R.color.c_d4d4d4));
             }
         }
+        //隐藏质检项目的搜索
+        if (position == 3) {
+            mSearchView.setVisibility(View.GONE);
+        } else {
+            mSearchView.setVisibility(View.VISIBLE);
+        }
     }
 
     //点击搜索
