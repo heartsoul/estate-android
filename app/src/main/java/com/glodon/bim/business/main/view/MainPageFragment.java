@@ -249,8 +249,8 @@ public class MainPageFragment extends BaseFragment implements View.OnClickListen
      * 跳转到搜索页面
      */
     private void toSearchPage() {
-//        Intent intent = new Intent(getActivity(), MainPageSearchActivity.class);
-//        startActivity(intent);
+        Intent intent = new Intent(getActivity(), MainPageSearchActivity.class);
+        startActivity(intent);
     }
 
     @Override

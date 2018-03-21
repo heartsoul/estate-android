@@ -12,6 +12,8 @@ import com.glodon.bim.basic.utils.DateUtils;
 import com.glodon.bim.basic.utils.NetWorkUtils;
 import com.glodon.bim.basic.utils.SharedPreferencesUtil;
 import com.glodon.bim.business.authority.AuthorityManager;
+import com.glodon.bim.business.main.contract.QualityEquipmentSearchContract;
+import com.glodon.bim.business.main.model.QualityEquipmentSearchModel;
 import com.glodon.bim.business.qualityManage.bean.ClassifyNum;
 import com.glodon.bim.business.qualityManage.bean.CreateCheckListParams;
 import com.glodon.bim.business.qualityManage.bean.ModuleListBeanItem;
@@ -71,7 +73,7 @@ public class QualityCheckListPresenter implements QualityCheckListContract.Prese
 
     private int mClickPosition = 0;
 
-
+    private String searchKey = null;//搜索关键字
 
     private OnOperateSheetListener mListener = new OnOperateSheetListener() {
 
@@ -286,7 +288,32 @@ public class QualityCheckListPresenter implements QualityCheckListContract.Prese
         mDataList.clear();
         getDataList();
     }
+    private void getSearchData(){
+        QualityEquipmentSearchContract.Model mModel = new QualityEquipmentSearchModel();
+        Subscription sub = mModel.searchQualityData(SharedPreferencesUtil.getProjectId(), searchKey, mCurrentPage, mSize)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<QualityCheckListBean>() {
+                    @Override
+                    public void onCompleted() {
 
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        LogUtil.e("----", e.getMessage());
+                        if (mView != null) {
+                            mView.dismissLoadingDialog();
+                        }
+                    }
+
+                    @Override
+                    public void onNext(QualityCheckListBean bean) {
+                        handleResult(bean);
+                    }
+                });
+        mSubscription.add(sub);
+    }
     /**
      * 初始化数据
      */
@@ -294,6 +321,10 @@ public class QualityCheckListPresenter implements QualityCheckListContract.Prese
         if(NetWorkUtils.isNetworkAvailable(mView.getActivity())) {
             if (mView != null) {
                 mView.showLoadingDialog();
+            }
+            if (!TextUtils.isEmpty(searchKey)) {
+                getSearchData();
+                return;
             }
             if(mSelectModuleInfo!=null &&(mSelectModuleInfo.id>0 || !TextUtils.isEmpty(mSelectModuleInfo.name))){
                     Subscription sub = mModel.getQualityCheckList(SharedPreferencesUtil.getProjectId(), mQcState, mCurrentPage, mSize,mSelectModuleInfo.id,mSelectModuleInfo.name)
@@ -579,6 +610,7 @@ public class QualityCheckListPresenter implements QualityCheckListContract.Prese
     @Override
     public void search(String searchKey) {
         if (!TextUtils.isEmpty(searchKey)) {
+            this.searchKey = searchKey;
             getDataList();
         }
     }

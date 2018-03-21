@@ -2,12 +2,16 @@ package com.glodon.bim.business.main.contract;
 
 import com.glodon.bim.base.IBasePresenter;
 import com.glodon.bim.base.IBaseView;
+import com.glodon.bim.business.equipment.bean.EquipmentListBean;
 import com.glodon.bim.business.equipment.bean.EquipmentListBeanItem;
 import com.glodon.bim.business.equipment.listener.OnOperateEquipmentSheetListener;
+import com.glodon.bim.business.qualityManage.bean.QualityCheckListBean;
 import com.glodon.bim.business.qualityManage.bean.QualityCheckListBeanItem;
 import com.glodon.bim.business.qualityManage.listener.OnOperateSheetListener;
 
 import java.util.List;
+
+import rx.Observable;
 
 /**
  * Created by cwj on 2018/3/6.
@@ -84,6 +88,11 @@ public interface QualityEquipmentSearchContract {
     }
 
     interface Model {
+        //搜索质检清单
+        Observable<QualityCheckListBean> searchQualityData(long deptId, String keywords, int page, int size);
+
+        //搜索材设清单
+        Observable<EquipmentListBean> searchEquipmentData(long deptId, String keywords, int page, int size);
 
     }
 

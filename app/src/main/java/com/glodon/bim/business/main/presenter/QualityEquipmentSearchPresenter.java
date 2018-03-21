@@ -410,9 +410,9 @@ public class QualityEquipmentSearchPresenter implements QualityEquipmentSearchCo
      * 搜索质检清单
      */
     private void searchQualityData() {
-        QualityCheckListContract.Model mModel = new QualityCheckListModel();
+        QualityEquipmentSearchContract.Model mModel = new QualityEquipmentSearchModel();
 
-        Subscription sub = mModel.getQualityCheckList(SharedPreferencesUtil.getProjectId(), "", 0, 3)
+        Subscription sub = mModel.searchQualityData(SharedPreferencesUtil.getProjectId(), searchKey, 0, 3)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<QualityCheckListBean>() {
@@ -424,8 +424,11 @@ public class QualityEquipmentSearchPresenter implements QualityEquipmentSearchCo
                     @Override
                     public void onError(Throwable e) {
                         LogUtil.e("----", e.getMessage());
-                        if (mView != null) {
+                        searchCount++;
+                        if (mView != null && searchCount == 2) {
                             mView.dismissLoadingDialog();
+                            mView.hideHistory();
+                            mView.showResult(mQualityList, mEquipmentList);
                         }
                     }
 
@@ -449,8 +452,8 @@ public class QualityEquipmentSearchPresenter implements QualityEquipmentSearchCo
      * 搜索材设清单
      */
     private void searchEquipmentData() {
-        EquipmentListContract.Model mModel = new EquipmentListModel();
-        Subscription sub = mModel.getAllEquipmentList(0, 3, "")
+        QualityEquipmentSearchContract.Model mModel = new QualityEquipmentSearchModel();
+        Subscription sub = mModel.searchEquipmentData(SharedPreferencesUtil.getProjectId(), searchKey, 0, 3)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<EquipmentListBean>() {
@@ -462,8 +465,11 @@ public class QualityEquipmentSearchPresenter implements QualityEquipmentSearchCo
                     @Override
                     public void onError(Throwable e) {
                         LogUtil.e("----", e.getMessage());
-                        if (mView != null) {
+                        searchCount++;
+                        if (mView != null && searchCount == 2) {
                             mView.dismissLoadingDialog();
+                            mView.hideHistory();
+                            mView.showResult(mQualityList, mEquipmentList);
                         }
                     }
 

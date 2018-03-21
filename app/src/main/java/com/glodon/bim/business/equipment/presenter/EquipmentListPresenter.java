@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import com.glodon.bim.basic.log.LogUtil;
 import com.glodon.bim.basic.utils.DateUtil;
 import com.glodon.bim.basic.utils.NetWorkUtils;
+import com.glodon.bim.basic.utils.SharedPreferencesUtil;
 import com.glodon.bim.business.equipment.bean.CreateEquipmentParams;
 import com.glodon.bim.business.equipment.bean.EquipmentListBean;
 import com.glodon.bim.business.equipment.bean.EquipmentListBeanItem;
@@ -18,6 +19,8 @@ import com.glodon.bim.business.equipment.model.CreateEquipmentModel;
 import com.glodon.bim.business.equipment.model.EquipmentListModel;
 import com.glodon.bim.business.equipment.view.CreateEquipmentActivity;
 import com.glodon.bim.business.main.bean.ProjectListItem;
+import com.glodon.bim.business.main.contract.QualityEquipmentSearchContract;
+import com.glodon.bim.business.main.model.QualityEquipmentSearchModel;
 import com.glodon.bim.business.qualityManage.bean.ClassifyNum;
 import com.glodon.bim.business.qualityManage.bean.CreateCheckListParamsFile;
 import com.glodon.bim.business.qualityManage.bean.QualityCheckListBeanItemFile;
@@ -51,6 +54,8 @@ public class EquipmentListPresenter implements EquipmentListContract.Presenter {
     private int mSize = 20;
     private List<String> mDateKeyList = new ArrayList<>();  //标记分隔时间
     private List<EquipmentListBeanItem> mList = new ArrayList<>(); //添加了分隔时间的数据
+    private String searchKey = null;//搜索关键字
+
     private OnOperateEquipmentSheetListener mListener = new OnOperateEquipmentSheetListener() {
         @Override
         public void delete(EquipmentListBeanItem item, int position) {
@@ -192,6 +197,7 @@ public class EquipmentListPresenter implements EquipmentListContract.Presenter {
     @Override
     public void search(String searchKey) {
         if (!TextUtils.isEmpty(searchKey)) {
+            this.searchKey = searchKey;
             getDataList();
         }
     }
@@ -211,6 +217,10 @@ public class EquipmentListPresenter implements EquipmentListContract.Presenter {
         if (NetWorkUtils.isNetworkAvailable(mView.getActivity())) {
             if (mView != null) {
                 mView.showLoadingDialog();
+            }
+            if (!TextUtils.isEmpty(searchKey)) {
+                getSearchData();
+                return;
             }
             Subscription sub = mModel.getAllEquipmentList(mCurrentPage, mSize, mQcState)
                     .subscribeOn(Schedulers.io())
@@ -239,6 +249,37 @@ public class EquipmentListPresenter implements EquipmentListContract.Presenter {
         } else {
             ToastManager.showNetWorkToast();
         }
+    }
+
+    /**
+     * 搜索数据
+     */
+    private void getSearchData(){
+        QualityEquipmentSearchContract.Model model = new QualityEquipmentSearchModel();
+        Subscription sub = model.searchEquipmentData(SharedPreferencesUtil.getProjectId(),searchKey,mCurrentPage, mSize)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<EquipmentListBean>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        LogUtil.e("----", e.getMessage());
+                        if (mView != null) {
+                            mView.dismissLoadingDialog();
+                        }
+                    }
+
+                    @Override
+                    public void onNext(EquipmentListBean bean) {
+                        LogUtil.toJson(bean);
+                        handleResult(bean);
+                    }
+                });
+        mSubscription.add(sub);
     }
 
     private void handleResult(EquipmentListBean bean) {

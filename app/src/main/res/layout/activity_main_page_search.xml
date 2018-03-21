@@ -89,7 +89,11 @@
                 android:id="@+id/main_page_search_quality_tag_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dimen_20"
+                android:layout_marginTop="@dimen/dimen_05"
                 android:text="@string/str_search_type_quality_list"
+                android:textColor="@color/c_565656"
+                android:textSize="@dimen/dimen_14"
                 android:visibility="gone" />
 
             <RelativeLayout
@@ -107,6 +111,7 @@
                 android:id="@+id/main_page_search_quality_more_ll"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_05"
                 android:orientation="horizontal"
                 android:visibility="gone">
 
@@ -114,18 +119,20 @@
                     android:layout_width="@dimen/dimen_20"
                     android:layout_height="@dimen/dimen_20"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="@dimen/dimen_07"
+                    android:layout_marginLeft="@dimen/dimen_20"
                     android:background="@drawable/icon_search_gray" />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginLeft="7dp"
                     android:layout_weight="1"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    android:text="@string/str_search_more_quality" />
+                    android:text="@string/str_search_more_quality"
+                    android:textColor="@color/c_565656"
+                    android:textSize="@dimen/dimen_14" />
 
                 <ImageView
                     android:layout_width="@dimen/dimen_05"
@@ -141,7 +148,12 @@
                 android:id="@+id/main_page_search_equipment_tag_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/str_search_type_equipment_list" />
+                android:layout_marginLeft="@dimen/dimen_20"
+                android:layout_marginTop="@dimen/dimen_05"
+                android:text="@string/str_search_type_equipment_list"
+                android:textColor="@color/c_565656"
+                android:textSize="@dimen/dimen_14"
+                android:visibility="gone" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -158,24 +170,28 @@
                 android:id="@+id/main_page_search_equipment_more_ll"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_marginTop="@dimen/dimen_05"
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <ImageView
                     android:layout_width="@dimen/dimen_20"
                     android:layout_height="@dimen/dimen_20"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="@dimen/dimen_07"
+                    android:layout_marginLeft="@dimen/dimen_20"
                     android:background="@drawable/icon_search_gray" />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginLeft="7dp"
                     android:layout_weight="1"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    android:text="@string/str_search_more_equipment" />
+                    android:text="@string/str_search_more_equipment"
+                    android:textColor="@color/c_565656"
+                    android:textSize="@dimen/dimen_14" />
 
                 <ImageView
                     android:layout_width="@dimen/dimen_05"
