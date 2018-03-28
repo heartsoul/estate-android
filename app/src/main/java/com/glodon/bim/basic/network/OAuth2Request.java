@@ -39,7 +39,7 @@ public class OAuth2Request {
                     Request original = chain.request();
 
                     Request.Builder requestBuilder = original.newBuilder()
-                            .header("Authorization", basic)
+//                            .header("Authorization", basic)
                             .header("Accept", "applicaton/json")
                             .method(original.method(), original.body());
                     Request request = requestBuilder.build();

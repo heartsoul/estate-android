@@ -2,6 +2,9 @@ package com.glodon.bim.business.main.contract;
 
 import com.glodon.bim.base.IBasePresenter;
 import com.glodon.bim.base.IBaseView;
+import com.glodon.bim.business.setting.bean.CheckVersionBean;
+
+import rx.Observable;
 
 /**
  * 描述：主界面
@@ -23,8 +26,15 @@ public interface MainContract {
         void openAlbum();
 
         void toCreate();
+
+        void checkVersion();
     }
 
     interface Model{
+        /**
+         * 检测版本更新
+         * @return
+         */
+        Observable<CheckVersionBean> checkVersion();
     }
 }

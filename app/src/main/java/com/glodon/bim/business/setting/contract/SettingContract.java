@@ -2,6 +2,11 @@ package com.glodon.bim.business.setting.contract;
 
 import com.glodon.bim.base.IBasePresenter;
 import com.glodon.bim.base.IBaseView;
+import com.glodon.bim.business.setting.bean.CheckVersionBean;
+import com.glodon.bim.business.setting.bean.FeedBackBean;
+import com.glodon.bim.business.setting.bean.FeedBackParams;
+
+import rx.Observable;
 
 /**
  * 描述：设置
@@ -24,6 +29,11 @@ public interface SettingContract {
          */
         void toTenantList();
 
+        /**
+         * 检测版本更新
+         */
+        void checkVersion();
+
     }
 
     interface View extends IBaseView {
@@ -33,5 +43,10 @@ public interface SettingContract {
 
     interface Model {
 
+        /**
+         * 检测版本更新
+         * @return
+         */
+        Observable<CheckVersionBean> checkVersion();
     }
 }

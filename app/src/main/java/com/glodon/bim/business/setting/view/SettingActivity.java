@@ -8,9 +8,11 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.glodon.bim.BuildConfig;
 import com.glodon.bim.R;
 import com.glodon.bim.base.BaseActivity;
 import com.glodon.bim.basic.listener.ThrottleClickEvents;
@@ -36,6 +38,7 @@ public class SettingActivity extends BaseActivity implements SettingContract.Vie
     private RelativeLayout mChangePassword,mVersionInfo,mFeedBack,mContactUs,mAboutUs,mChangeProject,mOffline;
     private TextView mVersionInfoText,mPhoneNumber;
     private Button mSignOutBtn;
+    private ImageView wlanImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +58,7 @@ public class SettingActivity extends BaseActivity implements SettingContract.Vie
         mStatusView = findViewById(R.id.setting_status);
         mBackView = (RelativeLayout) findViewById(R.id.setting_back);
         mChangePassword = (RelativeLayout) findViewById(R.id.setting_change_password);
+        wlanImage =  findViewById(R.id.setting_wlan_flag);
         mVersionInfo = (RelativeLayout) findViewById(R.id.setting_version_info);
         mFeedBack = (RelativeLayout) findViewById(R.id.setting_feedback);
         mContactUs = (RelativeLayout) findViewById(R.id.setting_contact_us);
@@ -66,6 +70,9 @@ public class SettingActivity extends BaseActivity implements SettingContract.Vie
         mPhoneNumber.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
         mPhoneNumber.getPaint().setAntiAlias(true);//抗锯齿
         mSignOutBtn = (Button) findViewById(R.id.setting_signout_btn);
+
+        mVersionInfoText.setText("当前版本 V"+BuildConfig.VERSION_NAME);
+        setWlanView();
     }
     private void setListener() {
         ThrottleClickEvents.throttleClick(mBackView,this);
@@ -77,10 +84,12 @@ public class SettingActivity extends BaseActivity implements SettingContract.Vie
         ThrottleClickEvents.throttleClick(mChangeProject,this);
         ThrottleClickEvents.throttleClick(mOffline,this);
         mSignOutBtn.setOnClickListener(this);
+        wlanImage.setOnClickListener(this);
     }
 
     private void initData() {
         mPresenter = new SettingPresenter(this);
+        mPresenter.initData(getIntent());
     }
 
     @Override
@@ -99,7 +108,7 @@ public class SettingActivity extends BaseActivity implements SettingContract.Vie
                 startActivity(intent);
                 break;
             case R.id.setting_version_info:
-                GlodonUpdateManager.getInstance().showUpdateDialog(getActivity());
+                mPresenter.checkVersion();
                 break;
             case R.id.setting_feedback:
                 Intent feedbackIntent = new Intent(mActivity,FeedBackActivity.class);
@@ -120,6 +129,30 @@ public class SettingActivity extends BaseActivity implements SettingContract.Vie
             case R.id.setting_signout_btn:
                 mPresenter.signOut();
                 break;
+            case R.id.setting_wlan_flag:
+                switchWlanFlag();
+                break;
+        }
+    }
+
+    /**
+     * 点击切换wifi下自动下载
+     */
+    private void switchWlanFlag() {
+        if (SharedPreferencesUtil.getAutoDownload()) {
+            SharedPreferencesUtil.saveAutoDownload(false);
+            wlanImage.setImageDrawable(getResources().getDrawable(R.drawable.icon_flag_close));
+        } else {
+            SharedPreferencesUtil.saveAutoDownload(true);
+            wlanImage.setImageDrawable(getResources().getDrawable(R.drawable.icon_flag_open));
+        }
+    }
+
+    private void setWlanView(){
+        if (SharedPreferencesUtil.getAutoDownload()) {
+            wlanImage.setImageDrawable(getResources().getDrawable(R.drawable.icon_flag_open));
+        } else {
+            wlanImage.setImageDrawable(getResources().getDrawable(R.drawable.icon_flag_close));
         }
     }
 

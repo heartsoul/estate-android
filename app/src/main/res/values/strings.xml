@@ -127,7 +127,8 @@
     <string name="str_set_feedback_title_text">标题：</string>
     <string name="str_set_feedback_content_hint">留言内容....</string>
     <string name="str_set_change_psd">修改密码</string>
-    <string name="str_set_version_info">版本信息</string>
+    <string name="str_set_wlan">WLAN下自动升级</string>
+    <string name="str_set_version_info">检查更新</string>
     <string name="str_set_version">版本号V1.1.0</string>
     <string name="str_set_contact">联系我们</string>
     <string name="str_set_about_us">关于我们</string>
@@ -220,8 +221,17 @@
     <string name="str_dialog_create_review_des_hint">您还未选择现场情况描述!</string>
     <string name="str_dialog_create_review_des_date_hint">您还未选择现场情况描述和整改期限!</string>
     <string name="str_dialog_create_review_date_hint">您还未选择整改期限!</string>
+    <!--更新-->
     <string name="str_dialog_update">更新</string>
-    <string name="str_dialog_wait">稍后再说</string>
+    <string name="str_dialog_wait">取消</string>
+    <string name="str_dialog_is_update">是否更新？</string>
+    <string name="str_dialog_latest_version">当前已是最新版本</string>
+    <string name="str_dialog_know">知道了</string>
+    <string name="str_dialog_old_version">您目前的版本过低</string>
+    <string name="str_dialog_update_loading">我们正在努力加载中...</string>
+    <string name="str_dialog_download_finish">下载成功，去体验吧</string>
+    <string name="str_dialog_click_update">点击升级</string>
+
 
     <!--customview-->
     <string name="str_view_load_more_hint_down">下拉刷新数据...</string>

@@ -45,7 +45,7 @@ public class SharedPreferencesUtil {
 
     //权限
     public static String QUALITY_CHECK_BEAN = "QUALITY_CHECK_BEAN";//质量检查记录
-    public static String QUALITY_ACCEPT_BEAN= "QUALITY_ACCEPT_BEAN";//质量验收记录
+    public static String QUALITY_ACCEPT_BEAN = "QUALITY_ACCEPT_BEAN";//质量验收记录
     public static String QUALITY_RISK_BEAN = "QUALITY_RISK_BEAN";//质量隐患记录
     public static String QUALITY_FACILITY_BEAN = "QUALITY_FACILITY_BEAN";//材料设备进场验收
     public static String QUALITY_RECTIFICATION_BEAN = "QUALITY_RECTIFICATION_BEAN";//质量整改记录
@@ -54,12 +54,15 @@ public class SharedPreferencesUtil {
     private static final String SEARCH_KEY_MODEL = "SEARCH_KEY_MODEL";//模型搜索历史
     private static final String SEARCH_KEY_QUALITY_EQUIPMENT = "SEARCH_KEY_QUALITY_EQUIPMENT";//质检清单、材设搜索历史
 
+    private static final String LATEST_VERSION = "LATEST_VERSION";//检测更新后获取的最新版本
+    private static final String AUTO_DOWNLOAD = "AUTO_DOWNLOAD";//是否开启WIFI下自动下载
+
     /**
      * 保存字符串
      */
-    public static void setString(String key,String value){
-        SharedPreferences preferences= BaseApplication.getInstance().getSharedPreferences(NAME,Context.MODE_PRIVATE);
-        Editor editor=preferences.edit();
+    public static void setString(String key, String value) {
+        SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(NAME, Context.MODE_PRIVATE);
+        Editor editor = preferences.edit();
         editor.putString(key, value);
         editor.commit();
     }
@@ -67,19 +70,19 @@ public class SharedPreferencesUtil {
     /**
      * 获取字符串
      */
-    public static String getString(String key,String defaultValue){
-        SharedPreferences preferences=BaseApplication.getInstance().getSharedPreferences(NAME,Context.MODE_PRIVATE);
-        return preferences.getString(key,defaultValue);
+    public static String getString(String key, String defaultValue) {
+        SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(NAME, Context.MODE_PRIVATE);
+        return preferences.getString(key, defaultValue);
     }
 
     /**
      * 选择的项目信息
      */
-    public static void setProjectInfo(ProjectListItem item){
-        if(item!=null) {
+    public static void setProjectInfo(ProjectListItem item) {
+        if (item != null) {
             SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(NAME, Context.MODE_PRIVATE);
             Editor editor = preferences.edit();
-            editor.putString(PROJECT_INFO,new GsonBuilder().create().toJson(item));
+            editor.putString(PROJECT_INFO, new GsonBuilder().create().toJson(item));
             editor.putString(PROJECT_NAME, item.name);
             editor.putLong(PROJECT_ID, item.deptId);
             editor.putString(PROJECT_TYPE_CODE, item.projectTypeCode);
@@ -90,11 +93,11 @@ public class SharedPreferencesUtil {
     /**
      * 保存选择的租户信息
      */
-    public static void setTenantInfo(UserTenant item){
-        if(item!=null) {
+    public static void setTenantInfo(UserTenant item) {
+        if (item != null) {
             SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(NAME, Context.MODE_PRIVATE);
             Editor editor = preferences.edit();
-            editor.putString(TENANT_INFO,new GsonBuilder().create().toJson(item));
+            editor.putString(TENANT_INFO, new GsonBuilder().create().toJson(item));
             editor.commit();
         }
     }
@@ -102,23 +105,24 @@ public class SharedPreferencesUtil {
     /**
      * 保存用户信息
      */
-    public static void setUserInfo(User item){
-        if(item!=null) {
+    public static void setUserInfo(User item) {
+        if (item != null) {
             SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(NAME, Context.MODE_PRIVATE);
             Editor editor = preferences.edit();
-            editor.putString(USER_INFO,new GsonBuilder().create().toJson(item));
+            editor.putString(USER_INFO, new GsonBuilder().create().toJson(item));
             editor.commit();
         }
     }
+
     /**
      * 获取用户信息
      */
-    public static User getUserInfo(){
+    public static User getUserInfo() {
         SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(NAME, Context.MODE_PRIVATE);
-        String json = preferences.getString(USER_INFO,"");
-        if(!TextUtils.isEmpty(json)){
-            User user = new GsonBuilder().create().fromJson(json,User.class);
-            if(user!=null){
+        String json = preferences.getString(USER_INFO, "");
+        if (!TextUtils.isEmpty(json)) {
+            User user = new GsonBuilder().create().fromJson(json, User.class);
+            if (user != null) {
                 return user;
             }
         }
@@ -128,33 +132,33 @@ public class SharedPreferencesUtil {
     /**
      * 删除用户信息
      */
-    public static void deleteUserInfo(){
+    public static void deleteUserInfo() {
         SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(NAME, Context.MODE_PRIVATE);
         Editor editor = preferences.edit();
-        editor.putString(USER_INFO,"");
+        editor.putString(USER_INFO, "");
         editor.commit();
     }
 
     /**
      * 清楚登录信息
      */
-    public static void clear(){
+    public static void clear() {
         deleteTenantInfo();
         deleteProjectInfo();
         deleteUserInfo();
-        setString(CommonConfig.USERNAME,"");
-        setString(CommonConfig.PASSWORD,"");
+        setString(CommonConfig.USERNAME, "");
+        setString(CommonConfig.PASSWORD, "");
     }
 
     /**
      * 获取保存的租户信息
      */
-    public static UserTenant getTenantInfo(){
+    public static UserTenant getTenantInfo() {
         SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(NAME, Context.MODE_PRIVATE);
-        String json = preferences.getString(TENANT_INFO,"");
-        if(!TextUtils.isEmpty(json)){
-            UserTenant tenant = new GsonBuilder().create().fromJson(json,UserTenant.class);
-            if(tenant!=null){
+        String json = preferences.getString(TENANT_INFO, "");
+        if (!TextUtils.isEmpty(json)) {
+            UserTenant tenant = new GsonBuilder().create().fromJson(json, UserTenant.class);
+            if (tenant != null) {
                 return tenant;
             }
         }
@@ -164,12 +168,12 @@ public class SharedPreferencesUtil {
     /**
      * 获取保存的项目信息
      */
-    public static ProjectListItem getProjectInfo(){
+    public static ProjectListItem getProjectInfo() {
         SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(NAME, Context.MODE_PRIVATE);
-        String json = preferences.getString(PROJECT_INFO,"");
-        if(!TextUtils.isEmpty(json)){
-            ProjectListItem project = new GsonBuilder().create().fromJson(json,ProjectListItem.class);
-            if(project!=null){
+        String json = preferences.getString(PROJECT_INFO, "");
+        if (!TextUtils.isEmpty(json)) {
+            ProjectListItem project = new GsonBuilder().create().fromJson(json, ProjectListItem.class);
+            if (project != null) {
                 return project;
             }
         }
@@ -180,238 +184,249 @@ public class SharedPreferencesUtil {
     /**
      * 删除保存的项目信息
      */
-    public static void deleteProjectInfo(){
+    public static void deleteProjectInfo() {
         SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(NAME, Context.MODE_PRIVATE);
         Editor editor = preferences.edit();
-        editor.putString(PROJECT_INFO,"");
+        editor.putString(PROJECT_INFO, "");
         editor.commit();
     }
 
     /**
      * 删除保存的租户信息
      */
-    public static void deleteTenantInfo(){
+    public static void deleteTenantInfo() {
         SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(NAME, Context.MODE_PRIVATE);
         Editor editor = preferences.edit();
-        editor.putString(TENANT_INFO,"");
+        editor.putString(TENANT_INFO, "");
         editor.commit();
     }
 
     /**
      * 获取项目id
      */
-    public static long getProjectId(){
-        SharedPreferences preferences= BaseApplication.getInstance().getSharedPreferences(NAME,Context.MODE_PRIVATE);
-        return preferences.getLong(PROJECT_ID,-1);
+    public static long getProjectId() {
+        SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(NAME, Context.MODE_PRIVATE);
+        return preferences.getLong(PROJECT_ID, -1);
     }
 
     /**
      * 获取项目版本id
      */
-    public static String getProjectVersionId(long projectId){
-        SharedPreferences preferences= BaseApplication.getInstance().getSharedPreferences(NAME,Context.MODE_PRIVATE);
-        return preferences.getString(projectId+"","");
+    public static String getProjectVersionId(long projectId) {
+        SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(NAME, Context.MODE_PRIVATE);
+        return preferences.getString(projectId + "", "");
     }
+
     /**
      * 获取项目版本id
      */
-    public static String getProjectVersionId(){
-        SharedPreferences preferences= BaseApplication.getInstance().getSharedPreferences(NAME,Context.MODE_PRIVATE);
-        return preferences.getString(getProjectId()+"","");
+    public static String getProjectVersionId() {
+        SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(NAME, Context.MODE_PRIVATE);
+        return preferences.getString(getProjectId() + "", "");
     }
+
     /**
      * 获取项目名称
      */
-    public static String getProjectName(){
-        SharedPreferences preferences= BaseApplication.getInstance().getSharedPreferences(NAME,Context.MODE_PRIVATE);
-        return preferences.getString(PROJECT_NAME,"");
+    public static String getProjectName() {
+        SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(NAME, Context.MODE_PRIVATE);
+        return preferences.getString(PROJECT_NAME, "");
     }
 
     /**
      * 获取项目类型
      */
-    public static String getProjectTypeCode(){
-        SharedPreferences preferences= BaseApplication.getInstance().getSharedPreferences(NAME,Context.MODE_PRIVATE);
-        return preferences.getString(PROJECT_TYPE_CODE,"");
+    public static String getProjectTypeCode() {
+        SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(NAME, Context.MODE_PRIVATE);
+        return preferences.getString(PROJECT_TYPE_CODE, "");
     }
 
     /**
      * 设置当前创建的是什么类型   0 检查单  1整改单   2复查单
      */
-    public static void setCreateType(String type){
-        SharedPreferences preferences= BaseApplication.getInstance().getSharedPreferences(NAME,Context.MODE_PRIVATE);
-        Editor editor=preferences.edit();
+    public static void setCreateType(String type) {
+        SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(NAME, Context.MODE_PRIVATE);
+        Editor editor = preferences.edit();
         editor.putString(PROJECT_CREATE_TYPE, type);
         editor.commit();
     }
 
-    public static String getCreateType(){
-        SharedPreferences preferences= BaseApplication.getInstance().getSharedPreferences(NAME,Context.MODE_PRIVATE);
-        return preferences.getString(PROJECT_CREATE_TYPE,"0");
+    public static String getCreateType() {
+        SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(NAME, Context.MODE_PRIVATE);
+        return preferences.getString(PROJECT_CREATE_TYPE, "0");
     }
 
     //获取当前的用户id
-    public static long  getUserId() {
-        SharedPreferences preferences= BaseApplication.getInstance().getSharedPreferences(NAME,Context.MODE_PRIVATE);
-        return preferences.getLong(USER_ID,0);
+    public static long getUserId() {
+        SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(NAME, Context.MODE_PRIVATE);
+        return preferences.getLong(USER_ID, 0);
     }
 
     //获取当前的用户名
-    public static String  getUserName() {
-        SharedPreferences preferences= BaseApplication.getInstance().getSharedPreferences(NAME,Context.MODE_PRIVATE);
-        return preferences.getString(USER_NAME,"");
+    public static String getUserName() {
+        SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(NAME, Context.MODE_PRIVATE);
+        return preferences.getString(USER_NAME, "");
     }
 
     //保存当前的用户id
     public static void setUserId(long id) {
-        SharedPreferences preferences= BaseApplication.getInstance().getSharedPreferences(NAME,Context.MODE_PRIVATE);
-        Editor editor=preferences.edit();
+        SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(NAME, Context.MODE_PRIVATE);
+        Editor editor = preferences.edit();
         editor.putLong(USER_ID, id);
         editor.commit();
     }
 
     //保存当前的用户名
     public static void setUserName(String username) {
-        SharedPreferences preferences= BaseApplication.getInstance().getSharedPreferences(NAME,Context.MODE_PRIVATE);
-        Editor editor=preferences.edit();
-        editor.putString(USER_NAME,username);
+        SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(NAME, Context.MODE_PRIVATE);
+        Editor editor = preferences.edit();
+        editor.putString(USER_NAME, username);
         editor.commit();
     }
 
 
     //保存质检记录权限
-    public static void setQualityCheckBean(AuthorityBean bean){
-        setAuthority(QUALITY_CHECK_BEAN,bean);
+    public static void setQualityCheckBean(AuthorityBean bean) {
+        setAuthority(QUALITY_CHECK_BEAN, bean);
     }
+
     //获取质检记录权限
-    public static AuthorityBean getQualityCheckBean(){
+    public static AuthorityBean getQualityCheckBean() {
         return getAuthority(QUALITY_CHECK_BEAN);
     }
 
 
     //保存质量验收记录权限
-    public static void setQualityAcceptBean(AuthorityBean bean){
-        setAuthority(QUALITY_ACCEPT_BEAN,bean);
+    public static void setQualityAcceptBean(AuthorityBean bean) {
+        setAuthority(QUALITY_ACCEPT_BEAN, bean);
     }
+
     //获取质量验收记录权限
-    public static AuthorityBean getQualityAcceptBean(){
+    public static AuthorityBean getQualityAcceptBean() {
         return getAuthority(QUALITY_ACCEPT_BEAN);
     }
 
 
     //保存质量隐患记录权限
-    public static void setQualityRiskBean(AuthorityBean bean){
-        setAuthority(QUALITY_RISK_BEAN,bean);
+    public static void setQualityRiskBean(AuthorityBean bean) {
+        setAuthority(QUALITY_RISK_BEAN, bean);
     }
+
     //获取质量隐患记录权限
-    public static AuthorityBean getQualityRiskBean(){
+    public static AuthorityBean getQualityRiskBean() {
         return getAuthority(QUALITY_RISK_BEAN);
     }
 
 
     //保存材料设备进场验收权限
-    public static void setQualityFacilityBean(AuthorityBean bean){
-        setAuthority(QUALITY_FACILITY_BEAN,bean);
+    public static void setQualityFacilityBean(AuthorityBean bean) {
+        setAuthority(QUALITY_FACILITY_BEAN, bean);
     }
+
     //获取材料设备进场验收权限
-    public static AuthorityBean getQualityFacilityBean(){
+    public static AuthorityBean getQualityFacilityBean() {
         return getAuthority(QUALITY_FACILITY_BEAN);
     }
 
     //保存质量整改记录权限
-    public static void setQualityRectificationBean(AuthorityBean bean){
-        setAuthority(QUALITY_RECTIFICATION_BEAN,bean);
+    public static void setQualityRectificationBean(AuthorityBean bean) {
+        setAuthority(QUALITY_RECTIFICATION_BEAN, bean);
     }
+
     //获取质量整改记录权限
-    public static AuthorityBean getQualityRectificationBean(){
+    public static AuthorityBean getQualityRectificationBean() {
         return getAuthority(QUALITY_RECTIFICATION_BEAN);
     }
 
-    private static void setAuthority(String key,AuthorityBean bean){
+    private static void setAuthority(String key, AuthorityBean bean) {
         String text = new GsonBuilder().create().toJson(bean);
-        SharedPreferences preferences= BaseApplication.getInstance().getSharedPreferences(NAME,Context.MODE_PRIVATE);
-        Editor editor=preferences.edit();
+        SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(NAME, Context.MODE_PRIVATE);
+        Editor editor = preferences.edit();
         editor.putString(key, text);
         editor.commit();
     }
 
-    private static AuthorityBean getAuthority(String key){
-        SharedPreferences preferences= BaseApplication.getInstance().getSharedPreferences(NAME,Context.MODE_PRIVATE);
-        String text = preferences.getString(key,"");
-        if(TextUtils.isEmpty(text)){
+    private static AuthorityBean getAuthority(String key) {
+        SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(NAME, Context.MODE_PRIVATE);
+        String text = preferences.getString(key, "");
+        if (TextUtils.isEmpty(text)) {
             return null;
-        }else{
-            return new GsonBuilder().create().fromJson(text, new TypeToken<AuthorityBean>(){}.getType());
+        } else {
+            return new GsonBuilder().create().fromJson(text, new TypeToken<AuthorityBean>() {
+            }.getType());
         }
     }
 
     /**
      * 保存选中的质检项目的信息
      */
-    public static void setSelectModuleInfo(long id,String name){
-        SharedPreferences preferences= BaseApplication.getInstance().getSharedPreferences(NAME,Context.MODE_PRIVATE);
-        Editor editor=preferences.edit();
+    public static void setSelectModuleInfo(long id, String name) {
+        SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(NAME, Context.MODE_PRIVATE);
+        Editor editor = preferences.edit();
         editor.putString(MODULE_INFO_NAME, name);
-        editor.putLong(MODULE_INFO_ID,id);
+        editor.putLong(MODULE_INFO_ID, id);
         editor.commit();
     }
 
     /**
      * 获取选中的质检项目的name
      */
-    public static String getSelectModuleName(){
-        SharedPreferences preferences= BaseApplication.getInstance().getSharedPreferences(NAME,Context.MODE_PRIVATE);
-        return preferences.getString(MODULE_INFO_NAME,"");
+    public static String getSelectModuleName() {
+        SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(NAME, Context.MODE_PRIVATE);
+        return preferences.getString(MODULE_INFO_NAME, "");
     }
 
     /**
      * 获取选中的质检项目的id
      */
-    public static long getSelectModuleId(){
-        SharedPreferences preferences= BaseApplication.getInstance().getSharedPreferences(NAME,Context.MODE_PRIVATE);
-        return preferences.getLong(MODULE_INFO_ID,-1);
+    public static long getSelectModuleId() {
+        SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(NAME, Context.MODE_PRIVATE);
+        return preferences.getLong(MODULE_INFO_ID, -1);
     }
 
     /**
      * 保存搜索模型的记录
      */
-    public static void saveModelSearchKey(String key){
-        saveSearchKey(SEARCH_KEY_MODEL,key);
+    public static void saveModelSearchKey(String key) {
+        saveSearchKey(SEARCH_KEY_MODEL, key);
     }
+
     /**
      * 保存搜索图纸的记录
      */
-    public static void saveBluePrintSearchKey(String key){
-        saveSearchKey(SEARCH_KEY_BLUEPRINT,key);
+    public static void saveBluePrintSearchKey(String key) {
+        saveSearchKey(SEARCH_KEY_BLUEPRINT, key);
     }
 
     /**
      * 保存搜索质检清单、材设的记录
+     *
      * @param key
      */
     public static void saveQualityEquipmentSearchKey(String key) {
-        saveSearchKey(SEARCH_KEY_QUALITY_EQUIPMENT,key);
+        saveSearchKey(SEARCH_KEY_QUALITY_EQUIPMENT, key);
     }
 
     /**
      * 获取模型搜索历史
      */
-    public static List<String> getModelSearchKey(){
+    public static List<String> getModelSearchKey() {
         return getSearchKey(SEARCH_KEY_MODEL);
     }
 
     /**
      * 获取图纸搜索历史
      */
-    public static List<String> getBluePrintSearchKey(){
+    public static List<String> getBluePrintSearchKey() {
         return getSearchKey(SEARCH_KEY_BLUEPRINT);
     }
 
     /**
      * 获取质检清单、材设清单搜索历史
+     *
      * @return 搜索历史列表
      */
-    public static List<String> getQualityEquipmentSearchKey(){
+    public static List<String> getQualityEquipmentSearchKey() {
         return getSearchKey(SEARCH_KEY_QUALITY_EQUIPMENT);
     }
 
@@ -419,24 +434,24 @@ public class SharedPreferencesUtil {
     /**
      * 保存搜索历史
      */
-    private  static void saveSearchKey(String type,String key){
-        LogUtil.e("保存key="+key);
+    private static void saveSearchKey(String type, String key) {
+        LogUtil.e("保存key=" + key);
         int max = 20;
-        SharedPreferences preferences= BaseApplication.getInstance().getSharedPreferences(NAME,Context.MODE_PRIVATE);
-        Editor editor=preferences.edit();
+        SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(NAME, Context.MODE_PRIVATE);
+        Editor editor = preferences.edit();
         List<String> list = getSearchKey(type);
-        if(list==null){
+        if (list == null) {
             list = new ArrayList<>();
         }
-        if(!list.contains(key)) {
+        if (!list.contains(key)) {
             if (list.size() == max) {
                 list.remove(max - 1);
             }
             list.add(0, key);
-        }else{
+        } else {
             int position = list.indexOf(key);
             list.remove(position);
-            list.add(0,key);
+            list.add(0, key);
         }
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < list.size(); i++) {
@@ -453,23 +468,53 @@ public class SharedPreferencesUtil {
     /**
      * 获取搜索历史
      */
-    private static List<String> getSearchKey(String type){
-        SharedPreferences preferences= BaseApplication.getInstance().getSharedPreferences(NAME,Context.MODE_PRIVATE);
-        String keyStr = preferences.getString(type,"");
-        LogUtil.e("获取历史："+keyStr);
-        if(TextUtils.isEmpty(keyStr)){
+    private static List<String> getSearchKey(String type) {
+        SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(NAME, Context.MODE_PRIVATE);
+        String keyStr = preferences.getString(type, "");
+        LogUtil.e("获取历史：" + keyStr);
+        if (TextUtils.isEmpty(keyStr)) {
             return null;
-        }else{
+        } else {
             List<String> list = new ArrayList<>();
-            if(keyStr.contains(",")){
+            if (keyStr.contains(",")) {
                 String[] keys = keyStr.split(",");
-                for(String key :keys){
+                for (String key : keys) {
                     list.add(key);
                 }
-            }else{
+            } else {
                 list.add(keyStr);
             }
             return list;
         }
     }
+
+
+    //获取检测更新后获取的最新版本
+    public static String getLatestVersion() {
+        SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(NAME, Context.MODE_PRIVATE);
+        return preferences.getString(LATEST_VERSION, "");
+    }
+
+    //保存检测更新后获取的最新版本
+    public static void saveLatestVersion(String version) {
+        SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(NAME, Context.MODE_PRIVATE);
+        Editor editor = preferences.edit();
+        editor.putString(LATEST_VERSION, version);
+        editor.commit();
+    }
+
+    //是否开启wifi下自动下载
+    public static boolean getAutoDownload() {
+        SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(NAME, Context.MODE_PRIVATE);
+        return preferences.getBoolean(AUTO_DOWNLOAD, true);
+    }
+
+    //wifi下自动下载
+    public static void saveAutoDownload(boolean autoDownload) {
+        SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(NAME, Context.MODE_PRIVATE);
+        Editor editor = preferences.edit();
+        editor.putBoolean(AUTO_DOWNLOAD, autoDownload);
+        editor.commit();
+    }
+
 }

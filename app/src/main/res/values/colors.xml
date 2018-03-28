@@ -102,6 +102,7 @@
     <color name="c_898989">#898989</color>
     <color name="c_ababab">#ababab</color>
     <color name="c_f1ffffff">#f7ffffff</color>
+    <color name="c_fb5600">#fb5600</color>
 
     <!-- zxing -->
     <color name="viewfinder_frame">#ff000000</color>
