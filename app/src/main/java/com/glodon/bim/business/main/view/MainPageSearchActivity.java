@@ -76,8 +76,8 @@ public class MainPageSearchActivity extends BaseActivity implements QualityEquip
 
         mQualityTagTv = (TextView) findViewById(R.id.main_page_search_quality_tag_tv);
         mEquipmentTagTv = (TextView) findViewById(R.id.main_page_search_equipment_tag_tv);
-        mQualityMoreRl =  findViewById(R.id.main_page_search_quality_more_rl);
-        mEquipmentMoreRl =  findViewById(R.id.main_page_search_equipment_more_rl);
+        mQualityMoreRl = findViewById(R.id.main_page_search_quality_more_rl);
+        mEquipmentMoreRl = findViewById(R.id.main_page_search_equipment_more_rl);
 
         mQualityContentRecyclerView = (RecyclerView) findViewById(R.id.main_page_search_quality_content);
         mEquipmentContentRecyclerView = (RecyclerView) findViewById(R.id.main_page_search_equipment_content);
@@ -203,11 +203,15 @@ public class MainPageSearchActivity extends BaseActivity implements QualityEquip
         mScrollView.scrollTo(0, 0);
         if (mQualityData.size() == 0) {
             setQualityViewVisibility(View.GONE);
+        } else if (mQualityData.size() < 3) {
+            mQualityMoreRl.setVisibility(View.GONE);
         } else {
             setQualityViewVisibility(View.VISIBLE);
         }
         if (mEquipmentData.size() == 0) {
             setEquipmentViewVisibility(View.GONE);
+        } else if (mEquipmentData.size() < 3) {
+            mEquipmentMoreRl.setVisibility(View.GONE);
         } else {
             setEquipmentViewVisibility(View.VISIBLE);
         }
@@ -217,9 +221,10 @@ public class MainPageSearchActivity extends BaseActivity implements QualityEquip
 
     /**
      * 设置质检清单View的显示隐藏状态
+     *
      * @param visibility
      */
-    private void setQualityViewVisibility(int visibility){
+    private void setQualityViewVisibility(int visibility) {
         mQualityTagTv.setVisibility(visibility);
         mQualityMoreRl.setVisibility(visibility);
         mQualityContentRecyclerView.setVisibility(visibility);
@@ -227,9 +232,10 @@ public class MainPageSearchActivity extends BaseActivity implements QualityEquip
 
     /**
      * 设置材设清单View的显示隐藏状态
+     *
      * @param visibility
      */
-    private void setEquipmentViewVisibility(int visibility){
+    private void setEquipmentViewVisibility(int visibility) {
         mEquipmentTagTv.setVisibility(visibility);
         mEquipmentMoreRl.setVisibility(visibility);
         mEquipmentContentRecyclerView.setVisibility(visibility);
@@ -308,6 +314,7 @@ public class MainPageSearchActivity extends BaseActivity implements QualityEquip
                 break;
         }
     }
+
     /**
      * 点击取消按钮时：返回原始搜索或退出页面
      */
@@ -321,6 +328,7 @@ public class MainPageSearchActivity extends BaseActivity implements QualityEquip
             finish();
         }
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
