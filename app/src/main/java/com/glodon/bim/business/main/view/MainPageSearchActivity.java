@@ -197,24 +197,28 @@ public class MainPageSearchActivity extends BaseActivity implements QualityEquip
     }
 
     @Override
-    public void showResult(List<QualityCheckListBeanItem> mQualityData, List<EquipmentListBeanItem> mEquipmentData) {
+    public void showResult(List<QualityCheckListBeanItem> mQualityData, int totalQualityData, List<EquipmentListBeanItem> mEquipmentData, int totalEquipmentData) {
         mQualityResultAdapter.updateList(mQualityData);
         mEquipmentResultAdapter.updateList(mEquipmentData);
         mScrollView.scrollTo(0, 0);
         if (mQualityData.size() == 0) {
             setQualityViewVisibility(View.GONE);
-        } else if (mQualityData.size() < 3) {
-            mQualityMoreRl.setVisibility(View.GONE);
         } else {
             setQualityViewVisibility(View.VISIBLE);
         }
+        if (mQualityData.size() >= totalQualityData) {
+            mQualityMoreRl.setVisibility(View.GONE);
+        }
+
         if (mEquipmentData.size() == 0) {
             setEquipmentViewVisibility(View.GONE);
-        } else if (mEquipmentData.size() < 3) {
-            mEquipmentMoreRl.setVisibility(View.GONE);
-        } else {
+        } else{
             setEquipmentViewVisibility(View.VISIBLE);
         }
+        if (mEquipmentData.size() >= totalEquipmentData) {
+            mEquipmentMoreRl.setVisibility(View.GONE);
+        }
+
         mInputView.clearFocus();
         InputMethodutil.HideKeyboard(mInputView);
     }

@@ -67,6 +67,8 @@ public class QualityEquipmentSearchPresenter implements QualityEquipmentSearchCo
 
     private List<QualityCheckListBeanItem> mQualityList = new ArrayList<>(); //质检清单数据
     private List<EquipmentListBeanItem> mEquipmentList = new ArrayList<>(); //材设清单数据
+    private int totalQualityData = 0;//搜索出来的质检清单总数
+    private int totalEquipmentData = 0;//搜索出来的材设清单总数
 
     private String mCreateType = CommonConfig.CREATE_TYPE_REPAIR;
     private int mClickPosition = 0;
@@ -116,7 +118,7 @@ public class QualityEquipmentSearchPresenter implements QualityEquipmentSearchCo
                                             public void onNext(ResponseBody responseBody) {
                                                 if (responseBody != null) {
                                                     mQualityList.remove(position);
-                                                    mView.showResult(mQualityList, mEquipmentList);
+                                                    mView.showResult(mQualityList,totalQualityData, mEquipmentList, totalEquipmentData);
                                                 }
                                             }
                                         });
@@ -271,7 +273,7 @@ public class QualityEquipmentSearchPresenter implements QualityEquipmentSearchCo
                                 }
                                 if (responseBody != null) {
                                     mEquipmentList.remove(position);
-                                    mView.showResult(mQualityList, mEquipmentList);
+                                    mView.showResult(mQualityList,totalQualityData, mEquipmentList, totalEquipmentData);
                                 }
                             }
                         });
@@ -428,7 +430,7 @@ public class QualityEquipmentSearchPresenter implements QualityEquipmentSearchCo
                         if (mView != null && searchCount == 2) {
                             mView.dismissLoadingDialog();
                             mView.hideHistory();
-                            mView.showResult(mQualityList, mEquipmentList);
+                            mView.showResult(mQualityList,totalQualityData, mEquipmentList, totalEquipmentData);
                         }
                     }
 
@@ -436,11 +438,12 @@ public class QualityEquipmentSearchPresenter implements QualityEquipmentSearchCo
                     public void onNext(QualityCheckListBean bean) {
                         mQualityList.clear();
                         mQualityList.addAll(bean.content);
+                        totalQualityData = bean.totalElements;
                         searchCount++;
                         if (mView != null && searchCount == 2) {
                             mView.dismissLoadingDialog();
                             mView.hideHistory();
-                            mView.showResult(mQualityList, mEquipmentList);
+                            mView.showResult(mQualityList,totalQualityData, mEquipmentList, totalEquipmentData);
                         }
 
                     }
@@ -469,7 +472,7 @@ public class QualityEquipmentSearchPresenter implements QualityEquipmentSearchCo
                         if (mView != null && searchCount == 2) {
                             mView.dismissLoadingDialog();
                             mView.hideHistory();
-                            mView.showResult(mQualityList, mEquipmentList);
+                            mView.showResult(mQualityList,totalQualityData, mEquipmentList, totalEquipmentData);
                         }
                     }
 
@@ -477,6 +480,7 @@ public class QualityEquipmentSearchPresenter implements QualityEquipmentSearchCo
                     public void onNext(EquipmentListBean bean) {
                         mEquipmentList.clear();
                         mEquipmentList.addAll(bean.content);
+                        totalEquipmentData = bean.totalElements;
                         for (EquipmentListBeanItem equipmentListBeanItem : mEquipmentList) {
                             if (CommonConfig.QC_STATE_EDIT.equals(equipmentListBeanItem.getQcState())) {
                                 equipmentListBeanItem.showType = 1;
@@ -489,7 +493,7 @@ public class QualityEquipmentSearchPresenter implements QualityEquipmentSearchCo
                         if (mView != null && searchCount == 2) {
                             mView.dismissLoadingDialog();
                             mView.hideHistory();
-                            mView.showResult(mQualityList, mEquipmentList);
+                            mView.showResult(mQualityList,totalQualityData, mEquipmentList, totalEquipmentData);
                         }
                     }
                 });

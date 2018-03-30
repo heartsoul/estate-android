@@ -30,7 +30,7 @@ public interface QualityEquipmentSearchContract {
         /**
          * 显示搜索结果
          */
-        void showResult(List<QualityCheckListBeanItem> mQualityData, List<EquipmentListBeanItem> mEquipmentData);
+        void showResult(List<QualityCheckListBeanItem> mQualityData,int totalQualityData, List<EquipmentListBeanItem> mEquipmentData,int totalEquipmentData);
 
         /**
          * 打开相册手机
