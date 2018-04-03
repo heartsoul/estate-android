@@ -12,7 +12,7 @@ import java.util.List;
  * 邮箱：zhourf@glodon.com
  */
 
-public class UserCookieManager {
+public class UserCookieHandler {
 
     /**
      * 插入数据

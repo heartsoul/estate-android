@@ -1,7 +1,7 @@
 package com.glodon.bim.business.greendao.provider;
 
 import com.glodon.bim.business.greendao.entity.UserCookie;
-import com.glodon.bim.business.greendao.manager.UserCookieManager;
+import com.glodon.bim.business.greendao.manager.UserCookieHandler;
 
 /**
  * 描述：
@@ -19,7 +19,7 @@ public class DaoProvider {
         UserCookie uc = new UserCookie();
         uc.setCookie(cookie);
         uc.setUserId(userId);
-        UserCookieManager userCookieManager = new UserCookieManager();
+        UserCookieHandler userCookieManager = new UserCookieHandler();
         userCookieManager.deleteAll();
         userCookieManager.insert(uc);
     }
@@ -35,6 +35,6 @@ public class DaoProvider {
      * 查询cookie
      */
     public String getCookie(){
-        return new UserCookieManager().queryCookie();
+        return new UserCookieHandler().queryCookie();
     }
 }
