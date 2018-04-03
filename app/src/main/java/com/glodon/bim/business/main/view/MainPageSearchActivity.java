@@ -296,6 +296,7 @@ public class MainPageSearchActivity extends BaseActivity implements QualityEquip
         InputMethodutil.HideKeyboard(mInputView);
         if (!TextUtils.isEmpty(key)) {
             searchKey = key;
+            mEquipmentResultAdapter.setSearch(searchKey);
             mPresenter.search(key);
         }
     }

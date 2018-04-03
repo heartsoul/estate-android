@@ -40,6 +40,7 @@ public class EquipmentSearchActivity extends BaseSearchActivity implements Equip
 
     @Override
     public void presenterSearch(String key) {
+        mAdapter.setSearch(key);
         mPresenter.search(key);
     }
 
