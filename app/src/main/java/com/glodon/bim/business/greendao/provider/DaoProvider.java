@@ -1,7 +1,7 @@
 package com.glodon.bim.business.greendao.provider;
 
 import com.glodon.bim.business.greendao.entity.UserCookie;
-import com.glodon.bim.business.greendao.manager.UserCookieHandler;
+import com.glodon.bim.business.greendao.handler.UserCookieHandler;
 
 /**
  * 描述：

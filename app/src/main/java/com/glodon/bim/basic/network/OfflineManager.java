@@ -1,5 +1,6 @@
 package com.glodon.bim.basic.network;
 
+import com.glodon.bim.business.greendao.handler.BasicInfoHandler;
 import com.glodon.bim.business.main.bean.ProjectListBean;
 import com.glodon.bim.business.main.bean.ProjectListItem;
 import com.google.gson.GsonBuilder;
@@ -22,7 +23,7 @@ public class OfflineManager {
         String path = request.url().encodedPath();
         switch (path){
             case "pmbasic/projects/available":
-//                result = xxxHandler.getProjects();
+//                result = BasicInfoHandler.getProjectInfo();
                 break;
         }
         return result;

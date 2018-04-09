@@ -1,4 +1,4 @@
-package com.glodon.bim.business.greendao.manager;
+package com.glodon.bim.business.greendao.handler;
 
 import com.glodon.bim.business.greendao.GreenDaoHelper;
 import com.glodon.bim.business.greendao.entity.UserCookie;
