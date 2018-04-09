@@ -141,18 +141,18 @@ public class SettingActivity extends BaseActivity implements SettingContract.Vie
     private void switchWlanFlag() {
         if (SharedPreferencesUtil.getAutoDownload()) {
             SharedPreferencesUtil.saveAutoDownload(false);
-            wlanImage.setImageDrawable(getResources().getDrawable(R.drawable.icon_flag_close));
+            wlanImage.setBackgroundResource(R.drawable.icon_flag_close);
         } else {
             SharedPreferencesUtil.saveAutoDownload(true);
-            wlanImage.setImageDrawable(getResources().getDrawable(R.drawable.icon_flag_open));
+            wlanImage.setBackgroundResource(R.drawable.icon_flag_open);
         }
     }
 
     private void setWlanView(){
         if (SharedPreferencesUtil.getAutoDownload()) {
-            wlanImage.setImageDrawable(getResources().getDrawable(R.drawable.icon_flag_open));
+            wlanImage.setBackgroundResource(R.drawable.icon_flag_open);
         } else {
-            wlanImage.setImageDrawable(getResources().getDrawable(R.drawable.icon_flag_close));
+            wlanImage.setBackgroundResource(R.drawable.icon_flag_close);
         }
     }
 
