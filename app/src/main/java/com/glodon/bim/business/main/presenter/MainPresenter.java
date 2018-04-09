@@ -2,8 +2,10 @@ package com.glodon.bim.business.main.presenter;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.text.TextUtils;
 import android.util.Log;
 
+import com.glodon.bim.BuildConfig;
 import com.glodon.bim.basic.utils.CameraUtil;
 import com.glodon.bim.basic.utils.SharedPreferencesUtil;
 import com.glodon.bim.business.main.contract.MainContract;
@@ -113,12 +115,14 @@ public class MainPresenter implements MainContract.Presenter {
                         if (checkVersionBean != null) {
                             SharedPreferencesUtil.saveLatestVersion(checkVersionBean.getVersion());
                             //强制升级 弹窗
-                            if ("force".equals(checkVersionBean.getUpdateOption())) {
-                                GlodonUpdateManager.getInstance().showForceUpdateDialog(mView.getActivity(),checkVersionBean);
-                            } else {
-                                //开启wifi下自动下载
-                                if (SharedPreferencesUtil.getAutoDownload()) {
-                                    GlodonUpdateManager.getInstance().autoDownload(mView.getActivity(),checkVersionBean);
+                            if (!BuildConfig.VERSION_NAME.equals(checkVersionBean.getVersion()) && !TextUtils.isEmpty(checkVersionBean.getVersion())){
+                                if ("force".equals(checkVersionBean.getUpdateOption())) {
+                                    GlodonUpdateManager.getInstance().showForceUpdateDialog(mView.getActivity(),checkVersionBean);
+                                } else {
+                                    //开启wifi下自动下载
+                                    if (SharedPreferencesUtil.getAutoDownload()) {
+                                        GlodonUpdateManager.getInstance().autoDownload(mView.getActivity(),checkVersionBean);
+                                    }
                                 }
                             }
 
