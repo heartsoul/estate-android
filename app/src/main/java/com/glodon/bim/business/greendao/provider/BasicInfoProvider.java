@@ -6,14 +6,18 @@ import com.glodon.bim.basic.utils.GsonUtil;
 import com.glodon.bim.business.authority.AuthorityInfo;
 import com.glodon.bim.business.greendao.entity.BasicInfoEntity;
 import com.glodon.bim.business.greendao.handler.BasicInfoHandler;
+import com.glodon.bim.business.main.bean.ProjectListBean;
 import com.glodon.bim.business.main.bean.ProjectListItem;
+import com.glodon.bim.business.qualityManage.bean.BlueprintListBeanItem;
 import com.glodon.bim.business.qualityManage.bean.CompanyItem;
 import com.glodon.bim.business.qualityManage.bean.InspectionCompanyItem;
+import com.glodon.bim.business.qualityManage.bean.ModelListBeanItem;
+import com.glodon.bim.business.qualityManage.bean.ModelSingleListItem;
+import com.glodon.bim.business.qualityManage.bean.ModelSpecialListItem;
 import com.glodon.bim.business.qualityManage.bean.ModuleListBeanItem;
 import com.glodon.bim.business.qualityManage.bean.PersonItem;
 import com.glodon.bim.common.login.User;
 import com.glodon.bim.common.login.UserTenant;
-import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.List;
@@ -37,6 +41,11 @@ public class BasicInfoProvider {
     private static String TYPE_CONSTURCTION_COMPANY = "TYPE_CONSTURCTION_COMPANY";
     private static String TYPE_RESPONSIBLE_PERSON = "TYPE_RESPONSIBLE_PERSON";
     private static String TYPE_MODULE = "TYPE_MODULE";
+    private static String TYPE_MODEL_SPECIAL = "TYPE_MODEL_SPECIAL";
+    private static String TYPE_MODEL_SINGLE = "TYPE_MODEL_SINGLE";
+    private static String TYPE_MODEL_LIST = "TYPE_MODEL_LIST";
+    private static String TYPE_BLUEPRINT = "TYPE_BLUEPRINT";
+    private static String TYPE_CHECK_COMPANY = "TYPE_CHECK_COMPANY";
 
     /**
      * 保存账户信息
@@ -107,15 +116,16 @@ public class BasicInfoProvider {
     /**
      * 保存租户的项目列表信息
      */
-    public static void insertProjects(List<ProjectListItem> list){
+    public static void insertProjects(ProjectListBean list){
         insert(TYPE_PROJECTS+getCurrentTenantId()+getCurrentPhoneNum(),GsonUtil.toJsonString(list));
     }
 
     /**
      * 获取当前租户的项目列表
+     * return ProjectListBean
      */
-    public static List<ProjectListItem> getProjects(long tenantId){
-        return query(TYPE_PROJECTS+tenantId+getCurrentPhoneNum());
+    public static String getProjects(long tenantId){
+        return queryString(TYPE_PROJECTS+tenantId+getCurrentPhoneNum());
     }
 
     /**
@@ -154,9 +164,10 @@ public class BasicInfoProvider {
     }
     /**
      * 获取检查单位信息
+     * return List<InspectionCompanyItem>
      */
-    public static List<InspectionCompanyItem> getInspectionCompany(){
-        return query(TYPE_INSPECTION_COMPANY+getCurrentProjectInfo().deptId+getCurrentTenantId()+getCurrentPhoneNum());
+    public static String getInspectionCompany(){
+        return queryString(TYPE_INSPECTION_COMPANY+getCurrentProjectInfo().deptId+getCurrentTenantId()+getCurrentPhoneNum());
     }
 
     /**
@@ -167,9 +178,10 @@ public class BasicInfoProvider {
     }
     /**
      * 获取施工单位信息
+     * return List<CompanyItem>
      */
-    public static List<CompanyItem> getConstructionCompany(){
-        return query(TYPE_CONSTURCTION_COMPANY+getCurrentProjectInfo().deptId+getCurrentTenantId()+getCurrentPhoneNum());
+    public static String getConstructionCompany(){
+        return queryString(TYPE_CONSTURCTION_COMPANY+getCurrentProjectInfo().deptId+getCurrentTenantId()+getCurrentPhoneNum());
     }
 
     /**
@@ -180,9 +192,10 @@ public class BasicInfoProvider {
     }
     /**
      * 获取责任人信息
+     * return List<PersonItem>
      */
-    public static List<PersonItem> getResponsiblePerson(long companyId){
-        return query(TYPE_RESPONSIBLE_PERSON+companyId+getCurrentProjectInfo().deptId+getCurrentTenantId()+getCurrentPhoneNum());
+    public static String getResponsiblePerson(long companyId){
+        return queryString(TYPE_RESPONSIBLE_PERSON+companyId+getCurrentProjectInfo().deptId+getCurrentTenantId()+getCurrentPhoneNum());
     }
     /**
      * 保存质检项目信息
@@ -192,12 +205,78 @@ public class BasicInfoProvider {
     }
     /**
      * 获取质检项目信息
+     * return List<ModuleListBeanItem>
      */
-    public static List<PersonItem> getModuleInfo(){
-        return query(TYPE_MODULE+getCurrentProjectInfo().deptId+getCurrentTenantId()+getCurrentPhoneNum());
+    public static  String getModuleInfo(){
+        return queryString(TYPE_MODULE+getCurrentProjectInfo().deptId+getCurrentTenantId()+getCurrentPhoneNum());
     }
 
+    /**
+     * 保存模型专业列表信息
+     */
+    public static void insertModelSpecial(List<ModelSpecialListItem> list){
+        insert(TYPE_MODEL_SPECIAL+getCurrentProjectInfo().deptId+getCurrentTenantId()+getCurrentPhoneNum(),GsonUtil.toJsonString(list));
+    }
+    /**
+     * 获取模型专业列表信息
+     * return List<ModelSpecialListItem>
+     */
+    public static String getModelSpecial(){
+        return queryString(TYPE_MODEL_SPECIAL+getCurrentProjectInfo().deptId+getCurrentTenantId()+getCurrentPhoneNum());
+    }
 
+    /**
+     * 保存模型单体列表信息
+     */
+    public static void insertModelSingle(List<ModelSingleListItem> list){
+        insert(TYPE_MODEL_SINGLE+getCurrentProjectInfo().deptId+getCurrentTenantId()+getCurrentPhoneNum(),GsonUtil.toJsonString(list));
+    }
+    /**
+     * 获取模型单体列表信息
+     * return List<ModelSingleListItem>
+     */
+    public static String getModelSingle(){
+        return queryString(TYPE_MODEL_SINGLE+getCurrentProjectInfo().deptId+getCurrentTenantId()+getCurrentPhoneNum());
+    }
+
+    /**
+     * 保存模型列表信息
+     */
+    public static void insertModelList(List<ModelListBeanItem> list){
+        insert(TYPE_MODEL_LIST+getCurrentProjectInfo().deptId+getCurrentTenantId()+getCurrentPhoneNum(),GsonUtil.toJsonString(list));
+    }
+    /**
+     * 获取模型列表信息
+     */
+    public static List<ModelSingleListItem> getModelList(){
+        return query(TYPE_MODEL_LIST+getCurrentProjectInfo().deptId+getCurrentTenantId()+getCurrentPhoneNum());
+    }
+
+    /**
+     * 保存图纸列表信息
+     */
+    public static void insertBlueprintList(List<BlueprintListBeanItem> list){
+        insert(TYPE_BLUEPRINT+getCurrentProjectInfo().deptId+getCurrentTenantId()+getCurrentPhoneNum(),GsonUtil.toJsonString(list));
+    }
+    /**
+     * 获取图纸列表信息
+     */
+    public static List<BlueprintListBeanItem> getBlueprintList(){
+        return query(TYPE_BLUEPRINT+getCurrentProjectInfo().deptId+getCurrentTenantId()+getCurrentPhoneNum());
+    }
+    /**
+     * 保存材设验收单位信息
+     */
+    public static void insertCheckCompany(List<InspectionCompanyItem> list){
+        insert(TYPE_CHECK_COMPANY+getCurrentProjectInfo().deptId+getCurrentTenantId()+getCurrentPhoneNum(),GsonUtil.toJsonString(list));
+    }
+    /**
+     * 获取材设验收单位信息
+     * return List<InspectionCompanyItem>
+     */
+    public static String getCheckCompany(){
+        return queryString(TYPE_CHECK_COMPANY+getCurrentProjectInfo().deptId+getCurrentTenantId()+getCurrentPhoneNum());
+    }
 
     /**
      *
@@ -214,6 +293,17 @@ public class BasicInfoProvider {
         BasicInfoEntity entity = BasicInfoHandler.query(key);
         if(entity!=null){
             return GsonUtil.toJsonObj(entity.getValue(),new TypeToken<T>(){}.getType());
+        }
+        return null;
+    }
+
+    /**
+     * 查询
+     */
+    private static String queryString(String key){
+        BasicInfoEntity entity = BasicInfoHandler.query(key);
+        if(entity!=null){
+            return entity.getValue();
         }
         return null;
     }
