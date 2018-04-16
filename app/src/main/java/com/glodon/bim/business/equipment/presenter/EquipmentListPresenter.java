@@ -128,6 +128,8 @@ public class EquipmentListPresenter implements EquipmentListContract.Presenter {
                 params.buildingName = item.buildingName;
                 params.elementId = item.elementId;
                 params.elementName = item.elementName;
+                params.acceptanceCompanyId = item.acceptanceCompanyId;
+                params.acceptanceCompanyName = item.acceptanceCompanyName;
                 List<CreateCheckListParamsFile> fileList = new ArrayList<>();
                 for (QualityCheckListBeanItemFile file : item.files) {
                     CreateCheckListParamsFile f = new CreateCheckListParamsFile();

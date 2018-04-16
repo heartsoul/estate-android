@@ -19,6 +19,8 @@ public class EquipmentListBeanItem {
     public String projectName;//项目名称
 
     public boolean committed;//false  待提交   true 已提交
+    public long acceptanceCompanyId;//验收单位
+    public String acceptanceCompanyName;//验收单位
 
     //模型
     public String versionId;//模型版本id
